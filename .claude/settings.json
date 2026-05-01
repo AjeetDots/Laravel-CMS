@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php artisan *)",
+      "WebFetch(domain:bespokeornateplaster.lovable.app)",
+      "WebFetch(domain:prnt.sc)",
+      "Bash(xargs grep *)"
+    ]
+  }
+}

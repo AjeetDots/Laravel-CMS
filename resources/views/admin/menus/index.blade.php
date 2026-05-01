@@ -1,0 +1,86 @@
+@extends('layouts.admin')
+
+@section('title', 'Menus')
+
+@section('content')
+
+<div class="page-header-bar">
+    <h1>Navigation Menus</h1>
+    <a href="{{ route('admin.menus.create') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Add Menu Item
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        @if($menus->isEmpty())
+            <div class="text-center py-5 text-muted">
+                <i class="fas fa-bars fa-2x mb-2"></i>
+                <p>No menu items yet. <a href="{{ route('admin.menus.create') }}">Add one</a></p>
+            </div>
+        @else
+            <div class="table-responsive">
+                <table class="table mb-0">
+                    <thead>
+                        <tr>
+                            <th>Label</th>
+                            <th>URL</th>
+                            <th>Target</th>
+                            <th>Order</th>
+                            <th>Status</th>
+                            <th width="130">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($menus as $menu)
+                            <tr>
+                                <td class="fw-600">{{ $menu->label }}</td>
+                                <td><code>{{ $menu->url }}</code></td>
+                                <td>{{ $menu->target }}</td>
+                                <td>{{ $menu->sort_order }}</td>
+                                <td>
+                                    <span class="badge {{ $menu->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">
+                                        {{ $menu->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('admin.menus.edit', $menu) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                                    <form action="{{ route('admin.menus.destroy', $menu) }}" method="POST" class="d-inline"
+                                          onsubmit="return confirm('Delete this menu item?')">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-sm btn-outline-danger">Del</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @foreach($menu->children as $child)
+                                <tr style="background:#f8fafc;">
+                                    <td class="ps-4" style="color:#64748b;">
+                                        <i class="fas fa-level-down-alt fa-xs me-2"></i>{{ $child->label }}
+                                    </td>
+                                    <td><code>{{ $child->url }}</code></td>
+                                    <td>{{ $child->target }}</td>
+                                    <td>{{ $child->sort_order }}</td>
+                                    <td>
+                                        <span class="badge {{ $child->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">
+                                            {{ $child->is_active ? 'Active' : 'Inactive' }}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <a href="{{ route('admin.menus.edit', $child) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
+                                        <form action="{{ route('admin.menus.destroy', $child) }}" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Delete this item?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-outline-danger">Del</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        @endif
+    </div>
+</div>
+
+@endsection
