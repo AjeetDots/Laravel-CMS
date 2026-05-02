@@ -58,14 +58,17 @@
                     </td>
                     <td style="font-size:.82rem;">{{ $post->published_at?->format('d M Y') ?? '—' }}</td>
                     <td>
-                        <a href="{{ route('admin.blog.edit', $post) }}" class="btn btn-sm btn-outline-primary me-1">
-                            <i class="fas fa-edit"></i>
-                        </a>
-                        <form action="{{ route('admin.blog.destroy', $post) }}" method="POST" class="d-inline"
-                              onsubmit="return confirm('Delete this post?')">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
-                        </form>
+                        <div class="action-btns">
+                            <a href="{{ route('admin.blog.edit', $post) }}"
+                               class="btn btn-sm btn-icon btn-outline-primary"
+                               data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pen"></i></a>
+                            <form action="{{ route('admin.blog.destroy', $post) }}" method="POST" class="d-inline"
+                                  onsubmit="return confirm('Delete this post?')">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-sm btn-icon btn-outline-danger"
+                                        data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty

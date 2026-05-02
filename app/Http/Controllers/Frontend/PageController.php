@@ -5,11 +5,19 @@ use App\Models\Page;
 
 class PageController extends Controller {
     public function show(string $slug) {
-        $page = Page::where('slug', $slug)->where('is_active', true)->firstOrFail();
+        $page = Page::with('seoMeta')
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
         $template = 'frontend.pages.' . $page->template;
         if (!view()->exists($template)) {
             $template = 'frontend.pages.default';
         }
-        return view($template, compact('page'));
+
+        return view($template, [
+            'page'     => $page,
+            'seoModel' => $page,
+        ]);
     }
 }

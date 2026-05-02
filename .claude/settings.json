@@ -5,6 +5,9 @@
       "WebFetch(domain:bespokeornateplaster.lovable.app)",
       "WebFetch(domain:prnt.sc)",
       "Bash(xargs grep *)"
+    ],
+    "additionalDirectories": [
+      "d:\\xampp\\htdocs\\laravel_cms\\public"
     ]
   }
 }

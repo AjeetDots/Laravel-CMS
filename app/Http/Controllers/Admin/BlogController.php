@@ -4,6 +4,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\BlogPost;
+use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -15,7 +16,8 @@ class BlogController extends Controller {
     }
 
     public function create() {
-        return view('admin.blog.create');
+        $categories = Category::selectTree();
+        return view('admin.blog.create', compact('categories'));
     }
 
     public function store(StoreBlogRequest $request) {
@@ -31,12 +33,16 @@ class BlogController extends Controller {
             $data['image'] = $request->file('image')->store('blog', 'public');
         }
 
-        BlogPost::create($data);
+        $post = BlogPost::create($data);
+        $post->saveSeo($request->input('seo', []));
+
         return redirect()->route('admin.blog.index')->with('success', 'Blog post created.');
     }
 
     public function edit(BlogPost $blog) {
-        return view('admin.blog.edit', compact('blog'));
+        $blog->load('seoMeta');
+        $categories = Category::selectTree();
+        return view('admin.blog.edit', compact('blog', 'categories'));
     }
 
     public function update(UpdateBlogRequest $request, BlogPost $blog) {
@@ -55,6 +61,8 @@ class BlogController extends Controller {
         }
 
         $blog->update($data);
+        $blog->saveSeo($request->input('seo', []));
+
         return redirect()->route('admin.blog.index')->with('success', 'Blog post updated.');
     }
 

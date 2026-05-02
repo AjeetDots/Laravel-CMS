@@ -29,19 +29,28 @@
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-label">Title *</label>
-                        <input type="text" name="title" class="form-control" value="{{ old('title', $page->title) }}" required>
+                        <input type="text" name="title" id="titleInput" class="form-control"
+                               value="{{ old('title', $page->title) }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Slug</label>
-                        <input type="text" name="slug" class="form-control" value="{{ old('slug', $page->slug) }}" placeholder="auto-generated if empty">
+                        <input type="text" name="slug" id="slugInput" class="form-control"
+                               value="{{ old('slug', $page->slug) }}" placeholder="auto-generated if empty">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Content</label>
-                        <textarea name="content" class="form-control" rows="12">{{ old('content', $page->content) }}</textarea>
+                        <textarea name="content" id="postContent" class="form-control wysiwyg" rows="12">{{ old('content', $page->content) }}</textarea>
                         <div class="form-text">You can use HTML tags for formatting.</div>
                     </div>
                 </div>
             </div>
+
+            @include('admin.partials.seo-panel', [
+                'seo'            => $page->seoMeta ?? null,
+                'titleFieldId'   => 'titleInput',
+                'slugFieldId'    => 'slugInput',
+                'contentFieldId' => 'postContent',
+            ])
         </div>
         <div class="col-lg-4">
             <div class="card mb-4">
@@ -62,19 +71,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card">
-                <div class="card-header">SEO Meta</div>
-                <div class="card-body">
-                    <div class="mb-3">
-                        <label class="form-label">Meta Title</label>
-                        <input type="text" name="meta_title" class="form-control" value="{{ old('meta_title', $page->meta_title) }}">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Meta Description</label>
-                        <textarea name="meta_description" class="form-control" rows="3">{{ old('meta_description', $page->meta_description) }}</textarea>
-                    </div>
-                </div>
-            </div>
+            {{-- Legacy fields kept for backwards compatibility --}}
+            <input type="hidden" name="meta_title"       value="{{ old('seo.meta_title',       $page->seoMeta?->meta_title       ?? $page->meta_title) }}">
+            <input type="hidden" name="meta_description" value="{{ old('seo.meta_description', $page->seoMeta?->meta_description ?? $page->meta_description) }}">
         </div>
     </div>
 

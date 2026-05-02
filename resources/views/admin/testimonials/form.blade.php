@@ -50,7 +50,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Message *</label>
-                        <textarea name="message" class="form-control" rows="5" required>{{ old('message', $testimonial->message) }}</textarea>
+                        <textarea name="message" class="form-control wysiwyg" rows="5" required>{{ old('message', $testimonial->message) }}</textarea>
                     </div>
                 </div>
                 <div class="col-md-4">

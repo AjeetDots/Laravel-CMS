@@ -44,13 +44,20 @@
                                 </td>
                                 <td>{{ $page->updated_at->format('M d, Y') }}</td>
                                 <td>
-                                    <a href="{{ route('page.show', $page->slug) }}" class="btn btn-sm btn-outline-secondary me-1" target="_blank">View</a>
-                                    <a href="{{ route('admin.pages.edit', $page) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                                    <form action="{{ route('admin.pages.destroy', $page) }}" method="POST" class="d-inline"
-                                          onsubmit="return confirm('Delete this page?')">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger">Del</button>
-                                    </form>
+                                    <div class="action-btns">
+                                        <a href="{{ route('page.show', $page->slug) }}" target="_blank"
+                                           class="btn btn-sm btn-icon btn-outline-secondary"
+                                           data-bs-toggle="tooltip" title="View Page"><i class="fas fa-eye"></i></a>
+                                        <a href="{{ route('admin.pages.edit', $page) }}"
+                                           class="btn btn-sm btn-icon btn-outline-primary"
+                                           data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pen"></i></a>
+                                        <form action="{{ route('admin.pages.destroy', $page) }}" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Delete this page?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-icon btn-outline-danger"
+                                                    data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

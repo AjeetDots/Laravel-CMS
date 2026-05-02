@@ -1,17 +1,28 @@
 @extends('layouts.frontend')
-@section('title', 'Blog')
+@section('title', isset($category) ? $category->name . ' — Blog' : 'Blog')
 @section('body_class', 'nav-solid')
 @section('content')
 
 <div class="page-hero">
     <div class="container">
-        <span class="eyebrow">Our Journal</span>
-        <h1>Blog & Insights</h1>
-        <p>Tips, inspiration and project stories from our studio.</p>
+        @if(isset($category))
+            <span class="eyebrow">Category</span>
+            <h1>{{ $category->name }}</h1>
+            @if($category->description)
+                <p>{{ $category->description }}</p>
+            @endif
+        @else
+            <span class="eyebrow">Our Journal</span>
+            <h1>Blog & Insights</h1>
+            <p>Tips, inspiration and project stories from our studio.</p>
+        @endif
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Blog</li>
+                <li class="breadcrumb-item"><a href="{{ route('blog.index') }}">Blog</a></li>
+                @if(isset($category))
+                    <li class="breadcrumb-item active">{{ $category->name }}</li>
+                @endif
             </ol>
         </nav>
     </div>
@@ -19,6 +30,20 @@
 
 <section class="section section-white">
     <div class="container">
+
+        @if(isset($category))
+        <div class="d-flex align-items-center gap-3 mb-5">
+            <span style="font-size:.85rem;color:var(--ink-light);">
+                <i class="fas fa-folder-open me-1"></i>
+                Showing posts in <strong>{{ $category->name }}</strong>
+                ({{ $posts->total() }} {{ Str::plural('post', $posts->total()) }})
+            </span>
+            <a href="{{ route('blog.index') }}" class="btn-outline-site btn-sm-site ms-auto">
+                <i class="fas fa-times me-1"></i>Clear Filter
+            </a>
+        </div>
+        @endif
+
         <div class="row g-4">
             @forelse($posts as $post)
             <div class="col-md-6 col-lg-4 reveal delay-{{ ($loop->index % 3) + 1 }}">
@@ -30,7 +55,9 @@
                             <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
                         @endif
                         @if($post->category)
-                            <span class="blog-badge">{{ $post->category }}</span>
+                            <a href="{{ route('blog.category', $post->category->slug) }}"
+                               class="blog-badge"
+                               onclick="event.stopPropagation()">{{ $post->category->name }}</a>
                         @endif
                     </div>
                     <div class="blog-card-body">
@@ -49,7 +76,12 @@
             @empty
             <div class="col-12 text-center py-5">
                 <i class="fas fa-feather-alt fa-3x mb-3" style="color:var(--border);"></i>
-                <p class="text-muted">No posts published yet.</p>
+                @if(isset($category))
+                    <p class="text-muted">No posts in this category yet.</p>
+                    <a href="{{ route('blog.index') }}" class="btn-outline-site mt-2">View all posts</a>
+                @else
+                    <p class="text-muted">No posts published yet.</p>
+                @endif
             </div>
             @endforelse
         </div>
@@ -62,4 +94,8 @@
     </div>
 </section>
 
+@endsection
+
+@section('styles')
+<link href="{{ asset('css/blog.css') }}" rel="stylesheet">
 @endsection

@@ -28,11 +28,11 @@
                 <div class="col-md-8">
                     <div class="mb-3">
                         <label class="form-label">Title *</label>
-                        <input type="text" name="title" class="form-control" value="{{ old('title', $service->title) }}" required>
+                        <input type="text" name="title" id="titleInput" class="form-control" value="{{ old('title', $service->title) }}" required>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Slug</label>
-                        <input type="text" name="slug" class="form-control" value="{{ old('slug', $service->slug) }}" placeholder="auto-generated if empty">
+                        <input type="text" name="slug" id="slugInput" class="form-control" value="{{ old('slug', $service->slug) }}" placeholder="auto-generated if empty">
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Short Description *</label>
@@ -40,8 +40,15 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Full Description</label>
-                        <textarea name="description" class="form-control" rows="6">{{ old('description', $service->description) }}</textarea>
+                        <textarea name="description" id="postContent" class="form-control wysiwyg" rows="6">{{ old('description', $service->description) }}</textarea>
                     </div>
+
+                    @include('admin.partials.seo-panel', [
+                        'seo'            => $service->seoMeta ?? null,
+                        'titleFieldId'   => 'titleInput',
+                        'slugFieldId'    => 'slugInput',
+                        'contentFieldId' => 'postContent',
+                    ])
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">

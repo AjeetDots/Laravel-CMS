@@ -44,12 +44,17 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.menus.edit', $menu) }}" class="btn btn-sm btn-outline-primary me-1">Edit</a>
-                                    <form action="{{ route('admin.menus.destroy', $menu) }}" method="POST" class="d-inline"
-                                          onsubmit="return confirm('Delete this menu item?')">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger">Del</button>
-                                    </form>
+                                    <div class="action-btns">
+                                        <a href="{{ route('admin.menus.edit', $menu) }}"
+                                           class="btn btn-sm btn-icon btn-outline-primary"
+                                           data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pen"></i></a>
+                                        <form action="{{ route('admin.menus.destroy', $menu) }}" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Delete this menu item?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-icon btn-outline-danger"
+                                                    data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                             @foreach($menu->children as $child)

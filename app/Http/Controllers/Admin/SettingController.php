@@ -13,14 +13,14 @@ class SettingController extends Controller {
     public function update(UpdateSettingRequest $request) {
         $data = $request->validated();
 
-        // Handle logo uploads separately
-        unset($data['site_logo'], $data['site_logo_footer']);
+        // Handle file uploads separately
+        unset($data['site_logo'], $data['site_logo_footer'], $data['site_favicon']);
 
         foreach ($data as $key => $value) {
             Setting::set($key, $value);
         }
 
-        foreach (['site_logo', 'site_logo_footer'] as $field) {
+        foreach (['site_logo', 'site_logo_footer', 'site_favicon'] as $field) {
             if ($request->hasFile($field)) {
                 $old = Setting::get($field);
                 if ($old && Storage::disk('public')->exists($old)) {

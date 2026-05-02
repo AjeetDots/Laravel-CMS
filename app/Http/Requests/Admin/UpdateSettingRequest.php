@@ -26,6 +26,7 @@ class UpdateSettingRequest extends FormRequest
             'social_instagram' => 'nullable|url',
             'site_logo'        => 'nullable|image|max:2048',
             'site_logo_footer' => 'nullable|image|max:2048',
+            'site_favicon'     => 'nullable|file|mimes:ico,png,svg,jpg,jpeg,gif|max:512',
         ];
     }
 }

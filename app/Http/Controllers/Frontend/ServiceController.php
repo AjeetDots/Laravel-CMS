@@ -8,8 +8,16 @@ class ServiceController extends Controller {
         $services = Service::where('is_active', true)->orderBy('sort_order')->get();
         return view('frontend.services', compact('services'));
     }
+
     public function show(string $slug) {
-        $service = Service::where('slug', $slug)->where('is_active', true)->firstOrFail();
-        return view('frontend.service-detail', compact('service'));
+        $service = Service::with('seoMeta')
+            ->where('slug', $slug)
+            ->where('is_active', true)
+            ->firstOrFail();
+
+        return view('frontend.service-detail', [
+            'service'  => $service,
+            'seoModel' => $service,
+        ]);
     }
 }

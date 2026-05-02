@@ -22,10 +22,12 @@ class ServiceController extends Controller {
             $data['image'] = $request->file('image')->store('services', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
-        Service::create($data);
+        $service = Service::create($data);
+        $service->saveSeo($request->input('seo', []));
         return redirect()->route('admin.services.index')->with('success', 'Service created.');
     }
     public function edit(Service $service) {
+        $service->load('seoMeta');
         return view('admin.services.form', compact('service'));
     }
     public function update(UpdateServiceRequest $request, Service $service) {
@@ -37,6 +39,7 @@ class ServiceController extends Controller {
         }
         $data['is_active'] = $request->boolean('is_active');
         $service->update($data);
+        $service->saveSeo($request->input('seo', []));
         return redirect()->route('admin.services.index')->with('success', 'Service updated.');
     }
     public function destroy(Service $service) {

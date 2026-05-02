@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Admin') | CMS Admin</title>
+    @php $favicon = \App\Models\Setting::get('site_favicon'); @endphp
+    @if($favicon)
+        <link rel="icon" href="{{ asset('storage/' . $favicon) }}">
+        <link rel="shortcut icon" href="{{ asset('storage/' . $favicon) }}">
+    @endif
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -82,6 +87,20 @@
         .btn-primary:hover { background: var(--primary-dark); border-color: var(--primary-dark); }
         .btn-sm { padding: 6px 14px; }
 
+        /* Icon-only action buttons */
+        .btn-icon {
+            width: 34px; height: 34px;
+            padding: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            border-radius: 8px;
+            font-size: .82rem;
+            transition: all .18s;
+        }
+        .btn-icon.btn-outline-secondary:hover { background: #64748b; color: #fff; border-color: #64748b; }
+        .btn-icon.btn-outline-primary:hover   { background: var(--primary); color: #fff; }
+        .btn-icon.btn-outline-danger:hover    { background: #dc2626; color: #fff; border-color: #dc2626; }
+        .action-btns { display: flex; align-items: center; gap: 6px; }
+
         /* Alert */
         .alert { border: none; border-radius: 10px; font-size: .9rem; }
         .alert-success { background: #dcfce7; color: #15803d; }
@@ -90,6 +109,15 @@
         /* Image preview */
         .img-preview { max-height: 80px; border-radius: 8px; border: 1px solid #e2e8f0; }
 
+        /* Sidebar submenus */
+        .sidebar-submenu { list-style: none; padding: 0; margin: 0; overflow: hidden; max-height: 0; transition: max-height .25s ease; }
+        .sidebar-submenu.open { max-height: 200px; }
+        .sidebar-submenu li a { display: flex; align-items: center; gap: 10px; padding: 7px 14px 7px 40px; border-radius: 6px; color: #94a3b8; text-decoration: none; font-size: .83rem; font-weight: 500; transition: all .2s; margin-bottom: 1px; }
+        .sidebar-submenu li a:hover { color: #fff; background: rgba(255,255,255,.06); }
+        .sidebar-submenu li a.active { color: #fff; background: rgba(37,99,235,.45); }
+        .sidebar-link .submenu-arrow { margin-left: auto; font-size: .7rem; transition: transform .25s; }
+        .sidebar-link.has-submenu.open .submenu-arrow { transform: rotate(90deg); }
+
         /* Responsive */
         @media (max-width: 991px) {
             .sidebar { transform: translateX(-100%); transition: transform .3s; }
@@ -97,6 +125,7 @@
             .main-content { margin-left: 0; }
         }
     </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jodit@3/build/jodit.min.css">
     @yield('styles')
 </head>
 <body>
@@ -131,14 +160,29 @@
         <a href="{{ route('admin.brands.index') }}" class="sidebar-link {{ request()->routeIs('admin.brands*') ? 'active' : '' }}">
             <i class="fas fa-star"></i> Brands
         </a>
-        <a href="{{ route('admin.pages.index') }}" class="sidebar-link {{ request()->routeIs('admin.pages*') ? 'active' : '' }}">
+        @php $pagesOpen = request()->routeIs('admin.pages*'); @endphp
+        <a href="#" class="sidebar-link has-submenu {{ $pagesOpen ? 'open active' : '' }}"
+           data-submenu="submenu-pages">
             <i class="fas fa-file-alt"></i> Pages
+            <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
+        <ul class="sidebar-submenu {{ $pagesOpen ? 'open' : '' }}" id="submenu-pages">
+            <li><a href="{{ route('admin.pages.index') }}"  class="{{ request()->routeIs('admin.pages.index')  ? 'active' : '' }}"><i class="fas fa-list fa-xs"></i> All Pages</a></li>
+            <li><a href="{{ route('admin.pages.create') }}" class="{{ request()->routeIs('admin.pages.create') ? 'active' : '' }}"><i class="fas fa-plus fa-xs"></i> Add Page</a></li>
+        </ul>
 
         <div class="nav-section-label">Blog & Newsletter</div>
-        <a href="{{ route('admin.blog.index') }}" class="sidebar-link {{ request()->routeIs('admin.blog*') ? 'active' : '' }}">
+        @php $blogOpen = request()->routeIs('admin.blog*') || request()->routeIs('admin.categories*'); @endphp
+        <a href="#" class="sidebar-link has-submenu {{ $blogOpen ? 'open active' : '' }}"
+           data-submenu="submenu-blog">
             <i class="fas fa-pen-nib"></i> Blog Posts
+            <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
+        <ul class="sidebar-submenu {{ $blogOpen ? 'open' : '' }}" id="submenu-blog">
+            <li><a href="{{ route('admin.blog.index') }}"       class="{{ request()->routeIs('admin.blog.index')       ? 'active' : '' }}"><i class="fas fa-list fa-xs"></i> All Posts</a></li>
+            <li><a href="{{ route('admin.blog.create') }}"      class="{{ request()->routeIs('admin.blog.create')      ? 'active' : '' }}"><i class="fas fa-plus fa-xs"></i> Add Post</a></li>
+            <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories*')      ? 'active' : '' }}"><i class="fas fa-folder fa-xs"></i> Categories</a></li>
+        </ul>
         <a href="{{ route('admin.newsletter.index') }}" class="sidebar-link {{ request()->routeIs('admin.newsletter*') ? 'active' : '' }}">
             <i class="fas fa-paper-plane"></i> Newsletter
         </a>
@@ -218,11 +262,68 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jodit@3/build/jodit.min.js"></script>
 <script>
     document.getElementById('sidebarToggle')?.addEventListener('click', function() {
         document.getElementById('sidebar').classList.toggle('open');
     });
+
+    // Init Bootstrap tooltips for all icon buttons
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+            new bootstrap.Tooltip(el, { trigger: 'hover' });
+        });
+    });
+
+    // Collapsible sidebar submenus
+    document.querySelectorAll('.sidebar-link.has-submenu').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            var submenuId = this.dataset.submenu;
+            var submenu   = document.getElementById(submenuId);
+            var isOpen    = submenu.classList.contains('open');
+            // Close all
+            document.querySelectorAll('.sidebar-submenu').forEach(function (s) { s.classList.remove('open'); });
+            document.querySelectorAll('.sidebar-link.has-submenu').forEach(function (l) { l.classList.remove('open'); });
+            if (!isOpen) {
+                submenu.classList.add('open');
+                this.classList.add('open');
+            }
+        });
+    });
+
+    // Initialise Jodit on every textarea.wysiwyg found on the page
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('textarea.wysiwyg').forEach(function (el) {
+            Jodit.make(el, {
+                height: 420,
+                minHeight: 300,
+                toolbarButtonSize: 'middle',
+                theme: 'default',
+                language: 'en',
+                defaultMode: Jodit.MODE_WYSIWYG,
+                cleanHTML: { fillEmptyParagraph: false },
+                buttons: [
+                    'bold','italic','underline','strikethrough','|',
+                    'ul','ol','|',
+                    'outdent','indent','|',
+                    'font','fontsize','brush','paragraph','|',
+                    'image','link','|',
+                    'align','|',
+                    'hr','table','|',
+                    'undo','redo','|',
+                    'eraser','copyformat','|',
+                    'source'
+                ],
+                uploader: { insertImageAsBase64URI: true },
+                showCharsCounter: true,
+                showWordsCounter: true,
+                showXPathInStatusbar: false,
+            });
+        });
+    });
 </script>
 @yield('scripts')
+@stack('scripts')
 </body>
 </html>

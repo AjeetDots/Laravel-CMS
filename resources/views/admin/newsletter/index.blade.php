@@ -41,7 +41,8 @@
                         <form action="{{ route('admin.newsletter.destroy', $sub) }}" method="POST"
                               onsubmit="return confirm('Remove subscriber?')">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="fas fa-trash"></i></button>
+                            <button class="btn btn-sm btn-icon btn-outline-danger"
+                                    data-bs-toggle="tooltip" title="Remove Subscriber"><i class="fas fa-trash-alt"></i></button>
                         </form>
                     </td>
                 </tr>

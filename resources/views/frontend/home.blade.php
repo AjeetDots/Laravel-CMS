@@ -2,296 +2,7 @@
 @section('title', 'Home')
 @section('body_class', 'has-hero')
 @section('styles')
-<style>
-/* ═══════════════════════════════════════
-   FULL-WIDTH HERO
-═══════════════════════════════════════ */
-.hero-full {
-    position: relative;
-    height: 100vh;          /* full viewport — nav is fixed so no offset needed */
-    min-height: 600px;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-}
-.hero-full-bg {
-    position: absolute; inset: 0;
-    background-size: cover;
-    background-position: center;
-    transform: scale(1.04);
-    animation: heroZoom 14s ease-out forwards;
-}
-@keyframes heroZoom {
-    from { transform: scale(1.04); }
-    to   { transform: scale(1); }
-}
-.hero-full-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(
-        to right,
-        rgba(20,12,6,.72) 0%,
-        rgba(20,12,6,.40) 55%,
-        rgba(20,12,6,.08) 100%
-    );
-}
-.hero-full-body {
-    position: relative; z-index: 2;
-    width: 100%;
-}
-.hero-full-content {
-    padding: 20px 0;
-}
-.hero-eyebrow-dots {
-    font-size: clamp(.82rem, 1.15vw, 1rem);
-    font-weight: 700;
-    letter-spacing: .04em;
-    text-transform: none;
-    line-height: 1.55;
-    color: rgba(255, 245, 230, .92);
-    margin-bottom: 20px;
-    display: block;
-    max-width: 38rem;
-    opacity: .95;
-}
-.hero-eyebrow-dots::before {
-    content: '';
-    display: block;
-    width: 42px;
-    height: 2px;
-    background: linear-gradient(90deg, var(--gold), var(--wine));
-    margin-bottom: 14px;
-    border-radius: 2px;
-}
-.hero-full-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.4rem, 4.5vw, 3.8rem);
-    font-weight: 700; color: #fff;
-    line-height: 1.13; margin-bottom: 22px;
-    letter-spacing: -.5px;
-}
-.hero-full-sub {
-    font-size: .97rem; color: rgba(255,255,255,.75);
-    line-height: 1.8; max-width: 420px;
-    margin-bottom: 36px;
-}
-.hero-full-btns {
-    display: flex; gap: 14px; flex-wrap: wrap;
-}
-.hero-dots {
-    position: absolute; bottom: 30px; right: 40px;
-    z-index: 10; display: flex; gap: 8px; align-items: center;
-}
-.hero-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: rgba(255,255,255,.35); border: none; cursor: pointer;
-    transition: background .3s, transform .3s; padding: 0;
-}
-.hero-dot.active {
-    background: var(--gold); transform: scale(1.3);
-}
-/* multi-slide support */
-.hero-slide-item {
-    position: absolute; inset: 0;
-    background-size: cover; background-position: center;
-    opacity: 0; transition: opacity .9s ease;
-}
-.hero-slide-item.active { opacity: 1; }
-
-/* text fade on slide change */
-.hero-full-content { transition: opacity .4s ease; }
-.hero-full-content.fading { opacity: 0; }
-
-@media (max-width: 767px) {
-    .hero-full { height: 90vh; min-height: 480px; }
-    .hero-full-body .row { justify-content: flex-start !important; }
-    .hero-full-body .col-lg-6 { flex: 0 0 100%; max-width: 100%; padding: 0 20px; }
-    .hero-full-title { font-size: 2.2rem; }
-}
-
-/* ═══════════════════════════════════════
-   INTRO SECTION
-═══════════════════════════════════════ */
-.intro-section { padding: 90px 0; }
-.intro-headline {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.7rem);
-    font-weight: 700; color: var(--ink);
-    line-height: 1.25; margin-bottom: 0;
-    letter-spacing: -.3px;
-}
-.intro-body {
-    font-size: 1rem; color: var(--ink-light);
-    line-height: 1.9; margin: 0;
-    max-width: 500px;
-}
-
-/* ═══════════════════════════════════════
-   DISCIPLINES SECTION
-═══════════════════════════════════════ */
-.disciplines-headline {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2rem, 3.8vw, 3rem);
-    font-weight: 700; color: var(--ink);
-    line-height: 1.2; margin-bottom: 0;
-    letter-spacing: -.3px;
-}
-.disciplines-headline em {
-    font-style: italic; color: var(--wine);
-}
-
-.disc-card {
-    display: block; color: var(--ink); text-decoration: none;
-    transition: transform .35s ease;
-}
-.disc-card:hover { transform: translateY(-4px); color: var(--ink); }
-.disc-card-img-wrap {
-    position: relative; overflow: hidden;
-    aspect-ratio: 3/4; background: var(--cream-dark);
-    margin-bottom: 0;
-}
-.disc-card-placeholder {
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2.5rem; color: var(--border);
-}
-.disc-card-img {
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform .6s ease;
-    display: block;
-}
-.disc-card:hover .disc-card-img { transform: scale(1.06); }
-.disc-card-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top, rgba(20,10,6,.55) 0%, transparent 55%);
-    transition: background .4s;
-}
-.disc-card:hover .disc-card-overlay {
-    background: linear-gradient(to top, rgba(160,88,56,.6) 0%, rgba(160,88,56,.15) 60%, transparent 100%);
-}
-.disc-card-body {
-    padding: 20px 4px 0;
-}
-.disc-card-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.15rem; font-weight: 600;
-    color: var(--ink); margin-bottom: 8px;
-    letter-spacing: 0;
-}
-.disc-card-desc {
-    font-size: .87rem; color: var(--ink-light);
-    line-height: 1.75; margin-bottom: 10px;
-}
-.disc-card-link {
-    font-size: .7rem; font-weight: 700; letter-spacing: 2px;
-    text-transform: uppercase; color: var(--wine);
-    display: inline-flex; align-items: center; gap: 6px;
-    border-bottom: 1px solid transparent;
-    transition: border-color .2s, gap .2s;
-}
-.disc-card:hover .disc-card-link {
-    border-bottom-color: var(--wine); gap: 10px;
-}
-
-/* ═══════════════════════════════════════
-   RECENT COMMISSIONS GRID
-═══════════════════════════════════════ */
-.commissions-section { background: var(--cream-dark); padding: 90px 0; }
-
-.commissions-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-auto-rows: 280px;
-    gap: 8px;
-}
-/* First item is tall — spans 2 rows */
-.commission-item:first-child {
-    grid-row: span 2;
-}
-
-.commission-item {
-    position: relative; overflow: hidden; cursor: pointer;
-    background: var(--ink);
-    display: block; color: inherit; text-decoration: none;
-}
-.commission-img {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%; object-fit: cover;
-    transition: transform .65s cubic-bezier(.25,.46,.45,.94);
-}
-.commission-item:hover .commission-img { transform: scale(1.06); }
-.commission-overlay {
-    position: absolute; inset: 0;
-    background: linear-gradient(to top,
-        rgba(20,10,5,.82) 0%,
-        rgba(20,10,5,.30) 45%,
-        transparent 100%);
-    transition: background .4s;
-}
-.commission-item:hover .commission-overlay {
-    background: linear-gradient(to top,
-        rgba(160,88,56,.82) 0%,
-        rgba(160,88,56,.25) 55%,
-        transparent 100%);
-}
-.commission-body {
-    position: absolute; bottom: 0; left: 0; right: 0;
-    padding: 22px 20px;
-    display: flex; align-items: flex-end; justify-content: space-between;
-    gap: 12px;
-}
-.commission-meta {
-    flex: 1; min-width: 0;
-}
-.commission-category {
-    display: block;
-    font-size: .58rem; font-weight: 700; letter-spacing: 2.5px;
-    text-transform: uppercase; color: var(--gold);
-    margin-bottom: 5px; opacity: .85;
-}
-.commission-title {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.05rem; font-weight: 600; color: #fff;
-    line-height: 1.25; margin: 0;
-    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-/* tall card gets slightly bigger title */
-.commission-item:first-child .commission-title { font-size: 1.2rem; }
-.commission-arrow {
-    flex-shrink: 0;
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 1px solid rgba(255,255,255,.35);
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(255,255,255,.7); font-size: .75rem;
-    transition: background .25s, border-color .25s, color .25s, transform .25s;
-}
-.commission-item:hover .commission-arrow {
-    background: var(--gold); border-color: var(--gold);
-    color: var(--ink); transform: rotate(45deg);
-}
-
-/* placeholder (no image) */
-.commission-placeholder {
-    position: absolute; inset: 0;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 2rem; color: rgba(255,255,255,.15);
-}
-
-/* responsive */
-@media (max-width: 991px) {
-    .commissions-grid {
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: 240px;
-    }
-    .commission-item:first-child { grid-row: span 2; }
-}
-@media (max-width: 575px) {
-    .commissions-grid {
-        grid-template-columns: 1fr;
-        grid-auto-rows: 220px;
-    }
-    .commission-item:first-child { grid-row: span 1; }
-    .commissions-section { padding: 60px 0; }
-}
-</style>
+<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -513,21 +224,11 @@
 </div>
 
 {{-- ── RECENT COMMISSIONS ───────────────────────────────────── --}}
-@php
-    $defaultCommissions = collect([
-        ['title'=>'Mayfair Residence',      'category'=>'Venetian Plaster', 'img'=>null],
-        ['title'=>'Kensington Media Wall',  'category'=>'Media Walls',      'img'=>null],
-        ['title'=>'Chelsea Townhouse',      'category'=>'Venetian Plaster', 'img'=>null],
-        ['title'=>'Notting Hill Suite',     'category'=>'Venetian Plaster', 'img'=>null],
-        ['title'=>'Private Screening Room', 'category'=>'Media Walls',      'img'=>null],
-        ['title'=>'Belgravia Drawing Room', 'category'=>'Cornices',         'img'=>null],
-    ]);
-    $commissionItems = $gallery->count() ? $gallery->take(6) : collect();
-@endphp
+@if($gallery->count())
+@php $commissionItems = $gallery->take(6); @endphp
 <section class="commissions-section">
     <div class="container">
 
-        {{-- Header --}}
         <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
             <div class="reveal-left">
                 <span class="eyebrow">Selected work</span>
@@ -543,120 +244,105 @@
             </div>
         </div>
 
-        {{-- Asymmetric grid --}}
         <div class="commissions-grid reveal">
-            @if($commissionItems->count())
-                {{-- Real gallery items --}}
-                @foreach($commissionItems as $i => $item)
-                <a href="{{ route('gallery') }}" class="commission-item">
-                    @if($item->image)
-                        <img src="{{ $item->image_url }}"
-                             alt="{{ $item->title ?? 'Commission' }}"
-                             class="commission-img">
-                    @else
-                        <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
-                    @endif
-                    <div class="commission-overlay"></div>
-                    <div class="commission-body">
-                        <div class="commission-meta">
-                            @if(!empty($item->category))
-                                <span class="commission-category">{{ $item->category }}</span>
-                            @endif
-                            <p class="commission-title">{{ $item->title ?? 'Untitled' }}</p>
-                        </div>
-                        <div class="commission-arrow">
-                            <i class="fas fa-arrow-right"></i>
-                        </div>
+            @foreach($commissionItems as $i => $item)
+            <a href="{{ route('gallery') }}" class="commission-item">
+                @if($item->image)
+                    <img src="{{ $item->image_url }}"
+                         alt="{{ $item->title ?? 'Commission' }}"
+                         class="commission-img">
+                @else
+                    <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
+                @endif
+                <div class="commission-overlay"></div>
+                <div class="commission-body">
+                    <div class="commission-meta">
+                        @if($item->category)
+                            <span class="commission-category">{{ is_object($item->category) ? $item->category->name : $item->category }}</span>
+                        @endif
+                        <p class="commission-title">{{ $item->title ?? 'Untitled' }}</p>
                     </div>
-                </a>
-                @endforeach
-                {{-- Pad to 6 with placeholders if fewer items --}}
-                @for($p = $commissionItems->count(); $p < 6; $p++)
-                <div class="commission-item">
-                    <div class="commission-placeholder"><i class="fas fa-image"></i></div>
-                    <div class="commission-overlay"></div>
-                    <div class="commission-body">
-                        <div class="commission-meta">
-                            <span class="commission-category">Our Work</span>
-                            <p class="commission-title">Project {{ $p + 1 }}</p>
-                        </div>
-                        <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
-                    </div>
+                    <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>
-                @endfor
-            @else
-                {{-- Fallback placeholder commissions --}}
-                @foreach($defaultCommissions as $i => $c)
-                <div class="commission-item" style="background:{{ ['#2c2016','#1e1a14','#251d15','#1a1510','#221a12','#2a2018'][$i] }};">
-                    <div class="commission-overlay" style="background:linear-gradient(to top,rgba(20,10,5,.75) 0%,transparent 55%);"></div>
-                    <div class="commission-body">
-                        <div class="commission-meta">
-                            <span class="commission-category">{{ $c['category'] }}</span>
-                            <p class="commission-title">{{ $c['title'] }}</p>
-                        </div>
-                        <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
-                    </div>
-                </div>
-                @endforeach
-            @endif
+            </a>
+            @endforeach
         </div>
 
     </div>
 </section>
+@endif
 
 {{-- ── TESTIMONIALS ─────────────────────────────────────────── --}}
 @if($testimonials->count())
-<section class="section section-soft">
+<section class="testi-section">
     <div class="container">
-        <div class="text-center mb-5 reveal" style="max-width:520px;margin-left:auto;margin-right:auto;">
+        <div class="text-center testi-header reveal">
             <span class="eyebrow">Client voices</span>
             <span class="section-rule centered"></span>
-            <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;letter-spacing:-.3px;">
-                Trusted by discerning<br>clients worldwide.
-            </h2>
+            <h2 class="testi-header-title">Trusted by discerning<br>clients worldwide.</h2>
         </div>
-        <div class="row g-4">
+    </div>
+    <div class="testi-slider-wrap">
+        <div class="testi-track" id="testiTrack">
             @foreach($testimonials as $i => $t)
-            <div class="col-md-6 col-lg-4 reveal delay-{{ min($i+1,5) }}">
-                <div class="testi-card">
+            <div class="testi-slide">
+                <div class="testi-slide-content">
+                    <span class="testi-quote-mark">"</span>
                     <div class="testi-stars">
                         @for($s = 1; $s <= ($t->rating ?? 5); $s++)
                             <i class="fas fa-star"></i>
                         @endfor
                     </div>
-                    <p class="testi-quote">"{{ $t->message }}"</p>
-                    <div class="testi-author">
-                        <div class="testi-avatar">
+                    <p class="testi-text">{{ $t->message }}</p>
+                    <div class="testi-author-wrap">
+                        <div class="testi-avatar-lg">
                             @if($t->client_image)
                                 <img src="{{ $t->client_image_url }}" alt="{{ $t->client_name }}">
                             @else
                                 {{ strtoupper(substr($t->client_name, 0, 1)) }}
                             @endif
                         </div>
-                        <div>
-                            <div class="testi-name">{{ $t->client_name }}</div>
-                            <div class="testi-role">
-                                {{ $t->client_position }}{{ $t->client_company ? ', ' . $t->client_company : '' }}
-                            </div>
+                        <div class="testi-author-name">{{ $t->client_name }}</div>
+                        <div class="testi-author-role">
+                            {{ $t->client_position }}{{ $t->client_company ? ', ' . $t->client_company : '' }}
                         </div>
                     </div>
                 </div>
             </div>
             @endforeach
         </div>
+
+        @if($testimonials->count() > 1)
+        <button class="testi-btn testi-btn-prev" id="testiPrev" aria-label="Previous testimonial">
+            <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="testi-btn testi-btn-next" id="testiNext" aria-label="Next testimonial">
+            <i class="fas fa-chevron-right"></i>
+        </button>
+        <div class="testi-dots" id="testiDots">
+            @foreach($testimonials as $i => $t)
+            <button class="testi-dot {{ $i === 0 ? 'active' : '' }}" data-idx="{{ $i }}" aria-label="Slide {{ $i+1 }}"></button>
+            @endforeach
+        </div>
+        @endif
     </div>
 </section>
 @endif
 
+
 {{-- ── BRANDS ───────────────────────────────────────────────── --}}
 @if($brands->count())
-<section class="section-sm" style="background:var(--cream);border-top:1px solid var(--border);border-bottom:1px solid var(--border);overflow:hidden;">
+<section class="brands-strip">
     <div class="container">
-        <p style="text-align:center;font-size:.68rem;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--ink-light);margin-bottom:36px;">
-            Trusted by leading names
-        </p>
+        <div class="brands-heading">
+            <span class="brands-rule"></span>
+            <span class="brands-rule-dot"></span>
+            <span class="brands-label">Trusted by leading names</span>
+            <span class="brands-rule-dot"></span>
+            <span class="brands-rule right"></span>
+        </div>
     </div>
-    <div style="overflow:hidden;">
+    <div class="brands-slider-wrap">
         <div class="brand-track">
             @foreach($brands->concat($brands) as $brand)
             <div class="brand-logo-item">
@@ -729,11 +415,6 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col-lg-7 reveal">
-                @if(session('newsletter_success'))
-                    <div style="background:rgba(201,168,76,.15);border:1px solid rgba(201,168,76,.4);padding:18px 28px;color:#e8c878;font-size:.95rem;margin-bottom:28px;">
-                        <i class="fas fa-check-circle me-2"></i>{{ session('newsletter_success') }}
-                    </div>
-                @endif
                 <span class="newsletter-eyebrow">Stay inspired</span>
                 <h2>Join Our Newsletter</h2>
                 <p>Get the latest projects, craft insights and exclusive offers delivered to your inbox. No spam, ever.</p>
@@ -812,6 +493,34 @@
 
     dots.forEach(function (dot, i) {
         dot.addEventListener('click', function () { goTo(i); reset(); });
+    });
+    start();
+})();
+
+// Testimonial full-width slider
+(function () {
+    var track  = document.getElementById('testiTrack');
+    var btnPrev = document.getElementById('testiPrev');
+    var btnNext = document.getElementById('testiNext');
+    var dotEls  = document.querySelectorAll('.testi-dot');
+    if (!track) return;
+    var slides = track.querySelectorAll('.testi-slide');
+    if (slides.length < 2) return;
+
+    var current = 0, timer;
+
+    function goTo(n) {
+        current = ((n % slides.length) + slides.length) % slides.length;
+        track.style.transform = 'translateX(-' + (current * 100) + '%)';
+        dotEls.forEach(function (d, i) { d.classList.toggle('active', i === current); });
+    }
+    function start() { timer = setInterval(function () { goTo(current + 1); }, 5000); }
+    function reset() { clearInterval(timer); start(); }
+
+    btnPrev && btnPrev.addEventListener('click', function () { goTo(current - 1); reset(); });
+    btnNext && btnNext.addEventListener('click', function () { goTo(current + 1); reset(); });
+    dotEls.forEach(function (d, i) {
+        d.addEventListener('click', function () { goTo(i); reset(); });
     });
     start();
 })();

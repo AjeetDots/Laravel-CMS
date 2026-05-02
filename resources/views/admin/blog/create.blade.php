@@ -36,7 +36,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Full Content</label>
-                    <textarea name="content" class="form-control" rows="14" id="postContent">{{ old('content') }}</textarea>
+                    <textarea name="content" class="form-control wysiwyg" rows="14" id="postContent">{{ old('content') }}</textarea>
                 </div>
             </div>
         </div>
@@ -60,8 +60,12 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Category</label>
-                    <input type="text" name="category" class="form-control" value="{{ old('category') }}"
-                           placeholder="e.g. Tips, Design, News">
+                    <select name="category_id" class="form-select">
+                        <option value="">— Uncategorised —</option>
+                        @foreach($categories as $cid => $cname)
+                            <option value="{{ $cid }}" {{ old('category_id') == $cid ? 'selected' : '' }}>{{ $cname }}</option>
+                        @endforeach
+                    </select>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Author</label>
@@ -89,6 +93,13 @@
                 <i class="fas fa-save me-2"></i>Save Post
             </button>
         </div>
+
+        @include('admin.partials.seo-panel', [
+            'seo'            => null,
+            'titleFieldId'   => 'titleInput',
+            'slugFieldId'    => 'slugInput',
+            'contentFieldId' => 'postContent',
+        ])
     </div>
 </div>
 </form>

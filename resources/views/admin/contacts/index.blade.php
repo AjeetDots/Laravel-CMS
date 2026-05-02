@@ -47,12 +47,17 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <a href="{{ route('admin.contacts.show', $contact) }}" class="btn btn-sm btn-outline-primary me-1">View</a>
-                                    <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" class="d-inline"
-                                          onsubmit="return confirm('Delete this message?')">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-outline-danger">Del</button>
-                                    </form>
+                                    <div class="action-btns">
+                                        <a href="{{ route('admin.contacts.show', $contact) }}"
+                                           class="btn btn-sm btn-icon btn-outline-primary"
+                                           data-bs-toggle="tooltip" title="View Message"><i class="fas fa-eye"></i></a>
+                                        <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" class="d-inline"
+                                              onsubmit="return confirm('Delete this message?')">
+                                            @csrf @method('DELETE')
+                                            <button class="btn btn-sm btn-icon btn-outline-danger"
+                                                    data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                        </form>
+                                    </div>
                                 </td>
                             </tr>
                         @endforeach

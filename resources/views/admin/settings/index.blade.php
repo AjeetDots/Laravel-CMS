@@ -46,6 +46,13 @@
                         <label class="form-label">Footer About Text</label>
                         <textarea name="footer_about" class="form-control" rows="4">{{ old('footer_about', $settings->get('footer_about')) }}</textarea>
                     </div>
+                    <div class="mb-3">
+                        <label class="form-label">Copyright Text</label>
+                        <input type="text" name="copyright_text" class="form-control"
+                               value="{{ old('copyright_text', $settings->get('copyright_text')) }}"
+                               placeholder="© {{ date('Y') }} {{ $settings->get('site_name','YourSite') }}. All rights reserved.">
+                        <div class="form-text">Leave blank to auto-generate from site name.</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,7 +80,7 @@
                     </div>
 
                     {{-- Footer Logo --}}
-                    <div class="mb-2">
+                    <div class="mb-4">
                         <label class="form-label fw-semibold" for="site_logo_footer">Footer Logo <small class="text-muted">(dark background)</small></label>
                         @if($settings->get('site_logo_footer'))
                             <div class="mb-2 p-3 border rounded" style="background:#1a1a18;">
@@ -88,6 +95,29 @@
                         @endif
                         <input type="file" name="site_logo_footer" id="site_logo_footer" class="form-control" accept="image/*">
                         <div class="form-text">White/light version for dark footer. Max 2MB.</div>
+                    </div>
+
+                    {{-- Favicon --}}
+                    <div class="mb-0">
+                        <label class="form-label fw-semibold" for="site_favicon">Favicon</label>
+                        @if($settings->get('site_favicon'))
+                            <div class="mb-2 d-flex align-items-center gap-3 p-3 border rounded" style="background:#f8f9fa;">
+                                <img src="{{ asset('storage/' . $settings->get('site_favicon')) }}" alt="Favicon"
+                                     style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;">
+                                <span class="text-muted" style="font-size:.82rem;">Current favicon</span>
+                            </div>
+                            <div class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="remove_site_favicon" value="1" id="remove_site_favicon">
+                                <label class="form-check-label text-danger" for="remove_site_favicon">Remove current favicon</label>
+                            </div>
+                        @endif
+                        <input type="file" name="site_favicon" id="site_favicon" class="form-control" accept="image/*,.ico">
+                        <div id="faviconPreview" class="mt-2" style="display:none;">
+                            <img id="faviconPreviewImg" src="" alt="Preview"
+                                 style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;border:1px solid #e2e8f0;border-radius:4px;">
+                            <span class="text-muted ms-2" style="font-size:.8rem;">Preview</span>
+                        </div>
+                        <div class="form-text">ICO, PNG or SVG. Recommended: 32×32 px or 64×64 px. Max 512KB.</div>
                     </div>
 
                 </div>
@@ -125,4 +155,15 @@
     </div>
 </form>
 
+@endsection
+@section('scripts')
+<script>
+document.getElementById('site_favicon').addEventListener('change', function () {
+    if (this.files[0]) {
+        document.getElementById('faviconPreviewImg').src = URL.createObjectURL(this.files[0]);
+        document.getElementById('faviconPreview').style.display = 'flex';
+        document.getElementById('faviconPreview').style.alignItems = 'center';
+    }
+});
+</script>
 @endsection

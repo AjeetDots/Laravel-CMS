@@ -1,9 +1,11 @@
 <?php
 namespace App\Models;
+use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class Service extends Model {
+    use HasSeo;
     protected $fillable = ['title', 'slug', 'short_description', 'description', 'image', 'icon', 'sort_order', 'is_active'];
     protected $casts = ['is_active' => 'boolean'];
     protected static function boot() {
