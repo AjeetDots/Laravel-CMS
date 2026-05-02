@@ -23,8 +23,8 @@
         <div class="row g-5">
             <div class="col-lg-8">
                 @if($service->image)
-                <div class="service-detail-lead-img">
-                    <img src="{{ $service->image_url }}" alt="{{ $service->title }}">
+                <div class="media-frame media-frame--short service-detail-lead-img">
+                    <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
                 </div>
                 @endif
                 <div class="service-detail-body">

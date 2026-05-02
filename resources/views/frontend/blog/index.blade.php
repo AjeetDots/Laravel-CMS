@@ -7,13 +7,13 @@
     <div class="container">
         @if(isset($category))
             <span class="eyebrow">Category</span>
-            <h1>{{ $category->name }}</h1>
+            <h1 class="page-hero-title-wide">{{ $category->name }}</h1>
             @if($category->description)
                 <p>{{ $category->description }}</p>
             @endif
         @else
             <span class="eyebrow">Our Journal</span>
-            <h1>Blog & Insights</h1>
+            <h1 class="page-hero-title-wide">Blog &amp; Insights</h1>
             <p>Tips, inspiration and project stories from our studio.</p>
         @endif
         <nav aria-label="breadcrumb">

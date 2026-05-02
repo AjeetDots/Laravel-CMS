@@ -1,0 +1,318 @@
+/* ═══════════════════════════════════════
+   INNER PAGES — unified with home (craft / pro)
+   Targets: body.nav-solid (all non-home templates)
+═══════════════════════════════════════ */
+
+/* ── Section rhythm: airy, gallery-like ── */
+body.nav-solid .section {
+    padding: 96px 0;
+}
+body.nav-solid .section.section-soft {
+    background: linear-gradient(180deg, #fbf9f6 0%, #f5f2ec 100%);
+}
+body.nav-solid .section.section-white {
+    background: linear-gradient(180deg, #ffffff 0%, #fcfaf8 100%);
+}
+
+/* ── Editorial subheads on inner pages (light hero band) ── */
+body.nav-solid .page-hero p {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.15rem, 2.2vw, 1.35rem);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ink-mid);
+    line-height: 1.55;
+    max-width: 38rem;
+}
+
+/* ── Image frames (zoom + border glow) ── */
+.media-frame {
+    position: relative;
+    overflow: hidden;
+    border-radius: 2px;
+    background: var(--cream-dark);
+    box-shadow:
+        0 4px 6px rgba(28, 23, 20, 0.04),
+        0 18px 48px rgba(28, 23, 20, 0.08);
+    transition: box-shadow 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.media-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 1px rgba(200, 162, 90, 0.18);
+    pointer-events: none;
+    z-index: 2;
+    transition: box-shadow 0.45s ease;
+}
+.media-frame:hover::after {
+    box-shadow: inset 0 0 0 1px rgba(200, 162, 90, 0.35);
+}
+.media-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transform: scale(1.02);
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.media-frame:hover img {
+    transform: scale(1.1);
+}
+.media-frame:hover {
+    box-shadow:
+        0 8px 12px rgba(28, 23, 20, 0.06),
+        0 28px 64px rgba(28, 23, 20, 0.12);
+}
+
+.media-frame--short {
+    aspect-ratio: 16 / 10;
+    max-height: 440px;
+}
+.media-frame--short img {
+    max-height: 440px;
+    object-fit: cover;
+}
+
+/* Blog post lead */
+body.nav-solid .blog-lead-img {
+    margin-bottom: 40px;
+    aspect-ratio: 21 / 9;
+    max-height: 480px;
+}
+body.nav-solid .blog-lead-img img {
+    max-height: 480px;
+}
+
+/* ── Services listing (matches home discipline cards) ── */
+.service-grid-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background: #fff;
+    border: 1px solid rgba(237, 230, 220, 0.95);
+    text-decoration: none;
+    color: var(--ink);
+    box-shadow: 0 4px 28px rgba(28, 23, 20, 0.05);
+    transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.45s ease,
+        box-shadow 0.45s ease;
+}
+.service-grid-card:hover {
+    color: var(--ink);
+    transform: translateY(-8px);
+    border-color: rgba(200, 162, 90, 0.45);
+    box-shadow: 0 22px 56px rgba(28, 23, 20, 0.1);
+}
+.service-grid-card__media {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+    background: var(--cream-dark);
+}
+.service-grid-card__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.service-grid-card:hover .service-grid-card__media img {
+    transform: scale(1.1);
+}
+.service-grid-card__media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(20, 10, 6, 0.45) 0%, transparent 55%);
+    opacity: 0.85;
+    transition: opacity 0.4s ease;
+}
+.service-grid-card:hover .service-grid-card__media::after {
+    opacity: 0.65;
+    background: linear-gradient(to top, rgba(160, 88, 56, 0.35) 0%, transparent 60%);
+}
+.service-grid-card__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    color: var(--border);
+}
+.service-grid-card__body {
+    padding: 28px 26px 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+.service-grid-card__body .service-grid-eyebrow {
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--wine);
+    margin-bottom: 10px;
+}
+.service-grid-card__body h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.28rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+}
+.service-grid-card__body p {
+    font-size: 0.92rem;
+    color: var(--ink-light);
+    line-height: 1.75;
+    margin-bottom: 0;
+    flex: 1;
+}
+.service-grid-card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--wine);
+    border-bottom: 1px solid transparent;
+    transition: gap 0.25s ease, border-color 0.25s ease;
+}
+.service-grid-card:hover .service-grid-card__link {
+    gap: 12px;
+    border-bottom-color: var(--wine);
+}
+
+/* ── Service detail body typography ── */
+body.nav-solid .service-detail-body {
+    font-size: 1.06rem;
+    line-height: 1.92;
+    color: var(--ink-mid);
+}
+body.nav-solid .service-detail-body > p:first-of-type {
+    font-size: 1.12rem;
+    color: var(--ink);
+}
+
+/* ── Sidebar polish ── */
+body.nav-solid .service-sidebar-card {
+    border-radius: 2px;
+    box-shadow: 0 8px 32px rgba(28, 23, 20, 0.06);
+    transition: box-shadow 0.35s ease;
+}
+body.nav-solid .service-sidebar-card:hover {
+    box-shadow: 0 16px 48px rgba(28, 23, 20, 0.1);
+}
+
+/* ── Gallery grid ── */
+body.nav-solid .gal-item {
+    border-radius: 2px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(28, 23, 20, 0.07);
+    transition: box-shadow 0.45s ease, transform 0.45s ease;
+}
+body.nav-solid .gal-item:hover {
+    box-shadow: 0 16px 48px rgba(28, 23, 20, 0.14);
+    transform: translateY(-4px);
+}
+body.nav-solid .gal-item img {
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.nav-solid .gal-item:hover img {
+    transform: scale(1.12);
+}
+body.nav-solid .gal-overlay {
+    transition: opacity 0.4s ease;
+}
+
+/* ── Blog cards (when blog.css loaded) ── */
+body.nav-solid .blog-card-img {
+    transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.nav-solid .blog-card:hover .blog-card-img {
+    transform: scale(1.1);
+}
+body.nav-solid .blog-card {
+    border-radius: 2px;
+    transition:
+        box-shadow 0.45s ease,
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+body.nav-solid .blog-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 28px 64px rgba(201, 107, 63, 0.14);
+}
+
+/* ── Page CMS content ── */
+body.nav-solid .page-content {
+    font-size: 1.06rem;
+}
+body.nav-solid .page-content > p:first-of-type {
+    font-size: 1.14rem;
+    color: var(--ink);
+}
+
+/* ── Contact: soften panel ── */
+body.nav-solid .contact-form-panel {
+    border-radius: 2px;
+    box-shadow: 0 12px 48px rgba(28, 23, 20, 0.07);
+}
+
+@media (max-width: 991px) {
+    body.nav-solid .section {
+        padding: 64px 0;
+    }
+    body.nav-solid .service-grid-card__body {
+        padding: 22px 20px 24px;
+    }
+    body.nav-solid .page-hero p {
+        font-size: clamp(1rem, 3.5vw, 1.2rem);
+    }
+}
+
+@media (max-width: 767px) {
+    body.nav-solid .section {
+        padding: 52px 0;
+    }
+    body.nav-solid .blog-lead-img {
+        aspect-ratio: 4 / 3;
+        max-height: none;
+    }
+    body.nav-solid .blog-lead-img img {
+        max-height: none;
+    }
+    body.nav-solid .service-detail-body {
+        font-size: 1rem;
+    }
+    body.nav-solid .page-content {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 575px) {
+    body.nav-solid .section {
+        padding: 44px 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .media-frame img,
+    .service-grid-card__media img,
+    .service-grid-card,
+    body.nav-solid .gal-item img,
+    body.nav-solid .blog-card-img {
+        transition-duration: 0.01ms;
+    }
+    .media-frame:hover img,
+    .service-grid-card:hover .service-grid-card__media img,
+    body.nav-solid .gal-item:hover img,
+    body.nav-solid .blog-card:hover .blog-card-img {
+        transform: none;
+    }
+}

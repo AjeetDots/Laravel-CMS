@@ -1,18 +1,22 @@
 @extends('layouts.frontend')
 @section('title', 'Home')
-@section('body_class', 'has-hero')
+@section('body_class', 'has-hero page-home')
 @section('styles')
-<link href="{{ asset('css/home.css') }}" rel="stylesheet">
+@php
+    $__homeCss = public_path('css/home.css');
+    $__homeCssV = is_file($__homeCss) ? filemtime($__homeCss) : time();
+@endphp
+<link href="{{ asset('css/home.css') }}?v={{ $__homeCssV }}" rel="stylesheet">
 @endsection
 
 @section('content')
 @php
     $firstSlide = $sliders->first();
-    $heroEyebrowDefault = 'Years of experience across web, mobile, design and cloud technologies.';
+    $heroEyebrowDefault = 'Hand-applied plaster, architectural finishes, and bespoke interiors for distinguished homes and commercial spaces.';
 @endphp
 
 {{-- ── HERO ─────────────────────────────────────────────────── --}}
-<section class="hero-full" id="hero" data-hero-eyebrow-default="{{ e($heroEyebrowDefault) }}">
+<section class="hero-full hero-full--premium" id="hero" data-hero-eyebrow-default="{{ e($heroEyebrowDefault) }}">
 
     {{-- Background slides --}}
     @forelse($sliders as $i => $slide)
@@ -32,7 +36,7 @@
     <div class="hero-full-body container">
         <div class="row justify-content-start">
             <div class="col-xl-6 col-lg-7 col-md-9">
-                <div class="hero-full-content">
+                <div class="hero-full-content hero-full-content--stagger">
                     <p class="hero-eyebrow-dots" id="heroEyebrow">
                         @if($firstSlide && $firstSlide->subtitle)
                             {{ $firstSlide->subtitle }}
@@ -68,24 +72,30 @@
 
     {{-- Slide dots for multiple sliders --}}
     @if($sliders->count() > 1)
-    <div class="hero-dots">
+    <div class="hero-dots" role="tablist" aria-label="Hero slides">
         @foreach($sliders as $i => $s)
-            <button class="hero-dot {{ $i === 0 ? 'active' : '' }}" data-slide="{{ $i }}" aria-label="Slide {{ $i + 1 }}"></button>
+            <button type="button" class="hero-dot {{ $i === 0 ? 'active' : '' }}" data-slide="{{ $i }}" aria-label="Slide {{ $i + 1 }}" role="tab" aria-selected="{{ $i === 0 ? 'true' : 'false' }}"></button>
         @endforeach
     </div>
     @endif
 
+    <div class="hero-scroll-cue" aria-hidden="true">
+        <span class="hero-scroll-label">Explore</span>
+        <span class="hero-scroll-line"></span>
+    </div>
+
 </section>
 
 {{-- ── INTRO ────────────────────────────────────────────────── --}}
-<section class="intro-section section-white">
+<section class="intro-section intro-section--atelier section-white">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5 reveal-left">
                 <span class="eyebrow">Our Philosophy</span>
                 <span class="section-rule"></span>
                 <h2 class="intro-headline">
-                    Surfaces that hold<br>the light, walls that<br>hold the room.
+                    <span class="intro-headline-line">Surfaces that hold the light,</span>
+                    <span class="intro-headline-line">walls that hold the room.</span>
                 </h2>
             </div>
             <div class="col-lg-6 offset-lg-1 reveal-right">
@@ -101,7 +111,7 @@
 </section>
 
 {{-- ── DISCIPLINES ──────────────────────────────────────────── --}}
-<section class="section section-soft">
+<section class="section section-soft disciplines-section">
     <div class="container">
         <div class="row align-items-end mb-5">
             <div class="col-lg-7 reveal-left">
@@ -332,27 +342,40 @@
 
 {{-- ── BRANDS ───────────────────────────────────────────────── --}}
 @if($brands->count())
-<section class="brands-strip">
+<section class="brands-strip" aria-labelledby="brands-strip-title">
     <div class="container">
-        <div class="brands-heading">
-            <span class="brands-rule"></span>
-            <span class="brands-rule-dot"></span>
-            <span class="brands-label">Trusted by leading names</span>
-            <span class="brands-rule-dot"></span>
-            <span class="brands-rule right"></span>
-        </div>
-    </div>
-    <div class="brands-slider-wrap">
-        <div class="brand-track">
-            @foreach($brands->concat($brands) as $brand)
-            <div class="brand-logo-item">
-                @if($brand->logo)
-                    <img src="{{ $brand->logo_url }}" alt="{{ $brand->name }}">
-                @else
-                    <div class="brand-placeholder">{{ $brand->name }}</div>
-                @endif
+        <header class="brands-strip__head">
+            <span class="brands-strip__rule" aria-hidden="true"></span>
+            <div class="brands-strip__title-block">
+                <span class="brands-strip__kicker">Partners &amp; collaborators</span>
+                <h2 class="brands-strip__title" id="brands-strip-title">Trusted by leading names</h2>
             </div>
-            @endforeach
+            <span class="brands-strip__rule" aria-hidden="true"></span>
+        </header>
+    </div>
+    @php
+        /* Enough repeated strips to exceed viewport width so the row never shows empty space before the loop repeats */
+        $brandMarqueeSegments = 8;
+    @endphp
+    <div class="brands-strip__marquee" role="presentation">
+        <div class="brands-slider-wrap">
+            <div class="brand-track" style="--brand-segments: {{ $brandMarqueeSegments }}">
+                @foreach(range(1, $brandMarqueeSegments) as $seg)
+                <div class="brand-track__segment" @if($seg > 1) aria-hidden="true" @endif>
+                    @foreach($brands as $brand)
+                    <div class="brand-logo-item">
+                        <div class="brand-logo-item__frame">
+                            @if($brand->logo)
+                                <img class="brand-logo-img" src="{{ $brand->logo_url }}" alt="{{ $brand->name }}" loading="lazy" decoding="async">
+                            @else
+                                <span class="brand-placeholder">{{ $brand->name }}</span>
+                            @endif
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+                @endforeach
+            </div>
         </div>
     </div>
 </section>
@@ -360,17 +383,17 @@
 
 {{-- ── BLOG PREVIEW ─────────────────────────────────────────── --}}
 @if($blogPosts->count())
-<section class="section section-white">
+<section class="section section-white home-journal">
     <div class="container">
         <div class="row align-items-end mb-5">
-            <div class="col-lg-7 reveal-left">
+            <div class="col-12 col-lg-7 reveal-left">
                 <span class="eyebrow">Our Journal</span>
                 <span class="section-rule"></span>
                 <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.9rem,4vw,2.8rem);font-weight:700;letter-spacing:-.3px;margin-bottom:0;">
                     Insights &amp; stories<br>from the studio.
                 </h2>
             </div>
-            <div class="col-lg-3 offset-lg-2 text-lg-end mt-3 mt-lg-0 reveal-right">
+            <div class="col-12 col-lg-3 offset-lg-2 text-lg-end mt-3 mt-lg-0 reveal-right">
                 <a href="{{ route('blog.index') }}" class="btn-outline-site">
                     All articles <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
                 </a>
@@ -407,31 +430,7 @@
 </section>
 @endif
 
-{{-- ── NEWSLETTER ───────────────────────────────────────────── --}}
-<div class="newsletter-section"
-    @if($settings->get('newsletter_bg')) style="background-image:url('{{ asset('storage/'.$settings->get('newsletter_bg')) }}');" @endif>
-    <span class="newsletter-leaf left">❧</span>
-    <span class="newsletter-leaf right">❧</span>
-    <div class="container">
-        <div class="row justify-content-center text-center">
-            <div class="col-lg-7 reveal">
-                <span class="newsletter-eyebrow">Stay inspired</span>
-                <h2>Join Our Newsletter</h2>
-                <p>Get the latest projects, craft insights and exclusive offers delivered to your inbox. No spam, ever.</p>
-                <form action="{{ route('newsletter.subscribe') }}" method="POST" class="newsletter-form mx-auto">
-                    @csrf
-                    <input type="email" name="email" placeholder="Enter your email address" class="newsletter-input" required>
-                    <button type="submit" class="newsletter-btn">Subscribe</button>
-                </form>
-                <p style="font-size:.75rem;color:rgba(255,255,255,.3);margin-top:16px;margin-bottom:0;">
-                    <i class="fas fa-lock me-1"></i>We respect your privacy. Unsubscribe at any time.
-                </p>
-            </div>
-        </div>
-    </div>
-</div>
-
-{{-- ── CTA STRIP ────────────────────────────────────────────── --}}
+{{-- ── CTA STRIP (actions only — newsletter lives in footer once) ── --}}
 <div class="cta-strip">
     <div class="container">
         <div class="row align-items-center g-4">
@@ -482,10 +481,16 @@
 
     function goTo(n) {
         slides[current].classList.remove('active');
-        dots[current] && dots[current].classList.remove('active');
+        if (dots[current]) {
+            dots[current].classList.remove('active');
+            dots[current].setAttribute('aria-selected', 'false');
+        }
         current = (n + slides.length) % slides.length;
         slides[current].classList.add('active');
-        dots[current] && dots[current].classList.add('active');
+        if (dots[current]) {
+            dots[current].classList.add('active');
+            dots[current].setAttribute('aria-selected', 'true');
+        }
         updateText(slides[current]);
     }
     function start() { timer = setInterval(function () { goTo(current + 1); }, 6000); }

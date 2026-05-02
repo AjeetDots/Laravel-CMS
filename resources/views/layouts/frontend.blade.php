@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     @include('partials.meta-tags', ['model' => $seoModel ?? null])
     @php $favicon = \App\Models\Setting::get('site_favicon'); @endphp
     @if($favicon)
@@ -12,8 +12,9 @@
     @endif
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/inner-pages.css') }}" rel="stylesheet">
 
     @yield('styles')
 </head>
@@ -24,11 +25,17 @@
     <div class="nav-main-row">
         <div class="container">
 
-            {{-- Logo / Brand --}}
-            <a href="{{ route('home') }}" class="nav-brand">
+            {{-- Logo / Brand — primary focus; eager load for LCP --}}
+            <a href="{{ route('home') }}"
+               class="nav-brand"
+               aria-label="{{ $settings->get('site_name', 'ProServices') }} — Home">
                 @if($settings->get('site_logo'))
                     <img src="{{ asset('storage/' . $settings->get('site_logo')) }}"
-                         alt="{{ $settings->get('site_name', 'ProServices') }}" class="nav-logo-img">
+                         alt=""
+                         class="nav-logo-img"
+                         fetchpriority="high"
+                         decoding="async"
+                         loading="eager">
                 @else
                     <span class="nav-brand-text">{{ $settings->get('site_name', 'ProServices') }}</span>
                     @if($settings->get('site_tagline'))
@@ -37,56 +44,60 @@
                 @endif
             </a>
 
-            {{-- Nav links (center) --}}
-            <ul class="nav-links" id="navLinks">
-                @foreach($navMenus as $menu)
-                    @if($menu->children->count())
-                        <li class="has-drop">
-                            <a href="{{ $menu->url ?? '#' }}"
-                               class="{{ request()->is(ltrim($menu->url??'','/').'*') ? 'active' : '' }}">
-                                {{ $menu->label }}
-                                <i class="fas fa-chevron-down ms-1" style="font-size:.5rem;opacity:.6;"></i>
-                            </a>
-                            <div class="drop-menu">
-                                @foreach($menu->children as $child)
-                                    <a href="{{ $child->url }}" target="{{ $child->target }}">{{ $child->label }}</a>
-                                @endforeach
-                            </div>
-                        </li>
-                    @else
-                        <li>
-                            <a href="{{ $menu->url ?? '#' }}" target="{{ $menu->target ?? '_self' }}"
-                               class="{{ request()->is(ltrim($menu->url??'','/').'*') || ($menu->url=='/' && request()->is('/')) ? 'active' : '' }}">
-                                {{ $menu->label }}
-                            </a>
-                        </li>
-                    @endif
-                @endforeach
-            </ul>
+            {{-- Links + actions: desktop = inline; mobile = full-screen sheet when open --}}
+            <div class="nav-mobile-sheet" id="navMobileSheet">
+                <ul class="nav-links" id="navLinks">
+                    @foreach($navMenus as $menu)
+                        @if($menu->children->count())
+                            <li class="has-drop">
+                                <a href="{{ $menu->url ?? '#' }}"
+                                   class="{{ $menu->isActiveForNav() ? 'active' : '' }}">
+                                    {{ $menu->label }}
+                                    <i class="fas fa-chevron-down ms-1" style="font-size:.5rem;opacity:.6;"></i>
+                                </a>
+                                <div class="drop-menu">
+                                    @foreach($menu->children as $child)
+                                        <a href="{{ $child->url }}" target="{{ $child->target }}">{{ $child->label }}</a>
+                                    @endforeach
+                                </div>
+                            </li>
+                        @else
+                            <li>
+                                <a href="{{ $menu->url ?? '#' }}" target="{{ $menu->target ?? '_self' }}"
+                                   class="{{ $menu->isActiveForNav() ? 'active' : '' }}">
+                                    {{ $menu->label }}
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
 
-            {{-- Right: contact info + social + CTA --}}
-            <div class="nav-right" id="navRight">
-                <div class="nav-top-contacts d-none d-xl-flex">
-                    @if($settings->get('site_phone'))
-                        <a href="tel:{{ $settings->get('site_phone') }}">
-                            <i class="fas fa-phone"></i> {{ $settings->get('site_phone') }}
-                        </a>
-                    @endif
+                <div class="nav-right" id="navRight">
+                    <div class="nav-top-contacts d-none d-xl-flex">
+                        @if($settings->get('site_phone'))
+                            <a href="tel:{{ $settings->get('site_phone') }}">
+                                <i class="fas fa-phone"></i> {{ $settings->get('site_phone') }}
+                            </a>
+                        @endif
+                    </div>
+                    <a href="{{ route('contact') }}" class="btn-quote">Get Quote</a>
                 </div>
-                <div class="nav-top-right d-none d-lg-flex">
-                    @if($settings->get('social_instagram'))<a href="{{ $settings->get('social_instagram') }}" target="_blank"><i class="fab fa-instagram"></i></a>@endif
-                    @if($settings->get('social_facebook'))<a href="{{ $settings->get('social_facebook') }}" target="_blank"><i class="fab fa-facebook-f"></i></a>@endif
-                </div>
-                <a href="{{ route('contact') }}" class="btn-quote">Get Quote</a>
             </div>
 
-            <button class="nav-toggle" id="navToggle" aria-label="Menu">
-                <i class="fas fa-bars"></i>
+            <button type="button"
+                    class="nav-toggle"
+                    id="navToggle"
+                    aria-expanded="false"
+                    aria-controls="navMobileSheet"
+                    aria-label="Open menu">
+                <span class="nav-toggle-icon nav-toggle-icon--bars" aria-hidden="true"><i class="fas fa-bars"></i></span>
+                <span class="nav-toggle-icon nav-toggle-icon--close" aria-hidden="true"><i class="fas fa-xmark"></i></span>
             </button>
 
         </div>
     </div>
 </nav>
+<div class="nav-mobile-backdrop" id="navMobileBackdrop" hidden aria-hidden="true"></div>
 
 {{-- ── FLASH TOASTS ─────────────────────────────────────────── --}}
 @if(session('newsletter_success'))
@@ -147,12 +158,12 @@
     <div class="container">
         <div class="row g-5">
             {{-- Brand --}}
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4">
                 <div class="footer-brand">
                 @php $footerLogo = $settings->get('site_logo_footer') ?: $settings->get('site_logo'); @endphp
                 @if($footerLogo)
-                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','ProServices') }} â€” Home">
-                        <img src="{{ asset('storage/' . $footerLogo) }}" alt="{{ $settings->get('site_name','ProServices') }}" class="footer-logo-img" loading="lazy" decoding="async">
+                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','ProServices') }} — Home">
+                        <img src="{{ asset('storage/' . $footerLogo) }}" alt="" class="footer-logo-img" loading="lazy" decoding="async">
                     </a>
                 @else
                     <span class="brand-name">{{ $settings->get('site_name','ProServices') }}</span>
@@ -178,7 +189,7 @@
                 </div>
             </div>
             {{-- Services --}}
-            <div class="col-6 col-lg-2">
+            <div class="col-12 col-sm-6 col-lg-2">
                 <h6>Services</h6>
                 <nav class="footer-nav" aria-label="Services">
                     <a href="{{ route('services') }}">Venetian Plaster</a>
@@ -189,7 +200,7 @@
                 </nav>
             </div>
             {{-- Quick Links --}}
-            <div class="col-6 col-lg-2">
+            <div class="col-12 col-sm-6 col-lg-2">
                 <h6>Company</h6>
                 <nav class="footer-nav" aria-label="Company">
                     <a href="{{ route('home') }}">Home</a>
@@ -199,27 +210,32 @@
                     <a href="{{ route('contact') }}">Contact</a>
                 </nav>
             </div>
-            {{-- Contact --}}
-            <div class="col-lg-4">
-                <h6>Get in touch</h6>
-                @if($settings->get('site_email'))
-                <div class="footer-contact-line">
-                    <i class="fas fa-envelope" aria-hidden="true"></i>
-                    <a href="mailto:{{ $settings->get('site_email') }}">{{ $settings->get('site_email') }}</a>
+            {{-- Contact + newsletter: one column (stacked) so the footer reads as four areas, not five --}}
+            <div class="col-12 col-lg-4">
+                <div class="footer-connect">
+                    <h6>Get in touch</h6>
+                    @if($settings->get('site_email'))
+                    <div class="footer-contact-line">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <a href="mailto:{{ $settings->get('site_email') }}">{{ $settings->get('site_email') }}</a>
+                    </div>
+                    @endif
+                    @if($settings->get('site_phone'))
+                    <div class="footer-contact-line">
+                        <i class="fas fa-phone" aria-hidden="true"></i>
+                        <a href="tel:{{ $settings->get('site_phone') }}">{{ $settings->get('site_phone') }}</a>
+                    </div>
+                    @endif
+                    @if($settings->get('site_address'))
+                    <div class="footer-contact-line">
+                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                        <span>{{ $settings->get('site_address') }}</span>
+                    </div>
+                    @endif
+                    <div class="footer-newsletter-wrap">
+                        @include('partials.newsletter-form-compact')
+                    </div>
                 </div>
-                @endif
-                @if($settings->get('site_phone'))
-                <div class="footer-contact-line">
-                    <i class="fas fa-phone" aria-hidden="true"></i>
-                    <a href="tel:{{ $settings->get('site_phone') }}">{{ $settings->get('site_phone') }}</a>
-                </div>
-                @endif
-                @if($settings->get('site_address'))
-                <div class="footer-contact-line">
-                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                    <span>{{ $settings->get('site_address') }}</span>
-                </div>
-                @endif
             </div>
         </div>
     </div>
@@ -239,17 +255,59 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-// Mobile nav
-document.getElementById('navToggle').addEventListener('click', function() {
-    document.getElementById('navLinks').classList.toggle('open');
-    document.getElementById('navRight').classList.toggle('open');
-});
+// Mobile nav: sheet + backdrop + bars/X + scroll lock (iOS-friendly)
+(function () {
+    var toggle   = document.getElementById('navToggle');
+    var sheet    = document.getElementById('navMobileSheet');
+    var nav      = document.getElementById('siteNav');
+    var backdrop = document.getElementById('navMobileBackdrop');
+    if (!toggle || !sheet || !nav) return;
+
+    function setMenuOpen(open) {
+        sheet.classList.toggle('is-open', open);
+        nav.classList.toggle('menu-open', open);
+        toggle.classList.toggle('is-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+        document.body.classList.toggle('nav-menu-open', open);
+        if (backdrop) {
+            backdrop.setAttribute('aria-hidden', open ? 'false' : 'true');
+            if (open) {
+                backdrop.removeAttribute('hidden');
+            } else {
+                backdrop.setAttribute('hidden', '');
+            }
+        }
+    }
+
+    toggle.addEventListener('click', function () {
+        setMenuOpen(!sheet.classList.contains('is-open'));
+    });
+    if (backdrop) {
+        backdrop.addEventListener('click', function () {
+            setMenuOpen(false);
+        });
+    }
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && sheet.classList.contains('is-open')) {
+            setMenuOpen(false);
+        }
+    });
+    sheet.addEventListener('click', function (e) {
+        var a = e.target.closest('a');
+        if (!a) return;
+        var h = a.getAttribute('href');
+        if (h && h !== '#' && h.indexOf('javascript:') !== 0) {
+            setMenuOpen(false);
+        }
+    });
+})();
 
 // Navbar: transparent over hero, solid after scroll / on inner pages
 (function() {
     const nav   = document.getElementById('siteNav');
     const hero  = document.getElementById('hero');
-    const NAV_H = 152; /* 2px top accent + ~150px main row (see .nav-main-row .container) */
+    const NAV_H = 168; /* 2px top accent + main row (see .nav-main-row .container min-height) */
 
     // Non-hero pages get solid nav immediately
     if (!hero) { nav.classList.add('always-solid'); return; }

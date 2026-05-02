@@ -6,7 +6,7 @@
 <div class="page-hero">
     <div class="container">
         <span class="eyebrow">What we offer</span>
-        <h1>Our Services</h1>
+        <h1 class="page-hero-title-wide">Our Services</h1>
         <p>Hand-finished plaster, bespoke media walls, and architectural details — crafted for homes and commercial spaces.</p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -22,21 +22,27 @@
         <div class="row g-4">
             @forelse($services as $service)
             <div class="col-md-6 col-lg-4">
-                <div class="svc-card" style="display:flex;flex-direction:column;">
-                    @if($service->image)
-                    <div style="margin:-36px -30px 28px;overflow:hidden;border-radius:12px 12px 0 0;height:200px;">
-                        <img src="{{ $service->image_url }}" alt="{{ $service->title }}" style="width:100%;height:100%;object-fit:cover;">
+                <a href="{{ route('services.show', $service->slug) }}" class="service-grid-card">
+                    <div class="service-grid-card__media">
+                        @if($service->image)
+                            <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
+                        @else
+                            <div class="service-grid-card__placeholder" aria-hidden="true">
+                                <i class="{{ $service->icon ?? 'fas fa-paint-brush' }}"></i>
+                            </div>
+                        @endif
                     </div>
-                    @endif
-                    <div class="svc-icon">
-                        <i class="{{ $service->icon ?? 'fas fa-cog' }}"></i>
+                    <div class="service-grid-card__body">
+                        <span class="service-grid-eyebrow">Service</span>
+                        <h3>{{ $service->title }}</h3>
+                        @if($service->short_description)
+                            <p>{{ $service->short_description }}</p>
+                        @endif
+                        <span class="service-grid-card__link">
+                            Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                        </span>
                     </div>
-                    <h4>{{ $service->title }}</h4>
-                    <p style="flex:1;">{{ $service->short_description }}</p>
-                    <a href="{{ route('services.show', $service->slug) }}" class="svc-link mt-3">
-                        Learn more <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
-                    </a>
-                </div>
+                </a>
             </div>
             @empty
             <div class="col-12 text-center py-5" style="color:var(--ink-light);">

@@ -63,3 +63,20 @@
 .sidebar-post-info { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
 .sidebar-post-title { font-size: .87rem; font-weight: 600; color: var(--ink); line-height: 1.35; }
 .sidebar-post-date { font-size: .76rem; color: var(--ink-light); }
+
+@media (max-width: 991px) {
+    .sidebar-widget {
+        margin-top: 28px;
+        padding: 20px;
+    }
+}
+@media (max-width: 575px) {
+    .sidebar-post-link {
+        flex-wrap: wrap;
+    }
+    .sidebar-post-thumb,
+    .sidebar-post-thumb-placeholder {
+        width: 52px;
+        height: 52px;
+    }
+}

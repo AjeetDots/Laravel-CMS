@@ -6,7 +6,7 @@
 <div class="page-hero">
     <div class="container">
         <span class="eyebrow">Portfolio</span>
-        <h1>Our Work</h1>
+        <h1 class="page-hero-title-wide">Our Work</h1>
         <p>A curated selection of finishes and interiors we’re proud to have delivered.</p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">

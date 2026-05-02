@@ -41,8 +41,9 @@
             {{-- Main Content --}}
             <div class="col-lg-8">
                 @if($post->image)
-                    <img src="{{ $post->image_url }}" alt="{{ $post->title }}"
-                         style="width:100%;border-radius:12px;margin-bottom:36px;max-height:480px;object-fit:cover;">
+                    <div class="media-frame blog-lead-img">
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
+                    </div>
                 @endif
 
                 <div class="blog-post-content">

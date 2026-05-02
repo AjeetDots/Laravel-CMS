@@ -12,22 +12,19 @@
 
 @section('content')
 
-{{-- ── INTRO ─────────────────────────────────────────────────────── --}}
-<section class="about-intro">
+<div class="page-hero">
     <div class="container">
-        <div class="row align-items-end gy-4">
-            <div class="col-lg-7">
-                <span class="eyebrow">About us</span>
-                <h1>A team of experts,<br>a craft of excellence.</h1>
-            </div>
-            <div class="col-lg-5 intro-right">
-                <p>{{ $settings->get('site_name', 'ProServices') }} was founded on a simple idea: that a problem, properly solved, can change how a business operates — and thrives.</p>
-            </div>
-        </div>
+        <span class="eyebrow">About us</span>
+        <h1 class="page-hero-title-wide">Mastery in plaster, finish &amp; form.</h1>
+        <p>{{ $settings->get('site_name', 'ProServices') }} brings hand-applied surfaces and bespoke interiors to discerning residential and commercial clients — where material, light, and detail meet.</p>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item active">About Us</li>
+            </ol>
+        </nav>
     </div>
-</section>
-
-<hr class="divider-line">
+</div>
 
 {{-- ── FEATURE IMAGE + OUR STORY ──────────────────────────────────── --}}
 <section class="about-feature">
@@ -35,20 +32,22 @@
         <div class="row align-items-start g-5">
             {{-- Image --}}
             <div class="col-lg-6">
-                <img
-                    src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
-                    alt="Our team at work"
-                    class="feature-img img-fallback"
-                    data-fallback="https://placehold.co/600x800/e8e4dc/4a4a46?text=Our+Team"
-                >
+                <div class="media-frame about-feature-frame">
+                    <img
+                        src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&q=80"
+                        alt="Our team at work"
+                        class="feature-img img-fallback"
+                        data-fallback="https://placehold.co/600x800/e8e4dc/4a4a46?text=Our+Team"
+                    >
+                </div>
             </div>
             {{-- Story --}}
             <div class="col-lg-6" style="padding-top: 60px;">
                 <span class="story-label">Our story</span>
-                <h2>Built on expertise,<br>driven by results.</h2>
-                <p>Trained in the latest technologies and refined across two decades of private and commercial engagements, our team has quietly built a reputation for solutions of unusual depth and consistency.</p>
-                <p>We work closely with leading businesses and entrepreneurs, and have been entrusted with critical systems for industries where the product itself must perform under pressure.</p>
-                <p>Every project begins with the client — their goals, their constraints, their vision — and ends with a solution built to last.</p>
+                <h2>Built on craft,<br>refined by experience.</h2>
+                <p>For decades we have collaborated with designers, architects, and homeowners who expect surfaces and volumes finished to an exceptional standard — Venetian plaster, cornices, feature walls, and restoration work carried out by specialist artisans.</p>
+                <p>From boutique hospitality to private residences, every commission is approached as a piece of the whole: proportion, texture, and light working together.</p>
+                <p>Every project begins with listening — your space, your timeline, your vision — and ends with a finish meant to endure.</p>
 
                 {{-- Quick facts --}}
                 <div class="row g-3 mt-3">

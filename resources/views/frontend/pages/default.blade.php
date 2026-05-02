@@ -19,7 +19,7 @@
 <div class="page-hero">
     <div class="container">
         <span class="eyebrow">{{ $heroEyebrow }}</span>
-        <h1>{{ $page->title }}</h1>
+        <h1 class="page-hero-title-wide">{{ $page->title }}</h1>
         @if($page->meta_description && \Illuminate\Support\Str::length($page->meta_description) < 220)
             <p>{{ $page->meta_description }}</p>
         @endif

@@ -6,7 +6,7 @@
 <div class="page-hero">
     <div class="container">
         <span class="eyebrow">Get in touch</span>
-        <h1>Contact Us</h1>
+        <h1 class="page-hero-title-wide">Contact Us</h1>
         <p>Have a project in mind? Tell us what you're envisioning — we'll respond within 24 hours.</p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
