@@ -59,11 +59,11 @@
                             </a>
                         @else
                             <a href="{{ route('services') }}" class="hero-btn" id="heroBtnPrimary">
-                                <span id="heroBtnText">Explore Work</span>
+                                <span id="heroBtnText">Explore Services</span>
                                 <i class="fas fa-arrow-right" style="font-size:.72rem;"></i>
                             </a>
                         @endif
-                        <a href="{{ route('contact') }}" class="hero-btn-outline">Free Consultation</a>
+                        <a href="{{ route('contact') }}" class="hero-btn-outline">Get a Quote</a>
                     </div>
                 </div>
             </div>
@@ -107,6 +107,64 @@
                 </p>
             </div>
         </div>
+    </div>
+</section>
+
+{{-- ── EXPLORE FINISHES (proposal: visual selection on home) ── --}}
+<section class="commissions-section finishes-home-band">
+    <div class="container">
+        <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
+            <div class="reveal-left">
+                <span class="eyebrow">Explore finishes</span>
+                <span class="section-rule" style="margin-bottom:0;"></span>
+                <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.3px;margin:10px 0 0;color:var(--ink);">
+                    Plaster styles &amp; textures
+                </h2>
+            </div>
+            <div class="reveal-right">
+                <a href="{{ route('finishes') }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
+                    All finishes <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
+                </a>
+            </div>
+        </div>
+
+        @if($finishes->count())
+        <div class="commissions-grid reveal">
+            @foreach($finishes->take(5) as $i => $f)
+            <a href="{{ route('finishes.show', $f->slug) }}" class="commission-item @if($i === 0) is-lead @endif">
+                @if($f->cover_image)
+                    <img src="{{ $f->cover_image_url }}" alt="{{ $f->title }}" class="commission-img">
+                @else
+                    <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
+                @endif
+                <div class="commission-overlay"></div>
+                <div class="commission-body">
+                    <div class="commission-meta">
+                        <span class="commission-category">Finish</span>
+                        <p class="commission-title">{{ $f->title }}</p>
+                    </div>
+                    <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            @endforeach
+        </div>
+        @else
+        <div class="commissions-grid reveal">
+            @foreach(['Marmorino', 'Tadelakt', 'Metallic', 'Concrete', 'Spatulato'] as $i => $name)
+            <a href="{{ route('finishes') }}" class="commission-item @if($i === 0) is-lead @endif">
+                <div class="commission-placeholder"><i class="fas fa-palette"></i></div>
+                <div class="commission-overlay"></div>
+                <div class="commission-body">
+                    <div class="commission-meta">
+                        <span class="commission-category">Sample</span>
+                        <p class="commission-title">{{ $name }}</p>
+                    </div>
+                    <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
+                </div>
+            </a>
+            @endforeach
+        </div>
+        @endif
     </div>
 </section>
 
@@ -241,15 +299,18 @@
 
         <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
             <div class="reveal-left">
-                <span class="eyebrow">Selected work</span>
+                <span class="eyebrow">Featured gallery</span>
                 <span class="section-rule" style="margin-bottom:0;"></span>
                 <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.3px;margin:10px 0 0;color:var(--ink);">
-                    Recent commissions.
+                    Inspiration &amp; craftsmanship
                 </h2>
             </div>
-            <div class="reveal-right">
+            <div class="reveal-right d-flex flex-wrap gap-2 justify-content-lg-end">
                 <a href="{{ route('gallery') }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
-                    Full Portfolio <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
+                    View full gallery <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
+                </a>
+                <a href="{{ route('portfolio') }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
+                    View portfolio <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
                 </a>
             </div>
         </div>
@@ -278,6 +339,50 @@
             @endforeach
         </div>
 
+    </div>
+</section>
+@endif
+
+{{-- ── PORTFOLIO HIGHLIGHTS (proposal: project-based work) ── --}}
+@if($portfolios->count())
+<section class="section section-soft portfolio-highlights-home">
+    <div class="container">
+        <div class="d-flex align-items-end justify-content-between mb-5 flex-wrap gap-3">
+            <div class="reveal-left">
+                <span class="eyebrow">Portfolio</span>
+                <span class="section-rule" style="margin-bottom:0;"></span>
+                <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;letter-spacing:-.3px;margin:10px 0 0;color:var(--ink);">
+                    Project highlights
+                </h2>
+            </div>
+            <div class="reveal-right">
+                <a href="{{ route('portfolio') }}" class="btn-outline-site">
+                    All projects <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                </a>
+            </div>
+        </div>
+        <div class="row g-4">
+            @foreach($portfolios as $i => $proj)
+            <div class="col-md-6 col-lg-3 reveal delay-{{ min($i + 1, 5) }}">
+                <a href="{{ route('portfolio.show', $proj->slug) }}" class="service-grid-card h-100 d-flex flex-column">
+                    <div class="service-grid-card__media">
+                        @if($proj->cover_image)
+                            <img src="{{ $proj->cover_image_url }}" alt="{{ $proj->title }}" loading="lazy" decoding="async">
+                        @else
+                            <div class="service-grid-card__placeholder"><i class="fas fa-briefcase"></i></div>
+                        @endif
+                    </div>
+                    <div class="service-grid-card__body flex-grow-1 d-flex flex-column">
+                        <span class="service-grid-eyebrow">{{ $proj->project_type === 'real' ? 'Real project' : 'Reference' }}</span>
+                        <h3 class="h6 mt-1">{{ $proj->title }}</h3>
+                        <span class="service-grid-card__link mt-auto">
+                            View <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                        </span>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+        </div>
     </div>
 </section>
 @endif
@@ -440,9 +545,9 @@
             </div>
             <div class="col-lg-5 d-flex flex-wrap gap-3 justify-content-lg-end reveal-right">
                 <a href="{{ route('contact') }}" class="btn-white">
-                    Get in touch <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                    Get a quote <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
                 </a>
-                <a href="{{ route('services') }}" class="btn-outline-white">Our services</a>
+                <a href="{{ route('services') }}" class="btn-outline-white">Explore services</a>
             </div>
         </div>
     </div>

@@ -211,6 +211,9 @@ body.nav-solid .service-sidebar-card:hover {
 }
 
 /* ── Gallery grid ── */
+body.nav-solid .gal-item.gal-item--zoom {
+    cursor: pointer;
+}
 body.nav-solid .gal-item {
     border-radius: 2px;
     overflow: hidden;

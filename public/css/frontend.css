@@ -2,19 +2,19 @@
    DESIGN TOKENS
 ═══════════════════════════════════════ */
 :root {
-    /* ── Backgrounds — bright, airy, art-gallery ── */
+    /* ── Backgrounds — bright, airy (Figma-style gallery neutrals) ── */
     --cream:        #FFFFFF;
-    --cream-dark:   #FBF8F4;
+    --cream-dark:   #F7F3ED;
     /* ── Text ── */
-    --ink:          #1c1714;
-    --ink-mid:      #3d3730;
-    --ink-light:    #978f86;
-    /* ── Brand accent — richer terracotta ── */
+    --ink:          #161311;
+    --ink-mid:      #3a342e;
+    --ink-light:    #8a8278;
+    /* ── Brand accent — terracotta (hero CTAs, hovers) ── */
     --wine:         #C96B3F;
     --wine-dark:    #A8502A;
     --wine-light:   #FEF0E8;
-    /* ── Gold — warm champagne ── */
-    --gold:         #C8A25A;
+    /* ── Gold — champagne trim (rules, nav underline) ── */
+    --gold:         #B8925A;
     --gold-light:   #FEF6E4;
     /* ── Structural ── */
     --border:       #EDE6DC;
@@ -197,6 +197,25 @@ img { max-width: 100%; }
         drop-shadow(0 0 28px rgba(200, 162, 90, 0.2));
 }
 
+/* Default inline SVG wordmark — readable on dark hero + solid nav */
+.nav-logo-img.brand-logo-svg--nav {
+    display: block;
+    color: #faf6f0;
+    filter:
+        drop-shadow(0 4px 22px rgba(0, 0, 0, 0.55))
+        drop-shadow(0 0 20px rgba(200, 162, 90, 0.22));
+}
+.site-nav.scrolled .nav-logo-img.brand-logo-svg--nav,
+.site-nav.always-solid .nav-logo-img.brand-logo-svg--nav {
+    color: var(--ink);
+    filter:
+        drop-shadow(0 3px 12px rgba(28, 23, 20, 0.1))
+        drop-shadow(0 0 18px rgba(184, 146, 90, 0.15));
+}
+.nav-brand:hover .nav-logo-img.brand-logo-svg--nav {
+    transform: translateY(-2px) scale(1.03);
+}
+
 @media (max-width: 1199px) {
     :root { --nav-logo-max-height: 128px; --nav-logo-max-height-scrolled: 102px; --nav-logo-max-width: min(440px, 58vw); }
     .nav-main-row .container { min-height: 138px; height: 138px; }
@@ -257,11 +276,18 @@ img { max-width: 100%; }
         contrast(1.06)
         saturate(1.05);
 }
+.site-footer .footer-logo-img.brand-logo-svg--footer {
+    filter: none;
+}
 .site-footer .footer-logo-link:hover .footer-logo-img {
     filter:
         drop-shadow(0 4px 14px rgba(28, 23, 20, 0.16))
         contrast(1.08)
         saturate(1.06);
+    transform: scale(1.02);
+}
+.site-footer .footer-logo-link:hover .footer-logo-img.brand-logo-svg--footer {
+    filter: none;
     transform: scale(1.02);
 }
 

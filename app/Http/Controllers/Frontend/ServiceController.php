@@ -10,7 +10,7 @@ class ServiceController extends Controller {
     }
 
     public function show(string $slug) {
-        $service = Service::with('seoMeta')
+        $service = Service::with(['seoMeta', 'finishes'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();

@@ -20,4 +20,8 @@ class Service extends Model {
         if (!$this->image) { return null; }
         return filter_var($this->image, FILTER_VALIDATE_URL) ? $this->image : asset('storage/' . $this->image);
     }
+
+    public function finishes() {
+        return $this->belongsToMany(Finish::class, 'finish_service');
+    }
 }

@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     @include('partials.meta-tags', ['model' => $seoModel ?? null])
-    @php $favicon = \App\Models\Setting::get('site_favicon'); @endphp
-    @if($favicon)
-        <link rel="icon" href="{{ asset('storage/' . $favicon) }}">
-        <link rel="shortcut icon" href="{{ asset('storage/' . $favicon) }}">
-        <link rel="apple-touch-icon" href="{{ asset('storage/' . $favicon) }}">
-    @endif
+    @php
+        $favicon = \App\Models\Setting::get('site_favicon');
+        $faviconUrl = $favicon ? asset('storage/'.$favicon) : asset('images/brand/favicon-bop.svg');
+    @endphp
+    <link rel="icon" href="{{ $faviconUrl }}" sizes="any">
+    <link rel="shortcut icon" href="{{ $faviconUrl }}">
+    <link rel="apple-touch-icon" href="{{ $faviconUrl }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -28,7 +29,7 @@
             {{-- Logo / Brand — primary focus; eager load for LCP --}}
             <a href="{{ route('home') }}"
                class="nav-brand"
-               aria-label="{{ $settings->get('site_name', 'ProServices') }} — Home">
+               aria-label="{{ $settings->get('site_name', 'Bespoke Ornate Plaster') }} — Home">
                 @if($settings->get('site_logo'))
                     <img src="{{ asset('storage/' . $settings->get('site_logo')) }}"
                          alt=""
@@ -37,10 +38,7 @@
                          decoding="async"
                          loading="eager">
                 @else
-                    <span class="nav-brand-text">{{ $settings->get('site_name', 'ProServices') }}</span>
-                    @if($settings->get('site_tagline'))
-                        <span class="nav-brand-tagline">{{ $settings->get('site_tagline') }}</span>
-                    @endif
+                    @include('partials.brand-logo-nav')
                 @endif
             </a>
 
@@ -162,14 +160,13 @@
                 <div class="footer-brand">
                 @php $footerLogo = $settings->get('site_logo_footer') ?: $settings->get('site_logo'); @endphp
                 @if($footerLogo)
-                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','ProServices') }} — Home">
+                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','Bespoke Ornate Plaster') }} — Home">
                         <img src="{{ asset('storage/' . $footerLogo) }}" alt="" class="footer-logo-img" loading="lazy" decoding="async">
                     </a>
                 @else
-                    <span class="brand-name">{{ $settings->get('site_name','ProServices') }}</span>
-                    @if($settings->get('site_tagline'))
-                        <span class="brand-tagline-footer">{{ $settings->get('site_tagline') }}</span>
-                    @endif
+                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','Bespoke Ornate Plaster') }} — Home">
+                        @include('partials.brand-logo-footer')
+                    </a>
                 @endif
                 </div>
                 <p class="about-text">{{ $settings->get('footer_about','Craft-led plaster, media walls, and architectural finishes for discerning homes and commercial spaces.') }}</p>
@@ -188,26 +185,26 @@
                     @endif
                 </div>
             </div>
-            {{-- Services --}}
+            {{-- Explore (IA aligned with proposal: Services, Finishes, Gallery, Portfolio) --}}
             <div class="col-12 col-sm-6 col-lg-2">
-                <h6>Services</h6>
-                <nav class="footer-nav" aria-label="Services">
-                    <a href="{{ route('services') }}">Venetian Plaster</a>
-                    <a href="{{ route('services') }}">Bespoke Media Walls</a>
-                    <a href="{{ route('services') }}">Cornices &amp; Mouldings</a>
-                    <a href="{{ route('services') }}">Feature Walls</a>
-                    <a href="{{ route('services') }}">Restoration</a>
+                <h6>Explore</h6>
+                <nav class="footer-nav" aria-label="Explore">
+                    <a href="{{ route('services') }}">Services</a>
+                    <a href="{{ route('finishes') }}">Finishes</a>
+                    <a href="{{ route('gallery') }}">Gallery</a>
+                    <a href="{{ route('portfolio') }}">Portfolio</a>
                 </nav>
             </div>
-            {{-- Quick Links --}}
+            {{-- Company --}}
             <div class="col-12 col-sm-6 col-lg-2">
                 <h6>Company</h6>
                 <nav class="footer-nav" aria-label="Company">
                     <a href="{{ route('home') }}">Home</a>
-                    <a href="/about">About Us</a>
-                    <a href="{{ route('gallery') }}">Gallery</a>
-                    <a href="/faq">FAQ</a>
+                    <a href="{{ url('/about') }}">About Us</a>
                     <a href="{{ route('contact') }}">Contact</a>
+                    <a href="{{ url('/privacy-policy') }}">Privacy Policy</a>
+                    <a href="{{ url('/terms-and-conditions') }}">Terms &amp; Conditions</a>
+                    <a href="{{ url('/cookie-policy') }}">Cookie Policy</a>
                 </nav>
             </div>
             {{-- Contact + newsletter: one column (stacked) so the footer reads as four areas, not five --}}
@@ -245,7 +242,7 @@
                 @if($settings->get('copyright_text'))
                     {!! $settings->get('copyright_text') !!}
                 @else
-                    &copy; {{ date('Y') }} {{ $settings->get('site_name','ProServices') }}. All rights reserved.
+                    &copy; {{ date('Y') }} {{ $settings->get('site_name','Bespoke Ornate Plaster') }}. All rights reserved.
                 @endif
             </span>
             <span><a href="https://www.dotsquares.com/" target="_blank"><img src="{{ asset('images/dotsquaresit.png') }}" alt="Dotsquares" class="footer-logo"></a> Crafted by Dotsquares – Where Innovation Meets Quality</span>

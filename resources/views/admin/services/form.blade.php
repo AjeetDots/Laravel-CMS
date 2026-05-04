@@ -43,6 +43,19 @@
                         <textarea name="description" id="postContent" class="form-control wysiwyg" rows="6">{{ old('description', $service->description) }}</textarea>
                     </div>
 
+                    <div class="mb-3">
+                        <label class="form-label">Related finishes</label>
+                        <select name="finish_ids[]" class="form-select" multiple size="8">
+                            @foreach($finishes ?? [] as $fin)
+                                <option value="{{ $fin->id }}"
+                                    {{ collect(old('finish_ids', isset($service->id) ? $service->finishes->pluck('id') : []))->contains($fin->id) ? 'selected' : '' }}>
+                                    {{ $fin->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-text">Hold Ctrl (Windows) or Cmd (Mac) to select multiple. Shown on the public service detail page.</div>
+                    </div>
+
                     @include('admin.partials.seo-panel', [
                         'seo'            => $service->seoMeta ?? null,
                         'titleFieldId'   => 'titleInput',

@@ -22,6 +22,8 @@ class StoreServiceRequest extends FormRequest
             'icon'              => 'nullable|string|max:100',
             'sort_order'        => 'integer',
             'is_active'         => 'boolean',
+            'finish_ids'        => 'nullable|array',
+            'finish_ids.*'      => 'integer|exists:finishes,id',
         ], $this->seoRules());
     }
 

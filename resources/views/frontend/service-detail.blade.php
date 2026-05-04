@@ -30,6 +30,29 @@
                 <div class="service-detail-body">
                     {!! $service->description ?? '<p>'.$service->short_description.'</p>' !!}
                 </div>
+
+                @if($service->finishes->count())
+                <div class="mt-5 pt-4" style="border-top:1px solid rgba(0,0,0,.06);">
+                    <span class="eyebrow">Related finishes</span>
+                    <h3 class="h5 mt-2 mb-4" style="font-family:'Playfair Display',serif;">Styles we often pair with this service</h3>
+                    <div class="row g-3">
+                        @foreach($service->finishes as $fin)
+                        <div class="col-6 col-md-4">
+                            <a href="{{ route('finishes.show', $fin->slug) }}" class="text-decoration-none d-block">
+                                <div class="media-frame" style="aspect-ratio:1;border-radius:2px;">
+                                    @if($fin->cover_image)
+                                        <img src="{{ $fin->cover_image_url }}" alt="{{ $fin->title }}" class="w-100 h-100" style="object-fit:cover;" loading="lazy">
+                                    @else
+                                        <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted"><i class="fas fa-paint-brush"></i></div>
+                                    @endif
+                                </div>
+                                <p class="small mt-2 mb-0 fw-semibold" style="color:var(--ink);">{{ $fin->title }}</p>
+                            </a>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
             <div class="col-lg-4">
                 <div class="service-sidebar-wrap">

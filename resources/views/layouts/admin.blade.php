@@ -151,14 +151,17 @@
         <a href="{{ route('admin.services.index') }}" class="sidebar-link {{ request()->routeIs('admin.services*') ? 'active' : '' }}">
             <i class="fas fa-concierge-bell"></i> Services
         </a>
+        <a href="{{ route('admin.finishes.index') }}" class="sidebar-link {{ request()->routeIs('admin.finishes*') ? 'active' : '' }}">
+            <i class="fas fa-paint-brush"></i> Finishes
+        </a>
+        <a href="{{ route('admin.portfolio.index') }}" class="sidebar-link {{ request()->routeIs('admin.portfolio*') ? 'active' : '' }}">
+            <i class="fas fa-briefcase"></i> Portfolio
+        </a>
         <a href="{{ route('admin.gallery.index') }}" class="sidebar-link {{ request()->routeIs('admin.gallery*') ? 'active' : '' }}">
             <i class="fas fa-photo-video"></i> Gallery
         </a>
         <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link {{ request()->routeIs('admin.testimonials*') ? 'active' : '' }}">
             <i class="fas fa-quote-right"></i> Testimonials
-        </a>
-        <a href="{{ route('admin.brands.index') }}" class="sidebar-link {{ request()->routeIs('admin.brands*') ? 'active' : '' }}">
-            <i class="fas fa-star"></i> Brands
         </a>
         @php $pagesOpen = request()->routeIs('admin.pages*'); @endphp
         <a href="#" class="sidebar-link has-submenu {{ $pagesOpen ? 'open active' : '' }}"
@@ -171,11 +174,29 @@
             <li><a href="{{ route('admin.pages.create') }}" class="{{ request()->routeIs('admin.pages.create') ? 'active' : '' }}"><i class="fas fa-plus fa-xs"></i> Add Page</a></li>
         </ul>
 
-        <div class="nav-section-label">Blog & Newsletter</div>
+        <div class="nav-section-label">Communication</div>
+        @php $unreadCount = \App\Models\Contact::where('is_read', false)->count(); @endphp
+        <a href="{{ route('admin.enquiries.index') }}" class="sidebar-link {{ request()->routeIs('admin.enquiries*') || request()->routeIs('admin.contacts*') ? 'active' : '' }}">
+            <i class="fas fa-envelope"></i> Enquiries
+            @if($unreadCount > 0)
+                <span class="badge bg-danger rounded-pill ms-auto">{{ $unreadCount }}</span>
+            @endif
+        </a>
+        <a href="{{ route('admin.email-templates.index') }}" class="sidebar-link {{ request()->routeIs('admin.email-templates*') ? 'active' : '' }}">
+            <i class="fas fa-mail-bulk"></i> Email Templates
+        </a>
+
+        <div class="nav-section-label">Navigation & Extras</div>
+        <a href="{{ route('admin.menus.index') }}" class="sidebar-link {{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
+            <i class="fas fa-bars"></i> Menus
+        </a>
+        <a href="{{ route('admin.brands.index') }}" class="sidebar-link {{ request()->routeIs('admin.brands*') ? 'active' : '' }}">
+            <i class="fas fa-star"></i> Brands
+        </a>
         @php $blogOpen = request()->routeIs('admin.blog*') || request()->routeIs('admin.categories*'); @endphp
         <a href="#" class="sidebar-link has-submenu {{ $blogOpen ? 'open active' : '' }}"
            data-submenu="submenu-blog">
-            <i class="fas fa-pen-nib"></i> Blog Posts
+            <i class="fas fa-pen-nib"></i> Blog
             <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
         <ul class="sidebar-submenu {{ $blogOpen ? 'open' : '' }}" id="submenu-blog">
@@ -185,14 +206,6 @@
         </ul>
         <a href="{{ route('admin.newsletter.index') }}" class="sidebar-link {{ request()->routeIs('admin.newsletter*') ? 'active' : '' }}">
             <i class="fas fa-paper-plane"></i> Newsletter
-        </a>
-
-        <div class="nav-section-label">Navigation & Messages</div>
-        <a href="{{ route('admin.menus.index') }}" class="sidebar-link {{ request()->routeIs('admin.menus*') ? 'active' : '' }}">
-            <i class="fas fa-bars"></i> Menus
-        </a>
-        <a href="{{ route('admin.contacts.index') }}" class="sidebar-link {{ request()->routeIs('admin.contacts*') ? 'active' : '' }}">
-            <i class="fas fa-envelope"></i> Messages
         </a>
 
         <div class="nav-section-label">System</div>
