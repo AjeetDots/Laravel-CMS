@@ -12,20 +12,25 @@
 @section('content')
 @php
     $firstSlide = $sliders->first();
-    $heroEyebrowDefault = 'Hand-applied plaster, architectural finishes, and bespoke interiors for distinguished homes and commercial spaces.';
+    $heroEyebrowDefault = 'Bespoke ornate · plaster atelier';
 @endphp
 
 {{-- ── HERO ─────────────────────────────────────────────────── --}}
-<section class="hero-full hero-full--premium" id="hero" data-hero-eyebrow-default="{{ e($heroEyebrowDefault) }}">
+<section class="hero-full hero-full--premium" id="hero"
+         data-hero-eyebrow-default="{{ e($heroEyebrowDefault) }}">
 
     {{-- Background slides --}}
     @forelse($sliders as $i => $slide)
         <div class="hero-slide-item {{ $i === 0 ? 'active' : '' }}"
              style="background-image:url('{{ $slide->image_url }}');"
-             data-title="{{ $slide->title }}"
+             data-title="{{ e($slide->title) }}"
+             data-title-line-2="{{ e($slide->title_line_2 ?? '') }}"
+             data-title-line-3="{{ e($slide->title_line_3 ?? '') }}"
+             data-title-line-4="{{ e($slide->title_line_4 ?? '') }}"
              data-subtitle="{{ e($slide->subtitle) }}"
-             data-btn-text="{{ $slide->button_text }}"
-             data-btn-link="{{ $slide->button_link }}"></div>
+             data-lead="{{ e($slide->lead_text ?? '') }}"
+             data-btn-text="{{ e($slide->button_text) }}"
+             data-btn-link="{{ e($slide->button_link) }}"></div>
     @empty
         <div class="hero-full-bg"
              style="background:linear-gradient(135deg,#3b2412 0%,#2c1a0a 60%,#1a1008 100%);"></div>
@@ -44,26 +49,40 @@
                             {{ $heroEyebrowDefault }}
                         @endif
                     </p>
-                    <h1 class="hero-full-title" id="heroTitle">
-                        @if($firstSlide && $firstSlide->title)
-                            {{ $firstSlide->title }}
+                    <h1 class="hero-full-title {{ $firstSlide && $firstSlide->usesHeroTitleLines() ? 'hero-full-title--lines' : '' }}" id="heroTitle">
+                        @if(!$firstSlide)
+                            <span class="hero-title-line">Luxury Venetian</span>
+                            <span class="hero-title-line">Plaster &amp; Bespoke</span>
+                            <span class="hero-title-line">Media Walls</span>
+                        @elseif($firstSlide->usesHeroTitleLines())
+                            <span class="hero-title-line">{{ $firstSlide->title }}</span>
+                            @if(filled($firstSlide->title_line_2))
+                                <span class="hero-title-line">{{ $firstSlide->title_line_2 }}</span>
+                            @endif
+                            @if(filled($firstSlide->title_line_3))
+                                <span class="hero-title-line">{{ $firstSlide->title_line_3 }}</span>
+                            @endif
+                            @if(filled($firstSlide->title_line_4))
+                                <span class="hero-title-line">{{ $firstSlide->title_line_4 }}</span>
+                            @endif
                         @else
-                            Luxury Venetian Plaster &amp; Bespoke Media Walls
+                            {{ $firstSlide->title }}
                         @endif
                     </h1>
+                    <p class="hero-full-sub" id="heroLead">{{ $firstSlide && filled($firstSlide->lead_text) ? $firstSlide->lead_text : '' }}</p>
                     <div class="hero-full-btns">
                         @if($firstSlide && $firstSlide->button_text)
-                            <a href="{{ $firstSlide->button_link ?? route('services') }}" class="hero-btn" id="heroBtnPrimary">
+                            <a href="{{ $firstSlide->button_link ?? route('contact') }}" class="hero-btn hero-btn--gold" id="heroBtnPrimary">
                                 <span id="heroBtnText">{{ $firstSlide->button_text }}</span>
-                                <i class="fas fa-arrow-right" style="font-size:.72rem;"></i>
+                                <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
                             </a>
                         @else
-                            <a href="{{ route('services') }}" class="hero-btn" id="heroBtnPrimary">
-                                <span id="heroBtnText">Explore Services</span>
-                                <i class="fas fa-arrow-right" style="font-size:.72rem;"></i>
+                            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold" id="heroBtnPrimary">
+                                <span id="heroBtnText">Get a quote</span>
+                                <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
                             </a>
                         @endif
-                        <a href="{{ route('contact') }}" class="hero-btn-outline">Get a Quote</a>
+                        <a href="{{ route('contact') }}" class="hero-btn-outline hero-btn-outline--hero">Book consultation</a>
                     </div>
                 </div>
             </div>
@@ -201,7 +220,7 @@
                     <div class="disc-card-body">
                         <h4 class="disc-card-title">{{ $service->title }}</h4>
                         @if($service->short_description)
-                            <p class="disc-card-desc">{{ Str::limit($service->short_description, 90) }}</p>
+                            <p class="disc-card-desc">{{ $service->short_description }}</p>
                         @endif
                         <span class="disc-card-link">
                             Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
@@ -250,7 +269,7 @@
                     <div class="disc-card-body">
                         <h4 class="disc-card-title">{{ $service->title }}</h4>
                         @if($service->short_description)
-                            <p class="disc-card-desc">{{ Str::limit($service->short_description, 90) }}</p>
+                            <p class="disc-card-desc">{{ $service->short_description }}</p>
                         @endif
                         <span class="disc-card-link">
                             Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
@@ -566,20 +585,49 @@
     var eyebrowDefault = heroEl && heroEl.dataset.heroEyebrowDefault ? heroEl.dataset.heroEyebrowDefault : '';
     var eyebrow = document.getElementById('heroEyebrow');
     var title   = document.getElementById('heroTitle');
+    var leadEl  = document.getElementById('heroLead');
     var btnText = document.getElementById('heroBtnText');
     var btnEl   = document.getElementById('heroBtnPrimary');
 
     if (slides.length < 2) return;
     var current = 0, timer;
 
+    function renderHeroTitleFromSlide(titleEl, slide) {
+        if (!titleEl || !slide) return;
+        var main = slide.getAttribute('data-title') || '';
+        var l2 = slide.getAttribute('data-title-line-2') || '';
+        var l3 = slide.getAttribute('data-title-line-3') || '';
+        var l4 = slide.getAttribute('data-title-line-4') || '';
+        var useLines = l2 !== '' || l3 !== '' || l4 !== '';
+        if (!useLines) {
+            titleEl.textContent = main;
+            titleEl.classList.remove('hero-full-title--lines');
+            return;
+        }
+        titleEl.classList.add('hero-full-title--lines');
+        titleEl.innerHTML = '';
+        [main, l2, l3, l4].forEach(function (text) {
+            if (text === '') return;
+            var span = document.createElement('span');
+            span.className = 'hero-title-line';
+            span.textContent = text;
+            titleEl.appendChild(span);
+        });
+    }
+
     function updateText(slide) {
         if (!content) return;
         content.classList.add('fading');
         setTimeout(function () {
-            if (eyebrow) eyebrow.textContent = slide.dataset.subtitle || eyebrowDefault;
-            if (title   && slide.dataset.title)    title.textContent   = slide.dataset.title;
-            if (btnText && slide.dataset.btnText)  btnText.textContent = slide.dataset.btnText;
-            if (btnEl   && slide.dataset.btnLink)  btnEl.href          = slide.dataset.btnLink;
+            var sub = slide.getAttribute('data-subtitle');
+            if (eyebrow) eyebrow.textContent = (sub && sub.length) ? sub : eyebrowDefault;
+            if (title) renderHeroTitleFromSlide(title, slide);
+            var bt = slide.getAttribute('data-btn-text');
+            if (btnText && bt) btnText.textContent = bt;
+            var bh = slide.getAttribute('data-btn-link');
+            if (btnEl && bh) btnEl.href = bh;
+            var ld = slide.getAttribute('data-lead');
+            if (leadEl) leadEl.textContent = (ld && ld.length) ? ld : '';
             content.classList.remove('fading');
         }, 350);
     }

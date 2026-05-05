@@ -3,7 +3,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Slider extends Model {
-    protected $fillable = ['title', 'subtitle', 'image', 'button_text', 'button_link', 'sort_order', 'panel', 'is_active'];
+    protected $fillable = [
+        'title',
+        'title_line_2',
+        'title_line_3',
+        'title_line_4',
+        'subtitle',
+        'lead_text',
+        'image',
+        'button_text',
+        'button_link',
+        'sort_order',
+        'panel',
+        'is_active',
+    ];
+
+    /** When any extra line is set, the hero renders title as stacked lines (line 1 = title). */
+    public function usesHeroTitleLines(): bool
+    {
+        return filled($this->title_line_2) || filled($this->title_line_3) || filled($this->title_line_4);
+    }
 
     public static array $panelLabels = [
         'main'         => 'Center Main (cycles)',

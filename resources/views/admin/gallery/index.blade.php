@@ -6,9 +6,14 @@
 
 <div class="page-header-bar">
     <h1>Gallery</h1>
-    <a href="{{ route('admin.gallery.create') }}" class="btn btn-primary">
-        <i class="fas fa-upload me-2"></i>Upload Image
-    </a>
+    <div class="d-flex gap-2 flex-wrap">
+        <a href="{{ route('admin.gallery-categories.index') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-folder-tree me-2"></i>Categories
+        </a>
+        <a href="{{ route('admin.gallery.create') }}" class="btn btn-primary">
+            <i class="fas fa-upload me-2"></i>Upload Image
+        </a>
+    </div>
 </div>
 
 <div class="card">
@@ -39,7 +44,7 @@
                                          class="img-preview" style="height:45px; width:65px; object-fit:cover;">
                                 </td>
                                 <td class="fw-500">{{ $item->title ?? '—' }}</td>
-                                <td>{{ $item->category ?? '—' }}</td>
+                                <td>{{ $item->galleryCategory?->name ?? '—' }}</td>
                                 <td>{{ $item->sort_order }}</td>
                                 <td>
                                     <span class="badge {{ $item->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">

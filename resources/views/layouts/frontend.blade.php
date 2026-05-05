@@ -78,7 +78,7 @@
                             </a>
                         @endif
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-quote">Get Quote</a>
+                    <a href="{{ route('contact') }}" class="btn-quote">Get a quote <i class="fa-solid fa-arrow-up-right btn-quote__ico" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -304,15 +304,14 @@
 (function() {
     const nav   = document.getElementById('siteNav');
     const hero  = document.getElementById('hero');
-    const NAV_H = 168; /* 2px top accent + main row (see .nav-main-row .container min-height) */
 
     // Non-hero pages get solid nav immediately
     if (!hero) { nav.classList.add('always-solid'); return; }
 
     function onScroll() {
-        // Become solid once hero scrolls out of view (hero height minus nav)
+        const navH = nav ? nav.getBoundingClientRect().height : 120;
         const heroBottom = hero.getBoundingClientRect().bottom;
-        nav.classList.toggle('scrolled', heroBottom <= NAV_H + 20);
+        nav.classList.toggle('scrolled', heroBottom <= navH + 20);
     }
     window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();

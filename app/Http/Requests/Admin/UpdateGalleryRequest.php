@@ -17,7 +17,7 @@ class UpdateGalleryRequest extends FormRequest
         return [
             'title'      => 'nullable|string|max:200',
             'image'      => ImageUploadRules::nullable(4096),
-            'category'   => 'nullable|string|max:100',
+            'gallery_category_id' => 'nullable|exists:gallery_categories,id',
             'sort_order' => 'integer',
             'is_active'  => 'boolean',
         ];

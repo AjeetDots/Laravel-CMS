@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\FinishController as AdminFinishController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ContactController as AdminContactController;
@@ -66,6 +67,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('finishes',   AdminFinishController::class);
         Route::resource('portfolio',  AdminPortfolioController::class);
         Route::resource('gallery',    AdminGalleryController::class)->except(['show']);
+        Route::resource('gallery-categories', GalleryCategoryController::class)->except(['show']);
         Route::resource('testimonials', TestimonialController::class);
         Route::resource('brands',     BrandController::class)->except(['show']);
 

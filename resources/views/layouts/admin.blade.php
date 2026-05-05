@@ -157,8 +157,11 @@
         <a href="{{ route('admin.portfolio.index') }}" class="sidebar-link {{ request()->routeIs('admin.portfolio*') ? 'active' : '' }}">
             <i class="fas fa-briefcase"></i> Portfolio
         </a>
-        <a href="{{ route('admin.gallery.index') }}" class="sidebar-link {{ request()->routeIs('admin.gallery*') ? 'active' : '' }}">
+        <a href="{{ route('admin.gallery.index') }}" class="sidebar-link {{ request()->routeIs('admin.gallery.index') || request()->routeIs('admin.gallery.create') || request()->routeIs('admin.gallery.edit') ? 'active' : '' }}">
             <i class="fas fa-photo-video"></i> Gallery
+        </a>
+        <a href="{{ route('admin.gallery-categories.index') }}" class="sidebar-link {{ request()->routeIs('admin.gallery-categories*') ? 'active' : '' }}">
+            <i class="fas fa-folder-tree"></i> Gallery categories
         </a>
         <a href="{{ route('admin.testimonials.index') }}" class="sidebar-link {{ request()->routeIs('admin.testimonials*') ? 'active' : '' }}">
             <i class="fas fa-quote-right"></i> Testimonials

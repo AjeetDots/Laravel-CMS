@@ -32,7 +32,18 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category</label>
-                        <input type="text" name="category" class="form-control" value="{{ old('category', $item->category) }}" placeholder="e.g. Web Design, Photography">
+                        <select name="gallery_category_id" class="form-select">
+                            <option value="">— None —</option>
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id }}"
+                                    {{ (string) old('gallery_category_id', $item->gallery_category_id) === (string) $cat->id ? 'selected' : '' }}>
+                                    {{ $cat->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="form-text">
+                            Manage labels in <a href="{{ route('admin.gallery-categories.index') }}">Gallery categories</a>.
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>

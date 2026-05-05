@@ -31,16 +31,47 @@
                 {{-- LEFT: Text fields --}}
                 <div class="col-md-8">
                     <div class="mb-3">
-                        <label class="form-label">Title *</label>
+                        <label class="form-label">Title * <span class="text-muted fw-normal">(line 1 of the hero headline)</span></label>
                         <input type="text" name="title" class="form-control"
                                value="{{ old('title', $slider->title) }}" required
-                               placeholder="e.g. Handcrafted with Passion">
+                               placeholder="e.g. Quality">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Title line 2</label>
+                        <input type="text" name="title_line_2" class="form-control"
+                               value="{{ old('title_line_2', $slider->title_line_2) }}"
+                               placeholder="Optional — e.g. Solutions,">
+                        <div class="form-text">
+                            Add line 2–4 only if you want fixed line breaks in the hero. Leave all three empty to show <strong>Title</strong> as one block (wraps naturally).
+                        </div>
+                    </div>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Title line 3</label>
+                            <input type="text" name="title_line_3" class="form-control"
+                                   value="{{ old('title_line_3', $slider->title_line_3) }}"
+                                   placeholder="e.g. On Time &amp;">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Title line 4</label>
+                            <input type="text" name="title_line_4" class="form-control"
+                                   value="{{ old('title_line_4', $slider->title_line_4) }}"
+                                   placeholder="e.g. On Budget">
+                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Subtitle <span class="text-muted fw-normal">(shown as eyebrow tag on slide)</span></label>
                         <input type="text" name="subtitle" class="form-control"
                                value="{{ old('subtitle', $slider->subtitle) }}"
                                placeholder="e.g. Artisan Collections 2024">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hero lead paragraph</label>
+                        <textarea name="lead_text" class="form-control" rows="3"
+                                  placeholder="Supporting line under the main headline (optional).">{{ old('lead_text', $slider->lead_text) }}</textarea>
+                        <div class="form-text">
+                            Shown below the hero title on the home page. Leave empty for no paragraph (blank).
+                        </div>
                     </div>
                     <div class="row g-3">
                         <div class="col-md-6">

@@ -15,8 +15,12 @@ class UpdateSliderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'       => 'required|string|max:200',
+            'title'        => 'required|string|max:200',
+            'title_line_2' => 'nullable|string|max:200',
+            'title_line_3' => 'nullable|string|max:200',
+            'title_line_4' => 'nullable|string|max:200',
             'subtitle'    => 'nullable|string|max:300',
+            'lead_text'   => 'nullable|string|max:2000',
             'image'       => ImageUploadRules::nullable(2048),
             'button_text' => 'nullable|string|max:50',
             'button_link' => 'nullable|string|max:200',

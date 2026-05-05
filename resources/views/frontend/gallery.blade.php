@@ -23,15 +23,15 @@
         @if($categories->count())
         <div class="gallery-filter-bar" id="filterBtns">
             <button type="button" class="gallery-filter-btn active" data-cat="all">All</button>
-            @foreach($categories as $cat)
-            <button type="button" class="gallery-filter-btn" data-cat="{{ $cat }}">{{ $cat }}</button>
+            @foreach($categories as $filterCat)
+            <button type="button" class="gallery-filter-btn" data-cat="{{ $filterCat->name }}">{{ $filterCat->name }}</button>
             @endforeach
         </div>
         @endif
 
         <div class="row g-3" id="galleryGrid">
             @forelse($gallery as $item)
-            <div class="col-6 col-md-4 col-lg-3 gal-col" data-cat="{{ $item->category ?? 'all' }}">
+            <div class="col-6 col-md-4 col-lg-3 gal-col" data-cat="{{ $item->galleryCategory?->name ?? '' }}">
                 <div class="gal-item gal-item--zoom" role="button" tabindex="0"
                      data-bs-toggle="modal" data-bs-target="#galleryLightbox"
                      data-img="{{ $item->image_url }}"
