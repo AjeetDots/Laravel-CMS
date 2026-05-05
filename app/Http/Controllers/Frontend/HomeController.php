@@ -19,6 +19,7 @@ class HomeController extends Controller {
         $finishes     = Finish::where('is_active', true)->orderBy('sort_order')->orderBy('title')->limit(6)->get();
         $portfolios   = Portfolio::where('is_active', true)->orderBy('sort_order')->limit(4)->get();
         $gallery      = GalleryItem::where('is_active', true)->orderBy('sort_order')->limit(8)->get();
+        
         $testimonials = Testimonial::where('is_active', true)->orderBy('sort_order')->get();
         $brands       = Brand::where('is_active', true)->orderBy('sort_order')->get();
         $blogPosts    = BlogPost::where('is_active', true)->orderByDesc('published_at')->limit(3)->get();

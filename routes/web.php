@@ -53,7 +53,7 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 
 // ── Admin Auth ────────────────────────────────────────────────────
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/login',  [AuthController::class, 'showLogin'])->name('login')->middleware('guest');
+    Route::get('/login',  [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
     Route::post('/logout',[AuthController::class, 'logout'])->name('logout');
 
@@ -75,15 +75,17 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('enquiries',               [AdminContactController::class, 'index'])->name('enquiries.index');
         Route::get('enquiries/export',        [AdminContactController::class, 'export'])->name('enquiries.export');
         Route::get('enquiries/{contact}',    [AdminContactController::class, 'show'])->name('enquiries.show');
+        Route::post('enquiries/{contact}/reply', [AdminContactController::class, 'reply'])->name('enquiries.reply');
         Route::delete('enquiries/{contact}', [AdminContactController::class, 'destroy'])->name('enquiries.destroy');
         // Keep legacy contact routes as aliases
         Route::get('contacts',               [AdminContactController::class, 'index'])->name('contacts.index');
         Route::get('contacts/export',        [AdminContactController::class, 'export'])->name('contacts.export');
         Route::get('contacts/{contact}',     [AdminContactController::class, 'show'])->name('contacts.show');
+        Route::post('contacts/{contact}/reply', [AdminContactController::class, 'reply'])->name('contacts.reply');
         Route::delete('contacts/{contact}',  [AdminContactController::class, 'destroy'])->name('contacts.destroy');
 
         // Email templates
-        Route::resource('email-templates', EmailTemplateController::class);
+        Route::resource('email-templates', EmailTemplateController::class)->only(['index', 'edit', 'update']);
 
         // Navigation & pages
         Route::resource('menus', MenuController::class);

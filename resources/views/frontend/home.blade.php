@@ -312,7 +312,7 @@
 
 {{-- ── RECENT COMMISSIONS ───────────────────────────────────── --}}
 @if($gallery->count())
-@php $commissionItems = $gallery->take(6); @endphp
+@php $commissionItems = $gallery->take(8); @endphp
 <section class="commissions-section">
     <div class="container">
 

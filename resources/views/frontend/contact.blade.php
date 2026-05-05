@@ -42,7 +42,7 @@
                         <div class="cinfo-icon"><i class="fas fa-envelope"></i></div>
                         <div>
                             <div class="cinfo-label">Email</div>
-                            <div class="cinfo-val">{{ $settings->get('site_email','info@proservices.com') }}</div>
+                            <div class="cinfo-val">{{ $settings->get('site_email','info@bespokeornateplaster.com') }}</div>
                         </div>
                     </div>
                     <div class="cinfo-row">

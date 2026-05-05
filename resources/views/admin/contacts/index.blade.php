@@ -30,6 +30,8 @@
                             <th>Email</th>
                             <th>Subject</th>
                             <th>Date</th>
+                            <th>Client Mail</th>
+                            <th>Admin Mail</th>
                             <th>Status</th>
                             <th width="130">Actions</th>
                         </tr>
@@ -46,6 +48,20 @@
                                 <td>{{ $contact->email }}</td>
                                 <td>{{ Str::limit($contact->subject ?? 'No subject', 40) }}</td>
                                 <td>{{ $contact->created_at->format('M d, Y') }}</td>
+                                <td>
+                                    @php($cStatus = $contact->client_mail_status ?: 'pending')
+                                    <span class="badge px-2 py-1 {{ $cStatus === 'sent' ? 'badge-active' : ($cStatus === 'failed' ? 'badge-inactive' : 'bg-secondary') }}"
+                                          data-bs-toggle="tooltip" title="{{ $contact->client_mail_reason ?: 'No log message' }}">
+                                        {{ ucfirst($cStatus) }}
+                                    </span>
+                                </td>
+                                <td>
+                                    @php($aStatus = $contact->admin_mail_status ?: 'pending')
+                                    <span class="badge px-2 py-1 {{ $aStatus === 'sent' ? 'badge-active' : ($aStatus === 'failed' ? 'badge-inactive' : 'bg-secondary') }}"
+                                          data-bs-toggle="tooltip" title="{{ $contact->admin_mail_reason ?: 'No log message' }}">
+                                        {{ ucfirst($aStatus) }}
+                                    </span>
+                                </td>
                                 <td>
                                     <span class="badge {{ $contact->is_read ? 'badge-active' : 'badge-unread' }} px-2 py-1">
                                         {{ $contact->is_read ? 'Read' : 'Unread' }}

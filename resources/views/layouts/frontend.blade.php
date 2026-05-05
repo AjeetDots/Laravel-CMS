@@ -97,58 +97,10 @@
 </nav>
 <div class="nav-mobile-backdrop" id="navMobileBackdrop" hidden aria-hidden="true"></div>
 
-{{-- ── FLASH TOASTS ─────────────────────────────────────────── --}}
-@if(session('newsletter_success'))
-<div id="newsletterToast" style="
-    position:fixed; top:20px; left:50%; transform:translateX(-50%);
-    z-index:9999; min-width:320px; max-width:90vw;
-    background:#1a1208; border:1px solid rgba(201,168,76,.5);
-    border-left:4px solid #c9a87c;
-    padding:16px 48px 16px 20px;
-    border-radius:8px;
-    color:#e8c878; font-size:.95rem; font-family:'Inter',sans-serif;
-    box-shadow:0 8px 32px rgba(0,0,0,.45);
-    display:flex; align-items:center; gap:12px;
-    animation: slideDown .35s ease;">
-    <i class="fas fa-check-circle" style="font-size:1.15rem; color:#c9a87c; flex-shrink:0;"></i>
-    <span>{{ session('newsletter_success') }}</span>
-    <button onclick="document.getElementById('newsletterToast').remove()"
-            style="position:absolute;top:10px;right:12px;background:none;border:none;color:rgba(255,255,255,.4);font-size:1rem;cursor:pointer;line-height:1;">
-        <i class="fas fa-times"></i>
-    </button>
-</div>
-<style>
-@keyframes slideDown { from { opacity:0; transform:translateX(-50%) translateY(-16px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
-</style>
-<script>
-    window.addEventListener('load', function() {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-        setTimeout(function() {
-            var t = document.getElementById('newsletterToast');
-            if (t) { t.style.transition='opacity .5s'; t.style.opacity='0'; setTimeout(function(){ t.remove(); }, 500); }
-        }, 5000);
-    });
-</script>
-@endif
+{{-- ── SITE TOASTS (top-right, auto-dismiss) ────────────────── --}}
+@include('partials.site-toasts')
 
 {{-- ── PAGE CONTENT ──────────────────────────────────────────── --}}
-@if(session('success'))
-    <div class="container mt-4">
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <i class="fas fa-check-circle me-2"></i>{{ session('success') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    </div>
-@endif
-@if(session('error'))
-    <div class="container mt-4">
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <i class="fas fa-exclamation-circle me-2"></i>{{ session('error') }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    </div>
-@endif
-
 @yield('content')
 
 {{-- ── FOOTER ────────────────────────────────────────────────── --}}

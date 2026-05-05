@@ -19,6 +19,7 @@ class UpdateSettingRequest extends FormRequest
             'site_name'        => 'required|string|max:100',
             'site_tagline'     => 'nullable|string|max:200',
             'site_email'       => 'nullable|email',
+            'admin_notification_email' => 'nullable|email',
             'site_phone'       => 'nullable|string|max:30',
             'site_address'     => 'nullable|string|max:500',
             'footer_about'     => 'nullable|string|max:1000',

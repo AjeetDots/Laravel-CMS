@@ -10,9 +10,9 @@ class PageSeeder extends Seeder {
                 'title'       => 'About Us',
                 'slug'        => 'about',
                 'template'    => 'default',
-                'meta_title'  => 'About Us - ProServices',
-                'meta_description' => 'Learn more about ProServices, our team, mission, and values.',
-                'content'     => '<h2>About ProServices</h2>
+                'meta_title'  => 'About Us - Bespoke Ornate Plaster',
+                'meta_description' => 'Learn more about Bespoke Ornate Plaster, our team, mission, and values.',
+                'content'     => '<h2>About Bespoke Ornate Plaster</h2>
 <p>We are a professional services company with over 10 years of experience delivering innovative digital solutions to businesses worldwide.</p>
 <h3>Our Mission</h3>
 <p>Our mission is to empower businesses with cutting-edge technology solutions that drive growth, efficiency, and competitive advantage.</p>
@@ -32,7 +32,7 @@ class PageSeeder extends Seeder {
                 'title'       => 'FAQ',
                 'slug'        => 'faq',
                 'template'    => 'default',
-                'meta_title'  => 'Frequently Asked Questions - ProServices',
+                'meta_title'  => 'Frequently Asked Questions - Bespoke Ornate Plaster',
                 'meta_description' => 'Find answers to the most common questions about our services.',
                 'content'     => '<h2>Frequently Asked Questions</h2>
 <div class="faq-item">
@@ -61,10 +61,10 @@ class PageSeeder extends Seeder {
                 'title'       => 'Documentation',
                 'slug'        => 'docs',
                 'template'    => 'default',
-                'meta_title'  => 'Documentation - ProServices',
-                'meta_description' => 'Technical documentation and guides for ProServices products.',
+                'meta_title'  => 'Documentation - Bespoke Ornate Plaster',
+                'meta_description' => 'Technical documentation and guides for Bespoke Ornate Plaster.',
                 'content'     => '<h2>Documentation</h2>
-<p>Welcome to the ProServices documentation center. Here you will find guides, tutorials, and technical references.</p>
+<p>Welcome to the Bespoke Ornate Plaster documentation center. Here you will find guides, tutorials, and technical references.</p>
 <h3>Getting Started</h3>
 <p>Follow our step-by-step guides to get up and running with our services quickly and efficiently.</p>
 <h3>API Reference</h3>
@@ -73,20 +73,20 @@ class PageSeeder extends Seeder {
 <p>Comprehensive user guides for all our products and services.</p>
 <h3>Video Tutorials</h3>
 <p>Watch our video tutorials for visual walkthroughs of key features and workflows.</p>
-<p>For specific documentation, please contact our support team at <strong>docs@proservices.com</strong>.</p>',
+<p>For specific documentation, please contact our support team at <strong>docs@bespokeornateplaster.com</strong>.</p>',
                 'is_active'   => true,
             ],
             [
                 'title'       => 'Help Desk',
                 'slug'        => 'help',
                 'template'    => 'default',
-                'meta_title'  => 'Help Desk - ProServices',
-                'meta_description' => 'Get help and support from the ProServices team.',
+                'meta_title'  => 'Help Desk - Bespoke Ornate Plaster',
+                'meta_description' => 'Get help and support from the Bespoke Ornate Plaster team.',
                 'content'     => '<h2>Help Desk</h2>
 <p>Our support team is available 24/7 to assist you with any questions or issues.</p>
 <h3>Contact Support</h3>
 <ul>
-<li><strong>Email:</strong> support@proservices.com</li>
+<li><strong>Email:</strong> support@bespokeornateplaster.com</li>
 <li><strong>Phone:</strong> +1 (555) 123-4567</li>
 <li><strong>Live Chat:</strong> Available on the bottom right of every page</li>
 </ul>

@@ -16,7 +16,7 @@
     <div class="container">
         <span class="eyebrow">About us</span>
         <h1 class="page-hero-title-wide">Mastery in plaster, finish &amp; form.</h1>
-        <p>{{ $settings->get('site_name', 'ProServices') }} brings hand-applied surfaces and bespoke interiors to discerning residential and commercial clients — where material, light, and detail meet.</p>
+        <p>{{ $settings->get('site_name', 'Bespoke Ornate Plaster') }} brings hand-applied surfaces and bespoke interiors to discerning residential and commercial clients — where material, light, and detail meet.</p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
@@ -206,8 +206,8 @@
                     <div style="font-size: .7rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 20px;">Contact us directly</div>
                     <div style="margin-bottom: 16px;">
                         <div style="font-size: .8rem; color: var(--ink-light); margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Email</div>
-                        <a href="mailto:{{ $settings->get('site_email', 'info@proservices.com') }}" style="font-size: 1rem; color: var(--ink); font-weight: 700; text-decoration: none;">
-                            {{ $settings->get('site_email', 'info@proservices.com') }}
+                        <a href="mailto:{{ $settings->get('site_email', 'info@bespokeornateplaster.com') }}" style="font-size: 1rem; color: var(--ink); font-weight: 700; text-decoration: none;">
+                            {{ $settings->get('site_email', 'info@bespokeornateplaster.com') }}
                         </a>
                     </div>
                     <div style="margin-bottom: 16px;">

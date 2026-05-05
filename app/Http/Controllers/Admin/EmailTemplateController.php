@@ -2,7 +2,6 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\StoreEmailTemplateRequest;
 use App\Http\Requests\Admin\UpdateEmailTemplateRequest;
 use App\Models\EmailTemplate;
 use Illuminate\Support\Str;
@@ -10,49 +9,110 @@ use Illuminate\Support\Str;
 class EmailTemplateController extends Controller {
 
     public function index() {
-        $templates = EmailTemplate::orderBy('name')->get();
-        return view('admin.email-templates.index', compact('templates'));
-    }
-
-    public function create() {
-        return view('admin.email-templates.form', ['template' => new EmailTemplate()]);
-    }
-
-    public function store(StoreEmailTemplateRequest $request) {
-        $data = $request->validated();
-        if (empty($data['slug'])) $data['slug'] = Str::slug($data['name']);
-        $data['is_active']    = $request->boolean('is_active');
-        $data['placeholders'] = $this->extractPlaceholders($data['body'] ?? '');
-
-        EmailTemplate::create($data);
-        return redirect()->route('admin.email-templates.index')->with('success', 'Email template created.');
+        $this->ensureDefaultTemplates();
+        $audience = request('audience', 'client');
+        if (! array_key_exists($audience, EmailTemplate::$templateAudienceLabels)) {
+            $audience = 'client';
+        }
+        $allowedTypes = array_keys(EmailTemplate::$templateTypeLabels);
+        $templates = EmailTemplate::query()
+            ->whereIn('template_type', $allowedTypes)
+            ->get()
+            ->filter(fn (EmailTemplate $template) => EmailTemplate::audienceForType($template->template_type) === $audience)
+            ->sortBy(fn (EmailTemplate $template) => ($template->is_active ? '0' : '1') . '-' . $template->name);
+        $templateTypeLabels = EmailTemplate::$templateTypeLabels;
+        $audienceLabels = EmailTemplate::$templateAudienceLabels;
+        return view('admin.email-templates.index', compact('templates', 'templateTypeLabels', 'audience', 'audienceLabels'));
     }
 
     public function edit(EmailTemplate $emailTemplate) {
-        return view('admin.email-templates.form', ['template' => $emailTemplate]);
+        abort_unless($this->isValidTemplateType($emailTemplate->template_type), 404);
+
+        return view('admin.email-templates.form', [
+            'template' => $emailTemplate,
+            'templateTypes' => EmailTemplate::$templateTypeLabels,
+            'shortcodeReference' => EmailTemplate::shortcodeReference(),
+        ]);
     }
 
     public function update(UpdateEmailTemplateRequest $request, EmailTemplate $emailTemplate) {
+        abort_unless($this->isValidTemplateType($emailTemplate->template_type), 404);
+
         $data = $request->validated();
-        if (empty($data['slug'])) $data['slug'] = Str::slug($data['name']);
-        $data['is_active']    = $request->boolean('is_active');
-        $data['placeholders'] = $this->extractPlaceholders($data['body'] ?? '');
+        if (empty($data['slug'])) {
+            $data['slug'] = Str::slug($data['name']) . '-' . $emailTemplate->id;
+        }
+        $data['is_active'] = $request->boolean('is_active');
+        $data['placeholders'] = $this->extractPlaceholders(
+            ($data['body'] ?? '') . "\n" . ($data['subject'] ?? '')
+        );
 
         $emailTemplate->update($data);
-        return redirect()->route('admin.email-templates.index')->with('success', 'Email template updated.');
+        $emailTemplate->refresh();
+        $this->deactivateOtherActive($emailTemplate);
+
+        return redirect()->route('admin.email-templates.index', [
+            'audience' => EmailTemplate::audienceForType($emailTemplate->template_type),
+        ])->with('success', 'Email template updated.');
     }
 
-    public function destroy(EmailTemplate $emailTemplate) {
-        $emailTemplate->delete();
-        return back()->with('success', 'Email template deleted.');
-    }
+    private function extractPlaceholders(string $text): array {
+        preg_match_all('/\{\{\s*(\w+)\s*\}\}/', $text, $matches);
 
-    public function show(EmailTemplate $emailTemplate) {
-        return redirect()->route('admin.email-templates.edit', $emailTemplate);
-    }
-
-    private function extractPlaceholders(string $body): array {
-        preg_match_all('/\{\{(\w+)\}\}/', $body, $matches);
         return array_values(array_unique($matches[1] ?? []));
+    }
+
+    private function deactivateOtherActive(EmailTemplate $current): void {
+        if (! $current->template_type || ! $current->is_active) {
+            return;
+        }
+        EmailTemplate::query()
+            ->where('template_type', $current->template_type)
+            ->where('id', '!=', $current->id)
+            ->where('is_active', true)
+            ->update(['is_active' => false]);
+    }
+
+    private function isValidTemplateType(?string $type): bool
+    {
+        if (! $type) {
+            return false;
+        }
+
+        return in_array($type, array_keys(EmailTemplate::$templateTypeLabels), true);
+    }
+
+    private function ensureDefaultTemplates(): void
+    {
+        $defaults = EmailTemplate::fixedTemplateDefaults();
+
+        foreach ($defaults as $type => $row) {
+            $template = EmailTemplate::query()
+                ->where('template_type', $type)
+                ->orWhere('slug', $row['slug'])
+                ->first();
+
+            if (! $template) {
+                $template = EmailTemplate::create([
+                    'template_type' => $type,
+                    'name' => $row['name'],
+                    'slug' => $row['slug'] . '-' . substr(md5($type), 0, 4),
+                    'subject' => $row['subject'],
+                    'body' => $row['body'],
+                    'is_active' => true,
+                ]);
+            } else {
+                $template->template_type = $type;
+                $template->name = $template->name ?: $row['name'];
+                $template->subject = $template->subject ?: $row['subject'];
+                $template->body = $template->body ?: $row['body'];
+                $template->save();
+            }
+
+            if ($template->wasRecentlyCreated || empty($template->placeholders)) {
+                $template->placeholders = $this->extractPlaceholders($template->subject . "\n" . $template->body);
+                $template->save();
+            }
+        }
     }
 }

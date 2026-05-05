@@ -35,6 +35,13 @@
                         <input type="email" name="site_email" class="form-control" value="{{ old('site_email', $settings->get('site_email')) }}">
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Admin Notification Email</label>
+                        <input type="email" name="admin_notification_email" class="form-control"
+                               value="{{ old('admin_notification_email', $settings->get('admin_notification_email')) }}"
+                               placeholder="where admin alerts should be sent">
+                        <div class="form-text">Contact/newsletter admin templates use this email first. If empty, system falls back to Site Email. If both are empty, admin mail is skipped.</div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Phone</label>
                         <input type="text" name="site_phone" class="form-control" value="{{ old('site_phone', $settings->get('site_phone')) }}">
                     </div>
@@ -50,7 +57,7 @@
                         <label class="form-label">Copyright Text</label>
                         <input type="text" name="copyright_text" class="form-control"
                                value="{{ old('copyright_text', $settings->get('copyright_text')) }}"
-                               placeholder="© {{ date('Y') }} {{ $settings->get('site_name','YourSite') }}. All rights reserved.">
+                               placeholder="© {{ date('Y') }} {{ $settings->get('site_name','Bespoke Ornate Plaster') }}. All rights reserved.">
                         <div class="form-text">Leave blank to auto-generate from site name.</div>
                     </div>
                 </div>

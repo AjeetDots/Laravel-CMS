@@ -236,11 +236,16 @@
             <a href="{{ route('home') }}" class="btn btn-sm btn-light" target="_blank">
                 <i class="fas fa-eye me-1"></i>View Site
             </a>
+            @php
+                $adminUser = Auth::user();
+                $adminName = $adminUser?->name ?: 'Admin';
+                $adminInitial = strtoupper(substr($adminName, 0, 1));
+            @endphp
             <div class="dropdown">
                 <div class="topbar-user dropdown-toggle" data-bs-toggle="dropdown">
-                    <div class="avatar">{{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
+                    <div class="avatar">{{ $adminInitial }}</div>
                     <div>
-                        <div style="font-weight:600; font-size:.85rem; color:#0f172a;">{{ Auth::user()->name }}</div>
+                        <div style="font-weight:600; font-size:.85rem; color:#0f172a;">{{ $adminName }}</div>
                         <div style="font-size:.75rem; color:#64748b;">Administrator</div>
                     </div>
                 </div>

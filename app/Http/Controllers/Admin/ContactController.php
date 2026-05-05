@@ -2,6 +2,9 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
+use App\Models\ContactReplyLog;
+use App\Models\MailDeliveryLog;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ContactController extends Controller {
@@ -19,7 +22,7 @@ class ContactController extends Controller {
         return response()->streamDownload(function () {
             $handle = fopen('php://output', 'w');
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputcsv($handle, ['ID', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Read', 'Created at']);
+            fputcsv($handle, ['ID', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Client Mail Status', 'Admin Mail Status', 'Read', 'Created at']);
 
             foreach (Contact::query()->orderByDesc('created_at')->cursor() as $contact) {
                 $message = (string) ($contact->message ?? '');
@@ -32,6 +35,8 @@ class ContactController extends Controller {
                     $contact->phone ?? '',
                     $contact->subject ?? '',
                     $message,
+                    $contact->client_mail_status ?? '',
+                    $contact->admin_mail_status ?? '',
                     $contact->is_read ? 'Yes' : 'No',
                     $contact->created_at?->format('Y-m-d H:i:s') ?? '',
                 ]);
@@ -44,8 +49,44 @@ class ContactController extends Controller {
     }
     public function show(Contact $contact) {
         $contact->update(['is_read' => true]);
-        return view('admin.contacts.show', compact('contact'));
+        $mailLogs = MailDeliveryLog::query()
+            ->where('contact_id', $contact->id)
+            ->latest()
+            ->limit(20)
+            ->get();
+
+        $replyLogs = ContactReplyLog::query()
+            ->where('contact_id', $contact->id)
+            ->with('user:id,name')
+            ->latest()
+            ->limit(30)
+            ->get();
+
+        return view('admin.contacts.show', compact('contact', 'mailLogs', 'replyLogs'));
     }
+
+    public function reply(Contact $contact) {
+        $data = request()->validate([
+            'reply_method' => 'required|string|in:email,phone,other',
+            'reply_message' => 'required|string|max:2000',
+        ]);
+
+        $contact->update([
+            'reply_method' => $data['reply_method'],
+            'reply_message' => $data['reply_message'],
+            'replied_at' => now(),
+        ]);
+
+        ContactReplyLog::create([
+            'contact_id' => $contact->id,
+            'user_id' => Auth::id(),
+            'reply_method' => $data['reply_method'],
+            'reply_message' => $data['reply_message'],
+        ]);
+
+        return back()->with('success', 'Reply action recorded successfully.');
+    }
+
     public function destroy(Contact $contact) {
         $contact->delete();
         return back()->with('success', 'Message deleted.');
