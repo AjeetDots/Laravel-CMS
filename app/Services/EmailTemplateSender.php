@@ -14,7 +14,7 @@ class EmailTemplateSender
      *
      * @return array{delivered:bool,status:string,reason:string}
      */
-    public static function sendWithMeta(
+    public function sendWithMeta(
         string $templateType,
         ?string $toEmail,
         array $vars,
@@ -24,7 +24,7 @@ class EmailTemplateSender
     {
         if (! $toEmail || ! filter_var($toEmail, FILTER_VALIDATE_EMAIL)) {
             $reason = 'Invalid or missing recipient email';
-            self::writeLog(
+            $this->writeLog(
                 null,
                 $templateType,
                 $toEmail,
@@ -45,7 +45,7 @@ class EmailTemplateSender
 
         if (! $tpl) {
             $reason = 'No active template found for this template type';
-            self::writeLog(
+            $this->writeLog(
                 null,
                 $templateType,
                 $toEmail,
@@ -73,7 +73,7 @@ class EmailTemplateSender
                 }
             });
 
-            self::writeLog(
+            $this->writeLog(
                 $tpl->id,
                 $templateType,
                 $toEmail,
@@ -86,7 +86,7 @@ class EmailTemplateSender
             return ['delivered' => true, 'status' => 'sent', 'reason' => 'Sent successfully'];
         } catch (\Throwable $e) {
             $reason = $e->getMessage();
-            self::writeLog(
+            $this->writeLog(
                 $tpl->id,
                 $templateType,
                 $toEmail,
@@ -100,7 +100,7 @@ class EmailTemplateSender
         }
     }
 
-    public static function send(
+    public function send(
         string $templateType,
         ?string $toEmail,
         array $vars,
@@ -108,10 +108,10 @@ class EmailTemplateSender
         array $context = []
     ): bool
     {
-        return self::sendWithMeta($templateType, $toEmail, $vars, $messageModifier, $context)['delivered'];
+        return $this->sendWithMeta($templateType, $toEmail, $vars, $messageModifier, $context)['delivered'];
     }
 
-    private static function writeLog(
+    private function writeLog(
         ?int $templateId,
         ?string $templateType,
         ?string $toEmail,
