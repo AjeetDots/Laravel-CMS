@@ -27,8 +27,8 @@
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('finishes.show', $finish->slug) }}" class="service-grid-card">
                     <div class="service-grid-card__media">
-                        @if($finish->cover_image)
-                            <img src="{{ $finish->cover_image_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
+                        @if($finish->thumbnail_url)
+                            <img src="{{ $finish->thumbnail_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
                         @else
                             <div class="service-grid-card__placeholder" aria-hidden="true">
                                 <i class="fas fa-paint-brush"></i>

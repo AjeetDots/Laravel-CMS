@@ -16,7 +16,7 @@ class HomeController extends Controller {
         $sliderRight1 = Slider::where('is_active', true)->where('panel', 'right_top')->first();
         $sliderRight2 = Slider::where('is_active', true)->where('panel', 'right_bottom')->first();
         $services     = Service::where('is_active', true)->orderBy('sort_order')->limit(6)->get();
-        $finishes     = Finish::where('is_active', true)->orderBy('sort_order')->limit(6)->get();
+        $finishes     = Finish::where('is_active', true)->orderBy('sort_order')->orderBy('title')->limit(6)->get();
         $portfolios   = Portfolio::where('is_active', true)->orderBy('sort_order')->limit(4)->get();
         $gallery      = GalleryItem::where('is_active', true)->orderBy('sort_order')->limit(8)->get();
         $testimonials = Testimonial::where('is_active', true)->orderBy('sort_order')->get();

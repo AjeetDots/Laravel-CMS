@@ -37,8 +37,8 @@
                 @foreach($finishes as $finish)
                 <tr>
                     <td>
-                        @if($finish->cover_image)
-                            <img src="{{ asset('storage/'.$finish->cover_image) }}" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
+                        @if($finish->thumbnail_url)
+                            <img src="{{ $finish->thumbnail_url }}" alt="" style="width:50px;height:50px;object-fit:cover;border-radius:6px;">
                         @else
                             <div style="width:50px;height:50px;background:#f1f5f9;border-radius:6px;display:flex;align-items:center;justify-content:center;color:#94a3b8;">
                                 <i class="fas fa-image"></i>

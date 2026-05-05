@@ -24,9 +24,9 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-8">
-                @if($finish->cover_image)
+                @if($finish->thumbnail_url)
                 <div class="media-frame media-frame--short service-detail-lead-img mb-4">
-                    <img src="{{ $finish->cover_image_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
+                    <img src="{{ $finish->thumbnail_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
                 </div>
                 @endif
 
@@ -43,11 +43,17 @@
                     </div>
                 @endif
 
-                @if(count($finish->gallery_urls ?? []))
+                @php
+                    $galleryExtra = $finish->gallery_urls ?? [];
+                    if (!$finish->cover_image && count($galleryExtra)) {
+                        $galleryExtra = array_slice($galleryExtra, 1);
+                    }
+                @endphp
+                @if(count($galleryExtra))
                 <div class="mt-5">
                     <h3 class="h5 mb-4" style="font-family:'Playfair Display',serif;">Gallery</h3>
                     <div class="row g-3">
-                        @foreach($finish->gallery_urls as $url)
+                        @foreach($galleryExtra as $url)
                         <div class="col-6 col-md-4">
                             <div class="media-frame" style="aspect-ratio:1;">
                                 <img src="{{ $url }}" alt="" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;">
@@ -112,8 +118,8 @@
             <div class="col-md-6 col-lg-3">
                 <a href="{{ route('finishes.show', $r->slug) }}" class="service-grid-card">
                     <div class="service-grid-card__media">
-                        @if($r->cover_image)
-                            <img src="{{ $r->cover_image_url }}" alt="{{ $r->title }}" loading="lazy">
+                        @if($r->thumbnail_url)
+                            <img src="{{ $r->thumbnail_url }}" alt="{{ $r->title }}" loading="lazy">
                         @else
                             <div class="service-grid-card__placeholder"><i class="fas fa-paint-brush"></i></div>
                         @endif

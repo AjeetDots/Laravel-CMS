@@ -34,9 +34,20 @@ class Finish extends Model {
             : asset('storage/' . $this->cover_image);
     }
 
+    /**
+     * Card / grid image: cover first, else first gallery file (so home & listings show a real photo when only gallery was uploaded).
+     */
+    public function getThumbnailUrlAttribute(): ?string {
+        if ($this->cover_image_url) {
+            return $this->cover_image_url;
+        }
+        $g = $this->gallery_urls;
+        return $g[0] ?? null;
+    }
+
     /** Alias for HasSeo::getSeoImage() fallback (cover-based models). */
     public function getImageUrlAttribute(): ?string {
-        return $this->cover_image_url;
+        return $this->cover_image_url ?? ($this->gallery_urls[0] ?? null);
     }
 
     public function getGalleryUrlsAttribute(): array {
