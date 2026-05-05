@@ -90,7 +90,8 @@
                 @if($blog->image)
                     <img src="{{ asset('storage/'.$blog->image) }}" alt="Featured" style="width:100%;border-radius:6px;margin-bottom:12px;">
                 @endif
-                <input type="file" name="image" class="form-control" accept="image/*" id="imageInput">
+                <input type="file" name="image" class="form-control" id="imageInput"
+                       accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                 <div class="form-text">Leave empty to keep current image.</div>
                 <div id="imagePreview" class="mt-3" style="display:none;">
                     <img id="previewImg" src="" alt="Preview" style="width:100%;border-radius:6px;">

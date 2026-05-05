@@ -65,7 +65,8 @@
                     <div class="mb-3">
                         <label class="form-label" for="slider_image">Image {{ isset($slider->id) ? '' : '*' }}</label>
                         <input type="file" name="image" id="slider_image" class="form-control"
-                               accept="image/*" {{ isset($slider->id) ? '' : 'required' }}
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                               {{ isset($slider->id) ? '' : 'required' }}
                                onchange="previewImg(this)">
                         <div class="mt-2" id="imgPreviewWrap">
                             @if(isset($slider->id) && $slider->image)
@@ -78,7 +79,7 @@
                             @endif
                         </div>
                         <p class="text-muted mt-1" style="font-size:.75rem;">
-                            Recommended: 1400×800px or wider, JPG/PNG.<br>
+                            Recommended: 1400×800px or wider. JPG, PNG, WebP, or SVG.<br>
                             Center main images look best landscape; right thumbnails work portrait too.
                         </p>
                     </div>

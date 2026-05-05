@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGalleryRequest extends FormRequest
@@ -15,7 +16,7 @@ class StoreGalleryRequest extends FormRequest
     {
         return [
             'title'      => 'nullable|string|max:200',
-            'image'      => 'required|image|max:4096',
+            'image'      => ImageUploadRules::required(4096),
             'category'   => 'nullable|string|max:100',
             'sort_order' => 'integer',
             'is_active'  => 'boolean',

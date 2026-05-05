@@ -66,7 +66,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Cover Image</label>
-                        <input type="file" name="cover_image" class="form-control" accept="image/*">
+                        <input type="file" name="cover_image" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                         @if(isset($portfolio->id) && $portfolio->cover_image)
                             <div class="mt-2">
                                 <img src="{{ asset('storage/'.$portfolio->cover_image) }}" class="img-preview" style="height:100px;width:100%;object-fit:cover;border-radius:8px;">
@@ -75,7 +76,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Gallery Images <small class="text-muted">(multiple)</small></label>
-                        <input type="file" name="gallery_images[]" class="form-control" accept="image/*" multiple>
+                        <input type="file" name="gallery_images[]" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml" multiple>
                         @if(isset($portfolio->id) && !empty($portfolio->gallery))
                             <div class="mt-2">
                                 <div class="d-flex flex-wrap gap-1">

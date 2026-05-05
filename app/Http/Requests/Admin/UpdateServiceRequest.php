@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateServiceRequest extends FormRequest
@@ -20,7 +21,7 @@ class UpdateServiceRequest extends FormRequest
             'slug'              => 'nullable|string|unique:services,slug,' . $id . '|max:200',
             'short_description' => 'required|string',
             'description'       => 'nullable|string',
-            'image'             => 'nullable|image|max:2048',
+            'image'             => ImageUploadRules::nullable(2048),
             'icon'              => 'nullable|string|max:100',
             'sort_order'        => 'integer',
             'is_active'         => 'boolean',

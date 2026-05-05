@@ -47,7 +47,8 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">Image {{ isset($item->id) ? '' : '*' }}</label>
-                        <input type="file" name="image" class="form-control" accept="image/*" {{ isset($item->id) ? '' : 'required' }}>
+                        <input type="file" name="image" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml" {{ isset($item->id) ? '' : 'required' }}>
                         @if(isset($item->id) && $item->image)
                             <div class="mt-2">
                                 <img src="{{ Storage::disk('public')->exists($item->image) ? asset('storage/'.$item->image) : '' }}"

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBrandRequest extends FormRequest
@@ -15,7 +16,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name'       => 'required|string|max:100',
-            'logo'       => 'nullable|image|max:1024',
+            'logo'       => ImageUploadRules::nullable(1024),
             'website'    => 'nullable|url|max:200',
             'sort_order' => 'integer',
             'is_active'  => 'boolean',

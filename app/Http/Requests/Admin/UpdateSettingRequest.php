@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -24,9 +26,9 @@ class UpdateSettingRequest extends FormRequest
             'social_twitter'   => 'nullable|url',
             'social_linkedin'  => 'nullable|url',
             'social_instagram' => 'nullable|url',
-            'site_logo'        => 'nullable|image|max:2048',
-            'site_logo_footer' => 'nullable|image|max:2048',
-            'site_favicon'     => 'nullable|file|mimes:ico,png,svg,jpg,jpeg,gif|max:512',
+            'site_logo'        => ImageUploadRules::nullable(2048),
+            'site_logo_footer' => ImageUploadRules::nullable(2048),
+            'site_favicon'     => ['nullable', File::types(['ico', 'png', 'svg', 'jpg', 'jpeg', 'gif', 'webp'])->max(512)],
         ];
     }
 }

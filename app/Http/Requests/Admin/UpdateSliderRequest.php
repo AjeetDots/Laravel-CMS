@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateSliderRequest extends FormRequest
@@ -16,7 +17,7 @@ class UpdateSliderRequest extends FormRequest
         return [
             'title'       => 'required|string|max:200',
             'subtitle'    => 'nullable|string|max:300',
-            'image'       => 'nullable|image|max:2048',
+            'image'       => ImageUploadRules::nullable(2048),
             'button_text' => 'nullable|string|max:50',
             'button_link' => 'nullable|string|max:200',
             'sort_order'  => 'integer',

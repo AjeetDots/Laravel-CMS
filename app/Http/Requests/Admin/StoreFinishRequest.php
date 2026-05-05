@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Requests\Admin;
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFinishRequest extends FormRequest {
@@ -10,9 +11,9 @@ class StoreFinishRequest extends FormRequest {
             'slug'           => 'nullable|string|max:255|unique:finishes,slug',
             'description'    => 'nullable|string',
             'use_cases'      => 'nullable|string',
-            'cover_image'    => 'nullable|image|max:4096',
+            'cover_image'    => ImageUploadRules::nullable(4096),
             'gallery_images' => 'nullable|array',
-            'gallery_images.*'=> 'image|max:4096',
+            'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'tags_raw'       => 'nullable|string',
             'sort_order'     => 'nullable|integer|min:0',
             'is_active'      => 'nullable|boolean',

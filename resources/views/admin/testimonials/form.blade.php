@@ -56,7 +56,8 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">Client Photo</label>
-                        <input type="file" name="client_image" class="form-control" accept="image/*">
+                        <input type="file" name="client_image" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                         @if(isset($testimonial->id) && $testimonial->client_image)
                             <div class="mt-2">
                                 <img src="{{ asset('storage/'.$testimonial->client_image) }}" class="img-preview" style="height:60px; width:60px; border-radius:50%; object-fit:cover;">

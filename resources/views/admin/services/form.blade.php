@@ -66,7 +66,8 @@
                 <div class="col-md-4">
                     <div class="mb-3">
                         <label class="form-label">Image</label>
-                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <input type="file" name="image" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                         @if(isset($service->id) && $service->image)
                             <div class="mt-2">
                                 <img src="{{ asset('storage/'.$service->image) }}" class="img-preview" style="height:80px;">

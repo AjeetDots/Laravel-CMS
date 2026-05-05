@@ -75,8 +75,9 @@
                                 <label class="form-check-label text-danger" for="remove_site_logo">Remove current logo</label>
                             </div>
                         @endif
-                        <input type="file" name="site_logo" id="site_logo" class="form-control" accept="image/*">
-                        <div class="form-text">PNG/SVG with transparent background recommended. Max 2MB.</div>
+                        <input type="file" name="site_logo" id="site_logo" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                        <div class="form-text">PNG, WebP, or SVG with transparent background recommended. Max 2MB.</div>
                     </div>
 
                     {{-- Footer Logo --}}
@@ -93,8 +94,9 @@
                         @else
                             <div class="alert alert-info py-2 mb-2" style="font-size:.82rem;">If not set, the header logo will be used in the footer.</div>
                         @endif
-                        <input type="file" name="site_logo_footer" id="site_logo_footer" class="form-control" accept="image/*">
-                        <div class="form-text">White/light version for dark footer. Max 2MB.</div>
+                        <input type="file" name="site_logo_footer" id="site_logo_footer" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                        <div class="form-text">White/light version for dark footer. JPG, PNG, GIF, WebP, or SVG. Max 2MB.</div>
                     </div>
 
                     {{-- Favicon --}}
@@ -111,7 +113,8 @@
                                 <label class="form-check-label text-danger" for="remove_site_favicon">Remove current favicon</label>
                             </div>
                         @endif
-                        <input type="file" name="site_favicon" id="site_favicon" class="form-control" accept="image/*,.ico">
+                        <input type="file" name="site_favicon" id="site_favicon" class="form-control"
+                               accept=".ico,.png,.svg,.jpg,.jpeg,.gif,.webp,image/x-icon,image/png,image/svg+xml,image/webp">
                         <div id="faviconPreview" class="mt-2" style="display:none;">
                             <img id="faviconPreviewImg" src="" alt="Preview"
                                  style="width:32px;height:32px;object-fit:contain;image-rendering:pixelated;border:1px solid #e2e8f0;border-radius:4px;">

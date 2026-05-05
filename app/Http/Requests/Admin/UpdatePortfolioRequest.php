@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Requests\Admin;
+use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdatePortfolioRequest extends FormRequest {
@@ -11,9 +12,9 @@ class UpdatePortfolioRequest extends FormRequest {
             'slug'           => "nullable|string|max:255|unique:portfolios,slug,{$id}",
             'description'    => 'nullable|string',
             'project_type'   => 'required|in:reference,real',
-            'cover_image'    => 'nullable|image|max:4096',
+            'cover_image'    => ImageUploadRules::nullable(4096),
             'gallery_images' => 'nullable|array',
-            'gallery_images.*'=> 'image|max:4096',
+            'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'clear_gallery'  => 'nullable|boolean',
             'tags_raw'       => 'nullable|string',
             'sort_order'     => 'nullable|integer|min:0',
