@@ -2,8 +2,11 @@
 @section('title', 'Newsletter Subscribers')
 @section('content')
 
-<div class="page-header-bar d-flex justify-content-between align-items-center">
-    <h1>Newsletter Subscribers <span class="badge bg-primary ms-2">{{ $subscribers->total() }}</span></h1>
+<div class="page-header-bar d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <h1 class="mb-0">Newsletter Subscribers <span class="badge bg-primary ms-2">{{ $subscribers->total() }}</span></h1>
+    <a href="{{ route('admin.newsletter.export') }}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-file-export me-1"></i> Export CSV
+    </a>
 </div>
 
 @if(session('success'))

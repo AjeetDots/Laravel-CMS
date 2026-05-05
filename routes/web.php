@@ -70,11 +70,13 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('brands',     BrandController::class)->except(['show']);
 
         // Enquiries (contact form submissions)
-        Route::get('enquiries',              [AdminContactController::class, 'index'])->name('enquiries.index');
+        Route::get('enquiries',               [AdminContactController::class, 'index'])->name('enquiries.index');
+        Route::get('enquiries/export',        [AdminContactController::class, 'export'])->name('enquiries.export');
         Route::get('enquiries/{contact}',    [AdminContactController::class, 'show'])->name('enquiries.show');
         Route::delete('enquiries/{contact}', [AdminContactController::class, 'destroy'])->name('enquiries.destroy');
         // Keep legacy contact routes as aliases
         Route::get('contacts',               [AdminContactController::class, 'index'])->name('contacts.index');
+        Route::get('contacts/export',        [AdminContactController::class, 'export'])->name('contacts.export');
         Route::get('contacts/{contact}',     [AdminContactController::class, 'show'])->name('contacts.show');
         Route::delete('contacts/{contact}',  [AdminContactController::class, 'destroy'])->name('contacts.destroy');
 
@@ -90,7 +92,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('categories', CategoryController::class)->except(['show']);
 
         // Newsletter
-        Route::get('newsletter', [AdminNewsletterController::class, 'index'])->name('newsletter.index');
+        Route::get('newsletter',                 [AdminNewsletterController::class, 'index'])->name('newsletter.index');
+        Route::get('newsletter/export',          [AdminNewsletterController::class, 'export'])->name('newsletter.export');
         Route::delete('newsletter/{subscriber}', [AdminNewsletterController::class, 'destroy'])->name('newsletter.destroy');
 
         // Settings & profile

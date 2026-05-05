@@ -4,9 +4,14 @@
 
 @section('content')
 
-<div class="page-header-bar">
-    <h1>Contact Messages</h1>
-    <span class="badge bg-danger" style="font-size:.8rem;">{{ $contacts->where('is_read', false)->count() }} Unread</span>
+<div class="page-header-bar d-flex flex-wrap justify-content-between align-items-center gap-3">
+    <div class="d-flex flex-wrap align-items-center gap-3">
+        <h1 class="mb-0">Contact Messages</h1>
+        <span class="badge bg-danger" style="font-size:.8rem;">{{ $contacts->where('is_read', false)->count() }} Unread</span>
+    </div>
+    <a href="{{ request()->routeIs('admin.contacts.index') ? route('admin.contacts.export') : route('admin.enquiries.export') }}" class="btn btn-outline-secondary btn-sm">
+        <i class="fas fa-file-export me-1"></i> Export CSV
+    </a>
 </div>
 
 <div class="card">
