@@ -24,13 +24,44 @@ class PageController extends Controller
         $data = $request->validated();
         if (empty($data['slug'])) $data['slug'] = Str::slug($data['title']);
         $data['is_active'] = $request->boolean('is_active');
+        unset($data['sections']);
         $page = Page::create($data);
+        foreach($request->sections ?? [] as $index => $section){
+            $image = null;
+            if(isset($section['image'])){
+                $image =
+                    $section['image']
+                    ->store(
+                        'pages',
+                        'public'
+                    );
+            }
+
+            $page->sections()->create([
+                'type' =>
+                    $section['type'],
+                'position' =>
+                    $index + 1,
+                'data' => [
+                    'title' =>
+                        $section['title'],
+                    'content' =>
+                        $section['content'],
+                    'image' =>
+                        $image,
+                    'image_position' =>
+                        $section[
+                            'image_position'
+                        ],
+                ]
+            ]);
+        }
         $page->saveSeo($request->input('seo', []));
         return redirect()->route('admin.pages.index')->with('success', 'Page created.');
     }
     public function edit(Page $page)
     {
-        $page->load('seoMeta');
+        $page->load(['seoMeta','sections']);
         return view('admin.pages.form', compact('page') + ['templates' => $this->templates()]);
     }
     public function update(UpdatePageRequest $request, Page $page)
@@ -38,7 +69,42 @@ class PageController extends Controller
         $data = $request->validated();
         if (empty($data['slug'])) $data['slug'] = Str::slug($data['title']);
         $data['is_active'] = $request->boolean('is_active');
+        unset($data['sections']);
         $page->update($data);
+        $page->sections()->delete();
+        foreach($request->sections ?? [] as $index => $section){
+                    $image = $section['existing_image'] ??  null;
+                    if(isset($section['image'])){
+                        $image =
+                            $section['image']
+                            ->store(
+                                'pages',
+                                'public'
+                            );
+                    }
+
+                    $page->sections()
+                        ->create([
+                            'type' =>
+                                $section['type'],
+
+                            'position' =>
+                                $index + 1,
+
+                            'data' => [
+                                'title' =>
+                                    $section['title'],
+                                'content' =>
+                                    $section['content'],
+                                'image' =>
+                                    $image,
+                                'image_position' =>
+                                    $section[
+                                        'image_position'
+                                    ],
+                            ]
+                        ]);
+                }
         $page->saveSeo($request->input('seo', []));
         return redirect()->route('admin.pages.index')->with('success', 'Page updated.');
     }

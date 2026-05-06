@@ -25,9 +25,33 @@
         </nav>
     </div>
 </div>
+<section class="about-feature">
+    <div class="container">
+        <div class="row align-items-start g-5">
+            @foreach($page->sections as $section)
+
+                <section class="about-feature">
+                    <div class="container">
+                        <div class="row align-items-start g-5">
+
+                            @include(
+                                'frontend.sections.' . $section->type,
+                                [
+                                    'data' => $section->data
+                                ]
+                            )
+
+                        </div>
+                    </div>
+                </section>
+
+            @endforeach
+        </div>
+    </div>
+</section>
 
 {{-- ── FEATURE IMAGE + OUR STORY ──────────────────────────────────── --}}
-<section class="about-feature">
+<!-- <section class="about-feature">
     <div class="container">
         <div class="row align-items-start g-5">
             {{-- Image --}}
@@ -79,10 +103,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 {{-- ── DARK STATS BAND ─────────────────────────────────────────────── --}}
-<section class="about-stats">
+<!-- <section class="about-stats">
     <div class="container">
         <div class="d-flex align-items-center justify-content-around flex-wrap gap-4">
             <div class="stat-block">
@@ -106,10 +130,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 {{-- ── VALUES ──────────────────────────────────────────────────────── --}}
-<section class="about-values">
+<!-- <section class="about-values">
     <div class="container">
         <div class="row">
             <div class="col-lg-4 values-header">
@@ -154,10 +178,10 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 {{-- ── TEAM ────────────────────────────────────────────────────────── --}}
-<section class="about-team">
+<!-- <section class="about-team">
     <div class="container">
         <span class="team-label">The people behind the work</span>
         <h2>Meet our leadership.</h2>
@@ -183,7 +207,7 @@
             @endforeach
         </div>
     </div>
-</section>
+</section> -->
 
 {{-- ── CTA ─────────────────────────────────────────────────────────── --}}
 <section class="about-cta">

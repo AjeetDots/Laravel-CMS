@@ -5,7 +5,7 @@ use App\Models\Page;
 
 class PageController extends Controller {
     public function show(string $slug) {
-        $page = Page::with('seoMeta')
+        $page = Page::with('seoMeta','sections')
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();

@@ -12,7 +12,7 @@
 </div>
 
 <form action="{{ isset($page->id) ? route('admin.pages.update', $page) : route('admin.pages.store') }}"
-      method="POST">
+      method="POST" enctype="multipart/form-data">
     @csrf
     @if(isset($page->id)) @method('PUT') @endif
 
@@ -38,9 +38,42 @@
                                value="{{ old('slug', $page->slug) }}" placeholder="auto-generated if empty">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Content</label>
-                        <textarea name="content" id="postContent" class="form-control wysiwyg" rows="12">{{ old('content', $page->content) }}</textarea>
-                        <div class="form-text">You can use HTML tags for formatting.</div>
+                        <!-- <label class="form-label">Content</label> -->
+                        <!-- <textarea name="content" id="postContent" class="form-control wysiwyg" rows="12">{{ old('content', $page->content) }}</textarea> -->
+                        <!-- <div class="form-text">You can use HTML tags for formatting.</div> -->
+                        <div class="card">
+                            <div class="card-header">
+
+                                Sections
+
+                                <button type="button"
+                                        id="addSection"
+                                        class="btn btn-sm btn-primary float-end">
+
+                                    Add Section
+                                </button>
+
+                            </div>
+
+                            <div class="card-body">
+
+                                <div id="sectionsWrapper">
+                                    @foreach($page->sections ?? [] as $index => $section)
+
+                                        @php
+                                            $data = $section->data;
+                                        @endphp
+
+                                        @include('admin.pages.partials.section',
+                                            [
+                                                'index' => $index,
+                                                'data' => $data
+                                            ]
+                                        )
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -85,4 +118,188 @@
     </div>
 </form>
 
+<template id="sectionTemplate">
+
+    <div class="section-item border p-3 mb-3">
+        <h5>Section</h5>
+        <input type="hidden" class="position-field">
+
+        <div class="mb-3">
+            <label>Type</label>
+            <select class="form-control type-field">
+                <option value="media_content">Media Content</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Title</label>
+            <input type="text" class="form-control title-field">
+        </div>
+
+        <div class="mb-3">
+            <label>Content</label>
+            <textarea class="form-control content-field wysiwyg" rows="8"></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label>Image</label>
+            <input type="file" class="form-control image-field">
+        </div>
+
+        <div class="mb-3">
+            <label>Image Position</label>
+            <select class="form-control image-position-field">
+                <option value="left">Left</option>
+                <option value="right">Right</option>
+            </select>
+        </div>
+
+        <button type="button" class="btn btn-danger remove-section">Remove</button>
+    </div>
+
+</template>
+
 @endsection
+@push('scripts')
+<script>
+
+    document.addEventListener('DOMContentLoaded', function(){
+        document.querySelectorAll('.wysiwyg').forEach(function(el){
+            initEditor(el);
+        });
+    });
+
+    let index = {{ $page->sections->count() ?? 0 }};
+
+    const wrapper = document.getElementById(
+        'sectionsWrapper'
+    );
+
+
+    document.getElementById(
+        'addSection'
+    ).addEventListener(
+        'click',
+        addSection
+    );
+
+
+    function addSection()
+    {
+        let html =
+            document.getElementById(
+                'sectionTemplate'
+            ).content.cloneNode(true);
+
+
+        html.querySelector(
+            '.type-field'
+        ).name =
+            `sections[${index}][type]`;
+
+
+        html.querySelector(
+            '.title-field'
+        ).name =
+            `sections[${index}][title]`;
+
+
+        html.querySelector(
+            '.content-field'
+        ).name =
+            `sections[${index}][content]`;
+
+
+        html.querySelector(
+            '.image-field'
+        ).name =
+            `sections[${index}][image]`;
+
+
+        html.querySelector(
+            '.image-position-field'
+        ).name =
+            `sections[${index}][image_position]`;
+
+
+        wrapper.appendChild(html);
+        let newTextarea = wrapper.querySelector(`textarea[name="sections[${index}][content]"]`);
+        initEditor(newTextarea);
+
+        index++;
+    }
+
+
+    wrapper.addEventListener(
+        'click',
+        function(e){
+
+            if(
+                e.target.classList.contains(
+                    'remove-section'
+                )
+            ){
+                e.target.closest(
+                    '.section-item'
+                ).remove();
+            }
+
+        }
+    );
+
+    function initEditor(el)
+    {
+        if (el.dataset.joditInitialized) {
+            return;
+        }
+
+        el.dataset.joditInitialized = true;
+
+        Jodit.make(el, {
+            height: 420,
+            minHeight: 300,
+            toolbarButtonSize: 'middle',
+            theme: 'default',
+            language: 'en',
+            defaultMode: Jodit.MODE_WYSIWYG,
+
+            cleanHTML: {
+                fillEmptyParagraph: false
+            },
+
+            buttons: [
+                'bold','italic','underline',
+                'strikethrough','|',
+
+                'ul','ol','|',
+
+                'outdent','indent','|',
+
+                'font','fontsize',
+                'brush','paragraph','|',
+
+                'image','link','|',
+
+                'align','|',
+
+                'hr','table','|',
+
+                'undo','redo','|',
+
+                'eraser',
+                'copyformat','|',
+
+                'source'
+            ],
+
+            uploader: {
+                insertImageAsBase64URI: true
+            },
+
+            showCharsCounter: true,
+            showWordsCounter: true,
+            showXPathInStatusbar: false,
+        });
+    }
+</script>
+@endpush
