@@ -1,6 +1,6 @@
 {{-- Single newsletter signup (footer only — avoid duplicating with CTA) --}}
 <div class="footer-newsletter" id="footer-newsletter">
-    <h6 id="footer-newsletter-heading">Newsletter</h6>
+    <h6 class="footer-col-title" id="footer-newsletter-heading">Newsletter</h6>
     <p class="footer-newsletter__lead">Occasional projects, tips, and offers. Unsubscribe anytime.</p>
     <form action="{{ route('newsletter.subscribe') }}" method="POST" class="footer-newsletter-form" aria-labelledby="footer-newsletter-heading">
         @csrf

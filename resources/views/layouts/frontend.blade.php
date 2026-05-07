@@ -105,8 +105,8 @@
 
 {{-- ── FOOTER ────────────────────────────────────────────────── --}}
 <footer class="site-footer">
-    <div class="container">
-        <div class="row g-5">
+    <div class="container footer-main">
+        <div class="row g-5 g-xl-5 align-items-start">
             {{-- Brand --}}
             <div class="col-12 col-lg-4">
                 <div class="footer-brand">
@@ -139,17 +139,18 @@
             </div>
             {{-- Explore (IA aligned with proposal: Services, Finishes, Gallery, Portfolio) --}}
             <div class="col-12 col-sm-6 col-lg-2">
-                <h6>Explore</h6>
+                <h6 class="footer-col-title">Explore</h6>
                 <nav class="footer-nav" aria-label="Explore">
                     <a href="{{ route('services') }}">Services</a>
                     <a href="{{ route('finishes') }}">Finishes</a>
                     <a href="{{ route('gallery') }}">Gallery</a>
                     <a href="{{ route('portfolio') }}">Portfolio</a>
+                    <a href="{{ route('blog.index') }}">Journal</a>
                 </nav>
             </div>
             {{-- Company --}}
             <div class="col-12 col-sm-6 col-lg-2">
-                <h6>Company</h6>
+                <h6 class="footer-col-title">Company</h6>
                 <nav class="footer-nav" aria-label="Company">
                     <a href="{{ route('home') }}">Home</a>
                     <a href="{{ url('/about') }}">About Us</a>
@@ -162,7 +163,7 @@
             {{-- Contact + newsletter: one column (stacked) so the footer reads as four areas, not five --}}
             <div class="col-12 col-lg-4">
                 <div class="footer-connect">
-                    <h6>Get in touch</h6>
+                    <h6 class="footer-col-title">Get in touch</h6>
                     @if($settings->get('site_email'))
                     <div class="footer-contact-line">
                         <i class="fas fa-envelope" aria-hidden="true"></i>
