@@ -141,17 +141,31 @@
             <textarea class="form-control content-field wysiwyg" rows="8"></textarea>
         </div>
 
-        <div class="mb-3">
-            <label>Image</label>
-            <input type="file" class="form-control image-field">
+        <div class="row g-2 mb-3">
+            <div class="col-md-8">
+                <label class="form-label">Image</label>
+                <input
+                    type="file"
+                    class="form-control image-field">
+            </div>
+
+            <div class="col-md-4">
+                <label class="form-label">Position</label>
+                <select class="form-control image-position-field">
+                    <option value="left">Left</option>
+                    <option value="right">Right</option>
+                </select>
+            </div>
         </div>
 
         <div class="mb-3">
-            <label>Image Position</label>
-            <select class="form-control image-position-field">
-                <option value="left">Left</option>
-                <option value="right">Right</option>
-            </select>
+            <label class="form-label">Buttons</label>
+            <div class="buttons-wrapper"></div>
+            <button
+                type="button"
+                class="btn btn-sm btn-secondary add-button">
+                + Add Button
+            </button>
         </div>
 
         <button type="button" class="btn btn-danger remove-section">Remove</button>
@@ -166,6 +180,9 @@
     document.addEventListener('DOMContentLoaded', function(){
         document.querySelectorAll('.wysiwyg').forEach(function(el){
             initEditor(el);
+        });
+        document.querySelectorAll('.section-item').forEach(function(section){
+            bindButtons(section);
         });
     });
 
@@ -186,6 +203,7 @@
 
     function addSection()
     {
+        let currentIndex = index;
         let html =
             document.getElementById(
                 'sectionTemplate'
@@ -195,34 +213,54 @@
         html.querySelector(
             '.type-field'
         ).name =
-            `sections[${index}][type]`;
+            `sections[${currentIndex}][type]`;
 
 
         html.querySelector(
             '.title-field'
         ).name =
-            `sections[${index}][title]`;
+            `sections[${currentIndex}][title]`;
 
 
         html.querySelector(
             '.content-field'
         ).name =
-            `sections[${index}][content]`;
+            `sections[${currentIndex}][content]`;
 
 
         html.querySelector(
             '.image-field'
         ).name =
-            `sections[${index}][image]`;
+            `sections[${currentIndex}][image]`;
 
 
         html.querySelector(
             '.image-position-field'
         ).name =
-            `sections[${index}][image_position]`;
+            `sections[${currentIndex}][image_position]`;
 
 
         wrapper.appendChild(html);
+
+        // add button script
+        // let section = wrapper.lastElementChild;
+        // let buttonsWrapper = section.querySelector('.buttons-wrapper');
+        // let buttonIndex = 0;
+
+        // section.querySelector('.add-button').addEventListener(
+        //     'click',
+        //     function(){
+        //         buttonsWrapper.insertAdjacentHTML(
+        //             'beforeend',
+        //             createButton(currentIndex, buttonIndex)
+        //         );
+        //         buttonIndex++;
+        //     }
+        // );
+
+        let section = wrapper.lastElementChild;
+        bindButtons(section);
+
         let newTextarea = wrapper.querySelector(`textarea[name="sections[${index}][content]"]`);
         initEditor(newTextarea);
 
@@ -300,6 +338,91 @@
             showWordsCounter: true,
             showXPathInStatusbar: false,
         });
+    }
+
+    function createButton(sectionIndex, buttonIndex)
+    {
+        return `
+            <div class="button-item row g-2 border p-2 mb-2 mt-2">
+                <div class="col-md-6">
+                    <input
+                        type="text"
+                        name="sections[${sectionIndex}][buttons][${buttonIndex}][text]"
+                        class="form-control"
+                        placeholder="Button Text">
+                </div>
+
+                <div class="col-md-5">
+                    <input
+                        type="text"
+                        name="sections[${sectionIndex}][buttons][${buttonIndex}][link]"
+                        class="form-control"
+                        placeholder="Button Link">
+                </div>
+
+                <div class="col-md-1">
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger remove-button">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    // remove button script
+    document.addEventListener(
+        'click',
+        function(e){
+            if(e.target.classList.contains('remove-button')){
+                e.target.closest(
+                    '.button-item'
+                ).remove();
+            }
+        }
+    );
+
+    function bindButtons(section)
+    {
+        let buttonsWrapper =
+            section.querySelector(
+                '.buttons-wrapper'
+            );
+
+        let sectionIndex =
+            Array.from(
+                wrapper.children
+            ).indexOf(section);
+
+
+        let buttonIndex =
+            buttonsWrapper.querySelectorAll(
+                '.button-item'
+            ).length;
+
+
+        section.querySelector(
+            '.add-button'
+        ).addEventListener(
+            'click',
+            function(){
+
+                // limit 5 buttons
+                if(buttonIndex >= 5){
+                    alert('Only 5 buttons allowed');
+                    return;
+                }
+
+                buttonsWrapper.insertAdjacentHTML(
+                    'beforeend',
+
+                    createButton(sectionIndex,buttonIndex)
+                );
+
+                buttonIndex++;
+            }
+        );
     }
 </script>
 @endpush

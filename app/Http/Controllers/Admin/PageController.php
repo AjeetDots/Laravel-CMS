@@ -38,8 +38,8 @@ class PageController extends Controller
             }
 
             $page->sections()->create([
-                'type' =>
-                    $section['type'],
+                'type' => $section['type'] ?? 'media_content',
+
                 'position' =>
                     $index + 1,
                 'data' => [
@@ -53,6 +53,9 @@ class PageController extends Controller
                         $section[
                             'image_position'
                         ],
+                    'buttons' =>
+                        $section['buttons']
+                        ?? []     
                 ]
             ]);
         }
@@ -82,28 +85,39 @@ class PageController extends Controller
                                 'public'
                             );
                     }
+                    $buttons = collect($section['buttons'] ?? [])->filter(
+                                function($button){
+                                    return
+                                        !empty(
+                                            $button['text']
+                                        )
+                                        &&
+                                        !empty(
+                                            $button['link']
+                                        );
+                                }
+                            )->values()->toArray();
 
-                    $page->sections()
-                        ->create([
-                            'type' =>
-                                $section['type'],
-
-                            'position' =>
-                                $index + 1,
-
-                            'data' => [
-                                'title' =>
-                                    $section['title'],
-                                'content' =>
-                                    $section['content'],
-                                'image' =>
-                                    $image,
-                                'image_position' =>
-                                    $section[
-                                        'image_position'
-                                    ],
-                            ]
-                        ]);
+                    $page->sections()->create([
+                        'type' => $section['type'] ?? 'media_content',
+                        'position' =>
+                            $index + 1,
+                        'data' => [
+                            'title' =>
+                                $section['title'],
+                            'content' =>
+                                $section['content'],
+                            'image' =>
+                                $image,
+                            'image_position' =>
+                                $section[
+                                    'image_position'
+                                ],
+                            'buttons' => $buttons
+                                // $section['buttons']
+                                // ?? []    
+                        ]
+                    ]);
                 }
         $page->saveSeo($request->input('seo', []));
         return redirect()->route('admin.pages.index')->with('success', 'Page updated.');

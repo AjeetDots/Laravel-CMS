@@ -106,4 +106,64 @@
             </option>
         </select>
     </div>
+
+    <div class="mb-3">
+        <label class="form-label">Buttons</label>
+        <div class="buttons-wrapper">
+
+            @foreach(
+                $data['buttons']
+                ?? []
+                as $btnIndex => $button
+            )
+                <div class="button-item row g-2 border p-2 mb-2 mt-2">
+                    <div class="col-md-6">
+                        <input
+                            type="text"
+                            name="sections[{{ $index }}][buttons][{{ $btnIndex }}][text]"
+                            class="form-control mb-2"
+                            placeholder="Button Text"
+                            value="{{
+                                $button['text']
+                                ?? '' 
+                            }}"
+                        >
+                    </div>
+                    <div class="col-md-5">
+                        <input
+                            type="text"
+                            name="sections[{{ $index }}][buttons][{{ $btnIndex }}][link]"
+                            class="form-control mb-2"
+                            placeholder="Button Link"
+                            value="{{
+                                $button['link']
+                                ?? ''
+                            }}"
+                        >
+                    </div>
+                    <div class="col-md-1">
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger remove-button">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+
+        <button
+            type="button"
+            class="btn btn-sm btn-secondary add-button">
+            + Add Button
+        </button>
+
+    </div>
+
+    {{-- Remove Section --}}
+    <button
+        type="button"
+        class="btn btn-danger remove-section">
+        Remove Section
+    </button>
 </div>

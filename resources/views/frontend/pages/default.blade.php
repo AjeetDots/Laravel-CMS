@@ -36,7 +36,23 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9 col-xl-8">
-                @if($page->content)
+                @if($page->sections->count())
+                    <section class="about-feature">
+                        <div class="container">
+                            <div class="row align-items-start g-5">
+                                @foreach($page->sections as $section)
+                                    @include(
+                                        'frontend.sections.'
+                                        .$section->type,
+                                        [
+                                            'data' => $section->data
+                                        ]
+                                    )
+                                @endforeach
+                            </div>
+                        </div>
+                    </section>
+                @elseif($page->content)
                     <div class="page-content">
                         {!! $page->content !!}
                     </div>
