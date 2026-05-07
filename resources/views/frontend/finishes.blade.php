@@ -60,6 +60,7 @@
 
 <div class="cta-strip">
     <div class="container text-center">
+        <span class="eyebrow">BEGIN</span>
         <h2>Need advice on the right finish?</h2>
         <p class="mb-5">We’ll help you choose textures and colours that suit your project.</p>
         <a href="{{ route('contact') }}" class="btn-white">Get a quote <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>

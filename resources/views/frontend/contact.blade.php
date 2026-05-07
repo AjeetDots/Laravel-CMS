@@ -92,7 +92,7 @@
                 <div class="contact-form-panel">
 
                     <p class="cfp-eyebrow">Send a message</p>
-                    <h3>Tell us about your<br>project.</h3>
+                    <h3>Tell us about your project.</h3>
                     <p class="sub">Fill in the form below and our team will get back to you within 24 hours.</p>
 
                     <div class="cfp-heading-deco">
@@ -151,13 +151,9 @@
                             </div>
                             <div class="col-12 mt-2 d-flex align-items-center gap-4 flex-wrap">
                                 <button type="submit" class="contact-submit-btn">
-                                    Send message
+                                    Send Enquiry
                                     <span class="btn-arrow"><i class="fas fa-arrow-right"></i></span>
                                 </button>
-                                <span style="font-size:.8rem;color:var(--ink-light);">
-                                    <i class="fas fa-lock me-1" style="font-size:.7rem;color:var(--gold);"></i>
-                                    Your information is kept private
-                                </span>
                             </div>
                         </div>
                     </form>
