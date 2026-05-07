@@ -103,6 +103,21 @@
 {{-- ── PAGE CONTENT ──────────────────────────────────────────── --}}
 @yield('content')
 
+{{-- ── Chat Floating button ───────────────────────────────── --}}
+@php
+    $whatsappNumber = preg_replace('/[^0-9]/', '', $settings->get('site_phone'));
+    $whatsappMessage = urlencode("Hello Bespoke Ornate, I'd like to discuss a project.");
+@endphp
+
+<a href="https://wa.me/{{ $whatsappNumber }}?text={{ $whatsappMessage }}"
+   class="whatsapp-float home-atelier-btn"
+   target="_blank"
+   aria-label="Chat with us on WhatsApp">
+
+    <i class="fas fa-comments"></i>
+    <span>Chat With Us</span>
+</a>
+
 {{-- ── FOOTER ────────────────────────────────────────────────── --}}
 <footer class="site-footer">
     <div class="container footer-main">
