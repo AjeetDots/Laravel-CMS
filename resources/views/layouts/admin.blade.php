@@ -343,6 +343,21 @@
             });
         });
     });
+
+    // script for alert message should be hide after 5 seconds
+    setTimeout(function () {
+        const alerts = document.querySelectorAll('.alert');
+
+        alerts.forEach(function (alert) {
+            // Bootstrap fade out
+            alert.classList.remove('show');
+
+            // Remove from DOM after fade animation
+            setTimeout(() => {
+                alert.remove();
+            }, 500);
+        });
+    }, 5000);
 </script>
 @yield('scripts')
 @stack('scripts')
