@@ -23,6 +23,7 @@ class UpdateSettingRequest extends FormRequest
             'site_phone'       => 'nullable|string|max:30',
             'site_address'     => 'nullable|string|max:500',
             'footer_about'     => 'nullable|string|max:1000',
+            'copyright_text' => 'nullable|string',
             'social_facebook'  => 'nullable|url',
             'social_twitter'   => 'nullable|url',
             'social_linkedin'  => 'nullable|url',
