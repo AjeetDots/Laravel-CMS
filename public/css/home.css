@@ -1423,51 +1423,86 @@
 
 .home-why {
     padding: 108px 0;
+    background:
+        linear-gradient(180deg, #1a1817 0%, #171513 100%),
+        radial-gradient(circle at top right, rgba(194, 152, 92, 0.08) 0%, rgba(194, 152, 92, 0) 42%);
+    border-top: 1px solid rgba(201, 178, 141, 0.11);
+    border-bottom: 1px solid rgba(201, 178, 141, 0.11);
+}
+.home-why .eyebrow {
+    color: rgba(195, 154, 95, 0.9);
+    letter-spacing: 0.26em;
+}
+.home-why .section-rule {
+    background: rgba(195, 154, 95, 0.88);
+}
+.home-why .home-section-title-md {
+    color: #f5f1ea;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
 }
 .home-why-lead {
     font-size: 1.06rem;
     line-height: 1.75;
-    color: var(--ink-mid);
+    color: rgba(227, 220, 207, 0.86);
 }
 .home-why-card {
-    background: #fff;
-    border: 1px solid rgba(237, 230, 220, 0.92);
-    padding: 28px 22px 32px;
+    background: transparent;
+    border: 0;
+    padding: 18px 14px 22px;
     height: 100%;
     transition:
         transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.45s ease;
+        box-shadow 0.45s ease,
+        background-color 0.35s ease;
 }
 .home-why-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 22px 52px rgba(28, 23, 20, 0.09);
+    transform: translateY(-5px);
+    box-shadow: 0 20px 46px rgba(8, 7, 6, 0.28);
+    background-color: rgba(255, 255, 255, 0.02);
 }
 .home-why-card__icon {
     display: flex;
-    width: 40px;
-    height: 40px;
+    width: auto;
+    height: auto;
     align-items: center;
     justify-content: center;
-    color: var(--gold);
-    font-size: 1.22rem;
-    margin-bottom: 14px;
+    color: rgba(195, 154, 95, 0.96);
+    font-size: 0.95rem;
+    margin-bottom: 16px;
 }
 .home-why-card__title {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: 1.12rem;
+    font-size: clamp(1.16rem, 1.5vw, 1.42rem);
     font-weight: 600;
     margin-bottom: 10px;
-    color: var(--ink);
+    color: #f4efe6;
 }
 .home-why-card__desc {
     font-size: 0.87rem;
     line-height: 1.65;
-    color: var(--ink-light);
+    color: rgba(224, 216, 204, 0.7);
     margin: 0;
+}
+@media (min-width: 1200px) {
+    .home-why .col-xl-3:not(:first-child) .home-why-card {
+        border-left: 1px solid rgba(201, 178, 141, 0.14);
+        padding-left: 28px;
+    }
+}
+@media (max-width: 1199px) {
+    .home-why-card {
+        border: 1px solid rgba(201, 178, 141, 0.18);
+        background-color: rgba(255, 255, 255, 0.02);
+    }
 }
 
 .home-process {
     padding: 96px 0 112px;
+    background: linear-gradient(180deg, #eeeadf 0%, #e7e2d6 100%);
+}
+.home-process.section-white {
+    background: linear-gradient(180deg, #eeeadf 0%, #e7e2d6 100%);
 }
 .home-process-title {
     font-family: 'Playfair Display', Georgia, serif;

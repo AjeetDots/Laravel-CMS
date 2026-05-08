@@ -41,7 +41,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Use Cases</label>
-                        <textarea name="use_cases" class="form-control" rows="4"
+                        <textarea name="use_cases" class="form-control wysiwyg" rows="4"
                                   placeholder="Where this finish is typically used...">{{ old('use_cases', $finish->use_cases) }}</textarea>
                         <div class="form-text">Describe typical applications, ideal rooms or surfaces.</div>
                     </div>

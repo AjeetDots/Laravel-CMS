@@ -39,7 +39,7 @@
                 @if($finish->use_cases)
                     <div class="mt-5">
                         <span class="eyebrow">Ideal for</span>
-                        <p class="fs-5 mt-2" style="font-family:'Cormorant Garamond',serif;">{{ $finish->use_cases }}</p>
+                        <div class="fs-5 mt-2" style="font-family:'Cormorant Garamond',serif;">{!! $finish->use_cases !!}</div>
                     </div>
                 @endif
 
