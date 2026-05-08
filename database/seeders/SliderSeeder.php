@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 
 class SliderSeeder extends Seeder {
     public function run(): void {
-        $eyebrow = 'Years of experience across web, mobile, design and cloud technologies.';
+        $eyebrow = 'BESPOKE ORNATE PLASTER ATELIER';
         $sliders = [
             ['title' => 'Professional Services', 'subtitle' => $eyebrow, 'image' => 'sliders/slide1.jpg', 'button_text' => 'Our Services', 'button_link' => '/services', 'sort_order' => 1],
             ['title' => 'Quality Solutions', 'subtitle' => $eyebrow, 'image' => 'sliders/slide2.jpg', 'button_text' => 'Get Started', 'button_link' => '/contact', 'sort_order' => 2],

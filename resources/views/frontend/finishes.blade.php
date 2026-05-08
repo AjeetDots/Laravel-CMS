@@ -52,7 +52,7 @@
             <div class="col-12 text-center py-5 finishes-grid-empty">
                 <i class="fas fa-palette fa-3x mb-3"></i>
                 <p>No finishes have been published yet.</p>
-                <a href="{{ route('contact') }}" class="btn-outline-site mt-2">Request a consultation</a>
+                <a href="{{ route('contact') }}" class="btn-outline-site mt-2">Get in touch</a>
             </div>
             @endforelse
         </div>

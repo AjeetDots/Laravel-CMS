@@ -68,7 +68,7 @@
                         <h4>Discuss your project</h4>
                         <p class="sub">We can advise on finishes, scale, and lead times for work like this.</p>
                         <a href="{{ route('contact') }}" class="btn-primary-site w-100 justify-content-center mb-3">
-                            Enquire now <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
+                            Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
                         </a>
                         <a href="{{ route('portfolio') }}" class="btn-outline-site w-100 justify-content-center">
                             Back to portfolio

@@ -73,7 +73,7 @@
     <div class="container text-center">
         <h2>Planning something similar?</h2>
         <p class="mb-5">Share your brief and we’ll outline timelines and options.</p>
-        <a href="{{ route('contact') }}" class="btn-white">Start an enquiry <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
+        <a href="{{ route('contact') }}" class="btn-white">Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
     </div>
 </div>
 
