@@ -25,10 +25,10 @@
 </section>
 
 @forelse($services as $service)
-<section class="svc-split {{ $loop->odd ? 'svc-split--flip' : '' }}">
+<section class="svc-split {{ $loop->even ? 'svc-split--flip' : '' }}">
     <div class="container">
         <div class="row g-4 g-lg-5 align-items-center">
-            <div class="col-lg-6 {{ $loop->odd ? 'order-lg-2' : '' }}">
+            <div class="col-lg-6 {{ $loop->even ? 'order-lg-2' : '' }}">
                 <div class="svc-split__img-wrap">
                     @if($service->image)
                         <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
@@ -39,7 +39,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-lg-6 {{ $loop->odd ? 'order-lg-1' : '' }}">
+            <div class="col-lg-6 {{ $loop->even ? 'order-lg-1' : '' }}">
                 <div class="svc-split__body">
                     @if($service->badge)
                         <span class="svc-split__eyebrow">{{ $service->badge }}</span>
@@ -78,9 +78,9 @@
 <div class="cta-strip">
     <div class="container text-center">
         <span class="eyebrow">BEGIN</span>
-        <h2>Not sure which service fits?</h2>
-        <p class="mb-5">Talk to us — we'll help you find the right solution.</p>
-        <a href="{{ route('contact') }}" class="btn-white">Contact us <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
+        <h2>Bring your space.<br />We'll bring the finish.</h2>
+        <!-- <p class="mb-5">Talk to us — we'll help you find the right solution.</p> -->
+        <a href="{{ route('contact') }}" class="btn-white">Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
     </div>
 </div>
 

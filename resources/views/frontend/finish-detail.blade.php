@@ -77,10 +77,10 @@
                 <div class="service-sidebar-wrap">
                     <div class="service-sidebar-card">
                         <span class="eyebrow">Interested in this finish?</span>
-                        <h4>Request a consultation</h4>
+                        <h4>Get in touch</h4>
                         <p class="sub">Tell us about your space and we’ll recommend options and samples.</p>
                         <a href="{{ route('contact') }}" class="btn-primary-site w-100 justify-content-center mb-3">
-                            Get a quote <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
+                            Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
                         </a>
                         <a href="{{ route('finishes') }}" class="btn-outline-site w-100 justify-content-center">
                             All finishes

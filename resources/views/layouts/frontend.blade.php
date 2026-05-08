@@ -78,7 +78,7 @@
                             </a>
                         @endif
                     </div>
-                    <a href="{{ route('contact') }}" class="btn-quote">Get a quote <i class="fa-solid fa-arrow-up-right btn-quote__ico" aria-hidden="true"></i></a>
+                    <a href="{{ route('contact') }}" class="btn-quote">Get in touch <i class="fa-solid fa-arrow-up-right btn-quote__ico" aria-hidden="true"></i></a>
                 </div>
             </div>
 
@@ -156,11 +156,11 @@
             <div class="col-12 col-sm-6 col-lg-2">
                 <h6 class="footer-col-title">Explore</h6>
                 <nav class="footer-nav" aria-label="Explore">
-                    <a href="{{ route('services') }}">Services</a>
                     <a href="{{ route('finishes') }}">Finishes</a>
+                    <a href="{{ route('services') }}">Services</a>
                     <a href="{{ route('gallery') }}">Gallery</a>
-                    <a href="{{ route('portfolio') }}">Portfolio</a>
-                    <a href="{{ route('blog.index') }}">Journal</a>
+                    <!-- <a href="{{ route('portfolio') }}">Portfolio</a> -->
+                    <a href="{{ route('blog.index') }}">Blog</a>
                 </nav>
             </div>
             {{-- Company --}}

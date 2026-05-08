@@ -5,11 +5,10 @@
 
 <div class="page-hero">
     <div class="container">
-        <span class="eyebrow">Venetian plaster &amp; textures</span>
-        <h1 class="page-hero-title-wide">Explore our finishes</h1>
+        <span class="eyebrow">Our Finishes</span>
+        <h1 class="page-hero-title-wide">Six finishes. One obsession with the surface.</h1>
         <p>
-            A visual selection of hand-applied styles — from Marmorino and Tadelakt to metallic and concrete effects.
-            Each finish can be tailored to your space and lighting.
+            Every finish is mixed, applied and polished by hand. Bespoke colours and developed in studio against samples of you space, your light and your interiors.
         </p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -51,7 +50,7 @@
             <div class="col-12 text-center py-5" style="color:var(--ink-light);">
                 <i class="fas fa-palette fa-3x mb-3" style="color:var(--border);"></i>
                 <p>No finishes have been published yet.</p>
-                <a href="{{ route('contact') }}" class="btn-outline-site mt-2">Request a consultation</a>
+                <a href="{{ route('contact') }}" class="btn-outline-site mt-2">Get in touch</a>
             </div>
             @endforelse
         </div>
@@ -61,9 +60,9 @@
 <div class="cta-strip">
     <div class="container text-center">
         <span class="eyebrow">BEGIN</span>
-        <h2>Need advice on the right finish?</h2>
-        <p class="mb-5">We’ll help you choose textures and colours that suit your project.</p>
-        <a href="{{ route('contact') }}" class="btn-white">Get a quote <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
+        <h2>Not sure which finish <br />suits your space?</h2>
+        <p class="mb-5">Tell us about the room and we'll prepare hand-made samples for you light.</p>
+        <a href="{{ route('contact') }}" class="btn-white">Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
     </div>
 </div>
 

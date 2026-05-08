@@ -218,7 +218,7 @@
                 <p>Whether you have a clear brief or a rough idea, we're happy to sit down, listen, and figure out the right path forward — no obligation.</p>
                 <div class="d-flex flex-wrap gap-3">
                     <a href="{{ route('contact') }}" class="btn-ink">
-                        Start a project <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
+                        Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
                     </a>
                     <a href="{{ route('services') }}" class="btn-outline-ink">
                         View services

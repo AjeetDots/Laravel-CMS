@@ -81,11 +81,11 @@
                             </a>
                         @else
                             <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold" id="heroBtnPrimary">
-                                <span id="heroBtnText">Get a Quote</span>
+                                <span id="heroBtnText">Get in touch</span>
                                 <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
                             </a>
                         @endif
-                        <a href="{{ route('contact') }}" class="hero-btn-outline hero-btn-outline--hero">Book Consultation</a>
+                        <a href="{{ route('contact') }}" class="hero-btn-outline hero-btn-outline--hero">Get in touch</a>
                     </div>
                 </div>
             </div>
@@ -138,18 +138,18 @@
                     <div class="home-atelier-headline-deco" aria-hidden="true"></div>
                     <h2 class="home-atelier-headline">
                         <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">Surfaces that hold</span></span>
-                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">the <em class="home-atelier-em">light</em>, walls that</span></span>
-                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">hold the <em class="home-atelier-em">room</em>.</span></span>
+                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">the light, walls that</span></span>
+                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">hold the room.</span></span>
                     </h2>
                 </div>
                 <p class="home-atelier-body">
-                    For over two decades we have collaborated with leading interior designers,
+                    For over one decades we have collaborated with leading interior designers,
                     architects and private clients to create plaster finishes of uncommon depth and quietude.
                     Every wall is mixed, applied and polished by hand.
                 </p>
                 <div class="home-atelier-actions">
                     <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold home-atelier-btn">
-                        Get a Quote
+                        Get in touch
                         <i class="fa-solid fa-arrow-up-right ms-2" style="font-size:.72rem;" aria-hidden="true"></i>
                     </a>
                     @if($sitePhone)
@@ -175,7 +175,7 @@
                 <span class="eyebrow">The Finishes</span>
                 <span class="section-rule" style="margin-bottom:0;"></span>
                 <h2 class="home-section-title-lg">
-                    Six surfaces, infinite tones.
+                    Six surfaces, <br />infinite tones.
                 </h2>
             </div>
             <div class="reveal-right">
@@ -233,7 +233,7 @@
                 <span class="eyebrow">Our Services</span>
                 <span class="section-rule"></span>
                 <h2 class="disciplines-headline">
-                    Three disciplines,<br>one <em>obsession.</em>
+                    Three disciplines,<br>one obsession.
                 </h2>
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right">
@@ -289,35 +289,6 @@
             @endforeach
             @endforelse
         </div>
-
-        {{-- Show remaining services if more than 3 --}}
-        @if($services->count() > 3)
-        <div class="row g-4 mt-1">
-            @foreach($services->skip(3) as $i => $service)
-            <div class="col-md-4 reveal delay-{{ min($i+1,5) }}">
-                <a href="{{ route('services.show', $service->slug) }}" class="disc-card">
-                    <div class="disc-card-img-wrap">
-                        @if($service->image)
-                            <img src="{{ $service->image_url }}" alt="{{ $service->title }}" class="disc-card-img">
-                        @else
-                            <div class="disc-card-placeholder"><i class="fas fa-paint-brush"></i></div>
-                        @endif
-                        <div class="disc-card-overlay"></div>
-                    </div>
-                    <div class="disc-card-body">
-                        <h4 class="disc-card-title">{{ $service->title }}</h4>
-                        @if($service->short_description)
-                            <p class="disc-card-desc">{{ $service->short_description }}</p>
-                        @endif
-                        <span class="disc-card-link">
-                            Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
-                        </span>
-                    </div>
-                </a>
-            </div>
-            @endforeach
-        </div>
-        @endif
     </div>
 </section>
 
@@ -424,7 +395,7 @@
     <div class="container">
         <div class="text-center mb-5 reveal">
             <span class="eyebrow d-inline-block">Our Process</span>
-            <h2 class="home-process-title mt-3 mb-0">From first conversation to final polish.</h2>
+            <h2 class="home-process-title mt-3 mb-0">From first conversation<br /> to final polish.</h2>
         </div>
         <ol class="home-process-steps list-unstyled mb-0">
             <li class="home-process-step reveal delay-1">
@@ -540,9 +511,9 @@
     <div class="home-begin-cta__overlay"></div>
     <div class="container position-relative text-center home-begin-cta__inner">
         <span class="home-begin-cta__eyebrow">Begin a Project</span>
-        <h2 class="home-begin-cta__title">Transform your space into a quiet masterpiece.</h2>
+        <h2 class="home-begin-cta__title">Transform your space <br />into a quiet masterpiece.</h2>
         <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold">Schedule a consultation</a>
+            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold">Get in touch</a>
             <a href="{{ route('portfolio') }}" class="hero-btn-outline hero-btn-outline--hero home-begin-cta__ghost">View portfolio</a>
         </div>
     </div>
@@ -622,7 +593,7 @@
             <span class="brands-strip__rule" aria-hidden="true"></span>
             <div class="brands-strip__title-block">
                 <span class="brands-strip__kicker">Partners &amp; collaborators</span>
-                <h2 class="brands-strip__title" id="brands-strip-title">Trusted by leading names</h2>
+                <h2 class="brands-strip__title" id="brands-strip-title">Trusted by <br />leading names</h2>
             </div>
             <span class="brands-strip__rule" aria-hidden="true"></span>
         </header>
@@ -669,7 +640,7 @@
             </div>
             <div class="col-12 col-lg-3 offset-lg-2 text-lg-end mt-3 mt-lg-0 reveal-right">
                 <a href="{{ route('blog.index') }}" class="btn-outline-site">
-                    All articles <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                    All Blogs <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
                 </a>
             </div>
         </div>
