@@ -85,7 +85,212 @@ body.nav-solid .blog-lead-img img {
     max-height: 480px;
 }
 
-/* ── Services listing (matches home discipline cards) ── */
+/* ── Services page — Figma intro header ── */
+.svc-intro {
+    padding: 100px 0 80px;
+    background: #faf7f3;
+}
+.svc-intro__eyebrow {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--gold, #c8a25a);
+    margin-bottom: 28px;
+}
+.svc-intro__title {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
+    font-weight: 400;
+    color: var(--ink, #1c1714);
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 28px;
+}
+.svc-intro__desc {
+    font-size: 1rem;
+    color: var(--ink-mid, #4a3f38);
+    line-height: 1.78;
+    max-width: 48rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 991px) {
+    .svc-intro {
+        padding: 72px 0 56px;
+    }
+}
+@media (max-width: 767px) {
+    .svc-intro {
+        padding: 56px 0 44px;
+    }
+    .svc-intro__title {
+        font-size: clamp(2rem, 8vw, 2.8rem);
+    }
+}
+
+/* ── Services page — Figma alternating split layout ── */
+.svc-split {
+    padding: 88px 0;
+    background: #faf7f3;
+}
+.svc-split + .svc-split {
+    padding-top: 72px;
+    border-top: 1px solid rgba(28, 23, 20, 0.07);
+}
+.svc-split--flip {
+    background: #f5f0e8;
+}
+.svc-split__img-wrap {
+    overflow: hidden;
+    border-radius: 2px;
+    aspect-ratio: 4 / 3;
+    background: var(--cream-dark, #e9e1d6);
+}
+.svc-split__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.svc-split:hover .svc-split__img-wrap img {
+    transform: scale(1.04);
+}
+.svc-split__placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+    color: var(--border, #d4c9bb);
+}
+.svc-split__body {
+    padding: 8px 0 8px 24px;
+}
+.svc-split--flip .svc-split__body {
+    padding: 8px 24px 8px 0;
+}
+.svc-split__eyebrow {
+    display: block;
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold, #c8a25a);
+    margin-bottom: 18px;
+}
+.svc-split__title {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 3.2vw, 3rem);
+    font-weight: 500;
+    color: var(--ink, #1c1714);
+    line-height: 1.12;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+}
+.svc-split__desc {
+    font-size: 1rem;
+    color: var(--ink-mid, #4a3f38);
+    line-height: 1.78;
+    margin-bottom: 28px;
+}
+.svc-split__features {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 36px;
+}
+.svc-split__features li {
+    position: relative;
+    padding-left: 26px;
+    font-size: 0.95rem;
+    color: var(--ink-mid, #4a3f38);
+    line-height: 1.65;
+    margin-bottom: 11px;
+}
+.svc-split__features li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    color: var(--gold, #c8a25a);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+.svc-split__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--ink, #1c1714);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(28, 23, 20, 0.28);
+    padding-bottom: 3px;
+    transition: color 0.25s ease, border-color 0.25s ease, gap 0.25s ease;
+}
+.svc-split__cta:hover {
+    color: var(--gold, #c8a25a);
+    border-color: var(--gold, #c8a25a);
+    gap: 13px;
+}
+
+@media (max-width: 991px) {
+    .svc-split {
+        padding: 60px 0;
+    }
+    .svc-split__body,
+    .svc-split--flip .svc-split__body {
+        padding: 8px 0 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .svc-split {
+        padding: 48px 0;
+    }
+    .svc-split__title {
+        font-size: clamp(1.75rem, 7vw, 2.4rem);
+    }
+}
+
+/* ── Services page (Figma / home disciplines alignment) ── */
+.page-services .disciplines-section.section {
+    padding-top: 108px;
+    padding-bottom: 108px;
+    background: linear-gradient(188deg, #f3ede4 0%, #e9e1d6 45%, #dfd4c8 100%);
+    border-top: 1px solid rgba(255, 255, 255, 0.45);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.65),
+        0 1px 0 rgba(28, 23, 20, 0.04);
+}
+.page-services .disciplines-headline {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(2.1rem, 4vw, 3.15rem);
+}
+.page-services .services-page-intro {
+    font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.05rem, 2vw, 1.2rem);
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ink-mid);
+    line-height: 1.6;
+    max-width: 36rem;
+    margin-top: 1rem;
+}
+.page-services .services-empty-state {
+    color: var(--ink-light);
+}
+.page-services .services-empty-state .fa-concierge-bell {
+    color: var(--border);
+}
+
+/* ── Services listing legacy grid (other contexts) ── */
 .service-grid-card {
     display: flex;
     flex-direction: column;

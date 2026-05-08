@@ -39,6 +39,32 @@
                         <textarea name="short_description" class="form-control" rows="3" required>{{ old('short_description', $service->short_description) }}</textarea>
                     </div>
                     <div class="mb-3">
+                        <label class="form-label">Badge Label</label>
+                        <input type="text" name="badge" class="form-control" value="{{ old('badge', $service->badge) }}" placeholder="e.g. SIGNATURE">
+                        <div class="form-text">Short label shown above the service title on the services listing page (e.g. SIGNATURE, STATEMENT).</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Feature Highlights</label>
+                        <div id="features-list">
+                            @php $featureItems = old('features', $service->features ?? []); @endphp
+                            @forelse($featureItems as $feat)
+                                <div class="input-group mb-2 feature-row">
+                                    <input type="text" name="features[]" class="form-control" value="{{ $feat }}" placeholder="e.g. Marble-like luxury finish">
+                                    <button type="button" class="btn btn-outline-danger btn-remove-feature">×</button>
+                                </div>
+                            @empty
+                                <div class="input-group mb-2 feature-row">
+                                    <input type="text" name="features[]" class="form-control" placeholder="e.g. Marble-like luxury finish">
+                                    <button type="button" class="btn btn-outline-danger btn-remove-feature">×</button>
+                                </div>
+                            @endforelse
+                        </div>
+                        <button type="button" id="btn-add-feature" class="btn btn-outline-secondary btn-sm">
+                            <i class="fas fa-plus me-1"></i>Add Feature
+                        </button>
+                        <div class="form-text mt-1">Shown as checkmark bullet points on the services listing page.</div>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label">Full Description</label>
                         <textarea name="description" id="postContent" class="form-control wysiwyg" rows="6">{{ old('description', $service->description) }}</textarea>
                     </div>
@@ -101,5 +127,28 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+document.getElementById('btn-add-feature').addEventListener('click', function () {
+    const list = document.getElementById('features-list');
+    const row = document.createElement('div');
+    row.className = 'input-group mb-2 feature-row';
+    row.innerHTML = '<input type="text" name="features[]" class="form-control" placeholder="e.g. Marble-like luxury finish"><button type="button" class="btn btn-outline-danger btn-remove-feature">&times;</button>';
+    list.appendChild(row);
+    row.querySelector('input').focus();
+});
+document.getElementById('features-list').addEventListener('click', function (e) {
+    if (e.target.classList.contains('btn-remove-feature')) {
+        const rows = document.querySelectorAll('.feature-row');
+        if (rows.length > 1) {
+            e.target.closest('.feature-row').remove();
+        } else {
+            e.target.closest('.feature-row').querySelector('input').value = '';
+        }
+    }
+});
+</script>
+@endpush
 
 @endsection

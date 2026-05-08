@@ -24,6 +24,9 @@ class ServiceController extends Controller {
             $data['image'] = $request->file('image')->store('services', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
+        if (isset($data['features'])) {
+            $data['features'] = array_values(array_filter($data['features']));
+        }
         $service = Service::create($data);
         $service->saveSeo($request->input('seo', []));
         $service->finishes()->sync($request->input('finish_ids', []));
@@ -42,6 +45,9 @@ class ServiceController extends Controller {
             $data['image'] = $request->file('image')->store('services', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
+        if (isset($data['features'])) {
+            $data['features'] = array_values(array_filter($data['features']));
+        }
         $service->update($data);
         $service->saveSeo($request->input('seo', []));
         $service->finishes()->sync($request->input('finish_ids', []));

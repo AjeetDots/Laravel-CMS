@@ -6,8 +6,8 @@ use Illuminate\Support\Str;
 
 class Service extends Model {
     use HasSeo;
-    protected $fillable = ['title', 'slug', 'short_description', 'description', 'image', 'icon', 'sort_order', 'is_active'];
-    protected $casts = ['is_active' => 'boolean'];
+    protected $fillable = ['title', 'slug', 'short_description', 'description', 'image', 'icon', 'badge', 'features', 'sort_order', 'is_active'];
+    protected $casts = ['is_active' => 'boolean', 'features' => 'array'];
     protected static function boot() {
         parent::boot();
         static::creating(function ($service) {
