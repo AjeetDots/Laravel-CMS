@@ -57,6 +57,10 @@ class HomePageService implements HomePageServiceInterface
                 ->get(),
             'testimonials' => Testimonial::query()
                 ->where('is_active', true)
+                ->whereNotNull('client_image')
+                ->where('client_image', '!=', '')
+                ->whereNotNull('message')
+                ->where('message', '!=', '')
                 ->orderBy('sort_order')
                 ->get(),
             'brands' => Brand::query()

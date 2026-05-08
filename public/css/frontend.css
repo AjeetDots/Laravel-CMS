@@ -347,68 +347,58 @@ body.page-home .nav-toggle {
     margin-bottom: 12px;
 }
 
-/* Footer logo: white plaque + gold rim so mark reads clearly on light stone */
+/* Footer logo: transparent treatment on dark texture */
 .site-footer .footer-logo-link {
     display: inline-flex;
     align-items: center;
     justify-content: flex-start;
     line-height: 0;
-    padding: 16px 20px 16px 16px;
+    padding: 0;
     margin: 0 0 8px 0;
-    border-radius: 14px;
-    background: linear-gradient(180deg, #ffffff 0%, #faf9f7 100%);
-    border: 2px solid rgba(200, 162, 90, 0.42);
-    box-shadow:
-        0 4px 18px rgba(28, 23, 20, 0.08),
-        0 1px 0 rgba(255, 255, 255, 0.95) inset;
+    border-radius: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
     outline: none;
     transition:
         transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
-        box-shadow 0.35s ease,
-        border-color 0.35s ease,
-        background 0.35s ease;
+        filter 0.35s ease;
 }
 .site-footer .footer-logo-link:hover {
-    transform: translateY(-3px);
-    border-color: rgba(201, 107, 63, 0.45);
-    box-shadow:
-        0 0 0 4px rgba(200, 162, 90, 0.2),
-        0 12px 36px rgba(28, 23, 20, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    filter: drop-shadow(0 6px 20px rgba(0, 0, 0, 0.35));
 }
 .site-footer .footer-logo-link:focus-visible {
     outline: 3px solid var(--wine);
     outline-offset: 4px;
-    box-shadow: 0 0 0 8px rgba(200, 162, 90, 0.25), 0 8px 28px rgba(28, 23, 20, 0.1);
+    box-shadow: 0 0 0 8px rgba(200, 162, 90, 0.16), 0 8px 28px rgba(0, 0, 0, 0.2);
 }
 .site-footer .footer-logo-img {
     height: auto;
     width: auto;
-    max-height: var(--footer-logo-max-height);
-    max-width: var(--footer-logo-max-width);
+    max-height: 110px;
+    max-width: min(320px, 86vw);
     object-fit: contain;
     object-position: left center;
     display: block;
     margin-bottom: 0;
     transition: filter 0.35s ease, transform 0.35s ease;
     filter:
-        drop-shadow(0 2px 6px rgba(28, 23, 20, 0.12))
-        contrast(1.06)
-        saturate(1.05);
+        drop-shadow(0 3px 12px rgba(0, 0, 0, 0.35))
+        saturate(1.03);
 }
 .site-footer .footer-logo-img.brand-logo-svg--footer {
     filter: none;
 }
 .site-footer .footer-logo-link:hover .footer-logo-img {
     filter:
-        drop-shadow(0 4px 14px rgba(28, 23, 20, 0.16))
-        contrast(1.08)
-        saturate(1.06);
-    transform: scale(1.02);
+        drop-shadow(0 6px 20px rgba(0, 0, 0, 0.42))
+        saturate(1.05);
+    transform: scale(1.015);
 }
 .site-footer .footer-logo-link:hover .footer-logo-img.brand-logo-svg--footer {
     filter: none;
-    transform: scale(1.02);
+    transform: scale(1.015);
 }
 
 @media (max-width: 991px) {
@@ -417,7 +407,7 @@ body.page-home .nav-toggle {
         --footer-logo-max-width: min(300px, 90vw);
     }
     .site-footer .footer-logo-link {
-        padding: 12px 14px 12px 12px;
+        padding: 0;
     }
 }
 
@@ -2263,9 +2253,13 @@ body:not(.has-hero) { padding-top: 150px; }
     padding: 96px 0 0;
     color: rgba(243, 240, 234, 0.78);
     background:
+        linear-gradient(rgba(12, 11, 10, 0.78), rgba(12, 11, 10, 0.78)),
+        url("/images/brand/footer-bg-texture.svg"),
         radial-gradient(ellipse 72% 48% at 88% 12%, rgba(200, 162, 90, 0.09) 0%, transparent 52%),
         radial-gradient(ellipse 56% 42% at 8% 72%, rgba(201, 107, 63, 0.06) 0%, transparent 48%),
         linear-gradient(185deg, #1c1a17 0%, #141210 38%, #0e0d0b 100%);
+    background-size: auto, cover, auto, auto, auto;
+    background-position: center center, center center, center center, center center, center center;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.05),
         0 -20px 60px rgba(0, 0, 0, 0.4);

@@ -115,21 +115,23 @@
             <div class="col-lg-6 order-lg-1 reveal-left">
                 <div class="home-atelier-collage" aria-hidden="true">
                     <div class="home-atelier-collage__accent"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--halo"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--dot"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--square"></div>
                     <div class="home-atelier-collage__main">
-                        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=80"
+                        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80"
                              alt=""
                              width="476" height="596"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--primary">
                     </div>
                     <div class="home-atelier-collage__float">
-                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=640&q=80"
+                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80"
                              alt=""
                              width="291" height="254"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--inset">
                     </div>
-                    <div class="home-atelier-collage__deco home-atelier-collage__deco--dots"></div>
                 </div>
             </div>
             <div class="col-lg-6 order-lg-2 reveal-right">
@@ -150,11 +152,23 @@
                 <div class="home-atelier-actions">
                     <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold home-atelier-btn">
                         Get a Quote
-                        <i class="fa-solid fa-arrow-up-right ms-2" style="font-size:.72rem;" aria-hidden="true"></i>
+                        <span class="home-atelier-btn__arrow" aria-hidden="true">
+                            <svg viewBox="0 0 14 14" focusable="false" aria-hidden="true">
+                                <path d="M3 11L11 3"></path>
+                                <path d="M5 3H11V9"></path>
+                            </svg>
+                        </span>
                     </a>
                     @if($sitePhone)
                     <div class="home-atelier-phone">
-                        <span class="home-atelier-phone__icon" aria-hidden="true"><i class="fa-solid fa-phone-volume"></i></span>
+                        <span class="home-atelier-phone__icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+                                <rect x="1.5" y="1.5" width="21" height="21" rx="2"></rect>
+                                <path d="M9.3 8.8c.6-1.2 2-.9 2.5-.2l.6.9c.2.3.2.7 0 1l-.5.8c-.2.3-.2.7 0 1.1.5.9 1.2 1.7 2.1 2.2.3.2.7.2 1 0l.8-.5c.3-.2.7-.2 1 0l.9.6c.8.5 1 2 .1 2.6-1.1.8-2.6.9-4 .3-2-.8-3.8-2.5-4.9-4.4-1-1.7-1.1-3.3-.6-4.4z"></path>
+                                <path d="M15.6 7.6c.9.2 1.6.9 1.9 1.7"></path>
+                                <path d="M15.3 5.6c1.6.3 2.9 1.5 3.3 3"></path>
+                            </svg>
+                        </span>
                         <div class="home-atelier-phone__txt">
                             <span class="home-atelier-phone__label">Booking Now</span>
                             <a href="tel:{{ preg_replace('/[^\d+]/', '', $sitePhone) }}" class="home-atelier-phone__num">{{ $sitePhone }}</a>
@@ -473,7 +487,7 @@
                         $quoteLeft = '';
                         $msgRight = $msg;
                     }
-                    $photoUrl = $t->client_image ? $t->client_image_url : 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=85';
+                    $photoUrl = $t->client_image_url;
                     $leftTitle = $t->client_company ?: $t->client_name;
                     $panelRole = collect([$t->client_position, $t->client_company])->filter()->implode(', ');
                 @endphp
@@ -542,8 +556,11 @@
         <span class="home-begin-cta__eyebrow">Begin a Project</span>
         <h2 class="home-begin-cta__title">Transform your space into a quiet masterpiece.</h2>
         <div class="d-flex flex-wrap gap-3 justify-content-center mt-4">
-            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold">Schedule a consultation</a>
-            <a href="{{ route('portfolio') }}" class="hero-btn-outline hero-btn-outline--hero home-begin-cta__ghost">View portfolio</a>
+            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold">Get free consultation</a>
+            <a href="tel:{{ $settings->get('site_phone') }}" class="hero-btn-outline hero-btn-outline--hero home-begin-cta__ghost">
+                <i class="fas fa-phone"></i>
+                Call the studio
+            </a>
         </div>
     </div>
 </section>
@@ -557,55 +574,57 @@
         </div>
         <div class="row g-4 g-xl-5 align-items-stretch">
             <div class="col-lg-5 reveal-left d-none d-lg-block">
-                <div class="home-contact-band__visual rounded overflow-hidden">
+                <div class="home-contact-band__visual" aria-hidden="true">
+                    <span class="home-contact-band__corner home-contact-band__corner--tl"></span>
+                    <span class="home-contact-band__corner home-contact-band__corner--br"></span>
                     <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80"
                          alt=""
-                         class="w-100 h-100 object-fit-cover rounded"
+                         class="w-100 h-100 object-fit-cover"
                          loading="lazy" decoding="async"
-                         style="min-height:340px;">
+                         >
                 </div>
             </div>
             <div class="col-lg-7 reveal-right">
                 <div class="home-contact-panel">
+                    <h3 class="home-contact-panel__title">Contact Us</h3>
                     @if($errors->any())
                     <div class="alert alert-danger mb-3 small">Please check the form and try again.</div>
                     @endif
                     <form action="{{ route('contact.store') }}" method="POST" class="home-contact-form">
                         @csrf
                         <div class="mb-3">
-                            <label class="form-label small text-uppercase text-muted mb-1" for="home_contact_name">Your Name</label>
                             <input type="text" name="name" id="home_contact_name" required
                                    value="{{ old('name') }}"
                                    class="form-control home-contact-input @error('name') is-invalid @enderror"
+                                   placeholder="Your Name"
                                    autocomplete="name">
                             @error('name')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small text-uppercase text-muted mb-1" for="home_contact_email">Email</label>
                             <input type="email" name="email" id="home_contact_email" required
                                    value="{{ old('email') }}"
                                    class="form-control home-contact-input @error('email') is-invalid @enderror"
+                                   placeholder="Email"
                                    autocomplete="email">
                             @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small text-uppercase text-muted mb-1" for="home_contact_phone">Phone <span class="fw-normal">(Optional)</span></label>
                             <input type="text" name="phone" id="home_contact_phone"
                                    value="{{ old('phone') }}"
                                    class="form-control home-contact-input @error('phone') is-invalid @enderror"
+                                   placeholder="Phone(Optional)"
                                    autocomplete="tel">
                             @error('phone')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <input type="hidden" name="subject" value="Website enquiry (home)">
                         <div class="mb-4">
-                            <label class="form-label small text-uppercase text-muted mb-1" for="home_contact_message">Tell us about your space</label>
-                            <textarea name="message" id="home_contact_message" rows="4" required minlength="10"
+                            <textarea name="message" id="home_contact_message" rows="1" required minlength="10"
+                                      placeholder="Tell us about your space"
                                       class="form-control home-contact-input @error('message') is-invalid @enderror">{{ old('message') }}</textarea>
                             @error('message')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
-                        <button type="submit" class="hero-btn hero-btn--gold w-100 justify-content-center">
-                            Send message
-                            <i class="fa-solid fa-arrow-up-right ms-2" style="font-size:.72rem;"></i>
+                        <button type="submit" class="home-contact-submit w-100">
+                            Send Enquiry <span aria-hidden="true">↗</span>
                         </button>
                     </form>
                 </div>

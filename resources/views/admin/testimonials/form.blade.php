@@ -55,12 +55,15 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Client Photo</label>
+                        <label class="form-label">Client Photo *</label>
                         <input type="file" name="client_image" class="form-control"
                                accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                        <div class="form-text">
+                            Required for homepage testimonial display.
+                        </div>
                         @if(isset($testimonial->id) && $testimonial->client_image)
                             <div class="mt-2">
-                                <img src="{{ asset('storage/'.$testimonial->client_image) }}" class="img-preview" style="height:60px; width:60px; border-radius:50%; object-fit:cover;">
+                                <img src="{{ $testimonial->client_image_url }}" class="img-preview" style="height:60px; width:60px; border-radius:50%; object-fit:cover;">
                             </div>
                         @endif
                     </div>

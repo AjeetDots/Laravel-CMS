@@ -1,52 +1,62 @@
 @extends('layouts.frontend')
 @section('title', 'Gallery')
-@section('body_class', 'nav-solid')
+@section('body_class', 'nav-solid page-gallery')
 @section('content')
 
-<div class="page-hero">
+<section class="gallery-intro">
     <div class="container">
-        <span class="eyebrow">Gallery</span>
-        <h1 class="page-hero-title-wide">Our Work</h1>
-        <p>A curated selection of finishes and interiors we’re proud to have delivered.</p>
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Gallery</li>
-            </ol>
-        </nav>
+        <span class="gallery-intro__eyebrow">Portfolio</span>
+        <h1 class="gallery-intro__title">A quiet record of recent work.</h1>
     </div>
-</div>
+</section>
 
-<section class="section section-white">
+<section class="gallery-showcase">
     <div class="container">
         {{-- Category filters --}}
         @if($categories->count())
-        <div class="gallery-filter-bar" id="filterBtns">
-            <button type="button" class="gallery-filter-btn active" data-cat="all">All</button>
+        <div class="gallery-showcase__filterbar" id="filterBtns">
+            <button type="button" class="gallery-showcase__filterbtn active" data-cat="all">All</button>
             @foreach($categories as $filterCat)
-            <button type="button" class="gallery-filter-btn" data-cat="{{ $filterCat->name }}">{{ $filterCat->name }}</button>
+            <button type="button" class="gallery-showcase__filterbtn" data-cat="{{ $filterCat->name }}">{{ $filterCat->name }}</button>
             @endforeach
         </div>
         @endif
 
-        <div class="row g-3" id="galleryGrid">
+        <div class="gallery-showcase__rule" aria-hidden="true"></div>
+
+        <div class="gallery-showcase__grid" id="galleryGrid">
             @forelse($gallery as $item)
-            <div class="col-6 col-md-4 col-lg-3 gal-col" data-cat="{{ $item->galleryCategory?->name ?? '' }}">
-                <div class="gal-item gal-item--zoom" role="button" tabindex="0"
-                     data-bs-toggle="modal" data-bs-target="#galleryLightbox"
-                     data-img="{{ $item->image_url }}"
-                     data-title="{{ $item->title ?? 'Gallery' }}">
+            @php
+                $position = $loop->index + 1;
+                $layoutClass = match ($position) {
+                    1 => 'gallery-showcase__item gallery-showcase__item--hero',
+                    2 => 'gallery-showcase__item gallery-showcase__item--feature',
+                    default => 'gallery-showcase__item gallery-showcase__item--standard',
+                };
+                $categoryLabel = $item->galleryCategory?->name ? \Illuminate\Support\Str::upper($item->galleryCategory->name) : 'Portfolio';
+            @endphp
+            <article class="{{ $layoutClass }} gal-col" data-cat="{{ $item->galleryCategory?->name ?? '' }}">
+                <div class="gallery-work-card" role="button" tabindex="0"
+                    data-bs-toggle="modal" data-bs-target="#galleryLightbox"
+                    data-img="{{ $item->image_url }}"
+                    data-title="{{ $item->title ?? 'Gallery' }}">
                     <img src="{{ $item->image_url }}" alt="{{ $item->title ?? 'Gallery' }}"
-                         data-fallback="https://placehold.co/400x400/e5e0d8/6b6b65?text=Image"
-                         class="img-fallback">
-                    <div class="gal-overlay">
-                        @if($item->title)<span>{{ $item->title }}</span>@endif
+                        data-fallback="https://placehold.co/1200x900/e5e0d8/6b6b65?text=Image"
+                        class="img-fallback">
+                    <div class="gallery-work-card__overlay">
+                        <div class="gallery-work-card__meta">
+                            <span>{{ $categoryLabel }}</span>
+                        </div>
+                        @if($item->title)
+                            <h3>{{ $item->title }}</h3>
+                        @endif
+                        <span class="gallery-work-card__link"><i class="fas fa-arrow-up-right"></i></span>
                     </div>
                 </div>
-            </div>
+            </article>
             @empty
-            <div class="col-12 text-center py-5" style="color:var(--ink-light);">
-                <i class="fas fa-images fa-3x mb-3" style="color:var(--border);"></i>
+            <div class="gallery-showcase__empty text-center py-5">
+                <i class="fas fa-images fa-3x mb-3"></i>
                 <p>No gallery items yet.</p>
             </div>
             @endforelse
@@ -54,7 +64,14 @@
     </div>
 </section>
 
-{{-- Lightbox (proposal: zoom view) --}}
+<section class="gallery-bottom-cta">
+    <div class="container text-center">
+        <h2>Like what you see?</h2>
+        <a href="{{ route('contact') }}" class="gallery-bottom-cta__btn">Start a project</a>
+    </div>
+</section>
+
+{{-- Lightbox --}}
 <div class="modal fade" id="galleryLightbox" tabindex="-1" aria-labelledby="galleryLightboxTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content bg-dark border-0">
@@ -89,10 +106,19 @@ document.querySelectorAll('img.img-fallback').forEach(function(img) {
     });
 });
 
-document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+document.querySelectorAll('.gallery-work-card').forEach(function(card) {
+    card.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            card.click();
+        }
+    });
+});
+
+document.querySelectorAll('.gallery-showcase__filterbtn').forEach(btn => {
     btn.addEventListener('click', function() {
         const cat = this.dataset.cat;
-        document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.gallery-showcase__filterbtn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
 
         document.querySelectorAll('.gal-col').forEach(col => {
