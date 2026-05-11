@@ -53,12 +53,12 @@ class ContactController extends Controller
         unset($payload['_form_context']);
         $this->contactSubmissionService->submit($payload);
 
-        $url = match ($request->input('_form_context', 'contact')) {
-            'home' => route('home').'#home-contact',
-            default => route('contact').'#contactFormPanel',
-        };
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Thank you! Your message has been sent successfully.',
+            ]);
+        }
 
-        return redirect($url)
-            ->with('success', 'Thank you! Your message has been sent successfully.');
+        return back()->with('success', 'Thank you! Your message has been sent successfully.');
     }
 }

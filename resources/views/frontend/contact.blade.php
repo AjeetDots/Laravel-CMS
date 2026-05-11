@@ -60,6 +60,7 @@
                 <div class="contact-main__form-panel" id="contactFormPanel">
                     <div class="contact-main__form-topline" aria-hidden="true"></div>
                     <h3>{{ $contactPage['form_title'] ?? 'Contact Us' }}</h3>
+                    <div id="contactFormAjaxFeedback" class="d-none" role="status" aria-live="polite"></div>
                     @if (session('success'))
                     <div class="alert alert-success mb-3" role="status">
                         {{ session('success') }}
@@ -71,7 +72,10 @@
                     </div>
                     @endif
 
-                    <form action="{{ route('contact.store') }}" method="POST">
+                    <form action="{{ route('contact.store') }}" method="POST"
+                          data-contact-ajax="1"
+                          data-feedback-id="contactFormAjaxFeedback"
+                          data-error-intro="{{ e($contactPage['form_error_intro'] ?? 'Please fix the errors below and resubmit.') }}">
                         @csrf
                         <input type="hidden" name="_form_context" value="contact">
                         <input type="hidden" name="subject" value="{{ old('subject', $contactPage['subject_default'] ?? '') }}">

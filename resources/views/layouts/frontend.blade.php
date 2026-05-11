@@ -350,6 +350,8 @@
 </script>
 @php $__itlJs = public_path('js/intl-phone-input.js'); $__itlJsV = is_file($__itlJs) ? filemtime($__itlJs) : time(); @endphp
 <script src="{{ asset('js/intl-phone-input.js') }}?v={{ $__itlJsV }}" defer></script>
+@php $__cfaJs = public_path('js/contact-form-ajax.js'); $__cfaJsV = is_file($__cfaJs) ? filemtime($__cfaJs) : time(); @endphp
+<script src="{{ asset('js/contact-form-ajax.js') }}?v={{ $__cfaJsV }}" defer></script>
 @yield('scripts')
 </body>
 </html>

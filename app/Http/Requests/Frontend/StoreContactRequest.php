@@ -27,13 +27,17 @@ class StoreContactRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        $url = match ($this->input('_form_context', 'contact')) {
-            'home' => route('home').'#home-contact',
-            default => route('contact').'#contactFormPanel',
-        };
+        if ($this->expectsJson()) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => $validator->errors()->first() ?: 'The given data was invalid.',
+                    'errors' => $validator->errors(),
+                ], 422)
+            );
+        }
 
         throw new HttpResponseException(
-            redirect($url)
+            redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
         );

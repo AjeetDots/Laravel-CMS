@@ -37,13 +37,17 @@
             <div class="col-lg-7 reveal-right">
                 <div class="home-contact-panel">
                     <h3 class="home-contact-panel__title">{{ $contactBandPanelTitle }}</h3>
+                    <div id="homeContactFormAjaxFeedback" class="d-none" role="status" aria-live="polite"></div>
                     @if (session('success'))
                     <div class="alert alert-success mb-3 small" role="status">{{ session('success') }}</div>
                     @endif
                     @if($errors->any())
                     <div class="alert alert-danger mb-3 small">Please check the form and try again.</div>
                     @endif
-                    <form action="{{ route('contact.store') }}" method="POST" class="home-contact-form">
+                    <form action="{{ route('contact.store') }}" method="POST" class="home-contact-form"
+                          data-contact-ajax="1"
+                          data-feedback-id="homeContactFormAjaxFeedback"
+                          data-error-intro="Please check the form and try again.">
                         @csrf
                         <input type="hidden" name="_form_context" value="home">
                         <div class="mb-3">
