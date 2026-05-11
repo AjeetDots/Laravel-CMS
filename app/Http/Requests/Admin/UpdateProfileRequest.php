@@ -18,8 +18,10 @@ class UpdateProfileRequest extends FormRequest
         $userId = Auth::id();
 
         $rules = [
-            'name'  => 'required|string|max:100',
-            'email' => 'required|email|unique:users,email,' . $userId,
+            'name'          => 'required|string|max:100',
+            'email'         => 'required|email|unique:users,email,' . $userId,
+            'avatar'        => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'remove_avatar' => 'nullable|boolean',
         ];
 
         if ($this->filled('password')) {

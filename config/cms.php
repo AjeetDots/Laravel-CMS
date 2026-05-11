@@ -4,15 +4,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Admin panel product name
+    | Admin panel product name (fallback)
     |--------------------------------------------------------------------------
     |
-    | Shown in document titles and the admin chrome. Distinct from the public
-    | site name (Settings → General / APP_NAME).
+    | Shown in document titles and admin chrome when Site name (settings) is
+    | empty. Override with CMS_PANEL_NAME in .env (e.g. BOP CMS).
     |
     */
 
-    'panel_name' => env('CMS_PANEL_NAME', 'Laravel CMS'),
+    'panel_name' => env('CMS_PANEL_NAME', 'BOP CMS'),
 
     /*
     |--------------------------------------------------------------------------

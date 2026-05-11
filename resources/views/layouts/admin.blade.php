@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Dashboard') | {{ config('cms.panel_name') }}</title>
-    @php $favicon = \App\Models\Setting::get('site_favicon'); @endphp
-    @php $backendLogo = \App\Models\Setting::get('backend_logo'); @endphp
-    @php $adminBrandSiteName = \App\Models\Setting::get('site_name') ?: config('app.name'); @endphp
+    @php
+        $favicon = \App\Models\Setting::get('site_favicon');
+        $backendLogo = \App\Models\Setting::get('backend_logo');
+        $siteNameSetting = trim((string) (\App\Models\Setting::get('site_name') ?? ''));
+        $adminBrandSiteName = $siteNameSetting !== '' ? $siteNameSetting : config('app.name');
+        $adminPanelLabel = $siteNameSetting !== '' ? $siteNameSetting : config('cms.panel_name');
+    @endphp
+    <title>@yield('title', 'Dashboard') | {{ $adminPanelLabel }}</title>
     @if($favicon)
         <link rel="icon" href="{{ asset('storage/' . $favicon) }}">
         <link rel="shortcut icon" href="{{ asset('storage/' . $favicon) }}">
@@ -67,7 +71,6 @@
             z-index: 2;
         }
         .sidebar-footer__product { font-weight: 700; letter-spacing: .04em; color: #94a3b8; text-transform: uppercase; }
-        .sidebar-footer__stack { margin-top: 4px; color: #64748b; font-size: .65rem; }
         .nav-section-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: #8e7f67; padding: 16px 10px 8px; }
         .sidebar-link { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 8px; color: #94a3b8; text-decoration: none; font-size: .88rem; font-weight: 500; transition: all .2s; margin-bottom: 2px; }
         .sidebar-link i { width: 18px; text-align: center; font-size: .9rem; }
@@ -83,7 +86,9 @@
         .topbar-left { flex: 1; display: flex; align-items: center; }
         .topbar-right { display: flex; align-items: center; gap: 16px; }
         .topbar-user { display: flex; align-items: center; gap: 10px; padding: 6px 12px; border-radius: 10px; cursor: pointer; }
-        .topbar-user .avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #b79860, #8f7447); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .9rem; }
+        .topbar-user .avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #b79860, #8f7447); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 700; font-size: .9rem; flex-shrink: 0; }
+        .topbar-user .avatar.avatar--photo { padding: 0; overflow: hidden; background: #e2e8f0; }
+        .topbar-user .avatar.avatar--photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
         /* Page content */
         .page-content { padding: 28px; flex: 1; }
@@ -354,16 +359,19 @@
         <a href="{{ route('admin.portfolio.index') }}" class="sidebar-link {{ request()->routeIs('admin.portfolio*') ? 'active' : '' }}">
             <i class="fas fa-briefcase"></i> Portfolio
         </a>
-        @php $galleryOpen = request()->routeIs('admin.gallery.*') || request()->routeIs('admin.gallery-categories*'); @endphp
-        <a href="#" class="sidebar-link has-submenu {{ $galleryOpen ? 'active' : '' }}"
+        @php
+            $galleryOpen = request()->routeIs('admin.gallery.*') || request()->routeIs('admin.gallery-categories.*');
+            $galleryListActive = request()->routeIs('admin.gallery.*') && ! request()->routeIs('admin.gallery-categories.*');
+        @endphp
+        <a href="#" class="sidebar-link has-submenu {{ $galleryOpen ? 'active open' : '' }}"
            data-submenu="submenu-gallery"
            aria-expanded="{{ $galleryOpen ? 'true' : 'false' }}">
             <i class="fas fa-photo-video"></i> Gallery
             <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
-        <ul class="sidebar-submenu" id="submenu-gallery">
+        <ul class="sidebar-submenu {{ $galleryOpen ? 'open' : '' }}" id="submenu-gallery">
             <li>
-                <a href="{{ route('admin.gallery.index') }}" class="{{ request()->routeIs('admin.gallery.*') ? 'active' : '' }}">
+                <a href="{{ route('admin.gallery.index') }}" class="{{ $galleryListActive ? 'active' : '' }}">
                     <i class="fas fa-images fa-xs"></i> All Gallery
                 </a>
             </li>
@@ -378,13 +386,13 @@
         </a>
         @php $unreadCount = \App\Models\Contact::where('is_read', false)->count(); @endphp
         @php $communicationOpen = request()->routeIs('admin.enquiries*') || request()->routeIs('admin.contacts*') || request()->routeIs('admin.email-templates*') || request()->routeIs('admin.newsletter*'); @endphp
-        <a href="#" class="sidebar-link has-submenu {{ $communicationOpen ? 'active' : '' }}"
+        <a href="#" class="sidebar-link has-submenu {{ $communicationOpen ? 'active open' : '' }}"
            data-submenu="submenu-communication"
            aria-expanded="{{ $communicationOpen ? 'true' : 'false' }}">
             <i class="fas fa-envelope-open-text"></i> Communication
             <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
-        <ul class="sidebar-submenu" id="submenu-communication">
+        <ul class="sidebar-submenu {{ $communicationOpen ? 'open' : '' }}" id="submenu-communication">
             <li>
                 <a href="{{ route('admin.enquiries.index') }}" class="{{ request()->routeIs('admin.enquiries*') || request()->routeIs('admin.contacts*') ? 'active' : '' }}">
                     <i class="fas fa-envelope fa-xs"></i> Email
@@ -409,25 +417,25 @@
             <i class="fas fa-star"></i> Brands
         </a>
         @php $blogOpen = request()->routeIs('admin.blog*') || request()->routeIs('admin.categories*'); @endphp
-        <a href="#" class="sidebar-link has-submenu {{ $blogOpen ? 'active' : '' }}"
+        <a href="#" class="sidebar-link has-submenu {{ $blogOpen ? 'active open' : '' }}"
            data-submenu="submenu-blog"
            aria-expanded="{{ $blogOpen ? 'true' : 'false' }}">
             <i class="fas fa-pen-nib"></i> Blog
             <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
-        <ul class="sidebar-submenu" id="submenu-blog">
+        <ul class="sidebar-submenu {{ $blogOpen ? 'open' : '' }}" id="submenu-blog">
             <li><a href="{{ route('admin.blog.index') }}"       class="{{ request()->routeIs('admin.blog.index')       ? 'active' : '' }}"><i class="fas fa-list fa-xs"></i> All Posts</a></li>
             <li><a href="{{ route('admin.blog.create') }}"      class="{{ request()->routeIs('admin.blog.create')      ? 'active' : '' }}"><i class="fas fa-plus fa-xs"></i> Add Post</a></li>
             <li><a href="{{ route('admin.categories.index') }}" class="{{ request()->routeIs('admin.categories*')      ? 'active' : '' }}"><i class="fas fa-folder fa-xs"></i> Categories</a></li>
         </ul>
         @php $appearanceOpen = request()->routeIs('admin.pages*') || request()->routeIs('admin.menus*'); @endphp
-        <a href="#" class="sidebar-link has-submenu {{ $appearanceOpen ? 'active' : '' }}"
+        <a href="#" class="sidebar-link has-submenu {{ $appearanceOpen ? 'active open' : '' }}"
            data-submenu="submenu-appearance"
            aria-expanded="{{ $appearanceOpen ? 'true' : 'false' }}">
             <i class="fas fa-brush"></i> Appearance
             <i class="fas fa-chevron-right submenu-arrow"></i>
         </a>
-        <ul class="sidebar-submenu" id="submenu-appearance">
+        <ul class="sidebar-submenu {{ $appearanceOpen ? 'open' : '' }}" id="submenu-appearance">
             <li>
                 <a href="{{ route('admin.pages.index') }}" class="{{ request()->routeIs('admin.pages*') ? 'active' : '' }}">
                     <i class="fas fa-file-alt fa-xs"></i> Pages
@@ -494,8 +502,7 @@
         </a>
     </div>
     <div class="sidebar-footer">
-        <div class="sidebar-footer__product">{{ config('cms.panel_name') }}</div>
-        <div class="sidebar-footer__stack">Laravel {{ app()->version() }}</div>
+        <div class="sidebar-footer__product">{{ $adminPanelLabel }}</div>
     </div>
 </div>
 
@@ -521,10 +528,16 @@
             @endphp
             <div class="dropdown">
                 <div class="topbar-user dropdown-toggle" data-bs-toggle="dropdown">
-                    <div class="avatar">{{ $adminInitial }}</div>
+                    @if($adminUser?->avatar)
+                        <div class="avatar avatar--photo" aria-hidden="true">
+                            <img src="{{ asset('storage/'.$adminUser->avatar) }}" alt="">
+                        </div>
+                    @else
+                        <div class="avatar">{{ $adminInitial }}</div>
+                    @endif
                     <div>
                         <div style="font-weight:600; font-size:.85rem; color:#0f172a;">{{ $adminName }}</div>
-                        <div style="font-size:.75rem; color:#64748b;">{{ config('cms.panel_name') }}</div>
+                        <div style="font-size:.75rem; color:#64748b;">{{ $adminPanelLabel }}</div>
                     </div>
                 </div>
                 <ul class="dropdown-menu dropdown-menu-end">
