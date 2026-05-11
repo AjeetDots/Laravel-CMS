@@ -26,4 +26,17 @@ return [
 
     'frontend_view_cache_ttl' => (int) env('CMS_FRONTEND_VIEW_CACHE_TTL', 3600),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin email change OTP (minutes)
+    |--------------------------------------------------------------------------
+    |
+    | When an admin changes their account email, a one-time code is emailed to
+    | the current address. This controls how long that code remains valid and
+    | how long before a new code may be requested (resend uses the same window).
+    |
+    */
+
+    'admin_email_change_otp_ttl' => (int) env('CMS_ADMIN_EMAIL_CHANGE_OTP_TTL', 15),
+
 ];

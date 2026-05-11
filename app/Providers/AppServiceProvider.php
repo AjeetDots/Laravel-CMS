@@ -8,6 +8,7 @@ use App\Contracts\Frontend\NewsletterSubscriptionServiceInterface;
 use App\Services\Frontend\ContactSubmissionService;
 use App\Services\Frontend\HomePageService;
 use App\Services\Frontend\NewsletterSubscriptionService;
+use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,6 +28,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        ResetPassword::createUrlUsing(function (object $notifiable, string $token): string {
+            return route('admin.password.reset', [
+                'token' => $token,
+                'email' => $notifiable->getEmailForPasswordReset(),
+            ], true);
+        });
     }
 }

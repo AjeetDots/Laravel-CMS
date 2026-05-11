@@ -25,7 +25,10 @@ class UpdateProfileRequest extends FormRequest
         ];
 
         if ($this->filled('password')) {
+            $rules['current_password'] = ['required', 'string'];
             $rules['password'] = ['required', 'confirmed', Password::min(8)];
+        } else {
+            $rules['current_password'] = ['nullable', 'string'];
         }
 
         return $rules;

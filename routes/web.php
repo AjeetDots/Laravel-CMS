@@ -56,6 +56,14 @@ Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+    Route::get('/forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])
+        ->middleware('throttle:5,1')
+        ->name('password.email');
+    Route::get('/password/reset/{token}', [AuthController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/password/reset', [AuthController::class, 'resetPassword'])
+        ->middleware('throttle:5,1')
+        ->name('password.update');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // ── Protected Admin Routes ────────────────────────────────────
@@ -127,6 +135,14 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('theme-options/contact-page', [SettingController::class, 'updateContactPage'])->name('theme-options.contact.update');
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
+        Route::post('profile/confirm-email', [ProfileController::class, 'confirmEmailOtp'])
+            ->middleware('throttle:12,1')
+            ->name('profile.confirm-email');
+        Route::post('profile/resend-email-otp', [ProfileController::class, 'resendEmailOtp'])
+            ->middleware('throttle:5,60')
+            ->name('profile.resend-email-otp');
+        Route::post('profile/cancel-email-change', [ProfileController::class, 'cancelEmailChange'])
+            ->name('profile.cancel-email-change');
     });
 });
 

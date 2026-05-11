@@ -3,103 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login | CMS</title>
+    <title>Sign in | {{ $loginBrandName }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        * { font-family: 'Inter', sans-serif; }
-        body {
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #0f172a 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        .login-card {
-            background: #fff;
-            border-radius: 20px;
-            padding: 48px 44px;
-            width: 100%;
-            max-width: 420px;
-            box-shadow: 0 25px 60px rgba(0,0,0,.3);
-        }
-        .login-icon {
-            width: 64px; height: 64px;
-            background: linear-gradient(135deg, #2563eb, #60a5fa);
-            border-radius: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-size: 1.6rem; color: #fff;
-            margin: 0 auto 24px;
-        }
-        .login-title { font-size: 1.6rem; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 6px; }
-        .login-sub { color: #64748b; text-align: center; font-size: .9rem; margin-bottom: 32px; }
-        .form-label { font-weight: 600; font-size: .85rem; color: #374151; }
-        .form-control {
-            border: 1.5px solid #e2e8f0; border-radius: 10px;
-            padding: 12px 16px; font-size: .92rem;
-        }
-        .form-control:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,.1); }
-        .btn-login {
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
-            border: none; color: #fff; width: 100%;
-            padding: 13px; border-radius: 10px;
-            font-weight: 700; font-size: 1rem;
-            transition: all .3s;
-        }
-        .btn-login:hover { background: linear-gradient(135deg, #1d4ed8, #1e40af); color: #fff; }
-        .input-icon { position: relative; }
-        .input-icon i { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #94a3b8; }
-        .input-icon .form-control { padding-left: 40px; }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    @include('admin.auth.partials.auth-guest-theme')
 </head>
-<body>
-    <div class="login-card">
-        <div class="login-icon"><i class="fas fa-bolt"></i></div>
-        <h1 class="login-title">Welcome Back</h1>
-        <p class="login-sub">Sign in to your CMS admin panel</p>
+<body class="auth-guest">
+    <div class="auth-card">
+        <div class="auth-brand">
+            @if(!empty($backendLogo))
+                <img src="{{ asset('storage/'.$backendLogo) }}" alt="{{ $loginBrandName }}">
+            @else
+                <div class="auth-mark">pr</div>
+            @endif
+        </div>
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-sub">Sign in to manage {{ $loginBrandName }}.</p>
 
+        @if(session('status'))
+            <div class="auth-alert auth-alert--ok"><i class="fas fa-check-circle me-2"></i>{{ session('status') }}</div>
+        @endif
         @if($errors->any())
-            <div class="alert" style="background:#fee2e2; color:#b91c1c; border-radius:10px; padding:12px 16px; font-size:.88rem; margin-bottom:20px;">
-                <i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}
-            </div>
+            <div class="auth-alert auth-alert--error"><i class="fas fa-exclamation-circle me-2"></i>{{ $errors->first() }}</div>
         @endif
 
         <form action="{{ route('admin.login.post') }}" method="POST">
             @csrf
             <div class="mb-4">
-                <label class="form-label">Email Address</label>
+                <label class="form-label" for="login_email">Email address</label>
                 <div class="input-icon">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" name="email" class="form-control" placeholder="admin@cms.com"
-                           value="{{ old('email') }}" required autofocus>
+                    <input type="email" name="email" id="login_email" class="form-control" placeholder="you@example.com"
+                           value="{{ old('email') }}" required autofocus autocomplete="username">
                 </div>
             </div>
-            <div class="mb-4">
-                <label class="form-label">Password</label>
-                <div class="input-icon">
+            <div class="mb-2">
+                <label class="form-label" for="login_password">Password</label>
+                <div class="input-icon pw-reveal">
                     <i class="fas fa-lock"></i>
-                    <input type="password" name="password" class="form-control" placeholder="Enter password" required>
+                    <input type="password" name="password" id="login_password" class="form-control pw-reveal__input" placeholder="Enter password" required autocomplete="current-password">
+                    <button type="button" class="pw-reveal__btn" data-pw-toggle aria-label="Show password" title="Show password">
+                        <i class="fas fa-eye" aria-hidden="true"></i>
+                    </button>
                 </div>
             </div>
-            <div class="d-flex align-items-center justify-content-between mb-4">
-                <div class="form-check">
+            <div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-2">
+                <div class="form-check mb-0">
                     <input class="form-check-input" type="checkbox" name="remember" id="remember">
                     <label class="form-check-label" style="font-size:.85rem;" for="remember">Remember me</label>
                 </div>
+                <a href="{{ route('admin.password.request') }}" style="font-size:.85rem; font-weight:600; color: var(--auth-primary-dark); text-decoration:none;">Forgot password?</a>
             </div>
-            <button type="submit" class="btn btn-login">
-                <i class="fas fa-sign-in-alt me-2"></i>Sign In
+            <button type="submit" class="btn btn-auth-primary">
+                <i class="fas fa-sign-in-alt me-2"></i>Sign in
             </button>
         </form>
 
-        <div class="text-center mt-4">
-            <a href="{{ route('home') }}" style="color:#64748b; font-size:.85rem; text-decoration:none;">
-                <i class="fas fa-arrow-left me-1"></i>Back to Website
-            </a>
+        <div class="auth-footer-links">
+            <a href="{{ route('home') }}"><i class="fas fa-arrow-left me-1"></i>Back to website</a>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    @include('admin.auth.partials.password-toggle-script')
 </body>
 </html>
