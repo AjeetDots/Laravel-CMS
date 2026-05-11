@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Contracts\Frontend\NewsletterSubscriptionServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\NewsletterSubscribeRequest;
+use Illuminate\Support\Str;
 
 class NewsletterController extends Controller
 {
@@ -19,12 +20,14 @@ class NewsletterController extends Controller
             $request->input('name')
         );
 
+        $newsletterUrl = Str::before(url()->previous(), '#') . '#footer-newsletter';
+
         if ($result->isAlreadySubscribed()) {
-            return redirect(url()->previous() . '#footer-newsletter')
+            return redirect($newsletterUrl)
                 ->withErrors(['email' => 'You have already subscribed with this email address.'])
                 ->withInput();
         }
 
-        return back()->with('newsletter_success', 'Thank you for subscribing!');
+        return redirect($newsletterUrl)->with('newsletter_success', 'Thank you for subscribing!');
     }
 }

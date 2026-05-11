@@ -1139,6 +1139,10 @@ body.page-contact .btn-quote:hover {
     max-width: 540px;
     margin-left: auto;
 }
+/* POST/redirect anchor: keep panel clear of fixed nav */
+#contactFormPanel {
+    scroll-margin-top: 150px;
+}
 .contact-main__form-topline {
     width: 52px;
     height: 6px;
@@ -1172,6 +1176,36 @@ body.page-contact .contact-main__form-grid .form-control::placeholder {
 body.page-contact .contact-main__form-grid .form-control:focus {
     border-color: #b8925a;
     box-shadow: 0 0 0 2px rgba(184, 146, 90, 0.13);
+}
+
+/* Intl phone widget — match contact form controls */
+body.page-contact .contact-main__form-grid .contact-main__field--phone {
+    grid-column: 1 / -1;
+}
+body.page-contact .contact-main__form-grid .itl-phone__row {
+    border-radius: 0;
+    border: 1px solid #d9d4cd;
+    background: #f7f6f3;
+}
+body.page-contact .contact-main__form-grid .itl-phone__toggle {
+    background: #ece8e0;
+    border-right-color: #d9d4cd;
+    color: #1f1b18;
+}
+body.page-contact .contact-main__form-grid .itl-phone__national-input {
+    background: #f7f6f3;
+    color: #1f1b18;
+    font-size: 0.88rem;
+    padding: 12px 14px;
+    min-height: 46px;
+}
+body.page-contact .contact-main__form-grid .itl-phone:focus-within .itl-phone__row {
+    border-color: #b8925a;
+    box-shadow: 0 0 0 2px rgba(184, 146, 90, 0.13);
+}
+body.page-contact .contact-main__form-grid .itl-phone__dropdown {
+    border-color: #d9d4cd;
+    box-shadow: 0 12px 32px rgba(31, 27, 24, 0.12);
 }
 body.page-contact .contact-main__message {
     min-height: 66px;

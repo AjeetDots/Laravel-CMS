@@ -1343,45 +1343,53 @@
 .home-atelier-phone {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 10px;
 }
 .home-atelier-phone__icon {
-    width: 46px;
-    height: 46px;
+    width: 22px;
+    height: 22px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: var(--gold);
-    border: 1px solid rgba(184, 146, 90, 0.72);
-    background: #fbf9f5;
     flex: 0 0 auto;
 }
 .home-atelier-phone__icon svg {
-    width: 21px;
-    height: 21px;
+    width: 100%;
+    height: 100%;
     stroke: var(--gold);
-    stroke-width: 1.35;
+    stroke-width: 1.25;
     fill: none;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
+.home-atelier-phone__txt {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 22px;
+}
 .home-atelier-phone__label {
     display: block;
-    font-size: 0.62rem;
-    letter-spacing: 0.18em;
+    font-size: 0.46rem;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
-    color: #7e786f;
+    color: #9a9288;
+    margin-bottom: 2px;
+    line-height: 1;
 }
 .home-atelier-phone__num {
     font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(1.1rem, 1.9vw, 1.45rem);
-    color: #222;
+    font-size: clamp(1rem, 1.4vw, 1.25rem);
+    font-weight: 500;
+    color: #27231f;
     text-decoration: none;
     letter-spacing: 0.01em;
-    line-height: 1.2;
+    line-height: 1.1;
+    white-space: nowrap;
 }
 .home-atelier-phone__num:hover {
-    color: var(--wine);
+    color: #171513;
 }
 
 .home-section-title-lg {
@@ -1621,6 +1629,9 @@
 .home-contact-band {
     padding: 96px 0 110px;
     background: #f5f5f2;
+}
+#home-contact {
+    scroll-margin-top: 150px;
 }
 .home-contact-band__title {
     font-family: 'Playfair Display', Georgia, serif;

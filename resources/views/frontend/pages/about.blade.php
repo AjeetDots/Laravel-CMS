@@ -12,22 +12,11 @@
 
 @section('content')
 
-@php
-    $aboutImages = \App\Models\GalleryItem::query()
-        ->where('is_active', true)
-        ->orderBy('sort_order')
-        ->take(3)
-        ->get();
-
-    $storyMainImage = $aboutImages->get(0)?->image_url ?? 'https://placehold.co/900x1200/e5e0d8/6b6b65?text=Story+Image';
-    $storyAccentImage = $aboutImages->get(1)?->image_url ?? 'https://placehold.co/640x480/e5e0d8/6b6b65?text=Accent+Image';
-    $studioImage = $aboutImages->get(2)?->image_url ?? $storyMainImage;
-@endphp
-
+@isset($aboutPage)
 <section class="about-intro">
     <div class="container">
-        <span class="about-intro__eyebrow">About the atelier</span>
-        <h1 class="about-intro__title">A studio of artisans,<br>a craft of patience.</h1>
+        <span class="about-intro__eyebrow">{{ $aboutPage['intro_eyebrow'] }}</span>
+        <h1 class="about-intro__title">{!! nl2br(e($aboutPage['intro_title'])) !!}</h1>
     </div>
 </section>
 
@@ -42,20 +31,20 @@
                     <span class="about-story__shape about-story__shape--dot" aria-hidden="true"></span>
 
                     <div class="about-story__image-main">
-                        <img src="{{ $storyMainImage }}" alt="Bespoke interior finish" class="img-fallback" data-fallback="https://placehold.co/900x1200/e5e0d8/6b6b65?text=Story+Image">
+                        <img src="{{ $aboutPage['image_main_display'] }}" alt="{{ $aboutPage['image_main_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_main_fallback'] }}">
                     </div>
                     <div class="about-story__image-accent">
-                        <img src="{{ $storyAccentImage }}" alt="Signature polished finish" class="img-fallback" data-fallback="https://placehold.co/640x480/e5e0d8/6b6b65?text=Accent+Image">
+                        <img src="{{ $aboutPage['image_accent_display'] }}" alt="{{ $aboutPage['image_accent_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_accent_fallback'] }}">
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="about-story__content">
-                    <h2>Our story</h2>
-                    <p>Trained in the lime-plaster traditions of Venice and refined across two decades of private and commercial commissions, our team has quietly built a reputation for finishes of unusual depth and consistency.</p>
-                    <p>We work closely with leading interior designers and architects, and have been entrusted with environments for film, television and editorial productions where the surface itself must perform under the lens.</p>
-                    <p>Every project begins with the room - its light, proportions, and intent - and ends with a finish made by hand.</p>
+                    <h2>{{ $aboutPage['story_heading'] }}</h2>
+                    <p>{{ $aboutPage['story_body_1'] }}</p>
+                    <p>{{ $aboutPage['story_body_2'] }}</p>
+                    <p>{{ $aboutPage['story_body_3'] }}</p>
                 </div>
             </div>
         </div>
@@ -66,16 +55,16 @@
     <div class="container">
         <div class="about-stats-band__grid">
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">20+</span>
-                <span class="about-stats-band__label">Years of practice</span>
+                <span class="about-stats-band__num">{{ $aboutPage['stat1_num'] }}</span>
+                <span class="about-stats-band__label">{{ $aboutPage['stat1_label'] }}</span>
             </div>
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">300+</span>
-                <span class="about-stats-band__label">Private commissions</span>
+                <span class="about-stats-band__num">{{ $aboutPage['stat2_num'] }}</span>
+                <span class="about-stats-band__label">{{ $aboutPage['stat2_label'] }}</span>
             </div>
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">40+</span>
-                <span class="about-stats-band__label">Productions worked on</span>
+                <span class="about-stats-band__num">{{ $aboutPage['stat3_num'] }}</span>
+                <span class="about-stats-band__label">{{ $aboutPage['stat3_label'] }}</span>
             </div>
         </div>
     </div>
@@ -86,20 +75,21 @@
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
                 <div class="about-workshop__content">
-                    <span class="about-workshop__eyebrow">Workshop &amp; studio</span>
-                    <h2>Where the work begins.</h2>
-                    <p>Samples, mock-ups and bespoke profiles are developed at our London studio before being installed on site by our master artisans.</p>
-                    <a href="{{ route('contact') }}" class="about-workshop__btn">Visit the studio</a>
+                    <span class="about-workshop__eyebrow">{{ $aboutPage['workshop_eyebrow'] }}</span>
+                    <h2>{{ $aboutPage['workshop_heading'] }}</h2>
+                    <p>{{ $aboutPage['workshop_body'] }}</p>
+                    <a href="{{ $aboutPage['workshop_btn_href'] }}" class="about-workshop__btn">{{ $aboutPage['workshop_btn_text'] }}</a>
                 </div>
             </div>
             <div class="col-lg-7">
                 <div class="about-workshop__image">
-                    <img src="{{ $studioImage }}" alt="Workshop and studio finish development" class="img-fallback" data-fallback="https://placehold.co/1200x760/e5e0d8/6b6b65?text=Workshop+Image">
+                    <img src="{{ $aboutPage['image_studio_display'] }}" alt="{{ $aboutPage['image_studio_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_studio_fallback'] }}">
                 </div>
             </div>
         </div>
     </div>
 </section>
+@endisset
 
 @endsection
 @section('scripts')

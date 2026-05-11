@@ -1,17 +1,27 @@
-@if($blogPosts->count())
+@php
+    $blogPreviewCfg = $blogPreviewSection ?? [];
+    $blogPreviewEnabled = array_key_exists('is_enabled', $blogPreviewCfg) ? !empty($blogPreviewCfg['is_enabled']) : true;
+    $blogPreviewEyebrow = $blogPreviewCfg['eyebrow'] ?? 'Our Blog';
+    $blogPreviewHeading = $blogPreviewCfg['heading'] ?? 'Latest News';
+    $blogPreviewButtonText = $blogPreviewCfg['button_text'] ?? 'All Blogs';
+    $blogPreviewButtonUrl = $blogPreviewCfg['button_url'] ?? route('blog.index');
+    $blogPreviewReadMoreText = $blogPreviewCfg['read_more_text'] ?? 'Read More';
+@endphp
+
+@if($blogPosts->count() && $blogPreviewEnabled)
 <section class="section section-white home-journal">
     <div class="container">
         <div class="row align-items-end mb-5">
             <div class="col-12 col-lg-7 reveal-left">
-                <span class="eyebrow">Our Blog</span>
+                <span class="eyebrow">{{ $blogPreviewEyebrow }}</span>
                 <span class="section-rule"></span>
                 <h2 class="home-blog-heading mb-0">
-                    Latest News
+                    {{ $blogPreviewHeading }}
                 </h2>
             </div>
             <div class="col-12 col-lg-3 offset-lg-2 text-lg-end mt-3 mt-lg-0 reveal-right">
-                <a href="{{ route('blog.index') }}" class="btn-outline-site">
-                    All Blogs <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
+                <a href="{{ $blogPreviewButtonUrl }}" class="btn-outline-site">
+                    {{ $blogPreviewButtonText }} <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
                 </a>
             </div>
         </div>
@@ -37,7 +47,7 @@
                             @if($post->author)<span><i class="fas fa-user me-1"></i>{{ $post->author }}</span>@endif
                             <span><i class="far fa-clock me-1"></i>{{ $post->reading_time }}</span>
                         </div>
-                        <span class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <span class="blog-read-more">{{ $blogPreviewReadMoreText }} <i class="fas fa-arrow-right"></i></span>
                     </div>
                 </a>
             </div>

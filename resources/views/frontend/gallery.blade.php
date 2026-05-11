@@ -5,8 +5,8 @@
 
 <section class="gallery-intro">
     <div class="container">
-        <span class="gallery-intro__eyebrow">Portfolio</span>
-        <h1 class="gallery-intro__title">A quiet record of recent work.</h1>
+        <span class="gallery-intro__eyebrow">{{ $galleryPage['intro_eyebrow'] }}</span>
+        <h1 class="gallery-intro__title">{{ $galleryPage['intro_title'] }}</h1>
     </div>
 </section>
 
@@ -15,7 +15,7 @@
         {{-- Category filters --}}
         @if($categories->count())
         <div class="gallery-showcase__filterbar" id="filterBtns">
-            <button type="button" class="gallery-showcase__filterbtn active" data-cat="all">All</button>
+            <button type="button" class="gallery-showcase__filterbtn active" data-cat="all">{{ $galleryPage['filter_all_label'] }}</button>
             @foreach($categories as $filterCat)
             <button type="button" class="gallery-showcase__filterbtn" data-cat="{{ $filterCat->name }}">{{ $filterCat->name }}</button>
             @endforeach
@@ -33,7 +33,9 @@
                     2 => 'gallery-showcase__item gallery-showcase__item--feature',
                     default => 'gallery-showcase__item gallery-showcase__item--standard',
                 };
-                $categoryLabel = $item->galleryCategory?->name ? \Illuminate\Support\Str::upper($item->galleryCategory->name) : 'Portfolio';
+                $categoryLabel = $item->galleryCategory?->name
+                    ? \Illuminate\Support\Str::upper($item->galleryCategory->name)
+                    : \Illuminate\Support\Str::upper($galleryPage['grid_category_fallback']);
             @endphp
             <article class="{{ $layoutClass }} gal-col" data-cat="{{ $item->galleryCategory?->name ?? '' }}">
                 <div class="gallery-work-card" role="button" tabindex="0"
@@ -56,8 +58,11 @@
             </article>
             @empty
             <div class="gallery-showcase__empty text-center py-5">
-                <i class="fas fa-images fa-3x mb-3"></i>
-                <p>No gallery items yet.</p>
+                <i class="fas fa-images fa-3x mb-3" aria-hidden="true"></i>
+                <p class="mb-3">{{ $galleryPage['empty_message'] }}</p>
+                @if(!empty(trim($galleryPage['empty_btn_text'] ?? '')))
+                    <a href="{{ $galleryPage['empty_btn_href'] }}" class="btn-outline-site">{{ $galleryPage['empty_btn_text'] }}</a>
+                @endif
             </div>
             @endforelse
         </div>
@@ -66,8 +71,8 @@
 
 <section class="gallery-bottom-cta">
     <div class="container text-center">
-        <h2>Like what you see?</h2>
-        <a href="{{ route('contact') }}" class="gallery-bottom-cta__btn">Start a project</a>
+        <h2>{{ $galleryPage['bottom_heading'] }}</h2>
+        <a href="{{ $galleryPage['bottom_btn_href'] }}" class="gallery-bottom-cta__btn">{{ $galleryPage['bottom_btn_text'] }}</a>
     </div>
 </section>
 

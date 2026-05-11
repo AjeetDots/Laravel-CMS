@@ -1,16 +1,28 @@
+@php
+    $servicesCfg = $servicesSection ?? [];
+    $servicesEnabled = array_key_exists('is_enabled', $servicesCfg) ? !empty($servicesCfg['is_enabled']) : true;
+    $servicesEyebrow = $servicesCfg['eyebrow'] ?? 'Our Services';
+    $servicesHeadingLine1 = $servicesCfg['heading_line_1'] ?? 'Three disciplines,';
+    $servicesHeadingLine2 = $servicesCfg['heading_line_2'] ?? 'one obsession.';
+    $servicesBtnText = $servicesCfg['button_text'] ?? 'See all services';
+    $servicesBtnUrl = $servicesCfg['button_url'] ?? route('services');
+    $servicesCardLinkText = $servicesCfg['card_link_text'] ?? 'Discover';
+@endphp
+
+@if($servicesEnabled)
 <section class="section section-soft disciplines-section">
     <div class="container">
         <div class="row align-items-end mb-5">
             <div class="col-lg-7 reveal-left">
-                <span class="eyebrow">Our Services</span>
+                <span class="eyebrow">{{ $servicesEyebrow }}</span>
                 <span class="section-rule"></span>
                 <h2 class="disciplines-headline">
-                    Three disciplines,<br>one obsession.
+                    {{ $servicesHeadingLine1 }}<br>{{ $servicesHeadingLine2 }}
                 </h2>
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right">
-                <a href="{{ route('services') }}" class="btn-outline-site">
-                    See all services <i class="fas fa-arrow-right ms-1" style="font-size:.7rem;"></i>
+                <a href="{{ $servicesBtnUrl }}" class="btn-outline-site">
+                    {{ $servicesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.7rem;"></i>
                 </a>
             </div>
         </div>
@@ -33,7 +45,7 @@
                             <p class="disc-card-desc">{{ $service->short_description }}</p>
                         @endif
                         <span class="disc-card-link">
-                            Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                            {{ $servicesCardLinkText }} <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
                         </span>
                     </div>
                 </a>
@@ -53,7 +65,7 @@
                         <h4 class="disc-card-title">{{ $svc[0] }}</h4>
                         <p class="disc-card-desc">{{ $svc[1] }}</p>
                         <span class="disc-card-link">
-                            Discover <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                            {{ $servicesCardLinkText }} <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
                         </span>
                     </div>
                 </div>
@@ -63,3 +75,4 @@
         </div>
     </div>
 </section>
+@endif

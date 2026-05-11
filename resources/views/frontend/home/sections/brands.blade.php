@@ -1,16 +1,27 @@
-@if($brands->count())
+@php
+    $brandsStripCfg = $brandsStripSection ?? [];
+    $brandsStripEnabled = array_key_exists('is_enabled', $brandsStripCfg) ? !empty($brandsStripCfg['is_enabled']) : true;
+    $brandsStripKicker = $brandsStripCfg['kicker'] ?? 'Partners & collaborators';
+    $brandsStripTitleLine1 = $brandsStripCfg['title_line_1'] ?? 'Trusted by';
+    $brandsStripTitleLine2 = $brandsStripCfg['title_line_2'] ?? 'leading names';
+    $brandMarqueeSegments = isset($brandsStripCfg['marquee_segments']) ? (int) $brandsStripCfg['marquee_segments'] : 8;
+    if ($brandMarqueeSegments < 1 || $brandMarqueeSegments > 20) {
+        $brandMarqueeSegments = 8;
+    }
+@endphp
+
+@if($brands->count() && $brandsStripEnabled)
 <section class="brands-strip" aria-labelledby="brands-strip-title">
     <div class="container">
         <header class="brands-strip__head">
             <span class="brands-strip__rule" aria-hidden="true"></span>
             <div class="brands-strip__title-block">
-                <span class="brands-strip__kicker">Partners &amp; collaborators</span>
-                <h2 class="brands-strip__title" id="brands-strip-title">Trusted by <br />leading names</h2>
+                <span class="brands-strip__kicker">{{ $brandsStripKicker }}</span>
+                <h2 class="brands-strip__title" id="brands-strip-title">{{ $brandsStripTitleLine1 }} <br />{{ $brandsStripTitleLine2 }}</h2>
             </div>
             <span class="brands-strip__rule" aria-hidden="true"></span>
         </header>
     </div>
-    @php $brandMarqueeSegments = 8; @endphp
     <div class="brands-strip__marquee" role="presentation">
         <div class="brands-slider-wrap">
             <div class="brand-track" style="--brand-segments: {{ $brandMarqueeSegments }}">

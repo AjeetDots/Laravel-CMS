@@ -1,19 +1,28 @@
-@if($gallery->count())
+@php
+    $commissionsCfg = $commissionsSection ?? [];
+    $commissionsEnabled = array_key_exists('is_enabled', $commissionsCfg) ? !empty($commissionsCfg['is_enabled']) : true;
+    $commissionsEyebrow = $commissionsCfg['eyebrow'] ?? 'Selected Work';
+    $commissionsHeadingLine1 = $commissionsCfg['heading_line_1'] ?? 'Recent commissions.';
+    $commissionsBtnText = $commissionsCfg['button_text'] ?? 'View full gallery';
+    $commissionsBtnUrl = $commissionsCfg['button_url'] ?? route('gallery');
+@endphp
+
+@if($gallery->count() && $commissionsEnabled)
 @php $commissionItems = $gallery->take(8); @endphp
 <section class="commissions-section">
     <div class="container">
 
         <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
             <div class="reveal-left">
-                <span class="eyebrow">Selected Work</span>
+                <span class="eyebrow">{{ $commissionsEyebrow }}</span>
                 <span class="section-rule" style="margin-bottom:0;"></span>
                 <h2 class="home-section-title-lg" style="margin:10px 0 0;">
-                    Recent commissions.
+                    {{ $commissionsHeadingLine1 }}
                 </h2>
             </div>
             <div class="reveal-right d-flex flex-wrap gap-2 justify-content-lg-end">
-                <a href="{{ route('gallery') }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
-                    View full gallery <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
+                <a href="{{ $commissionsBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
+                    {{ $commissionsBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
                 </a>
             </div>
         </div>

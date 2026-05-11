@@ -9,10 +9,6 @@
     </a>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success mb-4"><i class="fas fa-check-circle me-2"></i>{{ session('success') }}</div>
-@endif
-
 <div class="card">
     <div class="card-body p-0">
         <table class="table table-hover mb-0">

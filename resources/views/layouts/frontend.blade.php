@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="{{ asset('css/frontend.css') }}" rel="stylesheet">
     <link href="{{ asset('css/inner-pages.css') }}" rel="stylesheet">
+    @php $__itlCss = public_path('css/intl-phone-input.css'); $__itlCssV = is_file($__itlCss) ? filemtime($__itlCss) : time(); @endphp
+    <link href="{{ asset('css/intl-phone-input.css') }}?v={{ $__itlCssV }}" rel="stylesheet">
 
     @yield('styles')
 </head>
@@ -72,9 +74,9 @@
 
                 <div class="nav-right" id="navRight">
                     <div class="nav-top-contacts d-none d-xl-flex">
-                        @if($settings->get('site_phone'))
-                            <a href="tel:{{ $settings->get('site_phone') }}">
-                                <i class="fas fa-phone"></i> {{ $settings->get('site_phone') }}
+                        @if(\App\Support\SitePhone::hasPhone($settings))
+                            <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">
+                                <i class="fas fa-phone"></i> {{ \App\Support\SitePhone::display($settings) }}
                             </a>
                         @endif
                     </div>
@@ -105,10 +107,11 @@
 
 {{-- ── Chat Floating button ───────────────────────────────── --}}
 @php
-    $whatsappNumber = preg_replace('/[^0-9]/', '', $settings->get('site_phone'));
+    $whatsappNumber = \App\Support\SitePhone::whatsappDigits($settings);
     $whatsappMessage = urlencode("Hello Bespoke Ornate, I'd like to discuss a project.");
 @endphp
 
+@if($whatsappNumber !== '')
 <a href="https://wa.me/{{ $whatsappNumber }}?text={{ $whatsappMessage }}"
    class="whatsapp-float home-atelier-btn"
    target="_blank"
@@ -117,6 +120,7 @@
     <i class="fas fa-comments"></i>
     <span>Chat With Us</span>
 </a>
+@endif
 
 {{-- ── FOOTER ────────────────────────────────────────────────── --}}
 <footer class="site-footer">
@@ -185,10 +189,10 @@
                         <a href="mailto:{{ $settings->get('site_email') }}">{{ $settings->get('site_email') }}</a>
                     </div>
                     @endif
-                    @if($settings->get('site_phone'))
+                    @if(\App\Support\SitePhone::hasPhone($settings))
                     <div class="footer-contact-line">
                         <i class="fas fa-phone" aria-hidden="true"></i>
-                        <a href="tel:{{ $settings->get('site_phone') }}">{{ $settings->get('site_phone') }}</a>
+                        <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">{{ \App\Support\SitePhone::display($settings) }}</a>
                     </div>
                     @endif
                     @if($settings->get('site_address'))
@@ -344,6 +348,8 @@
     nums.forEach(el => io.observe(el));
 })();
 </script>
+@php $__itlJs = public_path('js/intl-phone-input.js'); $__itlJsV = is_file($__itlJs) ? filemtime($__itlJs) : time(); @endphp
+<script src="{{ asset('js/intl-phone-input.js') }}?v={{ $__itlJsV }}" defer></script>
 @yield('scripts')
 </body>
 </html>

@@ -16,9 +16,9 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-7">
-                <span class="svc-intro__eyebrow">Services</span>
-                <h1 class="svc-intro__title">Three disciplines,<br>applied with the<br>same obsession.</h1>
-                <p class="svc-intro__desc">From a single feature wall to a full residence, we work alongside designers, architects and private clients to deliver finishes of lasting beauty.</p>
+                <span class="svc-intro__eyebrow">{{ $servicesPage['intro_eyebrow'] }}</span>
+                <h1 class="svc-intro__title">{!! nl2br(e($servicesPage['intro_title'])) !!}</h1>
+                <p class="svc-intro__desc">{{ $servicesPage['intro_body'] }}</p>
             </div>
         </div>
     </div>
@@ -58,7 +58,7 @@
                         </ul>
                     @endif
                     <a href="{{ route('services.show', $service->slug) }}" class="svc-split__cta">
-                        Enquire about {{ $service->title }}
+                        {{ trim($servicesPage['service_cta_prefix']) }} {{ $service->title }}
                         <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                             <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -71,16 +71,21 @@
 @empty
 <div class="container text-center py-5 services-empty-state">
     <i class="fas fa-concierge-bell fa-3x mb-3" aria-hidden="true"></i>
-    <p class="mb-0">No services available yet.</p>
+    <p class="mb-3">{{ $servicesPage['empty_message'] }}</p>
+    @if(!empty(trim($servicesPage['empty_btn_text'] ?? '')))
+        <a href="{{ $servicesPage['empty_btn_href'] }}" class="btn-outline-site">{{ $servicesPage['empty_btn_text'] }}</a>
+    @endif
 </div>
 @endforelse
 
 <div class="cta-strip">
     <div class="container text-center">
-        <span class="eyebrow">BEGIN</span>
-        <h2>Bring your space.<br />We'll bring the finish.</h2>
-        <!-- <p class="mb-5">Talk to us — we'll help you find the right solution.</p> -->
-        <a href="{{ route('contact') }}" class="btn-white">Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
+        <span class="eyebrow">{{ $servicesPage['bottom_eyebrow'] }}</span>
+        <h2>{!! nl2br(e($servicesPage['bottom_heading'])) !!}</h2>
+        @if(!empty(trim($servicesPage['bottom_body'] ?? '')))
+            <p class="mb-4">{{ $servicesPage['bottom_body'] }}</p>
+        @endif
+        <a href="{{ $servicesPage['bottom_btn_href'] }}" class="btn-white">{{ $servicesPage['bottom_btn_text'] }} <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i></a>
     </div>
 </div>
 

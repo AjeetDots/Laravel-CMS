@@ -7,9 +7,6 @@
     <a href="{{ route('admin.blog.index') }}" class="btn btn-light"><i class="fas fa-arrow-left me-1"></i> Back</a>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success mb-4"><i class="fas fa-check-circle me-2"></i>{{ session('success') }}</div>
-@endif
 @if($errors->any())
     <div class="alert alert-danger mb-4">
         <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>

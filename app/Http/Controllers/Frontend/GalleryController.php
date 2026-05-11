@@ -1,11 +1,17 @@
 <?php
+
 namespace App\Http\Controllers\Frontend;
+
 use App\Http\Controllers\Controller;
 use App\Models\GalleryCategory;
 use App\Models\GalleryItem;
+use App\Models\GalleryPageContent;
+use App\Support\CmsOutboundHref;
 
-class GalleryController extends Controller {
-    public function index() {
+class GalleryController extends Controller
+{
+    public function index()
+    {
         $gallery = GalleryItem::with('galleryCategory')
             ->where('is_active', true)
             ->orderBy('sort_order')
@@ -15,6 +21,10 @@ class GalleryController extends Controller {
             ->orderBy('sort_order')
             ->orderBy('name')
             ->get();
-        return view('frontend.gallery', compact('gallery', 'categories'));
+        $galleryPage = GalleryPageContent::listingDataWithDefaults();
+        $galleryPage['empty_btn_href'] = CmsOutboundHref::resolve($galleryPage['empty_btn_url'] ?? null);
+        $galleryPage['bottom_btn_href'] = CmsOutboundHref::resolve($galleryPage['bottom_btn_url'] ?? null);
+
+        return view('frontend.gallery', compact('gallery', 'categories', 'galleryPage'));
     }
 }

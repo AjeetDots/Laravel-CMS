@@ -1,5 +1,98 @@
-@php $sitePhone = $settings->get('site_phone'); @endphp
+@php
+    $sitePhone = \App\Support\SitePhone::display($settings);
+    $atelier = $atelierSection ?? [];
 
+    $atelierEnabled = !empty($atelier['is_enabled']);
+    $atelierKicker = $atelier['kicker'] ?? null;
+    $atelierHeadingLine1 = $atelier['heading_line_1'] ?? null;
+    $atelierHeadingLine2 = $atelier['heading_line_2'] ?? null;
+    $atelierHeadingLine3 = $atelier['heading_line_3'] ?? null;
+    $atelierBody = $atelier['body'] ?? null;
+    $atelierCtaText = $atelier['cta_text'] ?? null;
+    $atelierCtaUrl = $atelier['cta_url'] ?? null;
+    $atelierBookingLabel = $atelier['booking_label'] ?? null;
+    $atelierBookingText = $atelier['booking_text'] ?? null;
+    $atelierBookingUrlRaw = trim((string) ($atelier['booking_url'] ?? ''));
+    $atelierBookingUrl = $atelierBookingUrlRaw !== '' ? $atelierBookingUrlRaw : null;
+
+    $atelierPrimaryImagePath = $atelier['primary_image'] ?? null;
+    $atelierSecondaryImagePath = $atelier['secondary_image'] ?? null;
+    $atelierPrimaryImage = $atelierPrimaryImagePath ? asset('storage/' . ltrim($atelierPrimaryImagePath, '/')) : null;
+    $atelierSecondaryImage = $atelierSecondaryImagePath ? asset('storage/' . ltrim($atelierSecondaryImagePath, '/')) : null;
+
+    if ($atelierCtaText && empty($atelierCtaUrl)) {
+        $atelierCtaUrl = route('contact');
+    }
+
+    $looksLikePhoneValue = function ($value) {
+        return is_string($value) && preg_match('/^\+?[\d\-\s\(\)]+$/', trim($value));
+    };
+    $normalizePhoneForDisplay = function ($value) {
+        $value = trim((string) $value);
+        if ($value === '') return null;
+        if (str_starts_with(strtolower($value), 'tel:')) {
+            $value = substr($value, 4);
+        }
+        return trim($value);
+    };
+
+    if ($atelierBookingUrl && !preg_match('/^(https?:\/\/|mailto:|tel:|\/|#)/i', $atelierBookingUrl)) {
+        if ($looksLikePhoneValue($atelierBookingUrl)) {
+            $atelierBookingUrl = 'tel:' . preg_replace('/[^\d+]/', '', $atelierBookingUrl);
+        }
+    }
+
+    $bookingUrlDisplayPhone = $atelierBookingUrlRaw;
+    if (!$bookingUrlDisplayPhone && $atelierBookingUrl && str_starts_with(strtolower($atelierBookingUrl), 'tel:')) {
+        $bookingUrlDisplayPhone = $atelierBookingUrl;
+    }
+    $bookingUrlDisplayPhone = $normalizePhoneForDisplay($bookingUrlDisplayPhone);
+
+    if (!$atelierBookingText && $atelierBookingUrlRaw && $looksLikePhoneValue($atelierBookingUrlRaw)) {
+        $atelierBookingText = $atelierBookingUrlRaw;
+    }
+
+    if (!$atelierBookingText && !$atelierBookingUrl && $sitePhone) {
+        $atelierBookingText = $sitePhone;
+        $studioTel = \App\Support\SitePhone::telHref($settings);
+        $atelierBookingUrl = $studioTel !== '' ? 'tel:'.$studioTel : null;
+    } elseif (!$atelierBookingUrl && $atelierBookingText) {
+        $atelierBookingUrl = 'tel:' . preg_replace('/[^\d+]/', '', $atelierBookingText);
+    }
+
+    // If URL contains a phone number, prefer showing that number over generic text like "Booking Now".
+    // Do not replace the studio default line (dial + number from settings).
+    if (
+        $bookingUrlDisplayPhone
+        && trim((string) $atelierBookingText) !== trim((string) $sitePhone)
+        && (
+            ! $atelierBookingText
+            || ! $looksLikePhoneValue($atelierBookingText)
+        )
+    ) {
+        $atelierBookingText = $bookingUrlDisplayPhone;
+    }
+
+    if (($atelierBookingText || $atelierBookingUrl) && empty($atelierBookingLabel)) {
+        $atelierBookingLabel = 'Booking Now';
+    }
+    $atelierHasContent = !empty(array_filter([
+        $atelierKicker,
+        $atelierHeadingLine1,
+        $atelierHeadingLine2,
+        $atelierHeadingLine3,
+        $atelierBody,
+        $atelierCtaText,
+        $atelierCtaUrl,
+        $atelierBookingLabel,
+        $atelierBookingText,
+        $atelierBookingUrl,
+        $atelierPrimaryImagePath,
+        $atelierSecondaryImagePath,
+    ], fn ($value) => !is_null($value) && $value !== ''));
+@endphp
+
+@if($atelierEnabled && $atelierHasContent)
 <section class="home-atelier section-white">
     <div class="container">
         <div class="row g-5 g-xl-5 align-items-center">
@@ -9,40 +102,53 @@
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--halo"></div>
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--dot"></div>
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--square"></div>
+                    @if($atelierPrimaryImage)
                     <div class="home-atelier-collage__main">
-                        <img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=1200&q=80"
+                        <img src="{{ $atelierPrimaryImage }}"
                              alt=""
                              width="476" height="596"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--primary">
                     </div>
+                    @endif
+                    @if($atelierSecondaryImage)
                     <div class="home-atelier-collage__float">
-                        <img src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?w=900&q=80"
+                        <img src="{{ $atelierSecondaryImage }}"
                              alt=""
                              width="291" height="254"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--inset">
                     </div>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-6 order-lg-2 reveal-right">
-                <span class="home-atelier-kicker">The Atelier</span>
+                @if($atelierKicker)
+                <span class="home-atelier-kicker">{{ $atelierKicker }}</span>
+                @endif
                 <div class="home-atelier-headline-wrap">
                     <div class="home-atelier-headline-deco" aria-hidden="true"></div>
                     <h2 class="home-atelier-headline">
-                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">Surfaces that hold</span></span>
-                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">the light, walls that</span></span>
-                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">hold the room.</span></span>
+                        @if($atelierHeadingLine1)
+                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">{{ $atelierHeadingLine1 }}</span></span>
+                        @endif
+                        @if($atelierHeadingLine2)
+                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">{{ $atelierHeadingLine2 }}</span></span>
+                        @endif
+                        @if($atelierHeadingLine3)
+                        <span class="home-atelier-headline-line"><span class="home-atelier-headline-inner">{{ $atelierHeadingLine3 }}</span></span>
+                        @endif
                     </h2>
                 </div>
+                @if($atelierBody)
                 <p class="home-atelier-body">
-                    For over one decades we have collaborated with leading interior designers,
-                    architects and private clients to create plaster finishes of uncommon depth and quietude.
-                    Every wall is mixed, applied and polished by hand.
+                    {{ $atelierBody }}
                 </p>
+                @endif
                 <div class="home-atelier-actions">
-                    <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold home-atelier-btn">
-                        Get a Quote
+                    @if($atelierCtaText && $atelierCtaUrl)
+                    <a href="{{ $atelierCtaUrl }}" class="hero-btn hero-btn--gold home-atelier-btn">
+                        {{ $atelierCtaText }}
                         <span class="home-atelier-btn__arrow" aria-hidden="true">
                             <svg viewBox="0 0 14 14" focusable="false" aria-hidden="true">
                                 <path d="M3 11L11 3"></path>
@@ -50,19 +156,23 @@
                             </svg>
                         </span>
                     </a>
-                    @if($sitePhone)
+                    @endif
+                    @if($atelierBookingText && $atelierBookingUrl)
                     <div class="home-atelier-phone">
                         <span class="home-atelier-phone__icon" aria-hidden="true">
                             <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-                                <rect x="1.5" y="1.5" width="21" height="21" rx="2"></rect>
-                                <path d="M9.3 8.8c.6-1.2 2-.9 2.5-.2l.6.9c.2.3.2.7 0 1l-.5.8c-.2.3-.2.7 0 1.1.5.9 1.2 1.7 2.1 2.2.3.2.7.2 1 0l.8-.5c.3-.2.7-.2 1 0l.9.6c.8.5 1 2 .1 2.6-1.1.8-2.6.9-4 .3-2-.8-3.8-2.5-4.9-4.4-1-1.7-1.1-3.3-.6-4.4z"></path>
-                                <path d="M15.6 7.6c.9.2 1.6.9 1.9 1.7"></path>
-                                <path d="M15.3 5.6c1.6.3 2.9 1.5 3.3 3"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                                <path d="M9.15 8.75c.55-1.05 1.86-.78 2.33-.2l.56.78c.23.32.22.73-.03 1.03l-.46.58c-.2.25-.24.6-.09.9.43.88 1.08 1.61 1.89 2.08.31.18.69.15.97-.07l.59-.47c.3-.24.72-.25 1.03-.02l.77.56c.73.53.8 1.69.12 2.31-1.02.93-2.56 1.1-4.34.35-1.93-.81-3.64-2.43-4.63-4.27-.9-1.66-1.05-3.08-.68-4.19z"></path>
+                                <path d="M15.8 7.3c.72.15 1.28.72 1.5 1.42"></path>
+                                <path d="M15.45 5.85c1.28.22 2.3 1.2 2.6 2.46"></path>
+                                <path d="M7.85 15.9l-1.05.33"></path>
                             </svg>
                         </span>
                         <div class="home-atelier-phone__txt">
-                            <span class="home-atelier-phone__label">Booking Now</span>
-                            <a href="tel:{{ preg_replace('/[^\d+]/', '', $sitePhone) }}" class="home-atelier-phone__num">{{ $sitePhone }}</a>
+                            @if($atelierBookingLabel)
+                            <span class="home-atelier-phone__label">{{ $atelierBookingLabel }}</span>
+                            @endif
+                            <a href="{{ $atelierBookingUrl }}" class="home-atelier-phone__num">{{ $atelierBookingText }}</a>
                         </div>
                     </div>
                     @endif
@@ -71,3 +181,4 @@
         </div>
     </div>
 </section>
+@endif

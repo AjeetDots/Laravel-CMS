@@ -10,7 +10,7 @@
     <div class="card-body py-3">
         <small class="text-warning-emphasis"><i class="fas fa-info-circle me-1"></i>
         Use tabs to manage templates by recipient type. If a template is <strong>inactive</strong>, that email is not sent.
-        Admin notifications require <strong>Admin Notification Email</strong> in Settings.</small>
+        Admin notifications use the <strong>Notifications</strong> tab under <strong>Site settings</strong> (admin notification email).</small>
     </div>
 </div>
 

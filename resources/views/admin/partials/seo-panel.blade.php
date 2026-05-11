@@ -21,7 +21,7 @@
     {{-- ── Header / score badge ──────────────────────────────────────────────── --}}
     <div class="card-header d-flex align-items-center justify-content-between"
          style="cursor:pointer" data-bs-toggle="collapse" data-bs-target="#seoBody"
-         aria-expanded="true">
+         aria-expanded="false">
         <span class="fw-semibold">
             <i class="fas fa-search-plus me-2 text-primary"></i>SEO Analysis
         </span>
@@ -30,7 +30,7 @@
         </span>
     </div>
 
-    <div class="collapse show" id="seoBody">
+    <div class="collapse" id="seoBody">
         <div class="card-body">
 
             {{-- ── Google SERP Preview ─────────────────────────────────────────── --}}

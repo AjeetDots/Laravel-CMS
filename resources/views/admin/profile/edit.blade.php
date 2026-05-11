@@ -1,11 +1,14 @@
 @extends('layouts.admin')
 
-@section('title', 'My Profile')
+@section('title', 'Account')
 
 @section('content')
 
 <div class="page-header-bar">
-    <h1>My Profile</h1>
+    <div>
+        <h1>Account</h1>
+        <p class="text-muted mb-0 small">Your admin login and display name.</p>
+    </div>
 </div>
 
 <div class="row g-4">

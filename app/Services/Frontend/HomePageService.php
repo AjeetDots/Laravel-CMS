@@ -7,6 +7,8 @@ use App\Models\BlogPost;
 use App\Models\Brand;
 use App\Models\Finish;
 use App\Models\GalleryItem;
+use App\Models\HomePageSection;
+use App\Models\PhoneCountry;
 use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\Slider;
@@ -19,6 +21,17 @@ class HomePageService implements HomePageServiceInterface
      */
     public function getPageData(): array
     {
+        $atelierSection = $this->getAtelierSectionData();
+        $finishesSection = $this->getFinishesSectionData();
+        $servicesSection = $this->getServicesSectionData();
+        $commissionsSection = $this->getCommissionsSectionData();
+        $whySection = $this->getWhySectionData();
+        $processSection = $this->getProcessSectionData();
+        $beginCtaSection = $this->getBeginCtaSectionData();
+        $contactBandSection = $this->getContactBandSectionData();
+        $brandsStripSection = $this->getBrandsStripSectionData();
+        $blogPreviewSection = $this->getBlogPreviewSectionData();
+
         return [
             'sliders' => Slider::query()
                 ->where('is_active', true)
@@ -57,8 +70,6 @@ class HomePageService implements HomePageServiceInterface
                 ->get(),
             'testimonials' => Testimonial::query()
                 ->where('is_active', true)
-                ->whereNotNull('client_image')
-                ->where('client_image', '!=', '')
                 ->whereNotNull('message')
                 ->where('message', '!=', '')
                 ->orderBy('sort_order')
@@ -72,6 +83,274 @@ class HomePageService implements HomePageServiceInterface
                 ->orderByDesc('published_at')
                 ->limit(3)
                 ->get(),
+            'atelierSection' => $atelierSection,
+            'finishesSection' => $finishesSection,
+            'servicesSection' => $servicesSection,
+            'commissionsSection' => $commissionsSection,
+            'whySection' => $whySection,
+            'processSection' => $processSection,
+            'beginCtaSection' => $beginCtaSection,
+            'contactBandSection' => $contactBandSection,
+            'brandsStripSection' => $brandsStripSection,
+            'blogPreviewSection' => $blogPreviewSection,
+            'phoneCountries' => PhoneCountry::listingQuery()->get(['id', 'iso_code', 'name', 'dial_code', 'flag_emoji']),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getAtelierSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'atelier')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => ! empty($data['is_enabled']),
+            'kicker' => $data['kicker'] ?? null,
+            'heading_line_1' => $data['heading_line_1'] ?? null,
+            'heading_line_2' => $data['heading_line_2'] ?? null,
+            'heading_line_3' => $data['heading_line_3'] ?? null,
+            'body' => $data['body'] ?? null,
+            'cta_text' => $data['cta_text'] ?? null,
+            'cta_url' => $data['cta_url'] ?? null,
+            'booking_label' => $data['booking_label'] ?? null,
+            'booking_text' => $data['booking_text'] ?? null,
+            'booking_url' => $data['booking_url'] ?? null,
+            'primary_image' => $data['primary_image'] ?? null,
+            'secondary_image' => $data['secondary_image'] ?? null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getFinishesSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'finishes')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'The Finishes',
+            'heading_line_1' => $data['heading_line_1'] ?? 'Six surfaces,',
+            'heading_line_2' => $data['heading_line_2'] ?? 'infinite tones.',
+            'card_label' => $data['card_label'] ?? 'Finish',
+            'button_text' => $data['button_text'] ?? 'All finishes',
+            'button_url' => $data['button_url'] ?? route('finishes'),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getServicesSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'services')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Our Services',
+            'heading_line_1' => $data['heading_line_1'] ?? 'Three disciplines,',
+            'heading_line_2' => $data['heading_line_2'] ?? 'one obsession.',
+            'button_text' => $data['button_text'] ?? 'See all services',
+            'button_url' => $data['button_url'] ?? route('services'),
+            'card_link_text' => $data['card_link_text'] ?? 'Discover',
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getCommissionsSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'commissions')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Selected Work',
+            'heading_line_1' => $data['heading_line_1'] ?? 'Recent commissions.',
+            'button_text' => $data['button_text'] ?? 'View full gallery',
+            'button_url' => $data['button_url'] ?? route('gallery'),
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getWhySectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'why')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+        $defaults = [
+            ['icon' => 'fa-award', 'title' => 'Master Craftsmanship', 'desc' => 'Every surface mixed, applied and polished by hand.'],
+            ['icon' => 'fa-palette', 'title' => 'Bespoke by Design', 'desc' => 'Custom tones, textures and profiles, never off-the-shelf.'],
+            ['icon' => 'fa-clapperboard', 'title' => 'Trusted by Productions', 'desc' => 'Selected for major film, TV and editorial productions.'],
+            ['icon' => 'fa-leaf', 'title' => 'Considered Materials', 'desc' => 'Lime-based, breathable, low-VOC formulations.'],
+        ];
+        $cards = is_array($data['cards'] ?? null) ? $data['cards'] : [];
+        $resolvedCards = [];
+        for ($i = 0; $i < 4; $i++) {
+            $resolvedCards[] = [
+                'icon' => $cards[$i]['icon'] ?? $defaults[$i]['icon'],
+                'title' => $cards[$i]['title'] ?? $defaults[$i]['title'],
+                'desc' => $cards[$i]['desc'] ?? $defaults[$i]['desc'],
+            ];
+        }
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Why Bespoke Ornate',
+            'heading' => $data['heading'] ?? 'A studio defined by its hands.',
+            'lead' => $data['lead'] ?? 'Each project is led by master artisans trained in traditional Italian techniques and refined for the demands of contemporary architecture.',
+            'cards' => $resolvedCards,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getProcessSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'process')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+        $defaults = [
+            ['num' => '01', 'title' => 'Consultation', 'desc' => 'We visit your space, listen and study the light.'],
+            ['num' => '02', 'title' => 'Design', 'desc' => 'Bespoke samples, tones and textures developed in studio.'],
+            ['num' => '03', 'title' => 'Quote', 'desc' => 'A clear, transparent proposal with timelines.'],
+            ['num' => '04', 'title' => 'Execution', 'desc' => 'Hand-applied by our master artisans on site.'],
+        ];
+        $steps = is_array($data['steps'] ?? null) ? $data['steps'] : [];
+        $resolvedSteps = [];
+        for ($i = 0; $i < 4; $i++) {
+            $resolvedSteps[] = [
+                'num' => $steps[$i]['num'] ?? $defaults[$i]['num'],
+                'title' => $steps[$i]['title'] ?? $defaults[$i]['title'],
+                'desc' => $steps[$i]['desc'] ?? $defaults[$i]['desc'],
+            ];
+        }
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Our Process',
+            'heading_line_1' => $data['heading_line_1'] ?? 'From first conversation',
+            'heading_line_2' => $data['heading_line_2'] ?? 'to final polish.',
+            'steps' => $resolvedSteps,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getBeginCtaSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'begin_cta')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Begin a Project',
+            'title_line_1' => $data['title_line_1'] ?? 'Transform your space',
+            'title_line_2' => $data['title_line_2'] ?? 'into a quiet masterpiece.',
+            'primary_btn_text' => $data['primary_btn_text'] ?? 'Get free consultation',
+            'primary_btn_url' => $data['primary_btn_url'] ?? route('contact'),
+            'secondary_btn_text' => $data['secondary_btn_text'] ?? 'Call the studio',
+            'secondary_btn_url' => $data['secondary_btn_url'] ?? null,
+            'bg_image' => $data['bg_image'] ?? null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getContactBandSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'contact_band')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Contact Us',
+            'heading' => $data['heading'] ?? 'How we can help?',
+            'panel_title' => $data['panel_title'] ?? 'Contact Us',
+            'name_placeholder' => $data['name_placeholder'] ?? 'Your Name',
+            'email_placeholder' => $data['email_placeholder'] ?? 'Email',
+            'phone_placeholder' => $data['phone_placeholder'] ?? 'Phone(Optional)',
+            'message_placeholder' => $data['message_placeholder'] ?? 'Tell us about your space',
+            'submit_text' => $data['submit_text'] ?? 'Send Enquiry',
+            'subject' => $data['subject'] ?? 'Website enquiry (home)',
+            'visual_image' => $data['visual_image'] ?? null,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getBrandsStripSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'brands_strip')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+        $marqueeSegments = isset($data['marquee_segments']) ? (int) $data['marquee_segments'] : 8;
+        if ($marqueeSegments < 1 || $marqueeSegments > 20) {
+            $marqueeSegments = 8;
+        }
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'kicker' => $data['kicker'] ?? 'Partners & collaborators',
+            'title_line_1' => $data['title_line_1'] ?? 'Trusted by',
+            'title_line_2' => $data['title_line_2'] ?? 'leading names',
+            'marquee_segments' => $marqueeSegments,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getBlogPreviewSectionData(): array
+    {
+        $stored = HomePageSection::query()
+            ->where('section_key', 'blog_preview')
+            ->value('data');
+
+        $data = is_array($stored) ? $stored : [];
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => $data['eyebrow'] ?? 'Our Blog',
+            'heading' => $data['heading'] ?? 'Latest News',
+            'button_text' => $data['button_text'] ?? 'All Blogs',
+            'button_url' => $data['button_url'] ?? route('blog.index'),
+            'read_more_text' => $data['read_more_text'] ?? 'Read More',
         ];
     }
 }

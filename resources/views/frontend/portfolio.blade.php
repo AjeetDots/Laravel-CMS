@@ -5,15 +5,15 @@
 
 <div class="page-hero">
     <div class="container">
-        <span class="eyebrow">Completed work</span>
-        <h1 class="page-hero-title-wide">Portfolio</h1>
+        <span class="eyebrow">{{ $portfolioPage['intro_eyebrow'] }}</span>
+        <h1 class="page-hero-title-wide">{{ $portfolioPage['intro_title'] }}</h1>
         <p>
-            Project-based inspiration — reference imagery and real commissions. Explore by tag or open a project for the full story.
+            {{ $portfolioPage['intro_body'] }}
         </p>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item active">Portfolio</li>
+                <li class="breadcrumb-item active">{{ $portfolioPage['breadcrumb_current'] }}</li>
             </ol>
         </nav>
     </div>
@@ -23,7 +23,7 @@
     <div class="container">
         @if($tags->count())
         <div class="gallery-filter-bar mb-4" id="portfolioFilterBtns">
-            <button type="button" class="gallery-filter-btn active" data-tag="all">All</button>
+            <button type="button" class="gallery-filter-btn active" data-tag="all">{{ $portfolioPage['filter_all_label'] }}</button>
             @foreach($tags as $tag)
             <button type="button" class="gallery-filter-btn" data-tag="{{ $tag }}">{{ $tag }}</button>
             @endforeach
@@ -47,22 +47,25 @@
                     </div>
                     <div class="service-grid-card__body">
                         <span class="service-grid-eyebrow">
-                            {{ $project->project_type === 'real' ? 'Real project' : 'Reference' }}
+                            {{ $project->project_type === 'real' ? $portfolioPage['label_real_project'] : $portfolioPage['label_reference'] }}
                         </span>
                         <h3>{{ $project->title }}</h3>
                         @if($project->description)
                             <p>{{ \Illuminate\Support\Str::limit(strip_tags($project->description), 100) }}</p>
                         @endif
                         <span class="service-grid-card__link">
-                            View project <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                            {{ $portfolioPage['card_link_text'] }} <i class="fas fa-arrow-right" style="font-size:.65rem;" aria-hidden="true"></i>
                         </span>
                     </div>
                 </a>
             </div>
             @empty
             <div class="col-12 text-center py-5" style="color:var(--ink-light);">
-                <i class="fas fa-briefcase fa-3x mb-3" style="color:var(--border);"></i>
-                <p>No portfolio entries yet.</p>
+                <i class="fas fa-briefcase fa-3x mb-3" style="color:var(--border);" aria-hidden="true"></i>
+                <p class="mb-3">{{ $portfolioPage['empty_message'] }}</p>
+                @if(!empty(trim($portfolioPage['empty_btn_text'] ?? '')))
+                    <a href="{{ $portfolioPage['empty_btn_href'] }}" class="btn-outline-site">{{ $portfolioPage['empty_btn_text'] }}</a>
+                @endif
             </div>
             @endforelse
         </div>
@@ -71,9 +74,11 @@
 
 <div class="cta-strip">
     <div class="container text-center">
-        <h2>Planning something similar?</h2>
-        <p class="mb-5">Share your brief and we’ll outline timelines and options.</p>
-        <a href="{{ route('contact') }}" class="btn-white">Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i></a>
+        <h2>{{ $portfolioPage['bottom_heading'] }}</h2>
+        @if(!empty(trim($portfolioPage['bottom_body'] ?? '')))
+            <p class="mb-5">{{ $portfolioPage['bottom_body'] }}</p>
+        @endif
+        <a href="{{ $portfolioPage['bottom_btn_href'] }}" class="btn-white">{{ $portfolioPage['bottom_btn_text'] }} <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i></a>
     </div>
 </div>
 

@@ -5,11 +5,10 @@
 
 <section class="finishes-intro">
     <div class="container">
-        <span class="finishes-intro__eyebrow">Our finishes</span>
-        <h1 class="finishes-intro__title">Six finishes. One obsession with the surface.</h1>
+        <span class="finishes-intro__eyebrow">{{ $finishesPage['intro_eyebrow'] }}</span>
+        <h1 class="finishes-intro__title">{{ $finishesPage['intro_title'] }}</h1>
         <p class="finishes-intro__desc">
-            Every finish is mixed, applied and polished by hand. Bespoke colours are developed in studio against
-            samples of your space, your light and your interiors.
+            {{ $finishesPage['intro_body'] }}
         </p>
     </div>
 </section>
@@ -22,7 +21,7 @@
                 $labelParts = collect($finish->tags ?? [])->filter()->take(3)->values();
                 $finishLabel = $labelParts->isNotEmpty()
                     ? $labelParts->map(fn ($part) => \Illuminate\Support\Str::upper($part))->implode(' / ')
-                    : 'Hand-crafted decorative finish';
+                    : $finishesPage['card_label_fallback'];
             @endphp
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('finishes.show', $finish->slug) }}" class="finish-card">
@@ -51,8 +50,8 @@
             @empty
             <div class="col-12 text-center py-5 finishes-grid-empty">
                 <i class="fas fa-palette fa-3x mb-3"></i>
-                <p>No finishes have been published yet.</p>
-                <a href="{{ route('contact') }}" class="btn-outline-site mt-2">Get in touch</a>
+                <p>{{ $finishesPage['empty_message'] }}</p>
+                <a href="{{ $finishesPage['empty_btn_href'] }}" class="btn-outline-site mt-2">{{ $finishesPage['empty_btn_text'] }}</a>
             </div>
             @endforelse
         </div>
@@ -61,10 +60,10 @@
 
 <section class="finishes-bottom-cta">
     <div class="container text-center">
-        <span class="finishes-bottom-cta__eyebrow">Begin</span>
-        <h2>Not sure which finish suits your space?</h2>
-        <p>Tell us about the room and we&rsquo;ll prepare hand-made samples for your light.</p>
-        <a href="{{ route('contact') }}" class="finishes-bottom-cta__btn">Request samples</a>
+        <span class="finishes-bottom-cta__eyebrow">{{ $finishesPage['bottom_eyebrow'] }}</span>
+        <h2>{{ $finishesPage['bottom_heading'] }}</h2>
+        <p>{{ $finishesPage['bottom_body'] }}</p>
+        <a href="{{ $finishesPage['bottom_btn_href'] }}" class="finishes-bottom-cta__btn">{{ $finishesPage['bottom_btn_text'] }}</a>
     </div>
 </section>
 
