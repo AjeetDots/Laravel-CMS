@@ -2546,6 +2546,17 @@ body:not(.has-hero) { padding-top: 150px; }
     color: #b91c1c;
     margin-top: -4px;
 }
+.footer-newsletter-status {
+    font-size: 0.75rem;
+    line-height: 1.45;
+    margin: 10px 0 0;
+}
+.footer-newsletter-status--success {
+    color: #86efac;
+}
+.footer-newsletter-status--error {
+    color: #fca5a5;
+}
 .footer-newsletter-privacy {
     font-size: 0.68rem;
     color: rgba(243, 240, 234, 0.42);

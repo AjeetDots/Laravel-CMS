@@ -5,7 +5,6 @@ namespace App\Http\Requests\Frontend;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Str;
 
 class NewsletterSubscribeRequest extends FormRequest
 {
@@ -23,10 +22,17 @@ class NewsletterSubscribeRequest extends FormRequest
 
     protected function failedValidation(Validator $validator): void
     {
-        $newsletterUrl = Str::before(url()->previous(), '#') . '#footer-newsletter';
+        if ($this->expectsJson()) {
+            throw new HttpResponseException(
+                response()->json([
+                    'message' => $validator->errors()->first() ?: 'The given data was invalid.',
+                    'errors' => $validator->errors(),
+                ], 422)
+            );
+        }
 
         throw new HttpResponseException(
-            redirect($newsletterUrl)
+            redirect()->back()
                 ->withErrors($validator)
                 ->withInput()
         );
