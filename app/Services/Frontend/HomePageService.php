@@ -21,16 +21,26 @@ class HomePageService implements HomePageServiceInterface
      */
     public function getPageData(): array
     {
-        $atelierSection = $this->getAtelierSectionData();
-        $finishesSection = $this->getFinishesSectionData();
-        $servicesSection = $this->getServicesSectionData();
-        $commissionsSection = $this->getCommissionsSectionData();
-        $whySection = $this->getWhySectionData();
-        $processSection = $this->getProcessSectionData();
-        $beginCtaSection = $this->getBeginCtaSectionData();
-        $contactBandSection = $this->getContactBandSectionData();
-        $brandsStripSection = $this->getBrandsStripSectionData();
-        $blogPreviewSection = $this->getBlogPreviewSectionData();
+        $sections = HomePageSection::query()
+            ->get(['section_key', 'data'])
+            ->keyBy('section_key');
+
+        $pick = function (string $key) use ($sections): array {
+            $raw = $sections->get($key)?->data;
+
+            return is_array($raw) ? $raw : [];
+        };
+
+        $atelierSection = $this->getAtelierSectionData($pick('atelier'));
+        $finishesSection = $this->getFinishesSectionData($pick('finishes'));
+        $servicesSection = $this->getServicesSectionData($pick('services'));
+        $commissionsSection = $this->getCommissionsSectionData($pick('commissions'));
+        $whySection = $this->getWhySectionData($pick('why'));
+        $processSection = $this->getProcessSectionData($pick('process'));
+        $beginCtaSection = $this->getBeginCtaSectionData($pick('begin_cta'));
+        $contactBandSection = $this->getContactBandSectionData($pick('contact_band'));
+        $brandsStripSection = $this->getBrandsStripSectionData($pick('brands_strip'));
+        $blogPreviewSection = $this->getBlogPreviewSectionData($pick('blog_preview'));
 
         return [
             'sliders' => Slider::query()
@@ -100,14 +110,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getAtelierSectionData(): array
+    private function getAtelierSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'atelier')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => ! empty($data['is_enabled']),
             'kicker' => $data['kicker'] ?? null,
@@ -128,14 +132,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getFinishesSectionData(): array
+    private function getFinishesSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'finishes')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'The Finishes',
@@ -150,14 +148,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getServicesSectionData(): array
+    private function getServicesSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'services')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'Our Services',
@@ -172,14 +164,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getCommissionsSectionData(): array
+    private function getCommissionsSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'commissions')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'Selected Work',
@@ -192,13 +178,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getWhySectionData(): array
+    private function getWhySectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'why')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
         $defaults = [
             ['icon' => 'fa-award', 'title' => 'Master Craftsmanship', 'desc' => 'Every surface mixed, applied and polished by hand.'],
             ['icon' => 'fa-palette', 'title' => 'Bespoke by Design', 'desc' => 'Custom tones, textures and profiles, never off-the-shelf.'],
@@ -227,13 +208,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getProcessSectionData(): array
+    private function getProcessSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'process')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
         $defaults = [
             ['num' => '01', 'title' => 'Consultation', 'desc' => 'We visit your space, listen and study the light.'],
             ['num' => '02', 'title' => 'Design', 'desc' => 'Bespoke samples, tones and textures developed in studio.'],
@@ -262,14 +238,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getBeginCtaSectionData(): array
+    private function getBeginCtaSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'begin_cta')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'Begin a Project',
@@ -286,14 +256,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getContactBandSectionData(): array
+    private function getContactBandSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'contact_band')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'Contact Us',
@@ -312,13 +276,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getBrandsStripSectionData(): array
+    private function getBrandsStripSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'brands_strip')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
         $marqueeSegments = isset($data['marquee_segments']) ? (int) $data['marquee_segments'] : 8;
         if ($marqueeSegments < 1 || $marqueeSegments > 20) {
             $marqueeSegments = 8;
@@ -336,14 +295,8 @@ class HomePageService implements HomePageServiceInterface
     /**
      * @return array<string, mixed>
      */
-    private function getBlogPreviewSectionData(): array
+    private function getBlogPreviewSectionData(array $data): array
     {
-        $stored = HomePageSection::query()
-            ->where('section_key', 'blog_preview')
-            ->value('data');
-
-        $data = is_array($stored) ? $stored : [];
-
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => $data['eyebrow'] ?? 'Our Blog',

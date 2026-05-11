@@ -4,8 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     @include('partials.meta-tags', ['model' => $seoModel ?? null])
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     @php
-        $favicon = \App\Models\Setting::get('site_favicon');
+        $favicon = $settings->get('site_favicon');
         $faviconUrl = $favicon ? asset('storage/'.$favicon) : asset('images/brand/favicon-bop.svg');
     @endphp
     <link rel="icon" href="{{ $faviconUrl }}" sizes="any">

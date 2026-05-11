@@ -20,6 +20,7 @@ use App\Models\PhoneCountry;
 use App\Models\PortfolioPageContent;
 use App\Models\ServicesPageContent;
 use App\Models\Setting;
+use App\Support\FrontendViewCache;
 use App\Support\SitePhone;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
@@ -69,6 +70,8 @@ class SettingController extends Controller
                 Setting::set($field, null);
             }
         }
+
+        FrontendViewCache::forgetSettingsPluck();
 
         return back()->with('success', 'Site settings saved.');
     }

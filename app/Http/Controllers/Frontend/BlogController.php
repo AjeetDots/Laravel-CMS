@@ -40,7 +40,9 @@ class BlogController extends Controller
             ->firstOrFail();
 
         // 5 latest posts excluding this one
-        $latestPosts = BlogPost::where('is_active', true)
+        $latestPosts = BlogPost::query()
+            ->with('category')
+            ->where('is_active', true)
             ->where('id', '!=', $post->id)
             ->orderByDesc('published_at')
             ->limit(5)
@@ -49,7 +51,9 @@ class BlogController extends Controller
         // Up to 3 posts in the same category for the "Related" section
         $related = collect();
         if ($post->category_id) {
-            $related = BlogPost::where('is_active', true)
+            $related = BlogPost::query()
+                ->with('category')
+                ->where('is_active', true)
                 ->where('id', '!=', $post->id)
                 ->where('category_id', $post->category_id)
                 ->orderByDesc('published_at')
