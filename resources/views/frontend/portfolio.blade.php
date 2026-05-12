@@ -63,7 +63,7 @@
             <div class="col-12 text-center py-5" style="color:var(--ink-light);">
                 <i class="fas fa-briefcase fa-3x mb-3" style="color:var(--border);" aria-hidden="true"></i>
                 <p class="mb-3">{{ $portfolioPage['empty_message'] }}</p>
-                @if(!empty(trim($portfolioPage['empty_btn_text'] ?? '')))
+                @if(!empty(trim($portfolioPage['empty_btn_text'] ?? '')) && !empty(trim($portfolioPage['empty_btn_href'] ?? '')))
                     <a href="{{ $portfolioPage['empty_btn_href'] }}" class="btn-outline-site">{{ $portfolioPage['empty_btn_text'] }}</a>
                 @endif
             </div>
@@ -78,7 +78,9 @@
         @if(!empty(trim($portfolioPage['bottom_body'] ?? '')))
             <p class="mb-5">{{ $portfolioPage['bottom_body'] }}</p>
         @endif
+        @if(!empty(trim($portfolioPage['bottom_btn_text'] ?? '')) && !empty(trim($portfolioPage['bottom_btn_href'] ?? '')))
         <a href="{{ $portfolioPage['bottom_btn_href'] }}" class="btn-white">{{ $portfolioPage['bottom_btn_text'] }} <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i></a>
+        @endif
     </div>
 </div>
 

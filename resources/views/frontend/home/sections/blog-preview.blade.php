@@ -1,11 +1,11 @@
 @php
     $blogPreviewCfg = $blogPreviewSection ?? [];
     $blogPreviewEnabled = array_key_exists('is_enabled', $blogPreviewCfg) ? !empty($blogPreviewCfg['is_enabled']) : true;
-    $blogPreviewEyebrow = $blogPreviewCfg['eyebrow'] ?? 'Our Blog';
-    $blogPreviewHeading = $blogPreviewCfg['heading'] ?? 'Latest News';
-    $blogPreviewButtonText = $blogPreviewCfg['button_text'] ?? 'All Blogs';
-    $blogPreviewButtonUrl = $blogPreviewCfg['button_url'] ?? route('blog.index');
-    $blogPreviewReadMoreText = $blogPreviewCfg['read_more_text'] ?? 'Read More';
+    $blogPreviewEyebrow = $blogPreviewCfg['eyebrow'] ?? '';
+    $blogPreviewHeading = $blogPreviewCfg['heading'] ?? '';
+    $blogPreviewButtonText = $blogPreviewCfg['button_text'] ?? '';
+    $blogPreviewButtonUrl = $blogPreviewCfg['button_url'] ?? '';
+    $blogPreviewReadMoreText = $blogPreviewCfg['read_more_text'] ?? '';
 @endphp
 
 @if($blogPosts->count() && $blogPreviewEnabled)
@@ -20,9 +20,11 @@
                 </h2>
             </div>
             <div class="col-12 col-lg-3 offset-lg-2 text-lg-end mt-3 mt-lg-0 reveal-right">
+                @if(trim($blogPreviewButtonUrl) !== '' && trim($blogPreviewButtonText) !== '')
                 <a href="{{ $blogPreviewButtonUrl }}" class="btn-outline-site">
                     {{ $blogPreviewButtonText }} <i class="fas fa-arrow-right ms-1" style="font-size:.75rem;"></i>
                 </a>
+                @endif
             </div>
         </div>
         <div class="home-blog-scroller" id="homeBlogScroller">

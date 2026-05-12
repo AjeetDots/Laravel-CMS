@@ -13,12 +13,14 @@
         'docs' => 'Documentation',
         'help' => 'Support',
     ];
-    $heroEyebrow = $heroEyebrows[$page->slug] ?? 'Overview';
+    $heroEyebrow = $heroEyebrows[$page->slug] ?? '';
 @endphp
 
 <div class="page-hero">
     <div class="container">
+        @if(trim((string) $heroEyebrow) !== '')
         <span class="eyebrow">{{ $heroEyebrow }}</span>
+        @endif
         <h1 class="page-hero-title-wide">{{ $page->title }}</h1>
         @if($page->meta_description && \Illuminate\Support\Str::length($page->meta_description) < 220)
             <p>{{ $page->meta_description }}</p>
@@ -57,10 +59,7 @@
                         {!! $page->content !!}
                     </div>
                 @else
-                    <div class="text-center py-5" style="color:var(--ink-light);">
-                        <i class="fas fa-file-alt fa-3x mb-3" style="color:var(--border);"></i>
-                        <p class="mb-0">Content coming soon.</p>
-                    </div>
+                    <div class="py-5"></div>
                 @endif
             </div>
         </div>

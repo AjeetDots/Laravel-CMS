@@ -20,10 +20,6 @@
     $atelierPrimaryImage = $atelierPrimaryImagePath ? asset('storage/' . ltrim($atelierPrimaryImagePath, '/')) : null;
     $atelierSecondaryImage = $atelierSecondaryImagePath ? asset('storage/' . ltrim($atelierSecondaryImagePath, '/')) : null;
 
-    if ($atelierCtaText && empty($atelierCtaUrl)) {
-        $atelierCtaUrl = route('contact');
-    }
-
     $looksLikePhoneValue = function ($value) {
         return is_string($value) && preg_match('/^\+?[\d\-\s\(\)]+$/', trim($value));
     };
@@ -52,11 +48,7 @@
         $atelierBookingText = $atelierBookingUrlRaw;
     }
 
-    if (!$atelierBookingText && !$atelierBookingUrl && $sitePhone) {
-        $atelierBookingText = $sitePhone;
-        $studioTel = \App\Support\SitePhone::telHref($settings);
-        $atelierBookingUrl = $studioTel !== '' ? 'tel:'.$studioTel : null;
-    } elseif (!$atelierBookingUrl && $atelierBookingText) {
+    if (!$atelierBookingUrl && $atelierBookingText) {
         $atelierBookingUrl = 'tel:' . preg_replace('/[^\d+]/', '', $atelierBookingText);
     }
 
@@ -73,9 +65,6 @@
         $atelierBookingText = $bookingUrlDisplayPhone;
     }
 
-    if (($atelierBookingText || $atelierBookingUrl) && empty($atelierBookingLabel)) {
-        $atelierBookingLabel = 'Booking Now';
-    }
     $atelierHasContent = !empty(array_filter([
         $atelierKicker,
         $atelierHeadingLine1,

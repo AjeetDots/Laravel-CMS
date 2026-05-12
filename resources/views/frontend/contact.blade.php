@@ -1,5 +1,5 @@
 @extends('layouts.frontend')
-@section('title', $contactPage['page_title'] ?? 'Contact Us')
+@section('title', trim((string) ($contactPage['page_title'] ?? '')) !== '' ? $contactPage['page_title'] : '')
 @section('body_class', 'nav-solid page-contact')
 @section('content')
 
@@ -11,7 +11,9 @@
     <div class="contact-hero__overlay"></div>
     <div class="container contact-hero__inner">
         <h1>{{ $contactPage['hero_line_1'] ?? '' }}<br>{{ $contactPage['hero_line_2'] ?? '' }}</h1>
-        <a href="#contactFormPanel" class="contact-hero__btn">{{ $contactPage['hero_cta'] ?? 'Get a quote' }} <i class="fas fa-arrow-up-right"></i></a>
+        @if(trim((string) ($contactPage['hero_cta'] ?? '')) !== '')
+        <a href="#contactFormPanel" class="contact-hero__btn">{{ $contactPage['hero_cta'] }} <i class="fas fa-arrow-up-right"></i></a>
+        @endif
     </div>
 </section>
 
@@ -20,14 +22,14 @@
         <div class="row g-4 g-xl-5 align-items-start">
             <div class="col-lg-6">
                 <div class="contact-main__info">
-                    <span class="contact-main__eyebrow">{{ $contactPage['info_eyebrow'] ?? 'Contact' }}</span>
+                    <span class="contact-main__eyebrow">{{ $contactPage['info_eyebrow'] ?? '' }}</span>
                     <h2>{{ $contactPage['info_heading_1'] ?? '' }}<br>{{ $contactPage['info_heading_2'] ?? '' }}</h2>
                     <p class="contact-main__lead">
                         {!! nl2br(e($contactPage['info_lead'] ?? '')) !!}
                     </p>
 
                     <div class="contact-main__block">
-                        <span class="contact-main__label">{{ $contactPage['studio_label'] ?? 'Studio' }}</span>
+                        <span class="contact-main__label">{{ $contactPage['studio_label'] ?? '' }}</span>
                         <p class="contact-main__studio">
                             {!! nl2br(e($contactPage['studio_body'] ?? '')) !!}
                         </p>
@@ -37,20 +39,28 @@
                         @if(\App\Support\SitePhone::hasPhone($settings))
                         <div class="contact-main__phone-line"><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">{{ \App\Support\SitePhone::display($settings) }}</a></div>
                         @else
-                        <div><i class="fas fa-phone" aria-hidden="true"></i> {{ $contactPage['fallback_phone_display'] ?? '+1 (555) 123-4567' }}</div>
+                        @if(trim((string) ($contactPage['fallback_phone_display'] ?? '')) !== '')
+                        <div><i class="fas fa-phone" aria-hidden="true"></i> {{ $contactPage['fallback_phone_display'] }}</div>
+                        @endif
                         @endif
                         @php $waDigits = \App\Support\SitePhone::whatsappDigits($settings); @endphp
                         @if($waDigits !== '')
                         <div class="contact-main__phone-line"><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/{{ $waDigits }}" target="_blank" rel="noopener noreferrer">{{ \App\Support\SitePhone::display($settings) }}</a></div>
                         @else
-                        <div><i class="fab fa-whatsapp" aria-hidden="true"></i> {{ $contactPage['fallback_whatsapp_label'] ?? 'WhatsApp' }}</div>
+                        @if(trim((string) ($contactPage['fallback_whatsapp_label'] ?? '')) !== '')
+                        <div><i class="fab fa-whatsapp" aria-hidden="true"></i> {{ $contactPage['fallback_whatsapp_label'] }}</div>
                         @endif
-                        <div><i class="fas fa-envelope"></i> {{ $settings->get('site_email','info@bespokeornateplaster.com') }}</div>
-                        <div><i class="far fa-clock"></i> {{ $contactPage['appointment_line'] ?? 'By appointment' }}</div>
+                        @endif
+                        @if(trim((string) $settings->get('site_email')) !== '')
+                        <div><i class="fas fa-envelope"></i> {{ $settings->get('site_email') }}</div>
+                        @endif
+                        @if(trim((string) ($contactPage['appointment_line'] ?? '')) !== '')
+                        <div><i class="far fa-clock"></i> {{ $contactPage['appointment_line'] }}</div>
+                        @endif
                     </div>
 
                     <div class="contact-main__block">
-                        <span class="contact-main__label">{{ $contactPage['hours_label'] ?? 'Hours' }}</span>
+                        <span class="contact-main__label">{{ $contactPage['hours_label'] ?? '' }}</span>
                         <p class="contact-main__hours">{!! nl2br(e($contactPage['hours_body'] ?? '')) !!}</p>
                     </div>
                 </div>
@@ -59,7 +69,7 @@
             <div class="col-lg-6">
                 <div class="contact-main__form-panel" id="contactFormPanel">
                     <div class="contact-main__form-topline" aria-hidden="true"></div>
-                    <h3>{{ $contactPage['form_title'] ?? 'Contact Us' }}</h3>
+                    <h3>{{ $contactPage['form_title'] ?? '' }}</h3>
                     <div id="contactFormAjaxFeedback" class="d-none" role="status" aria-live="polite"></div>
                     @if (session('success'))
                     <div class="alert alert-success mb-3" role="status">
@@ -68,32 +78,32 @@
                     @endif
                     @if($errors->any())
                     <div class="alert alert-danger mb-3">
-                        {{ $contactPage['form_error_intro'] ?? 'Please fix the errors below and resubmit.' }}
+                        {{ $contactPage['form_error_intro'] ?? '' }}
                     </div>
                     @endif
 
                     <form action="{{ route('contact.store') }}" method="POST"
                           data-contact-ajax="1"
                           data-feedback-id="contactFormAjaxFeedback"
-                          data-error-intro="{{ e($contactPage['form_error_intro'] ?? 'Please fix the errors below and resubmit.') }}">
+                          data-error-intro="{{ e($contactPage['form_error_intro'] ?? '') }}">
                         @csrf
                         <input type="hidden" name="_form_context" value="contact">
                         <input type="hidden" name="subject" value="{{ old('subject', $contactPage['subject_default'] ?? '') }}">
                         <div class="contact-main__form-grid">
                             <input type="text" id="contact_name" name="name"
                                 class="form-control @error('name') is-invalid @enderror"
-                                placeholder="{{ $contactPage['name_placeholder'] ?? 'Your Name' }}"
+                                placeholder="{{ $contactPage['name_placeholder'] ?? '' }}"
                                 value="{{ old('name') }}" required>
                             @error('name')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 
                             <input type="email" id="contact_email" name="email"
                                 class="form-control @error('email') is-invalid @enderror"
-                                placeholder="{{ $contactPage['email_placeholder'] ?? 'Email' }}"
+                                placeholder="{{ $contactPage['email_placeholder'] ?? '' }}"
                                 value="{{ old('email') }}" required>
                             @error('email')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 
                             <div class="contact-main__field contact-main__field--phone">
-                                <label class="form-label small text-muted mb-1" for="contact_page_phone_national">{{ $contactPage['phone_field_label'] ?? 'Phone (optional)' }}</label>
+                                <label class="form-label small text-muted mb-1" for="contact_page_phone_national">{{ $contactPage['phone_field_label'] ?? '' }}</label>
                                 @include('partials.intl-phone-field', [
                                     'countries' => $phoneCountries,
                                     'mode' => 'combined',
@@ -101,7 +111,7 @@
                                     'combinedPhoneValue' => old('phone'),
                                     'defaultIso' => 'GB',
                                     'instanceId' => 'contact_page_phone',
-                                    'nationalPlaceholder' => $contactPage['national_placeholder'] ?? 'Phone number',
+                                    'nationalPlaceholder' => $contactPage['national_placeholder'] ?? '',
                                     'nationalMaxLength' => 20,
                                     'invalid' => $errors->has('phone'),
                                 ])
@@ -110,11 +120,11 @@
 
                             <textarea id="contact_message" name="message"
                                 class="form-control contact-main__message @error('message') is-invalid @enderror"
-                                placeholder="{{ $contactPage['message_placeholder'] ?? 'Tell us about your space' }}">{{ old('message') }}</textarea>
+                                placeholder="{{ $contactPage['message_placeholder'] ?? '' }}">{{ old('message') }}</textarea>
                             @error('message')<div class="invalid-feedback d-block">{{ $message }}</div>@enderror
 
                             <button type="submit" class="contact-main__submit">
-                                {{ $contactPage['submit_label'] ?? 'Send enquiry' }} <i class="fas fa-arrow-up-right"></i>
+                                {{ $contactPage['submit_label'] ?? '' }} <i class="fas fa-arrow-up-right"></i>
                             </button>
                         </div>
                     </form>

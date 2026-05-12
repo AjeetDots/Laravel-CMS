@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 
-@section('title', $page->meta_title ?? 'About Us')
+@section('title', trim((string) ($page->meta_title ?? '')) !== '' ? $page->meta_title : $page->title)
 
 @section('meta_description', $page->meta_description ?? '')
 
@@ -13,13 +13,28 @@
 @section('content')
 
 @isset($aboutPage)
+@php($ap = $aboutPage)
+@if(trim((string) ($ap['intro_eyebrow'] ?? '')) !== '' || trim((string) ($ap['intro_title'] ?? '')) !== '')
 <section class="about-intro">
     <div class="container">
-        <span class="about-intro__eyebrow">{{ $aboutPage['intro_eyebrow'] }}</span>
-        <h1 class="about-intro__title">{!! nl2br(e($aboutPage['intro_title'])) !!}</h1>
+        @if(trim((string) ($ap['intro_eyebrow'] ?? '')) !== '')
+        <span class="about-intro__eyebrow">{{ $ap['intro_eyebrow'] }}</span>
+        @endif
+        @if(trim((string) ($ap['intro_title'] ?? '')) !== '')
+        <h1 class="about-intro__title">{!! nl2br(e($ap['intro_title'])) !!}</h1>
+        @endif
     </div>
 </section>
+@endif
 
+@if(
+    trim((string) ($ap['image_main_display'] ?? '')) !== ''
+    || trim((string) ($ap['image_accent_display'] ?? '')) !== ''
+    || trim((string) ($ap['story_heading'] ?? '')) !== ''
+    || trim((string) ($ap['story_body_1'] ?? '')) !== ''
+    || trim((string) ($ap['story_body_2'] ?? '')) !== ''
+    || trim((string) ($ap['story_body_3'] ?? '')) !== ''
+)
 <section class="about-story">
     <div class="container">
         <div class="row g-5 align-items-center">
@@ -30,65 +45,108 @@
                     <span class="about-story__shape about-story__shape--square" aria-hidden="true"></span>
                     <span class="about-story__shape about-story__shape--dot" aria-hidden="true"></span>
 
+                    @if(trim((string) ($ap['image_main_display'] ?? '')) !== '')
                     <div class="about-story__image-main">
-                        <img src="{{ $aboutPage['image_main_display'] }}" alt="{{ $aboutPage['image_main_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_main_fallback'] }}">
+                        <img src="{{ $ap['image_main_display'] }}" alt="{{ $ap['image_main_alt'] ?? '' }}" class="img-fallback" data-fallback="{{ $ap['image_main_fallback'] ?? '' }}">
                     </div>
+                    @endif
+                    @if(trim((string) ($ap['image_accent_display'] ?? '')) !== '')
                     <div class="about-story__image-accent">
-                        <img src="{{ $aboutPage['image_accent_display'] }}" alt="{{ $aboutPage['image_accent_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_accent_fallback'] }}">
+                        <img src="{{ $ap['image_accent_display'] }}" alt="{{ $ap['image_accent_alt'] ?? '' }}" class="img-fallback" data-fallback="{{ $ap['image_accent_fallback'] ?? '' }}">
                     </div>
+                    @endif
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="about-story__content">
-                    <h2>{{ $aboutPage['story_heading'] }}</h2>
-                    <p>{{ $aboutPage['story_body_1'] }}</p>
-                    <p>{{ $aboutPage['story_body_2'] }}</p>
-                    <p>{{ $aboutPage['story_body_3'] }}</p>
+                    @if(trim((string) ($ap['story_heading'] ?? '')) !== '')
+                    <h2>{{ $ap['story_heading'] }}</h2>
+                    @endif
+                    @if(trim((string) ($ap['story_body_1'] ?? '')) !== '')
+                    <p>{{ $ap['story_body_1'] }}</p>
+                    @endif
+                    @if(trim((string) ($ap['story_body_2'] ?? '')) !== '')
+                    <p>{{ $ap['story_body_2'] }}</p>
+                    @endif
+                    @if(trim((string) ($ap['story_body_3'] ?? '')) !== '')
+                    <p>{{ $ap['story_body_3'] }}</p>
+                    @endif
                 </div>
             </div>
         </div>
     </div>
 </section>
+@endif
 
+@if(
+    trim((string) ($ap['stat1_num'] ?? '')) !== '' || trim((string) ($ap['stat1_label'] ?? '')) !== ''
+    || trim((string) ($ap['stat2_num'] ?? '')) !== '' || trim((string) ($ap['stat2_label'] ?? '')) !== ''
+    || trim((string) ($ap['stat3_num'] ?? '')) !== '' || trim((string) ($ap['stat3_label'] ?? '')) !== ''
+)
 <section class="about-stats-band">
     <div class="container">
         <div class="about-stats-band__grid">
+            @if(trim((string) ($ap['stat1_num'] ?? '')) !== '' || trim((string) ($ap['stat1_label'] ?? '')) !== '')
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">{{ $aboutPage['stat1_num'] }}</span>
-                <span class="about-stats-band__label">{{ $aboutPage['stat1_label'] }}</span>
+                <span class="about-stats-band__num">{{ $ap['stat1_num'] }}</span>
+                <span class="about-stats-band__label">{{ $ap['stat1_label'] }}</span>
             </div>
+            @endif
+            @if(trim((string) ($ap['stat2_num'] ?? '')) !== '' || trim((string) ($ap['stat2_label'] ?? '')) !== '')
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">{{ $aboutPage['stat2_num'] }}</span>
-                <span class="about-stats-band__label">{{ $aboutPage['stat2_label'] }}</span>
+                <span class="about-stats-band__num">{{ $ap['stat2_num'] }}</span>
+                <span class="about-stats-band__label">{{ $ap['stat2_label'] }}</span>
             </div>
+            @endif
+            @if(trim((string) ($ap['stat3_num'] ?? '')) !== '' || trim((string) ($ap['stat3_label'] ?? '')) !== '')
             <div class="about-stats-band__item">
-                <span class="about-stats-band__num">{{ $aboutPage['stat3_num'] }}</span>
-                <span class="about-stats-band__label">{{ $aboutPage['stat3_label'] }}</span>
+                <span class="about-stats-band__num">{{ $ap['stat3_num'] }}</span>
+                <span class="about-stats-band__label">{{ $ap['stat3_label'] }}</span>
             </div>
+            @endif
         </div>
     </div>
 </section>
+@endif
 
+@if(
+    trim((string) ($ap['workshop_eyebrow'] ?? '')) !== ''
+    || trim((string) ($ap['workshop_heading'] ?? '')) !== ''
+    || trim((string) ($ap['workshop_body'] ?? '')) !== ''
+    || trim((string) ($ap['image_studio_display'] ?? '')) !== ''
+    || (trim((string) ($ap['workshop_btn_text'] ?? '')) !== '' && trim((string) ($ap['workshop_btn_href'] ?? '')) !== '')
+)
 <section class="about-workshop">
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-5">
                 <div class="about-workshop__content">
-                    <span class="about-workshop__eyebrow">{{ $aboutPage['workshop_eyebrow'] }}</span>
-                    <h2>{{ $aboutPage['workshop_heading'] }}</h2>
-                    <p>{{ $aboutPage['workshop_body'] }}</p>
-                    <a href="{{ $aboutPage['workshop_btn_href'] }}" class="about-workshop__btn">{{ $aboutPage['workshop_btn_text'] }}</a>
+                    @if(trim((string) ($ap['workshop_eyebrow'] ?? '')) !== '')
+                    <span class="about-workshop__eyebrow">{{ $ap['workshop_eyebrow'] }}</span>
+                    @endif
+                    @if(trim((string) ($ap['workshop_heading'] ?? '')) !== '')
+                    <h2>{{ $ap['workshop_heading'] }}</h2>
+                    @endif
+                    @if(trim((string) ($ap['workshop_body'] ?? '')) !== '')
+                    <p>{{ $ap['workshop_body'] }}</p>
+                    @endif
+                    @if(trim((string) ($ap['workshop_btn_text'] ?? '')) !== '' && trim((string) ($ap['workshop_btn_href'] ?? '')) !== '')
+                    <a href="{{ $ap['workshop_btn_href'] }}" class="about-workshop__btn">{{ $ap['workshop_btn_text'] }}</a>
+                    @endif
                 </div>
             </div>
             <div class="col-lg-7">
+                @if(trim((string) ($ap['image_studio_display'] ?? '')) !== '')
                 <div class="about-workshop__image">
-                    <img src="{{ $aboutPage['image_studio_display'] }}" alt="{{ $aboutPage['image_studio_alt'] }}" class="img-fallback" data-fallback="{{ $aboutPage['image_studio_fallback'] }}">
+                    <img src="{{ $ap['image_studio_display'] }}" alt="{{ $ap['image_studio_alt'] ?? '' }}" class="img-fallback" data-fallback="{{ $ap['image_studio_fallback'] ?? '' }}">
                 </div>
+                @endif
             </div>
         </div>
     </div>
 </section>
+@endif
 @endisset
 
 @endsection

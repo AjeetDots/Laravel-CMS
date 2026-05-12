@@ -35,8 +35,13 @@
                         @foreach($brands as $brand)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::disk('public')->exists($brand->logo) ? asset('storage/'.$brand->logo) : 'https://via.placeholder.com/60x35' }}"
+                                    @if(Storage::disk('public')->exists($brand->logo))
+                                    <img src="{{ asset('storage/'.$brand->logo) }}"
+                                         alt=""
                                          class="img-preview" style="height:40px; width:80px; object-fit:contain;">
+                                    @else
+                                    <span class="d-inline-block bg-light border rounded" style="height:40px;width:80px;" title="No logo"></span>
+                                    @endif
                                 </td>
                                 <td class="fw-500">{{ $brand->name }}</td>
                                 <td>

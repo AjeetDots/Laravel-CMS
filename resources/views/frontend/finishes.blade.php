@@ -51,7 +51,9 @@
             <div class="col-12 text-center py-5 finishes-grid-empty">
                 <i class="fas fa-palette fa-3x mb-3"></i>
                 <p>{{ $finishesPage['empty_message'] }}</p>
+                @if(!empty(trim($finishesPage['empty_btn_text'] ?? '')) && !empty(trim($finishesPage['empty_btn_href'] ?? '')))
                 <a href="{{ $finishesPage['empty_btn_href'] }}" class="btn-outline-site mt-2">{{ $finishesPage['empty_btn_text'] }}</a>
+                @endif
             </div>
             @endforelse
         </div>
@@ -63,7 +65,9 @@
         <span class="finishes-bottom-cta__eyebrow">{{ $finishesPage['bottom_eyebrow'] }}</span>
         <h2>{{ $finishesPage['bottom_heading'] }}</h2>
         <p>{{ $finishesPage['bottom_body'] }}</p>
+        @if(!empty(trim($finishesPage['bottom_btn_text'] ?? '')) && !empty(trim($finishesPage['bottom_btn_href'] ?? '')))
         <a href="{{ $finishesPage['bottom_btn_href'] }}" class="finishes-bottom-cta__btn">{{ $finishesPage['bottom_btn_text'] }}</a>
+        @endif
     </div>
 </section>
 

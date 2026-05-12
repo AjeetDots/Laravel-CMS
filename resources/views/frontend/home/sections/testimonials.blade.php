@@ -18,14 +18,17 @@
                         $quoteLeft = '';
                         $msgRight = $msg;
                     }
-                    $photoUrl = $t->client_image_url ?: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1400&q=80';
+                    $photoUrl = trim((string) ($t->client_image_url ?? ''));
+                    $photoBgCss = $photoUrl !== ''
+                        ? 'background-image:url(\''.addcslashes($photoUrl, "'\\").'\');'
+                        : 'background:#1a1510;';
                     $leftTitle = $t->client_company ?: $t->client_name;
                     $panelRole = collect([$t->client_position, $t->client_company])->filter()->implode(', ');
                 @endphp
             <article class="testi-slide testi-split-slide">
                 <div class="testi-split">
                     <div class="testi-split__photo"
-                         style="background-image: url('{{ $photoUrl }}');">
+                         style="{{ $photoBgCss }}">
                         <div class="testi-split__photo-scrim" aria-hidden="true"></div>
                         <div class="testi-split__photo-inner{{ $quoteLeft === '' ? ' testi-split__photo-inner--attrib-only' : '' }}">
                             @if($quoteLeft !== '')

@@ -59,7 +59,7 @@ class EmailTemplateSender
         }
 
         $vars = array_merge([
-            'site_name' => Setting::get('site_name', config('app.name')),
+            'site_name' => trim((string) Setting::get('site_name', '')),
         ], $vars);
 
         $subject = $tpl->renderSubject($vars);

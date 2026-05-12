@@ -1,9 +1,9 @@
 @php
     $whyCfg = $whySection ?? [];
     $whyEnabled = array_key_exists('is_enabled', $whyCfg) ? !empty($whyCfg['is_enabled']) : true;
-    $whyEyebrow = $whyCfg['eyebrow'] ?? 'Why Bespoke Ornate';
-    $whyHeading = $whyCfg['heading'] ?? 'A studio defined by its hands.';
-    $whyLead = $whyCfg['lead'] ?? 'Each project is led by master artisans trained in traditional Italian techniques and refined for the demands of contemporary architecture.';
+    $whyEyebrow = $whyCfg['eyebrow'] ?? '';
+    $whyHeading = $whyCfg['heading'] ?? '';
+    $whyLead = $whyCfg['lead'] ?? '';
     $whyCards = is_array($whyCfg['cards'] ?? null) ? $whyCfg['cards'] : [];
 @endphp
 
@@ -25,16 +25,16 @@
         <div class="row g-4">
             @foreach($whyCards as $index => $card)
             @php
-                $icon = trim((string) ($card['icon'] ?? 'fa-award'));
+                $icon = trim((string) ($card['icon'] ?? ''));
                 $icon = str_replace('fa-solid', '', $icon);
                 $icon = trim($icon);
-                if ($icon === '') {
-                    $icon = 'fa-award';
-                }
             @endphp
+            @continue(empty(trim((string) ($card['title'] ?? ''))) && empty(trim((string) ($card['desc'] ?? ''))) && $icon === '')
             <div class="col-md-6 col-xl-3 reveal delay-{{ $index + 1 }}">
                 <div class="home-why-card">
+                    @if($icon !== '')
                     <span class="home-why-card__icon" aria-hidden="true"><i class="fa-solid {{ $icon }}"></i></span>
+                    @endif
                     <h3 class="home-why-card__title">{{ $card['title'] ?? '' }}</h3>
                     <p class="home-why-card__desc">{{ $card['desc'] ?? '' }}</p>
                 </div>

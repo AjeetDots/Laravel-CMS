@@ -7,7 +7,9 @@
     <div class="container">
         <span class="eyebrow">Our services</span>
         <h1 class="page-hero-title-wide">{{ $service->title }}</h1>
+        @if(trim((string) ($service->short_description ?? '')) !== '')
         <p>{{ $service->short_description }}</p>
+        @endif
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
@@ -28,7 +30,11 @@
                 </div>
                 @endif
                 <div class="service-detail-body">
-                    {!! $service->description ?? '<p>'.$service->short_description.'</p>' !!}
+                    @if(trim(strip_tags((string) ($service->description ?? ''))) !== '')
+                        {!! $service->description !!}
+                    @elseif(trim((string) ($service->short_description ?? '')) !== '')
+                        <p>{{ $service->short_description }}</p>
+                    @endif
                 </div>
 
                 @if($service->finishes->count())
@@ -73,7 +79,9 @@
                         <p class="service-sidebar-more-label">Other services</p>
                         @foreach($otherServices as $other)
                         <a href="{{ route('services.show',$other->slug) }}" class="service-sidebar-link text-decoration-none">
-                            <i class="{{ $other->icon ?? 'fas fa-cog' }}"></i>
+                            @if(trim((string) ($other->icon ?? '')) !== '')
+                            <i class="{{ $other->icon }}"></i>
+                            @endif
                             {{ $other->title }}
                         </a>
                         @endforeach

@@ -1,9 +1,9 @@
 @php
     $brandsStripCfg = $brandsStripSection ?? [];
     $brandsStripEnabled = array_key_exists('is_enabled', $brandsStripCfg) ? !empty($brandsStripCfg['is_enabled']) : true;
-    $brandsStripKicker = $brandsStripCfg['kicker'] ?? 'Partners & collaborators';
-    $brandsStripTitleLine1 = $brandsStripCfg['title_line_1'] ?? 'Trusted by';
-    $brandsStripTitleLine2 = $brandsStripCfg['title_line_2'] ?? 'leading names';
+    $brandsStripKicker = $brandsStripCfg['kicker'] ?? '';
+    $brandsStripTitleLine1 = $brandsStripCfg['title_line_1'] ?? '';
+    $brandsStripTitleLine2 = $brandsStripCfg['title_line_2'] ?? '';
     $brandMarqueeSegments = isset($brandsStripCfg['marquee_segments']) ? (int) $brandsStripCfg['marquee_segments'] : 8;
     if ($brandMarqueeSegments < 1 || $brandMarqueeSegments > 20) {
         $brandMarqueeSegments = 8;

@@ -20,7 +20,7 @@
             </div>
             <div class="card-body">
                 <div class="mb-4 p-4 rounded" style="background:#f8fafc; border-left:4px solid #2563eb;">
-                    <h5 class="fw-700 mb-1">{{ $contact->subject ?? 'No Subject' }}</h5>
+                    <h5 class="fw-700 mb-1">{{ $contact->subject ?? '' }}</h5>
                     <p class="text-muted mb-0" style="font-size:.85rem;">Received {{ $contact->created_at->format('F d, Y \a\t h:i A') }}</p>
                 </div>
                 <div style="line-height:1.9; font-size:.95rem; color:#334155; white-space:pre-wrap;">{{ $contact->message }}</div>
@@ -112,49 +112,80 @@
                 </form>
             </div>
         </div>
+        @php($replyFollowupOpen = $errors->has('reply_method') || $errors->has('reply_message'))
+        @php($replyLogCount = ($replyLogs ?? collect())->count())
+        <style>
+            .reply-followup-toggle { cursor: pointer; }
+            .reply-followup-toggle:focus { box-shadow: none; outline: 2px solid rgba(37, 99, 235, 0.35); outline-offset: 2px; }
+            .reply-followup-chevron { transition: transform 0.2s ease; display: inline-block; }
+            .reply-followup-toggle[aria-expanded="true"] .reply-followup-chevron { transform: rotate(180deg); }
+            .reply-followup-notes { min-height: 120px; max-height: 420px; resize: vertical; }
+        </style>
         <div class="card mt-4">
-            <div class="card-header">Reply / Follow-up Log</div>
-            <div class="card-body">
-                <form action="{{ route('admin.contacts.reply', $contact) }}" method="POST">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label">Contacted via</label>
-                        <select class="form-select" name="reply_method" required>
-                            <option value="" disabled {{ old('reply_method', $contact->reply_method) ? '' : 'selected' }}>Select method</option>
-                            <option value="email" {{ old('reply_method', $contact->reply_method) === 'email' ? 'selected' : '' }}>Email</option>
-                            <option value="phone" {{ old('reply_method', $contact->reply_method) === 'phone' ? 'selected' : '' }}>Phone Call</option>
-                            <option value="other" {{ old('reply_method', $contact->reply_method) === 'other' ? 'selected' : '' }}>Other</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Reply / Notes</label>
-                        <textarea name="reply_message" class="form-control" rows="4" required>{{ old('reply_message', $contact->reply_message) }}</textarea>
-                    </div>
-                    <button class="btn btn-outline-primary w-100">
-                        <i class="fas fa-save me-2"></i>Save Reply Log
-                    </button>
-                </form>
-                @if($contact->replied_at)
-                    <div class="text-muted small mt-3">Last updated: {{ $contact->replied_at->format('M d, Y h:i A') }}</div>
-                @endif
-                <hr>
-                <div style="font-size:.8rem; font-weight:700; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">History</div>
-                @if(($replyLogs ?? collect())->isEmpty())
-                    <div class="small text-muted">No follow-up logs yet.</div>
-                @else
-                    <div class="d-flex flex-column gap-2">
-                        @foreach($replyLogs as $log)
-                            <div class="p-2 rounded border" style="background:#f8fafc;">
-                                <div class="d-flex justify-content-between align-items-start gap-2">
-                                    <span class="badge bg-primary-subtle text-dark">{{ strtoupper($log->reply_method) }}</span>
-                                    <small class="text-muted">{{ $log->created_at?->format('M d, Y h:i A') }}</small>
+            <button type="button"
+                    class="card-header reply-followup-toggle w-100 border-0 text-start d-flex justify-content-between align-items-center gap-3 @unless($replyFollowupOpen) collapsed @endunless"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#replyFollowupCollapse"
+                    aria-expanded="{{ $replyFollowupOpen ? 'true' : 'false' }}"
+                    aria-controls="replyFollowupCollapse"
+                    id="replyFollowupToggle">
+                <span class="d-flex flex-column flex-sm-row flex-sm-wrap align-items-sm-center gap-1 gap-sm-2 min-w-0">
+                    <span class="fw-600">Reply / Follow-up Log</span>
+                    <span class="small text-muted fw-normal text-truncate">Log replies &amp; calls — expand to add or view history</span>
+                </span>
+                <span class="d-flex align-items-center gap-2 flex-shrink-0">
+                    @if($replyLogCount > 0)
+                        <span class="badge rounded-pill bg-secondary-subtle text-secondary border border-secondary-subtle">{{ $replyLogCount }} {{ $replyLogCount === 1 ? 'entry' : 'entries' }}</span>
+                    @else
+                        <span class="badge rounded-pill bg-light text-muted border">No logs yet</span>
+                    @endif
+                    <i class="fas fa-chevron-down reply-followup-chevron text-muted small" aria-hidden="true"></i>
+                </span>
+            </button>
+            <div id="replyFollowupCollapse" class="collapse @if($replyFollowupOpen) show @endif" role="region" aria-labelledby="replyFollowupToggle">
+                <div class="card-body">
+                    <form action="{{ route('admin.contacts.reply', $contact) }}" method="POST">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Contacted via</label>
+                            <select class="form-select" name="reply_method" required>
+                                <option value="" disabled {{ old('reply_method', $contact->reply_method) ? '' : 'selected' }}>Select method</option>
+                                <option value="email" {{ old('reply_method', $contact->reply_method) === 'email' ? 'selected' : '' }}>Email</option>
+                                <option value="phone" {{ old('reply_method', $contact->reply_method) === 'phone' ? 'selected' : '' }}>Phone Call</option>
+                                <option value="other" {{ old('reply_method', $contact->reply_method) === 'other' ? 'selected' : '' }}>Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Reply / Notes</label>
+                            <textarea name="reply_message" class="form-control reply-followup-notes" rows="4" required placeholder="What was discussed or sent…">{{ old('reply_message', $contact->reply_message) }}</textarea>
+                            <div class="form-text">Drag the corner to resize the notes area.</div>
+                        </div>
+                        <button class="btn btn-outline-primary w-100">
+                            <i class="fas fa-save me-2"></i>Save Reply Log
+                        </button>
+                    </form>
+                    @if($contact->replied_at)
+                        <div class="text-muted small mt-3">Last updated: {{ $contact->replied_at->format('M d, Y h:i A') }}</div>
+                    @endif
+                    <hr>
+                    <div style="font-size:.8rem; font-weight:700; text-transform:uppercase; color:#94a3b8; margin-bottom:10px;">History</div>
+                    @if(($replyLogs ?? collect())->isEmpty())
+                        <div class="small text-muted">No follow-up logs yet.</div>
+                    @else
+                        <div class="d-flex flex-column gap-2" style="max-height: 280px; overflow-y: auto;">
+                            @foreach($replyLogs as $log)
+                                <div class="p-2 rounded border" style="background:#f8fafc;">
+                                    <div class="d-flex justify-content-between align-items-start gap-2">
+                                        <span class="badge bg-primary-subtle text-dark">{{ strtoupper($log->reply_method) }}</span>
+                                        <small class="text-muted">{{ $log->created_at?->format('M d, Y h:i A') }}</small>
+                                    </div>
+                                    <div class="small mt-1" style="white-space:pre-wrap;">{{ $log->reply_message }}</div>
+                                    <div class="small text-muted mt-1">By: {{ $log->user?->name ?: 'Admin' }}</div>
                                 </div>
-                                <div class="small mt-1" style="white-space:pre-wrap;">{{ $log->reply_message }}</div>
-                                <div class="small text-muted mt-1">By: {{ $log->user?->name ?: 'Admin' }}</div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endif
+                            @endforeach
+                        </div>
+                    @endif
+                </div>
             </div>
         </div>
     </div>

@@ -35,15 +35,14 @@
                 };
                 $categoryLabel = $item->galleryCategory?->name
                     ? \Illuminate\Support\Str::upper($item->galleryCategory->name)
-                    : \Illuminate\Support\Str::upper($galleryPage['grid_category_fallback']);
+                    : \Illuminate\Support\Str::upper(trim((string) ($galleryPage['grid_category_fallback'] ?? '')));
             @endphp
             <article class="{{ $layoutClass }} gal-col" data-cat="{{ $item->galleryCategory?->name ?? '' }}">
                 <div class="gallery-work-card" role="button" tabindex="0"
                     data-bs-toggle="modal" data-bs-target="#galleryLightbox"
                     data-img="{{ $item->image_url }}"
-                    data-title="{{ $item->title ?? 'Gallery' }}">
-                    <img src="{{ $item->image_url }}" alt="{{ $item->title ?? 'Gallery' }}"
-                        data-fallback="https://placehold.co/1200x900/e5e0d8/6b6b65?text=Image"
+                    data-title="{{ $item->title ?? '' }}">
+                    <img src="{{ $item->image_url }}" alt="{{ $item->title ?? '' }}"
                         class="img-fallback">
                     <div class="gallery-work-card__overlay">
                         <div class="gallery-work-card__meta">
@@ -60,7 +59,7 @@
             <div class="gallery-showcase__empty text-center py-5">
                 <i class="fas fa-images fa-3x mb-3" aria-hidden="true"></i>
                 <p class="mb-3">{{ $galleryPage['empty_message'] }}</p>
-                @if(!empty(trim($galleryPage['empty_btn_text'] ?? '')))
+                @if(!empty(trim($galleryPage['empty_btn_text'] ?? '')) && !empty(trim($galleryPage['empty_btn_href'] ?? '')))
                     <a href="{{ $galleryPage['empty_btn_href'] }}" class="btn-outline-site">{{ $galleryPage['empty_btn_text'] }}</a>
                 @endif
             </div>
@@ -72,7 +71,9 @@
 <section class="gallery-bottom-cta">
     <div class="container text-center">
         <h2>{{ $galleryPage['bottom_heading'] }}</h2>
+        @if(!empty(trim($galleryPage['bottom_btn_text'] ?? '')) && !empty(trim($galleryPage['bottom_btn_href'] ?? '')))
         <a href="{{ $galleryPage['bottom_btn_href'] }}" class="gallery-bottom-cta__btn">{{ $galleryPage['bottom_btn_text'] }}</a>
+        @endif
     </div>
 </section>
 

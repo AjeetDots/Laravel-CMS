@@ -34,7 +34,9 @@
                         <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
                     @else
                         <div class="svc-split__placeholder">
-                            <i class="{{ $service->icon ?? 'fas fa-paint-brush' }}"></i>
+                            @if(trim((string) ($service->icon ?? '')) !== '')
+                            <i class="{{ $service->icon }}"></i>
+                            @endif
                         </div>
                     @endif
                 </div>
@@ -58,7 +60,11 @@
                         </ul>
                     @endif
                     <a href="{{ route('services.show', $service->slug) }}" class="svc-split__cta">
+                        @if(trim((string) ($servicesPage['service_cta_prefix'] ?? '')) !== '')
                         {{ trim($servicesPage['service_cta_prefix']) }} {{ $service->title }}
+                        @else
+                        {{ $service->title }}
+                        @endif
                         <svg width="11" height="11" viewBox="0 0 11 11" fill="none" aria-hidden="true">
                             <path d="M1 10L10 1M10 1H3M10 1V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
@@ -72,7 +78,7 @@
 <div class="container text-center py-5 services-empty-state">
     <i class="fas fa-concierge-bell fa-3x mb-3" aria-hidden="true"></i>
     <p class="mb-3">{{ $servicesPage['empty_message'] }}</p>
-    @if(!empty(trim($servicesPage['empty_btn_text'] ?? '')))
+    @if(!empty(trim($servicesPage['empty_btn_text'] ?? '')) && !empty(trim($servicesPage['empty_btn_href'] ?? '')))
         <a href="{{ $servicesPage['empty_btn_href'] }}" class="btn-outline-site">{{ $servicesPage['empty_btn_text'] }}</a>
     @endif
 </div>
@@ -85,7 +91,9 @@
         @if(!empty(trim($servicesPage['bottom_body'] ?? '')))
             <p class="mb-4">{{ $servicesPage['bottom_body'] }}</p>
         @endif
+        @if(!empty(trim($servicesPage['bottom_btn_text'] ?? '')) && !empty(trim($servicesPage['bottom_btn_href'] ?? '')))
         <a href="{{ $servicesPage['bottom_btn_href'] }}" class="btn-white">{{ $servicesPage['bottom_btn_text'] }} <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i></a>
+        @endif
     </div>
 </div>
 

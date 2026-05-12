@@ -34,7 +34,7 @@
             {{-- Logo / Brand — primary focus; eager load for LCP --}}
             <a href="{{ route('home') }}"
                class="nav-brand"
-               aria-label="{{ $settings->get('site_name', 'Bespoke Ornate Plaster') }} — Home">
+               aria-label="{{ trim((string) $settings->get('site_name')) !== '' ? trim((string) $settings->get('site_name')) . ' — Home' : 'Home' }}">
                 @if($settings->get('site_logo'))
                     <img src="{{ asset('storage/' . $settings->get('site_logo')) }}"
                          alt=""
@@ -134,16 +134,18 @@
                 <div class="footer-brand">
                 @php $footerLogo = $settings->get('site_logo_footer') ?: $settings->get('site_logo'); @endphp
                 @if($footerLogo)
-                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','Bespoke Ornate Plaster') }} — Home">
+                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ trim((string) $settings->get('site_name')) !== '' ? trim((string) $settings->get('site_name')) . ' — Home' : 'Home' }}">
                         <img src="{{ asset('storage/' . $footerLogo) }}" alt="" class="footer-logo-img" loading="lazy" decoding="async">
                     </a>
                 @else
-                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ $settings->get('site_name','Bespoke Ornate Plaster') }} — Home">
+                    <a href="{{ route('home') }}" class="footer-logo-link" aria-label="{{ trim((string) $settings->get('site_name')) !== '' ? trim((string) $settings->get('site_name')) . ' — Home' : 'Home' }}">
                         @include('partials.brand-logo-footer')
                     </a>
                 @endif
                 </div>
-                <p class="about-text">{{ $settings->get('footer_about','Craft-led plaster, media walls, and architectural finishes for discerning homes and commercial spaces.') }}</p>
+                @if(trim((string) $settings->get('footer_about')) !== '')
+                <p class="about-text">{{ $settings->get('footer_about') }}</p>
+                @endif
                 <div class="footer-social mt-4">
                     @if($settings->get('social_facebook'))
                         <a href="{{ $settings->get('social_facebook') }}" target="_blank"><i class="fab fa-facebook-f"></i></a>
@@ -216,8 +218,8 @@
             <span>
                 @if($settings->get('copyright_text'))
                     {!! $settings->get('copyright_text') !!}
-                @else
-                    &copy; {{ date('Y') }} {{ $settings->get('site_name','Bespoke Ornate Plaster') }}. All rights reserved.
+                @elseif(trim((string) $settings->get('site_name')) !== '')
+                    &copy; {{ date('Y') }} {{ $settings->get('site_name') }}. All rights reserved.
                 @endif
             </span>
             <span><a href="https://www.dotsquares.com/" target="_blank"><img src="{{ asset('images/dotsquaresit.png') }}" alt="Dotsquares" class="footer-logo"></a> Crafted by Dotsquares – Where Innovation Meets Quality</span>

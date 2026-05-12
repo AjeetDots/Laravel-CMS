@@ -26,15 +26,15 @@ class GalleryPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
-            'intro_eyebrow' => 'Portfolio',
-            'intro_title' => 'A quiet record of recent work.',
-            'filter_all_label' => 'All',
-            'grid_category_fallback' => 'Portfolio',
-            'empty_message' => 'No gallery items yet.',
+            'intro_eyebrow' => '',
+            'intro_title' => '',
+            'filter_all_label' => '',
+            'grid_category_fallback' => '',
+            'empty_message' => '',
             'empty_btn_text' => '',
             'empty_btn_url' => '',
-            'bottom_heading' => 'Like what you see?',
-            'bottom_btn_text' => 'Start a project',
+            'bottom_heading' => '',
+            'bottom_btn_text' => '',
             'bottom_btn_url' => '',
         ];
 

@@ -1,18 +1,18 @@
 @php
     $contactBandCfg = $contactBandSection ?? [];
     $contactBandEnabled = array_key_exists('is_enabled', $contactBandCfg) ? !empty($contactBandCfg['is_enabled']) : true;
-    $contactBandEyebrow = $contactBandCfg['eyebrow'] ?? 'Contact Us';
-    $contactBandHeading = $contactBandCfg['heading'] ?? 'How we can help?';
-    $contactBandPanelTitle = $contactBandCfg['panel_title'] ?? 'Contact Us';
-    $contactBandNamePlaceholder = $contactBandCfg['name_placeholder'] ?? 'Your Name';
-    $contactBandEmailPlaceholder = $contactBandCfg['email_placeholder'] ?? 'Email';
-    $contactBandPhonePlaceholder = $contactBandCfg['phone_placeholder'] ?? 'Phone(Optional)';
-    $contactBandMessagePlaceholder = $contactBandCfg['message_placeholder'] ?? 'Tell us about your space';
-    $contactBandSubmitText = $contactBandCfg['submit_text'] ?? 'Send Enquiry';
-    $contactBandSubject = $contactBandCfg['subject'] ?? 'Website enquiry (home)';
+    $contactBandEyebrow = $contactBandCfg['eyebrow'] ?? '';
+    $contactBandHeading = $contactBandCfg['heading'] ?? '';
+    $contactBandPanelTitle = $contactBandCfg['panel_title'] ?? '';
+    $contactBandNamePlaceholder = $contactBandCfg['name_placeholder'] ?? '';
+    $contactBandEmailPlaceholder = $contactBandCfg['email_placeholder'] ?? '';
+    $contactBandPhonePlaceholder = $contactBandCfg['phone_placeholder'] ?? '';
+    $contactBandMessagePlaceholder = $contactBandCfg['message_placeholder'] ?? '';
+    $contactBandSubmitText = $contactBandCfg['submit_text'] ?? '';
+    $contactBandSubject = $contactBandCfg['subject'] ?? '';
     $contactBandVisualImage = !empty($contactBandCfg['visual_image'])
         ? asset('storage/' . $contactBandCfg['visual_image'])
-        : 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=900&q=80';
+        : '';
 @endphp
 
 @if($contactBandEnabled)
@@ -24,6 +24,7 @@
         </div>
         <div class="row g-4 g-xl-5 align-items-stretch">
             <div class="col-lg-5 reveal-left d-none d-lg-block">
+                @if($contactBandVisualImage !== '')
                 <div class="home-contact-band__visual" aria-hidden="true">
                     <span class="home-contact-band__corner home-contact-band__corner--tl"></span>
                     <span class="home-contact-band__corner home-contact-band__corner--br"></span>
@@ -33,6 +34,7 @@
                          loading="lazy" decoding="async"
                          >
                 </div>
+                @endif
             </div>
             <div class="col-lg-7 reveal-right">
                 <div class="home-contact-panel">

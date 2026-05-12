@@ -1,12 +1,12 @@
 @php
     $servicesCfg = $servicesSection ?? [];
     $servicesEnabled = array_key_exists('is_enabled', $servicesCfg) ? !empty($servicesCfg['is_enabled']) : true;
-    $servicesEyebrow = $servicesCfg['eyebrow'] ?? 'Our Services';
-    $servicesHeadingLine1 = $servicesCfg['heading_line_1'] ?? 'Three disciplines,';
-    $servicesHeadingLine2 = $servicesCfg['heading_line_2'] ?? 'one obsession.';
-    $servicesBtnText = $servicesCfg['button_text'] ?? 'See all services';
-    $servicesBtnUrl = $servicesCfg['button_url'] ?? route('services');
-    $servicesCardLinkText = $servicesCfg['card_link_text'] ?? 'Discover';
+    $servicesEyebrow = $servicesCfg['eyebrow'] ?? '';
+    $servicesHeadingLine1 = $servicesCfg['heading_line_1'] ?? '';
+    $servicesHeadingLine2 = $servicesCfg['heading_line_2'] ?? '';
+    $servicesBtnText = $servicesCfg['button_text'] ?? '';
+    $servicesBtnUrl = $servicesCfg['button_url'] ?? '';
+    $servicesCardLinkText = $servicesCfg['card_link_text'] ?? '';
 @endphp
 
 @if($servicesEnabled)
@@ -21,9 +21,11 @@
                 </h2>
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right">
+                @if(trim($servicesBtnUrl) !== '' && trim($servicesBtnText) !== '')
                 <a href="{{ $servicesBtnUrl }}" class="btn-outline-site">
                     {{ $servicesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.7rem;"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -51,26 +53,6 @@
                 </a>
             </div>
             @empty
-            @foreach([
-                ['Venetian Plaster',     'Handcrafted finishes with luminous depth and texture.',         'paint-brush'],
-                ['Bespoke Media Walls',  'Custom-built entertainment walls, beautifully crafted.',        'tv'],
-                ['Cornices & Mouldings', 'Ornate period and contemporary plaster profiles.',              'drafting-compass'],
-            ] as $i => $svc)
-            <div class="col-md-4 reveal delay-{{ $i + 1 }}">
-                <div class="disc-card">
-                    <div class="disc-card-img-wrap disc-card-placeholder">
-                        <i class="fas fa-{{ $svc[2] }}"></i>
-                    </div>
-                    <div class="disc-card-body">
-                        <h4 class="disc-card-title">{{ $svc[0] }}</h4>
-                        <p class="disc-card-desc">{{ $svc[1] }}</p>
-                        <span class="disc-card-link">
-                            {{ $servicesCardLinkText }} <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
-                        </span>
-                    </div>
-                </div>
-            </div>
-            @endforeach
             @endforelse
         </div>
     </div>

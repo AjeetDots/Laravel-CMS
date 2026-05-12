@@ -88,7 +88,7 @@
             <label class="form-label" for="copyright_text">Copyright text</label>
             <input type="text" name="copyright_text" id="copyright_text" class="form-control @error('copyright_text') is-invalid @enderror"
                    value="{{ old('copyright_text', $settings->get('copyright_text')) }}"
-                   placeholder="© {{ date('Y') }} {{ $settings->get('site_name','Bespoke Ornate Plaster') }}. All rights reserved.">
+                   placeholder="© {{ date('Y') }} {{ trim((string) $settings->get('site_name')) }}. All rights reserved.">
             <div class="form-text">Leave blank to auto-generate from the site name.</div>
             @error('copyright_text')
                 <div class="invalid-feedback d-block">{{ $message }}</div>

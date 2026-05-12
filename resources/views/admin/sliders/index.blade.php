@@ -35,8 +35,13 @@
                         @foreach($sliders as $slider)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::disk('public')->exists($slider->image) ? asset('storage/'.$slider->image) : 'https://via.placeholder.com/60x35' }}"
+                                    @if(Storage::disk('public')->exists($slider->image))
+                                    <img src="{{ asset('storage/'.$slider->image) }}"
+                                         alt=""
                                          class="img-preview" style="height:40px; width:60px; object-fit:cover;">
+                                    @else
+                                    <span class="d-inline-block bg-light border rounded" style="height:40px;width:60px;" title="No image"></span>
+                                    @endif
                                 </td>
                                 <td class="fw-500">{{ $slider->title }}</td>
                                 <td>

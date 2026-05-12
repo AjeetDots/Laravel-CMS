@@ -11,7 +11,7 @@
 --}}
 @php
     $model     = $model ?? null;
-    $siteName  = $settings->get('site_name', config('app.name'));
+    $siteName  = trim((string) ($settings->get('site_name') ?? ''));
     $siteTagline = $settings->get('site_tagline', '');
 
     // ── Core values (model → yield fallback → site default) ────────────────

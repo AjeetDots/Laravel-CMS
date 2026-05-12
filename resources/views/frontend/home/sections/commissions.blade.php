@@ -1,10 +1,10 @@
 @php
     $commissionsCfg = $commissionsSection ?? [];
     $commissionsEnabled = array_key_exists('is_enabled', $commissionsCfg) ? !empty($commissionsCfg['is_enabled']) : true;
-    $commissionsEyebrow = $commissionsCfg['eyebrow'] ?? 'Selected Work';
-    $commissionsHeadingLine1 = $commissionsCfg['heading_line_1'] ?? 'Recent commissions.';
-    $commissionsBtnText = $commissionsCfg['button_text'] ?? 'View full gallery';
-    $commissionsBtnUrl = $commissionsCfg['button_url'] ?? route('gallery');
+    $commissionsEyebrow = $commissionsCfg['eyebrow'] ?? '';
+    $commissionsHeadingLine1 = $commissionsCfg['heading_line_1'] ?? '';
+    $commissionsBtnText = $commissionsCfg['button_text'] ?? '';
+    $commissionsBtnUrl = $commissionsCfg['button_url'] ?? '';
 @endphp
 
 @if($gallery->count() && $commissionsEnabled)
@@ -21,9 +21,11 @@
                 </h2>
             </div>
             <div class="reveal-right d-flex flex-wrap gap-2 justify-content-lg-end">
+                @if(trim($commissionsBtnUrl) !== '' && trim($commissionsBtnText) !== '')
                 <a href="{{ $commissionsBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
                     {{ $commissionsBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -32,7 +34,7 @@
             <a href="{{ route('gallery') }}" class="commission-item">
                 @if($item->image)
                     <img src="{{ $item->image_url }}"
-                         alt="{{ $item->title ?? 'Commission' }}"
+                         alt="{{ $item->title ?? '' }}"
                          class="commission-img">
                 @else
                     <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
@@ -43,7 +45,7 @@
                         @if($item->category)
                             <span class="commission-category">{{ is_object($item->category) ? $item->category->name : $item->category }}</span>
                         @endif
-                        <p class="commission-title">{{ $item->title ?? 'Untitled' }}</p>
+                        <p class="commission-title">{{ $item->title ?? '' }}</p>
                     </div>
                     <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>

@@ -227,29 +227,11 @@ class SettingController extends Controller
 
     public function finishesPage()
     {
-        $content = FinishesPageContent::query()->firstOrCreate(
+        FinishesPageContent::query()->firstOrCreate(
             ['page_key' => FinishesPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $stored = is_array($content->data) ? $content->data : [];
-        $defaults = [
-            'intro_eyebrow' => 'Our finishes',
-            'intro_title' => 'Six finishes. One obsession with the surface.',
-            'intro_body' => 'Every finish is mixed, applied and polished by hand. Bespoke colours are developed in studio against samples of your space, your light and your interiors.',
-            'card_label_fallback' => 'Hand-crafted decorative finish',
-            'empty_message' => 'No finishes have been published yet.',
-            'empty_btn_text' => 'Get in touch',
-            'empty_btn_url' => '',
-            'bottom_eyebrow' => 'Begin',
-            'bottom_heading' => 'Not sure which finish suits your space?',
-            'bottom_body' => 'Tell us about the room and we\'ll prepare hand-made samples for your light.',
-            'bottom_btn_text' => 'Request samples',
-            'bottom_btn_url' => '',
-        ];
-        $data = [];
-        foreach ($defaults as $key => $default) {
-            $data[$key] = array_key_exists($key, $stored) ? $stored[$key] : $default;
-        }
+        $data = FinishesPageContent::listingDataWithDefaults();
 
         return view('admin.theme-options.finishes-page', compact('data'));
     }
@@ -267,29 +249,11 @@ class SettingController extends Controller
 
     public function servicesPage()
     {
-        $content = ServicesPageContent::query()->firstOrCreate(
+        ServicesPageContent::query()->firstOrCreate(
             ['page_key' => ServicesPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $stored = is_array($content->data) ? $content->data : [];
-        $defaults = [
-            'intro_eyebrow' => 'Services',
-            'intro_title' => "Three disciplines,\napplied with the\nsame obsession.",
-            'intro_body' => 'From a single feature wall to a full residence, we work alongside designers, architects and private clients to deliver finishes of lasting beauty.',
-            'service_cta_prefix' => 'Enquire about',
-            'empty_message' => 'No services available yet.',
-            'empty_btn_text' => 'Get in touch',
-            'empty_btn_url' => '',
-            'bottom_eyebrow' => 'BEGIN',
-            'bottom_heading' => "Bring your space.\nWe'll bring the finish.",
-            'bottom_body' => '',
-            'bottom_btn_text' => 'Get in touch',
-            'bottom_btn_url' => '',
-        ];
-        $data = [];
-        foreach ($defaults as $key => $default) {
-            $data[$key] = array_key_exists($key, $stored) ? $stored[$key] : $default;
-        }
+        $data = ServicesPageContent::listingDataWithDefaults();
 
         return view('admin.theme-options.services-page', compact('data'));
     }
@@ -307,27 +271,11 @@ class SettingController extends Controller
 
     public function galleryPage()
     {
-        $content = GalleryPageContent::query()->firstOrCreate(
+        GalleryPageContent::query()->firstOrCreate(
             ['page_key' => GalleryPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $stored = is_array($content->data) ? $content->data : [];
-        $defaults = [
-            'intro_eyebrow' => 'Portfolio',
-            'intro_title' => 'A quiet record of recent work.',
-            'filter_all_label' => 'All',
-            'grid_category_fallback' => 'Portfolio',
-            'empty_message' => 'No gallery items yet.',
-            'empty_btn_text' => '',
-            'empty_btn_url' => '',
-            'bottom_heading' => 'Like what you see?',
-            'bottom_btn_text' => 'Start a project',
-            'bottom_btn_url' => '',
-        ];
-        $data = [];
-        foreach ($defaults as $key => $default) {
-            $data[$key] = array_key_exists($key, $stored) ? $stored[$key] : $default;
-        }
+        $data = GalleryPageContent::listingDataWithDefaults();
 
         return view('admin.theme-options.gallery-page', compact('data'));
     }
@@ -345,32 +293,11 @@ class SettingController extends Controller
 
     public function portfolioPage()
     {
-        $content = PortfolioPageContent::query()->firstOrCreate(
+        PortfolioPageContent::query()->firstOrCreate(
             ['page_key' => PortfolioPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $stored = is_array($content->data) ? $content->data : [];
-        $defaults = [
-            'intro_eyebrow' => 'Completed work',
-            'intro_title' => 'Portfolio',
-            'intro_body' => 'Project-based inspiration — reference imagery and real commissions. Explore by tag or open a project for the full story.',
-            'breadcrumb_current' => 'Portfolio',
-            'filter_all_label' => 'All',
-            'card_link_text' => 'View project',
-            'label_real_project' => 'Real project',
-            'label_reference' => 'Reference',
-            'empty_message' => 'No portfolio entries yet.',
-            'empty_btn_text' => '',
-            'empty_btn_url' => '',
-            'bottom_heading' => 'Planning something similar?',
-            'bottom_body' => 'Share your brief and we\'ll outline timelines and options.',
-            'bottom_btn_text' => 'Get in touch',
-            'bottom_btn_url' => '',
-        ];
-        $data = [];
-        foreach ($defaults as $key => $default) {
-            $data[$key] = array_key_exists($key, $stored) ? $stored[$key] : $default;
-        }
+        $data = PortfolioPageContent::listingDataWithDefaults();
 
         return view('admin.theme-options.portfolio-page', compact('data'));
     }
@@ -388,40 +315,11 @@ class SettingController extends Controller
 
     public function aboutPage()
     {
-        $content = AboutPageContent::query()->firstOrCreate(
+        AboutPageContent::query()->firstOrCreate(
             ['page_key' => AboutPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $stored = is_array($content->data) ? $content->data : [];
-        $defaults = [
-            'intro_eyebrow' => 'About the atelier',
-            'intro_title' => "A studio of artisans,\na craft of patience.",
-            'story_heading' => 'Our story',
-            'story_body_1' => 'Trained in the lime-plaster traditions of Venice and refined across two decades of private and commercial commissions, our team has quietly built a reputation for finishes of unusual depth and consistency.',
-            'story_body_2' => 'We work closely with leading interior designers and architects, and have been entrusted with environments for film, television and editorial productions where the surface itself must perform under the lens.',
-            'story_body_3' => 'Every project begins with the room - its light, proportions, and intent - and ends with a finish made by hand.',
-            'image_main' => '',
-            'image_accent' => '',
-            'image_studio' => '',
-            'image_main_alt' => 'Bespoke interior finish',
-            'image_accent_alt' => 'Signature polished finish',
-            'image_studio_alt' => 'Workshop and studio finish development',
-            'stat1_num' => '20+',
-            'stat1_label' => 'Years of practice',
-            'stat2_num' => '300+',
-            'stat2_label' => 'Private commissions',
-            'stat3_num' => '40+',
-            'stat3_label' => 'Productions worked on',
-            'workshop_eyebrow' => 'Workshop & studio',
-            'workshop_heading' => 'Where the work begins.',
-            'workshop_body' => 'Samples, mock-ups and bespoke profiles are developed at our London studio before being installed on site by our master artisans.',
-            'workshop_btn_text' => 'Visit the studio',
-            'workshop_btn_url' => '',
-        ];
-        $data = [];
-        foreach ($defaults as $key => $default) {
-            $data[$key] = array_key_exists($key, $stored) ? $stored[$key] : $default;
-        }
+        $data = AboutPageContent::listingDataWithDefaults();
 
         return view('admin.theme-options.about-page', compact('data'));
     }

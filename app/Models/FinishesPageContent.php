@@ -26,18 +26,18 @@ class FinishesPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
-            'intro_eyebrow' => 'Our finishes',
-            'intro_title' => 'Six finishes. One obsession with the surface.',
-            'intro_body' => 'Every finish is mixed, applied and polished by hand. Bespoke colours are developed in studio against samples of your space, your light and your interiors.',
-            'card_label_fallback' => 'Hand-crafted decorative finish',
-            'empty_message' => 'No finishes have been published yet.',
-            'empty_btn_text' => 'Get in touch',
-            'empty_btn_url' => null,
-            'bottom_eyebrow' => 'Begin',
-            'bottom_heading' => 'Not sure which finish suits your space?',
-            'bottom_body' => 'Tell us about the room and we\'ll prepare hand-made samples for your light.',
-            'bottom_btn_text' => 'Request samples',
-            'bottom_btn_url' => null,
+            'intro_eyebrow' => '',
+            'intro_title' => '',
+            'intro_body' => '',
+            'card_label_fallback' => '',
+            'empty_message' => '',
+            'empty_btn_text' => '',
+            'empty_btn_url' => '',
+            'bottom_eyebrow' => '',
+            'bottom_heading' => '',
+            'bottom_body' => '',
+            'bottom_btn_text' => '',
+            'bottom_btn_url' => '',
         ];
 
         $out = [];

@@ -26,20 +26,20 @@ class PortfolioPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
-            'intro_eyebrow' => 'Completed work',
-            'intro_title' => 'Portfolio',
-            'intro_body' => 'Project-based inspiration — reference imagery and real commissions. Explore by tag or open a project for the full story.',
-            'breadcrumb_current' => 'Portfolio',
-            'filter_all_label' => 'All',
-            'card_link_text' => 'View project',
-            'label_real_project' => 'Real project',
-            'label_reference' => 'Reference',
-            'empty_message' => 'No portfolio entries yet.',
+            'intro_eyebrow' => '',
+            'intro_title' => '',
+            'intro_body' => '',
+            'breadcrumb_current' => '',
+            'filter_all_label' => '',
+            'card_link_text' => '',
+            'label_real_project' => '',
+            'label_reference' => '',
+            'empty_message' => '',
             'empty_btn_text' => '',
             'empty_btn_url' => '',
-            'bottom_heading' => 'Planning something similar?',
-            'bottom_body' => 'Share your brief and we\'ll outline timelines and options.',
-            'bottom_btn_text' => 'Get in touch',
+            'bottom_heading' => '',
+            'bottom_body' => '',
+            'bottom_btn_text' => '',
             'bottom_btn_url' => '',
         ];
 

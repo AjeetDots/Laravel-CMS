@@ -134,14 +134,16 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getFinishesSectionData(array $data): array
     {
+        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'The Finishes',
-            'heading_line_1' => $data['heading_line_1'] ?? 'Six surfaces,',
-            'heading_line_2' => $data['heading_line_2'] ?? 'infinite tones.',
-            'card_label' => $data['card_label'] ?? 'Finish',
-            'button_text' => $data['button_text'] ?? 'All finishes',
-            'button_url' => $data['button_url'] ?? route('finishes'),
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
+            'heading_line_2' => isset($data['heading_line_2']) ? trim((string) $data['heading_line_2']) : '',
+            'card_label' => isset($data['card_label']) ? trim((string) $data['card_label']) : '',
+            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
+            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
         ];
     }
 
@@ -150,14 +152,16 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getServicesSectionData(array $data): array
     {
+        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Our Services',
-            'heading_line_1' => $data['heading_line_1'] ?? 'Three disciplines,',
-            'heading_line_2' => $data['heading_line_2'] ?? 'one obsession.',
-            'button_text' => $data['button_text'] ?? 'See all services',
-            'button_url' => $data['button_url'] ?? route('services'),
-            'card_link_text' => $data['card_link_text'] ?? 'Discover',
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
+            'heading_line_2' => isset($data['heading_line_2']) ? trim((string) $data['heading_line_2']) : '',
+            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
+            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
+            'card_link_text' => isset($data['card_link_text']) ? trim((string) $data['card_link_text']) : '',
         ];
     }
 
@@ -166,12 +170,14 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getCommissionsSectionData(array $data): array
     {
+        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Selected Work',
-            'heading_line_1' => $data['heading_line_1'] ?? 'Recent commissions.',
-            'button_text' => $data['button_text'] ?? 'View full gallery',
-            'button_url' => $data['button_url'] ?? route('gallery'),
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
+            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
+            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
         ];
     }
 
@@ -180,27 +186,24 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getWhySectionData(array $data): array
     {
-        $defaults = [
-            ['icon' => 'fa-award', 'title' => 'Master Craftsmanship', 'desc' => 'Every surface mixed, applied and polished by hand.'],
-            ['icon' => 'fa-palette', 'title' => 'Bespoke by Design', 'desc' => 'Custom tones, textures and profiles, never off-the-shelf.'],
-            ['icon' => 'fa-clapperboard', 'title' => 'Trusted by Productions', 'desc' => 'Selected for major film, TV and editorial productions.'],
-            ['icon' => 'fa-leaf', 'title' => 'Considered Materials', 'desc' => 'Lime-based, breathable, low-VOC formulations.'],
-        ];
         $cards = is_array($data['cards'] ?? null) ? $data['cards'] : [];
         $resolvedCards = [];
-        for ($i = 0; $i < 4; $i++) {
+        foreach ($cards as $card) {
+            if (! is_array($card)) {
+                continue;
+            }
             $resolvedCards[] = [
-                'icon' => $cards[$i]['icon'] ?? $defaults[$i]['icon'],
-                'title' => $cards[$i]['title'] ?? $defaults[$i]['title'],
-                'desc' => $cards[$i]['desc'] ?? $defaults[$i]['desc'],
+                'icon' => isset($card['icon']) ? trim((string) $card['icon']) : '',
+                'title' => isset($card['title']) ? trim((string) $card['title']) : '',
+                'desc' => isset($card['desc']) ? trim((string) $card['desc']) : '',
             ];
         }
 
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Why Bespoke Ornate',
-            'heading' => $data['heading'] ?? 'A studio defined by its hands.',
-            'lead' => $data['lead'] ?? 'Each project is led by master artisans trained in traditional Italian techniques and refined for the demands of contemporary architecture.',
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading' => isset($data['heading']) ? trim((string) $data['heading']) : '',
+            'lead' => isset($data['lead']) ? trim((string) $data['lead']) : '',
             'cards' => $resolvedCards,
         ];
     }
@@ -210,27 +213,24 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getProcessSectionData(array $data): array
     {
-        $defaults = [
-            ['num' => '01', 'title' => 'Consultation', 'desc' => 'We visit your space, listen and study the light.'],
-            ['num' => '02', 'title' => 'Design', 'desc' => 'Bespoke samples, tones and textures developed in studio.'],
-            ['num' => '03', 'title' => 'Quote', 'desc' => 'A clear, transparent proposal with timelines.'],
-            ['num' => '04', 'title' => 'Execution', 'desc' => 'Hand-applied by our master artisans on site.'],
-        ];
         $steps = is_array($data['steps'] ?? null) ? $data['steps'] : [];
         $resolvedSteps = [];
-        for ($i = 0; $i < 4; $i++) {
+        foreach ($steps as $step) {
+            if (! is_array($step)) {
+                continue;
+            }
             $resolvedSteps[] = [
-                'num' => $steps[$i]['num'] ?? $defaults[$i]['num'],
-                'title' => $steps[$i]['title'] ?? $defaults[$i]['title'],
-                'desc' => $steps[$i]['desc'] ?? $defaults[$i]['desc'],
+                'num' => isset($step['num']) ? trim((string) $step['num']) : '',
+                'title' => isset($step['title']) ? trim((string) $step['title']) : '',
+                'desc' => isset($step['desc']) ? trim((string) $step['desc']) : '',
             ];
         }
 
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Our Process',
-            'heading_line_1' => $data['heading_line_1'] ?? 'From first conversation',
-            'heading_line_2' => $data['heading_line_2'] ?? 'to final polish.',
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
+            'heading_line_2' => isset($data['heading_line_2']) ? trim((string) $data['heading_line_2']) : '',
             'steps' => $resolvedSteps,
         ];
     }
@@ -240,16 +240,19 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getBeginCtaSectionData(array $data): array
     {
+        $primaryUrl = isset($data['primary_btn_url']) ? trim((string) $data['primary_btn_url']) : '';
+        $secondaryUrl = isset($data['secondary_btn_url']) ? trim((string) $data['secondary_btn_url']) : '';
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Begin a Project',
-            'title_line_1' => $data['title_line_1'] ?? 'Transform your space',
-            'title_line_2' => $data['title_line_2'] ?? 'into a quiet masterpiece.',
-            'primary_btn_text' => $data['primary_btn_text'] ?? 'Get free consultation',
-            'primary_btn_url' => $data['primary_btn_url'] ?? route('contact'),
-            'secondary_btn_text' => $data['secondary_btn_text'] ?? 'Call the studio',
-            'secondary_btn_url' => $data['secondary_btn_url'] ?? null,
-            'bg_image' => $data['bg_image'] ?? null,
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'title_line_1' => isset($data['title_line_1']) ? trim((string) $data['title_line_1']) : '',
+            'title_line_2' => isset($data['title_line_2']) ? trim((string) $data['title_line_2']) : '',
+            'primary_btn_text' => isset($data['primary_btn_text']) ? trim((string) $data['primary_btn_text']) : '',
+            'primary_btn_url' => $primaryUrl !== '' ? $primaryUrl : null,
+            'secondary_btn_text' => isset($data['secondary_btn_text']) ? trim((string) $data['secondary_btn_text']) : '',
+            'secondary_btn_url' => $secondaryUrl !== '' ? $secondaryUrl : null,
+            'bg_image' => isset($data['bg_image']) && $data['bg_image'] !== '' ? $data['bg_image'] : null,
         ];
     }
 
@@ -260,16 +263,16 @@ class HomePageService implements HomePageServiceInterface
     {
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Contact Us',
-            'heading' => $data['heading'] ?? 'How we can help?',
-            'panel_title' => $data['panel_title'] ?? 'Contact Us',
-            'name_placeholder' => $data['name_placeholder'] ?? 'Your Name',
-            'email_placeholder' => $data['email_placeholder'] ?? 'Email',
-            'phone_placeholder' => $data['phone_placeholder'] ?? 'Phone(Optional)',
-            'message_placeholder' => $data['message_placeholder'] ?? 'Tell us about your space',
-            'submit_text' => $data['submit_text'] ?? 'Send Enquiry',
-            'subject' => $data['subject'] ?? 'Website enquiry (home)',
-            'visual_image' => $data['visual_image'] ?? null,
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading' => isset($data['heading']) ? trim((string) $data['heading']) : '',
+            'panel_title' => isset($data['panel_title']) ? trim((string) $data['panel_title']) : '',
+            'name_placeholder' => isset($data['name_placeholder']) ? trim((string) $data['name_placeholder']) : '',
+            'email_placeholder' => isset($data['email_placeholder']) ? trim((string) $data['email_placeholder']) : '',
+            'phone_placeholder' => isset($data['phone_placeholder']) ? trim((string) $data['phone_placeholder']) : '',
+            'message_placeholder' => isset($data['message_placeholder']) ? trim((string) $data['message_placeholder']) : '',
+            'submit_text' => isset($data['submit_text']) ? trim((string) $data['submit_text']) : '',
+            'subject' => isset($data['subject']) ? trim((string) $data['subject']) : '',
+            'visual_image' => isset($data['visual_image']) && $data['visual_image'] !== '' ? $data['visual_image'] : null,
         ];
     }
 
@@ -285,9 +288,9 @@ class HomePageService implements HomePageServiceInterface
 
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'kicker' => $data['kicker'] ?? 'Partners & collaborators',
-            'title_line_1' => $data['title_line_1'] ?? 'Trusted by',
-            'title_line_2' => $data['title_line_2'] ?? 'leading names',
+            'kicker' => isset($data['kicker']) ? trim((string) $data['kicker']) : '',
+            'title_line_1' => isset($data['title_line_1']) ? trim((string) $data['title_line_1']) : '',
+            'title_line_2' => isset($data['title_line_2']) ? trim((string) $data['title_line_2']) : '',
             'marquee_segments' => $marqueeSegments,
         ];
     }
@@ -297,13 +300,15 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getBlogPreviewSectionData(array $data): array
     {
+        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => $data['eyebrow'] ?? 'Our Blog',
-            'heading' => $data['heading'] ?? 'Latest News',
-            'button_text' => $data['button_text'] ?? 'All Blogs',
-            'button_url' => $data['button_url'] ?? route('blog.index'),
-            'read_more_text' => $data['read_more_text'] ?? 'Read More',
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading' => isset($data['heading']) ? trim((string) $data['heading']) : '',
+            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
+            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
+            'read_more_text' => isset($data['read_more_text']) ? trim((string) $data['read_more_text']) : '',
         ];
     }
 }

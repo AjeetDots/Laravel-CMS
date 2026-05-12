@@ -40,11 +40,16 @@
                         @foreach($items as $item)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::disk('public')->exists($item->image) ? asset('storage/'.$item->image) : 'https://via.placeholder.com/60x40' }}"
+                                    @if(Storage::disk('public')->exists($item->image))
+                                    <img src="{{ asset('storage/'.$item->image) }}"
+                                         alt=""
                                          class="img-preview" style="height:45px; width:65px; object-fit:cover;">
+                                    @else
+                                    <span class="d-inline-block bg-light border rounded" style="height:45px;width:65px;" title="No image"></span>
+                                    @endif
                                 </td>
-                                <td class="fw-500">{{ $item->title ?? '—' }}</td>
-                                <td>{{ $item->galleryCategory?->name ?? '—' }}</td>
+                                <td class="fw-500">{{ $item->title ?? '' }}</td>
+                                <td>{{ $item->galleryCategory?->name ?? '' }}</td>
                                 <td>{{ $item->sort_order }}</td>
                                 <td>
                                     <span class="badge {{ $item->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">

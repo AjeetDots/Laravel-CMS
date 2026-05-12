@@ -1,12 +1,12 @@
 @php
     $finishesCfg = $finishesSection ?? [];
     $finishesEnabled = array_key_exists('is_enabled', $finishesCfg) ? !empty($finishesCfg['is_enabled']) : true;
-    $finishesEyebrow = $finishesCfg['eyebrow'] ?? 'The Finishes';
-    $finishesHeadingLine1 = $finishesCfg['heading_line_1'] ?? 'Six surfaces,';
-    $finishesHeadingLine2 = $finishesCfg['heading_line_2'] ?? 'infinite tones.';
-    $finishesCardLabel = $finishesCfg['card_label'] ?? 'Finish';
-    $finishesBtnText = $finishesCfg['button_text'] ?? 'All finishes';
-    $finishesBtnUrl = $finishesCfg['button_url'] ?? route('finishes');
+    $finishesEyebrow = $finishesCfg['eyebrow'] ?? '';
+    $finishesHeadingLine1 = $finishesCfg['heading_line_1'] ?? '';
+    $finishesHeadingLine2 = $finishesCfg['heading_line_2'] ?? '';
+    $finishesCardLabel = $finishesCfg['card_label'] ?? '';
+    $finishesBtnText = $finishesCfg['button_text'] ?? '';
+    $finishesBtnUrl = $finishesCfg['button_url'] ?? '';
 @endphp
 
 @if($finishesEnabled)
@@ -21,9 +21,11 @@
                 </h2>
             </div>
             <div class="reveal-right">
+                @if(trim($finishesBtnUrl) !== '' && trim($finishesBtnText) !== '')
                 <a href="{{ $finishesBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
                     {{ $finishesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
                 </a>
+                @endif
             </div>
         </div>
 
@@ -41,22 +43,6 @@
                     <div class="commission-meta">
                         <span class="commission-category">{{ $finishesCardLabel }}</span>
                         <p class="commission-title">{{ $f->title }}</p>
-                    </div>
-                    <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
-                </div>
-            </a>
-            @endforeach
-        </div>
-        @else
-        <div class="commissions-grid home-finishes-grid reveal">
-            @foreach(['Marmorino', 'Tadelakt', 'Metallic', 'Concrete', 'Spatulato', 'Travertino'] as $i => $name)
-            <a href="{{ route('finishes') }}" class="commission-item @if($i === 0) is-lead @endif">
-                <div class="commission-placeholder"><i class="fas fa-palette"></i></div>
-                <div class="commission-overlay"></div>
-                <div class="commission-body">
-                    <div class="commission-meta">
-                        {{-- <span class="commission-category">Sample</span> --}}
-                        <p class="commission-title">{{ $name }}</p>
                     </div>
                     <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>
