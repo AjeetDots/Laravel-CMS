@@ -58,11 +58,6 @@
             <div class="tab-content theme-section-tabs__panels" id="portfolioPageTabsContent">
                 <div class="tab-pane fade @if($activeContentSection === 'intro') show active @endif" id="portfolio-intro-pane" role="tabpanel" aria-labelledby="portfolio-intro-tab" tabindex="0">
                     <div class="mb-3">
-                        <label class="form-label" for="page_title">Browser tab title</label>
-                        <input type="text" name="page_title" id="page_title" class="form-control" value="{{ old('page_title', $data['page_title'] ?? '') }}" maxlength="120" placeholder="e.g. Portfolio">
-                        <div class="form-text">Shown before your site name in the visitor’s browser tab. Leave blank to use the default word for this page.</div>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label" for="intro_eyebrow">Eyebrow</label>
                         <input type="text" name="intro_eyebrow" id="intro_eyebrow" class="form-control" value="{{ old('intro_eyebrow', $data['intro_eyebrow'] ?? '') }}" maxlength="120">
                     </div>

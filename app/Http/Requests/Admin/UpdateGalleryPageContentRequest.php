@@ -18,7 +18,6 @@ class UpdateGalleryPageContentRequest extends FormRequest
         return [
             'gallery_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM)],
 
-            'page_title' => 'nullable|string|max:120',
             'intro_eyebrow' => 'nullable|string|max:120',
             'intro_title' => 'nullable|string|max:255',
             'filter_all_label' => 'nullable|string|max:80',

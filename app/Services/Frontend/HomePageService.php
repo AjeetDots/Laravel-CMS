@@ -30,9 +30,6 @@ class HomePageService implements HomePageServiceInterface
             return is_array($raw) ? $raw : [];
         };
 
-        $pageMeta = $pick('page_meta');
-        $homePageBrowserTitle = isset($pageMeta['page_title']) ? trim((string) $pageMeta['page_title']) : '';
-
         $atelierSection = $this->getAtelierSectionData($pick('atelier'));
         $finishesSection = $this->getFinishesSectionData($pick('finishes'));
         $servicesSection = $this->getServicesSectionData($pick('services'));
@@ -45,7 +42,6 @@ class HomePageService implements HomePageServiceInterface
         $blogPreviewSection = $this->getBlogPreviewSectionData($pick('blog_preview'));
 
         return [
-            'homePageBrowserTitle' => $homePageBrowserTitle,
             'sliders' => Slider::query()
                 ->where('is_active', true)
                 ->where('panel', 'main')

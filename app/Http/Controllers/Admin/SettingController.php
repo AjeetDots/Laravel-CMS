@@ -244,14 +244,6 @@ class SettingController extends Controller
             $blogPreviewSection = [];
         }
 
-        $pageMetaSection = HomePageSection::query()
-            ->where('section_key', 'page_meta')
-            ->value('data') ?? [];
-        if (! is_array($pageMetaSection)) {
-            $pageMetaSection = [];
-        }
-        $homePageTitle = $pageMetaSection['page_title'] ?? '';
-
         $querySection = request()->query('section');
         $homeActiveSection = is_string($querySection) && $querySection !== ''
             ? HomePageAdminTabs::normalize($querySection)
@@ -269,7 +261,6 @@ class SettingController extends Controller
             'brandsStripSection',
             'blogPreviewSection',
             'homeActiveSection',
-            'homePageTitle',
         ));
     }
 
@@ -433,7 +424,7 @@ class SettingController extends Controller
         unset($validated['about_page_active_section']);
 
         foreach ([
-            'page_title', 'intro_eyebrow', 'intro_title', 'story_heading', 'story_body_1', 'story_body_2', 'story_body_3',
+            'intro_eyebrow', 'intro_title', 'story_heading', 'story_body_1', 'story_body_2', 'story_body_3',
             'image_main_alt', 'image_accent_alt', 'image_studio_alt',
             'stat1_num', 'stat1_label', 'stat2_num', 'stat2_label', 'stat3_num', 'stat3_label',
             'workshop_eyebrow', 'workshop_heading', 'workshop_body', 'workshop_btn_text', 'workshop_btn_url',
@@ -496,7 +487,7 @@ class SettingController extends Controller
         unset($validated['contact_page_active_section']);
 
         foreach ([
-            'page_title', 'hero_line_1', 'hero_line_2', 'hero_cta',
+            'hero_line_1', 'hero_line_2', 'hero_cta',
             'info_eyebrow', 'info_heading_1', 'info_heading_2', 'info_lead',
             'studio_label', 'studio_body', 'hours_label', 'hours_body', 'appointment_line',
             'fallback_phone_display', 'fallback_whatsapp_label',
@@ -566,11 +557,6 @@ class SettingController extends Controller
     public function updateHomePage(UpdateHomePageSettingRequest $request)
     {
         $data = $request->validated();
-
-        $pageMetaRow = HomePageSection::query()->firstOrCreate(['section_key' => 'page_meta'], ['data' => []]);
-        $pageMetaData = is_array($pageMetaRow->data) ? $pageMetaRow->data : [];
-        $pageMetaData['page_title'] = trim((string) ($data['home_page_title'] ?? ''));
-        $pageMetaRow->update(['data' => $pageMetaData]);
 
         $section = HomePageSection::query()->firstOrCreate(['section_key' => 'atelier'], ['data' => []]);
         $sectionData = is_array($section->data) ? $section->data : [];

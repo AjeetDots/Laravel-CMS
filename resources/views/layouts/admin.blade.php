@@ -146,6 +146,9 @@
         /* Forms */
         .form-label { font-weight: 500; font-size: .88rem; color: #374151; margin-bottom: 6px; }
         .form-control, .form-select { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; font-size: .92rem; }
+        /* Bootstrap’s chevron is background-painted; equal padding on all sides lets text sit under the arrow (e.g. “None”, DataTables “All”). */
+        .form-select { padding-right: 2.75rem; }
+        .form-select.form-select-sm { padding-right: 2.25rem; }
         .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(184, 151, 90, 0.22); }
         textarea.form-control { min-height: 120px; }
 

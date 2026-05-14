@@ -1,5 +1,5 @@
 @extends('layouts.frontend')
-@section('title', trim((string) ($contactPage['page_title'] ?? '')) !== '' ? $contactPage['page_title'] : '')
+@section('title', 'Contact')
 @section('body_class', 'nav-solid page-contact')
 @section('content')
 

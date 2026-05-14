@@ -55,11 +55,6 @@
             <div class="tab-content theme-section-tabs__panels" id="aboutPageTabsContent">
                 <div class="tab-pane fade @if($activeContentSection === 'intro') show active @endif" id="about-intro-pane" role="tabpanel" aria-labelledby="about-intro-tab" tabindex="0">
                     <div class="mb-3">
-                        <label class="form-label" for="page_title">Browser tab title</label>
-                        <input type="text" name="page_title" id="page_title" class="form-control" value="{{ old('page_title', $data['page_title'] ?? '') }}" maxlength="120" placeholder="e.g. About">
-                        <div class="form-text">When set, this overrides the About page’s SEO title from <a href="{{ route('admin.pages.index') }}">Pages</a>. Leave blank to keep using the page entry.</div>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label" for="intro_eyebrow">Eyebrow</label>
                         <input type="text" name="intro_eyebrow" id="intro_eyebrow" class="form-control" value="{{ old('intro_eyebrow', $data['intro_eyebrow'] ?? '') }}" maxlength="120">
                     </div>

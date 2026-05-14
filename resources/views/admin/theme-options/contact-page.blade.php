@@ -56,11 +56,6 @@
                 <div class="tab-pane fade @if($activeContentSection === 'hero') show active @endif" id="contact-hero-pane" role="tabpanel" aria-labelledby="contact-hero-tab" tabindex="0">
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
-                            <label class="form-label" for="page_title">Browser tab title</label>
-                            <input type="text" name="page_title" id="page_title" class="form-control" value="{{ old('page_title', $data['page_title'] ?? '') }}" maxlength="120" placeholder="e.g. Contact">
-                            <div class="form-text">Shown before your site name in the visitor’s browser tab.</div>
-                        </div>
-                        <div class="col-12 col-md-6">
                             <label class="form-label" for="hero_cta">Hero button label</label>
                             <input type="text" name="hero_cta" id="hero_cta" class="form-control" value="{{ old('hero_cta', $data['hero_cta'] ?? '') }}" maxlength="120" placeholder="e.g. Get a quote">
                         </div>
@@ -191,7 +186,10 @@
                     </div>
                     <div class="mb-0">
                         <label class="form-label" for="map_embed_url">Google Maps embed URL</label>
-                        <textarea name="map_embed_url" id="map_embed_url" class="form-control font-monospace small" rows="4" maxlength="5000" placeholder="e.g. https://www.google.com/maps/embed?…">{{ old('map_embed_url', $data['map_embed_url'] ?? '') }}</textarea>
+                        <textarea name="map_embed_url" id="map_embed_url" class="form-control font-monospace small @error('map_embed_url') is-invalid @enderror" rows="4" maxlength="5000" placeholder="e.g. https://www.google.com/maps/embed?…">{{ old('map_embed_url', $data['map_embed_url'] ?? '') }}</textarea>
+                        @error('map_embed_url')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                         <span class="form-text">Paste the full <code>src</code> value from the Google Maps embed code.</span>
                     </div>
                 </div>

@@ -19,8 +19,6 @@ class UpdateHomePageSettingRequest extends FormRequest
         return [
             'home_active_section' => ['nullable', 'string', Rule::in(HomePageAdminTabs::SECTION_KEYS)],
 
-            'home_page_title' => 'nullable|string|max:120',
-
             'home_atelier_is_enabled' => 'boolean',
             'home_atelier_kicker' => 'nullable|string|max:120',
             'home_atelier_heading_line_1' => 'nullable|string|max:255',

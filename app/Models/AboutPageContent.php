@@ -26,7 +26,6 @@ class AboutPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
-            'page_title' => '',
             'intro_eyebrow' => '',
             'intro_title' => '',
             'story_heading' => '',

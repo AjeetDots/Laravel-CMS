@@ -19,7 +19,6 @@ class UpdateAboutPageContentRequest extends FormRequest
         return [
             'about_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::ABOUT)],
 
-            'page_title' => 'nullable|string|max:120',
             'intro_eyebrow' => 'nullable|string|max:120',
             'intro_title' => 'nullable|string|max:500',
             'story_heading' => 'nullable|string|max:255',

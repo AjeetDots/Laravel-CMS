@@ -61,12 +61,7 @@
     @endif
 
     <div class="card mb-4">
-        <div class="card-header border-bottom-0 pb-0">
-            <div class="px-2 pt-2 pb-3 border-bottom">
-                <label class="form-label" for="home_page_title">Browser tab title</label>
-                <input type="text" name="home_page_title" id="home_page_title" class="form-control" value="{{ old('home_page_title', $homePageTitle ?? '') }}" maxlength="120" placeholder="e.g. Home">
-                <div class="form-text">Shown before your site name in the visitor’s browser tab (for example <strong>Home</strong> — <strong>Your studio</strong>). Leave blank to use “Home”.</div>
-            </div>
+        <div class="card-header pb-0">
             <ul class="nav nav-tabs card-header-tabs theme-section-tabs" id="homeSectionsTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'atelier') active @endif" id="atelier-tab" data-bs-toggle="tab" data-bs-target="#atelier-pane" aria-controls="atelier-pane" data-theme-section="atelier" data-home-tab-default="{{ $homeSectionTabDefaults['atelier'] }}" aria-selected="{{ $activeHomeSection === 'atelier' ? 'true' : 'false' }}">

@@ -7,63 +7,17 @@
 @section('body_class', 'nav-solid')
 
 @section('content')
-@php
-    $heroEyebrows = [
-        'faq' => 'Help center',
-        'docs' => 'Documentation',
-        'help' => 'Support',
-    ];
-    $heroEyebrow = $heroEyebrows[$page->slug] ?? '';
-@endphp
+    <div class="cms-page-default-centered">
+        @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
-<div class="page-hero">
-    <div class="container">
-        @if(trim((string) $heroEyebrow) !== '')
-        <span class="eyebrow">{{ $heroEyebrow }}</span>
-        @endif
-        <h1 class="page-hero-title-wide">{{ $page->title }}</h1>
-        @if($page->meta_description && \Illuminate\Support\Str::length($page->meta_description) < 220)
-            <p>{{ $page->meta_description }}</p>
-        @endif
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item active">{{ $page->title }}</li>
-            </ol>
-        </nav>
-    </div>
-</div>
-
-<section class="section section-white">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-lg-9 col-xl-8">
-                @if($page->sections->count())
-                    <section class="about-feature">
-                        <div class="container">
-                            <div class="row align-items-start g-5">
-                                @foreach($page->sections as $section)
-                                    @include(
-                                        'frontend.sections.'
-                                        .$section->type,
-                                        [
-                                            'data' => $section->data
-                                        ]
-                                    )
-                                @endforeach
-                            </div>
-                        </div>
-                    </section>
-                @elseif($page->content)
-                    <div class="page-content">
-                        {!! $page->content !!}
+        <section class="section section-white cms-page-section cms-page-section--default">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-12 col-lg-10 col-xl-9">
+                        @include('frontend.pages.partials.cms-body-inner', ['page' => $page])
                     </div>
-                @else
-                    <div class="py-5"></div>
-                @endif
+                </div>
             </div>
-        </div>
+        </section>
     </div>
-</section>
-
 @endsection

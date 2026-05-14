@@ -1404,6 +1404,218 @@ body.nav-solid .contact-form-panel {
     }
 }
 
+/* ── CMS pages (default / full-width / sidebar templates) ── */
+body.nav-solid .cms-page-section {
+    --cms-max-text: min(100%, 42rem);
+}
+
+body.nav-solid .cms-page-section--sidebar .cms-page-intro {
+    max-width: var(--cms-max-text);
+}
+
+/* Default CMS template: centre hero (same as main content column treatment) */
+body.nav-solid .cms-page-default-centered .page-hero .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+body.nav-solid .cms-page-default-centered .page-hero .eyebrow::before {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-page-default-centered .page-hero .breadcrumb {
+    justify-content: center;
+}
+
+/* Default template only: centre main copy (reading column stays max-width) */
+body.nav-solid .cms-page-section--default .cms-page-intro {
+    max-width: var(--cms-max-text);
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+body.nav-solid .cms-page-section--default .cms-page-intro .page-content > p,
+body.nav-solid .cms-page-section--default .cms-page-intro p {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-page-section--default .cms-page-intro ul,
+body.nav-solid .cms-page-section--default .cms-page-intro ol {
+    display: inline-block;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-page-section--default .cms-page-intro img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-page-inner-wide {
+    width: 100%;
+    max-width: min(100%, 72rem);
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Full-width page template: use the full fluid container (12-col), not a reading column */
+body.nav-solid .cms-page-section--full {
+    --cms-max-text: 100%;
+}
+
+body.nav-solid .cms-page-section--full .cms-page-inner-wide {
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+body.nav-solid .cms-page-section--full .cms-page-article,
+body.nav-solid .cms-page-section--full .cms-page-intro {
+    max-width: none;
+}
+
+body.nav-solid .cms-page-blocks .row {
+    --bs-gutter-x: 1.5rem;
+    --bs-gutter-y: 1.5rem;
+}
+
+/* One Bootstrap row per section — keeps multi-section pages aligned */
+body.nav-solid .cms-page-block-row + .cms-page-block-row {
+    margin-top: clamp(2.25rem, 4.5vw, 3.5rem);
+    padding-top: clamp(2.25rem, 4.5vw, 3.5rem);
+    border-top: 1px solid rgba(28, 23, 20, 0.08);
+}
+
+body.nav-solid .cms-page-article {
+    max-width: var(--cms-max-text, min(100%, 42rem));
+}
+
+body.nav-solid .cms-page-article > *:first-child:is(h1, h2, h3) {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.6rem, 2.8vw, 2.05rem);
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+    margin-bottom: 1rem;
+    margin-top: 0;
+}
+
+body.nav-solid .cms-page-section .story-label {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold, #c8a25a);
+    margin-bottom: 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 2px solid rgba(200, 162, 90, 0.38);
+    max-width: 14rem;
+}
+
+body.nav-solid .cms-sidebar-custom {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    color: var(--ink-mid);
+}
+
+body.nav-solid .cms-sidebar-custom h2,
+body.nav-solid .cms-sidebar-custom h3 {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 0;
+    margin-bottom: 0.65rem;
+}
+
+body.nav-solid .cms-sidebar-custom p:last-child {
+    margin-bottom: 0;
+}
+
+body.nav-solid .cms-sidebar-custom a {
+    color: var(--wine);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+body.nav-solid .cms-sidebar-custom a:hover {
+    color: var(--wine-dark);
+}
+
+body.nav-solid .cms-page-placeholder {
+    border: 1px dashed rgba(28, 23, 20, 0.12);
+    border-radius: 2px;
+    background: rgba(250, 248, 245, 0.6);
+}
+
+body.nav-solid .cms-sidebar-card {
+    position: sticky;
+    top: 6.5rem;
+    padding: 1.75rem 1.5rem;
+    border-radius: 2px;
+    border: 1px solid rgba(28, 23, 20, 0.08);
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.98) 0%, rgba(252, 249, 245, 0.96) 100%);
+    box-shadow: 0 18px 48px rgba(28, 23, 20, 0.06);
+}
+
+body.nav-solid .cms-sidebar-card__title {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    margin-bottom: 0.65rem;
+    letter-spacing: 0.02em;
+}
+
+body.nav-solid .cms-sidebar-card__text {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: rgba(28, 23, 20, 0.72);
+}
+
+body.nav-solid .cms-sidebar-card__line {
+    font-size: 0.95rem;
+}
+
+body.nav-solid .cms-sidebar-card__line a {
+    color: var(--wine);
+    text-decoration: none;
+    word-break: break-word;
+}
+
+body.nav-solid .cms-sidebar-card__line a:hover {
+    text-decoration: underline;
+}
+
+body.nav-solid .cms-sidebar-card__cta {
+    border-radius: 2px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.78rem;
+    padding-top: 0.65rem;
+    padding-bottom: 0.65rem;
+}
+
+@media (max-width: 991px) {
+    body.nav-solid .cms-sidebar-card {
+        position: static;
+        margin-bottom: 0.5rem;
+    }
+
+    body.nav-solid .cms-page-section--sidebar .row > .col-lg-4 {
+        margin-bottom: 0.5rem;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .media-frame img,
     .service-grid-card__media img,

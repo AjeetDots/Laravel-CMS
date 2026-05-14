@@ -18,7 +18,6 @@ class UpdatePortfolioPageContentRequest extends FormRequest
         return [
             'portfolio_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM)],
 
-            'page_title' => 'nullable|string|max:120',
             'intro_eyebrow' => 'nullable|string|max:120',
             'intro_title' => 'nullable|string|max:255',
             'intro_body' => 'nullable|string|max:2000',

@@ -29,7 +29,6 @@ class ContactPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
-            'page_title' => '',
             'hero_line_1' => '',
             'hero_line_2' => '',
             'hero_cta' => '',
