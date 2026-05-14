@@ -18,6 +18,36 @@
 
 @php
     $activeHomeSection = \App\Support\HomePageAdminTabs::normalize(old('home_active_section', $homeActiveSection ?? null));
+    $homeSectionTabDefaults = [
+        'atelier' => 'Atelier Section',
+        'finishes' => 'Finishes Section',
+        'services' => 'Services Section',
+        'why' => 'Why Section',
+        'process' => 'Process Section',
+        'commissions' => 'Selected work',
+        'begin-cta' => 'Begin CTA Section',
+        'contact-band' => 'Contact Band Section',
+        'brands-strip' => 'Brands Strip Section',
+        'blog-preview' => 'Blog Preview Section',
+    ];
+    $homeSectionTabTitle = function (string $key) use ($homeSectionTabDefaults, $atelierSection, $finishesSection, $servicesSection, $whySection, $processSection, $commissionsSection, $beginCtaSection, $contactBandSection, $brandsStripSection, $blogPreviewSection): string {
+        $raw = match ($key) {
+            'atelier' => old('home_atelier_kicker', $atelierSection['kicker'] ?? ''),
+            'finishes' => old('home_finishes_eyebrow', $finishesSection['eyebrow'] ?? ''),
+            'services' => old('home_services_eyebrow', $servicesSection['eyebrow'] ?? ''),
+            'why' => old('home_why_eyebrow', $whySection['eyebrow'] ?? ''),
+            'process' => old('home_process_eyebrow', $processSection['eyebrow'] ?? ''),
+            'commissions' => old('home_commissions_eyebrow', $commissionsSection['eyebrow'] ?? ''),
+            'begin-cta' => old('home_begin_cta_eyebrow', $beginCtaSection['eyebrow'] ?? ''),
+            'contact-band' => old('home_contact_band_eyebrow', $contactBandSection['eyebrow'] ?? ''),
+            'brands-strip' => old('home_brands_strip_kicker', $brandsStripSection['kicker'] ?? ''),
+            'blog-preview' => old('home_blog_preview_eyebrow', $blogPreviewSection['eyebrow'] ?? ''),
+            default => '',
+        };
+        $t = trim((string) $raw);
+
+        return $t !== '' ? $t : ($homeSectionTabDefaults[$key] ?? $key);
+    };
 @endphp
 
 <form action="{{ route('admin.theme-options.home.update') }}" method="POST" enctype="multipart/form-data">
@@ -39,53 +69,53 @@
             </div>
             <ul class="nav nav-tabs card-header-tabs theme-section-tabs" id="homeSectionsTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'atelier') active @endif" id="atelier-tab" data-bs-toggle="tab" data-bs-target="#atelier-pane" aria-controls="atelier-pane" data-theme-section="atelier" aria-selected="{{ $activeHomeSection === 'atelier' ? 'true' : 'false' }}">
-                        Atelier Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'atelier') active @endif" id="atelier-tab" data-bs-toggle="tab" data-bs-target="#atelier-pane" aria-controls="atelier-pane" data-theme-section="atelier" data-home-tab-default="{{ $homeSectionTabDefaults['atelier'] }}" aria-selected="{{ $activeHomeSection === 'atelier' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('atelier') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'finishes') active @endif" id="finishes-tab" data-bs-toggle="tab" data-bs-target="#finishes-pane" aria-controls="finishes-pane" data-theme-section="finishes" aria-selected="{{ $activeHomeSection === 'finishes' ? 'true' : 'false' }}">
-                        Finishes Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'finishes') active @endif" id="finishes-tab" data-bs-toggle="tab" data-bs-target="#finishes-pane" aria-controls="finishes-pane" data-theme-section="finishes" data-home-tab-default="{{ $homeSectionTabDefaults['finishes'] }}" aria-selected="{{ $activeHomeSection === 'finishes' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('finishes') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'services') active @endif" id="services-tab" data-bs-toggle="tab" data-bs-target="#services-pane" aria-controls="services-pane" data-theme-section="services" aria-selected="{{ $activeHomeSection === 'services' ? 'true' : 'false' }}">
-                        Services Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'services') active @endif" id="services-tab" data-bs-toggle="tab" data-bs-target="#services-pane" aria-controls="services-pane" data-theme-section="services" data-home-tab-default="{{ $homeSectionTabDefaults['services'] }}" aria-selected="{{ $activeHomeSection === 'services' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('services') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'why') active @endif" id="why-tab" data-bs-toggle="tab" data-bs-target="#why-pane" aria-controls="why-pane" data-theme-section="why" aria-selected="{{ $activeHomeSection === 'why' ? 'true' : 'false' }}">
-                        Why Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'why') active @endif" id="why-tab" data-bs-toggle="tab" data-bs-target="#why-pane" aria-controls="why-pane" data-theme-section="why" data-home-tab-default="{{ $homeSectionTabDefaults['why'] }}" aria-selected="{{ $activeHomeSection === 'why' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('why') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'process') active @endif" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-pane" aria-controls="process-pane" data-theme-section="process" aria-selected="{{ $activeHomeSection === 'process' ? 'true' : 'false' }}">
-                        Process Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'process') active @endif" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-pane" aria-controls="process-pane" data-theme-section="process" data-home-tab-default="{{ $homeSectionTabDefaults['process'] }}" aria-selected="{{ $activeHomeSection === 'process' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('process') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'commissions') active @endif" id="commissions-tab" data-bs-toggle="tab" data-bs-target="#commissions-pane" aria-controls="commissions-pane" data-theme-section="commissions" aria-selected="{{ $activeHomeSection === 'commissions' ? 'true' : 'false' }}">
-                        Selected work
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'commissions') active @endif" id="commissions-tab" data-bs-toggle="tab" data-bs-target="#commissions-pane" aria-controls="commissions-pane" data-theme-section="commissions" data-home-tab-default="{{ $homeSectionTabDefaults['commissions'] }}" aria-selected="{{ $activeHomeSection === 'commissions' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('commissions') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'begin-cta') active @endif" id="begin-cta-tab" data-bs-toggle="tab" data-bs-target="#begin-cta-pane" aria-controls="begin-cta-pane" data-theme-section="begin-cta" aria-selected="{{ $activeHomeSection === 'begin-cta' ? 'true' : 'false' }}">
-                        Begin CTA Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'begin-cta') active @endif" id="begin-cta-tab" data-bs-toggle="tab" data-bs-target="#begin-cta-pane" aria-controls="begin-cta-pane" data-theme-section="begin-cta" data-home-tab-default="{{ $homeSectionTabDefaults['begin-cta'] }}" aria-selected="{{ $activeHomeSection === 'begin-cta' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('begin-cta') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'contact-band') active @endif" id="contact-band-tab" data-bs-toggle="tab" data-bs-target="#contact-band-pane" aria-controls="contact-band-pane" data-theme-section="contact-band" aria-selected="{{ $activeHomeSection === 'contact-band' ? 'true' : 'false' }}">
-                        Contact Band Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'contact-band') active @endif" id="contact-band-tab" data-bs-toggle="tab" data-bs-target="#contact-band-pane" aria-controls="contact-band-pane" data-theme-section="contact-band" data-home-tab-default="{{ $homeSectionTabDefaults['contact-band'] }}" aria-selected="{{ $activeHomeSection === 'contact-band' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('contact-band') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'brands-strip') active @endif" id="brands-strip-tab" data-bs-toggle="tab" data-bs-target="#brands-strip-pane" aria-controls="brands-strip-pane" data-theme-section="brands-strip" aria-selected="{{ $activeHomeSection === 'brands-strip' ? 'true' : 'false' }}">
-                        Brands Strip Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'brands-strip') active @endif" id="brands-strip-tab" data-bs-toggle="tab" data-bs-target="#brands-strip-pane" aria-controls="brands-strip-pane" data-theme-section="brands-strip" data-home-tab-default="{{ $homeSectionTabDefaults['brands-strip'] }}" aria-selected="{{ $activeHomeSection === 'brands-strip' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('brands-strip') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'blog-preview') active @endif" id="blog-preview-tab" data-bs-toggle="tab" data-bs-target="#blog-preview-pane" aria-controls="blog-preview-pane" data-theme-section="blog-preview" aria-selected="{{ $activeHomeSection === 'blog-preview' ? 'true' : 'false' }}">
-                        Blog Preview Section
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'blog-preview') active @endif" id="blog-preview-tab" data-bs-toggle="tab" data-bs-target="#blog-preview-pane" aria-controls="blog-preview-pane" data-theme-section="blog-preview" data-home-tab-default="{{ $homeSectionTabDefaults['blog-preview'] }}" aria-selected="{{ $activeHomeSection === 'blog-preview' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('blog-preview') }}</span>
                     </button>
                 </li>
             </ul>
@@ -107,8 +137,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-6">
-                            <label class="form-label">Kicker</label>
-                            <input type="text" name="home_atelier_kicker" class="form-control"
+                            <label class="form-label" for="home_atelier_kicker">Title</label>
+                            <input type="text" name="home_atelier_kicker" id="home_atelier_kicker" class="form-control"
+                                   data-sync-home-section-tab="atelier"
                                    value="{{ old('home_atelier_kicker', $atelierSection['kicker'] ?? '') }}"
                                    placeholder="e.g. The Atelier">
                         </div>
@@ -207,8 +238,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_finishes_eyebrow" class="form-control"
+                            <label class="form-label" for="home_finishes_eyebrow">Title</label>
+                            <input type="text" name="home_finishes_eyebrow" id="home_finishes_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="finishes"
                                    value="{{ old('home_finishes_eyebrow', $finishesSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. The Finishes">
                         </div>
@@ -261,8 +293,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_services_eyebrow" class="form-control"
+                            <label class="form-label" for="home_services_eyebrow">Title</label>
+                            <input type="text" name="home_services_eyebrow" id="home_services_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="services"
                                    value="{{ old('home_services_eyebrow', $servicesSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Our Services">
                         </div>
@@ -314,8 +347,9 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_why_eyebrow" class="form-control"
+                            <label class="form-label" for="home_why_eyebrow">Title</label>
+                            <input type="text" name="home_why_eyebrow" id="home_why_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="why"
                                    value="{{ old('home_why_eyebrow', $whySection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Why choose us">
                         </div>
@@ -405,8 +439,9 @@
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_process_eyebrow" class="form-control"
+                            <label class="form-label" for="home_process_eyebrow">Title</label>
+                            <input type="text" name="home_process_eyebrow" id="home_process_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="process"
                                    value="{{ old('home_process_eyebrow', $processSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Our Process">
                         </div>
@@ -461,8 +496,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_commissions_eyebrow" class="form-control"
+                            <label class="form-label" for="home_commissions_eyebrow">Title</label>
+                            <input type="text" name="home_commissions_eyebrow" id="home_commissions_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="commissions"
                                    value="{{ old('home_commissions_eyebrow', $commissionsSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Selected work">
                         </div>
@@ -499,8 +535,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_begin_cta_eyebrow" class="form-control"
+                            <label class="form-label" for="home_begin_cta_eyebrow">Title</label>
+                            <input type="text" name="home_begin_cta_eyebrow" id="home_begin_cta_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="begin-cta"
                                    value="{{ old('home_begin_cta_eyebrow', $beginCtaSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Begin a project">
                         </div>
@@ -572,8 +609,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_contact_band_eyebrow" class="form-control"
+                            <label class="form-label" for="home_contact_band_eyebrow">Title</label>
+                            <input type="text" name="home_contact_band_eyebrow" id="home_contact_band_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="contact-band"
                                    value="{{ old('home_contact_band_eyebrow', $contactBandSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Contact us">
                         </div>
@@ -652,8 +690,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Kicker</label>
-                            <input type="text" name="home_brands_strip_kicker" class="form-control"
+                            <label class="form-label" for="home_brands_strip_kicker">Title</label>
+                            <input type="text" name="home_brands_strip_kicker" id="home_brands_strip_kicker" class="form-control"
+                                   data-sync-home-section-tab="brands-strip"
                                    value="{{ old('home_brands_strip_kicker', $brandsStripSection['kicker'] ?? '') }}"
                                    placeholder="e.g. Partners & collaborators">
                         </div>
@@ -692,8 +731,9 @@
 
                     <div class="row g-3">
                         <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_blog_preview_eyebrow" class="form-control"
+                            <label class="form-label" for="home_blog_preview_eyebrow">Title</label>
+                            <input type="text" name="home_blog_preview_eyebrow" id="home_blog_preview_eyebrow" class="form-control"
+                                   data-sync-home-section-tab="blog-preview"
                                    value="{{ old('home_blog_preview_eyebrow', $blogPreviewSection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Our blog">
                         </div>
@@ -735,4 +775,5 @@
 
 @section('scripts')
 @include('admin.partials.theme-section-tab-persist-script', ['tabListId' => 'homeSectionsTabs', 'inputId' => 'home_active_section'])
+@include('admin.partials.home-section-tab-title-sync-script', ['tabListId' => 'homeSectionsTabs'])
 @endsection

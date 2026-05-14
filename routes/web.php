@@ -14,7 +14,6 @@ use App\Http\Controllers\Admin\FooterNavigationController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
-use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\SettingController;
@@ -75,7 +74,6 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('sliders', SliderController::class);
         Route::resource('services', AdminServiceController::class);
         Route::resource('finishes', AdminFinishController::class);
-        Route::resource('portfolio', AdminPortfolioController::class);
         Route::resource('gallery', AdminGalleryController::class)->except(['show']);
         Route::resource('gallery-categories', GalleryCategoryController::class)->except(['show']);
         Route::resource('testimonials', TestimonialController::class);

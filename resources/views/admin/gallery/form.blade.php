@@ -29,6 +29,7 @@
                     <div class="mb-3">
                         <label class="form-label">Title</label>
                         <input type="text" name="title" class="form-control" value="{{ old('title', $item->title) }}" placeholder="e.g. Optional title">
+                        <div class="form-text">Must be unique among all gallery items (titles can be left blank).</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Section content</label>

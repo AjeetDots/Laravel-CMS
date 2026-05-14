@@ -47,17 +47,6 @@
         </a>
     </div>
     <div class="col-6 col-lg-4">
-        <a href="{{ route('admin.portfolio.index') }}" style="text-decoration:none;">
-            <div class="stat-card">
-                <div class="stat-icon stat-icon--d"><i class="fas fa-briefcase"></i></div>
-                <div>
-                    <div class="stat-number">{{ $stats['portfolio'] }}</div>
-                    <div class="stat-label">Portfolio Projects</div>
-                </div>
-            </div>
-        </a>
-    </div>
-    <div class="col-6 col-lg-4">
         <a href="{{ route('admin.gallery.index') }}" style="text-decoration:none;">
             <div class="stat-card">
                 <div class="stat-icon stat-icon--e"><i class="fas fa-images"></i></div>
@@ -87,7 +76,6 @@
     <div class="card-body">
         <div class="d-flex flex-wrap gap-2">
             <a href="{{ route('admin.finishes.create') }}"  class="btn btn-outline-primary btn-sm"><i class="fas fa-paint-brush me-1"></i>Add Finish</a>
-            <a href="{{ route('admin.portfolio.create') }}" class="btn btn-outline-primary btn-sm"><i class="fas fa-briefcase me-1"></i>Add Project</a>
             <a href="{{ route('admin.services.create') }}"  class="btn btn-outline-primary btn-sm"><i class="fas fa-concierge-bell me-1"></i>Add Service</a>
             <a href="{{ route('admin.gallery.create') }}"   class="btn btn-outline-primary btn-sm"><i class="fas fa-upload me-1"></i>Upload Gallery</a>
             <a href="{{ route('admin.pages.create') }}"     class="btn btn-outline-primary btn-sm"><i class="fas fa-file-alt me-1"></i>Create Page</a>
