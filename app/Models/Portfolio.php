@@ -2,10 +2,12 @@
 namespace App\Models;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Portfolio extends Model {
     use HasSeo;
+    use SoftDeletes;
 
     protected $fillable = [
         'title', 'slug', 'description', 'project_type',

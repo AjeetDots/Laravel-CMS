@@ -1,33 +1,49 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreBlogRequest;
 use App\Http\Requests\Admin\UpdateBlogRequest;
 use App\Models\BlogPost;
 use App\Models\Category;
+use App\Support\AdminDefaultSortOrder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class BlogController extends Controller {
+    use AppliesAdminTableFilters;
 
     public function index() {
-        $posts = BlogPost::orderByDesc('created_at')->paginate(15);
-        return view('admin.blog.index', compact('posts'));
+        $query = BlogPost::with('category')->orderByDesc('created_at');
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['title', 'slug', 'author']);
+        if (request()->filled('category_id')) {
+            $query->where('category_id', (int) request('category_id'));
+        }
+        $posts = $query->get();
+        $categoryOptions = Category::orderBy('name')->pluck('name', 'id');
+        $defaultAuthorName = Auth::user()?->name ?: 'Editor';
+
+        return view('admin.blog.index', compact('posts', 'categoryOptions', 'defaultAuthorName'));
     }
 
     public function create() {
         $categories = Category::selectTree();
-        return view('admin.blog.create', compact('categories'));
+        $categoryId = request()->filled('category_id') ? (int) request('category_id') : null;
+        $defaultSortOrder = AdminDefaultSortOrder::next(BlogPost::class, ['category_id' => $categoryId]);
+
+        return view('admin.blog.create', compact('categories', 'defaultSortOrder'));
     }
 
     public function store(StoreBlogRequest $request) {
         $data = $request->validated();
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
         $data['is_active']    = $request->boolean('is_active', true);
         $data['published_at'] = $data['published_at'] ?? now();
+
+        if (! filled(trim((string) ($data['author'] ?? '')))) {
+            $data['author'] = $request->user()?->name ?: 'Editor';
+        }
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('blog', 'public');
@@ -48,10 +64,11 @@ class BlogController extends Controller {
     public function update(UpdateBlogRequest $request, BlogPost $blog) {
         $data = $request->validated();
 
-        if (empty($data['slug'])) {
-            $data['slug'] = Str::slug($data['title']);
-        }
         $data['is_active'] = $request->boolean('is_active', true);
+
+        if (! filled(trim((string) ($data['author'] ?? '')))) {
+            $data['author'] = $request->user()?->name ?: 'Editor';
+        }
 
         if ($request->hasFile('image')) {
             if ($blog->image && Storage::disk('public')->exists($blog->image)) {
@@ -67,10 +84,7 @@ class BlogController extends Controller {
     }
 
     public function destroy(BlogPost $blog) {
-        if ($blog->image && Storage::disk('public')->exists($blog->image)) {
-            Storage::disk('public')->delete($blog->image);
-        }
         $blog->delete();
-        return back()->with('success', 'Post deleted.');
+        return back()->with('success', 'The blog post has been removed.');
     }
 }

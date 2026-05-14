@@ -14,17 +14,16 @@
     <div class="container">
         <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
             <div class="reveal-left">
-                <span class="eyebrow">{{ $finishesEyebrow }}</span>
-                <span class="section-rule" style="margin-bottom:0;"></span>
+                <span class="finishes-intro__eyebrow">{{ $finishesEyebrow }}</span>
                 <h2 class="home-section-title-lg">
                     {{ $finishesHeadingLine1 }}<br />{{ $finishesHeadingLine2 }}
                 </h2>
             </div>
             <div class="reveal-right">
                 @if(trim($finishesBtnUrl) !== '' && trim($finishesBtnText) !== '')
-                <a href="{{ $finishesBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
+                <!-- <a href="{{ $finishesBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
                     {{ $finishesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
-                </a>
+                </a> -->
                 @endif
             </div>
         </div>
@@ -38,13 +37,11 @@
                 @else
                     <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
                 @endif
-                <div class="commission-overlay"></div>
                 <div class="commission-body">
                     <div class="commission-meta">
                         <span class="commission-category">{{ $finishesCardLabel }}</span>
                         <p class="commission-title">{{ $f->title }}</p>
                     </div>
-                    <div class="commission-arrow"><i class="fas fa-arrow-right"></i></div>
                 </div>
             </a>
             @endforeach

@@ -2,10 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\FooterNavColumn;
+use App\Models\FooterNavLink;
 use App\Models\Menu;
+use App\Models\NewsletterFooterContent;
 use App\Models\Setting;
 use App\Support\FrontendViewCache;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
@@ -16,16 +20,9 @@ class ViewServiceProvider extends ServiceProvider
         // Child views (e.g. frontend.contact) render with their own name before/independently of
         // the layout; they still need $settings and $navMenus. The layout also needs them.
         View::composer(['layouts.frontend', 'frontend.*'], function ($view) {
-            static $shared = null;
-            if ($shared !== null) {
-                $view->with($shared);
-
-                return;
-            }
+            $ttl = max(60, (int) config('cms.frontend_view_cache_ttl', 3600));
 
             try {
-                $ttl = max(60, (int) config('cms.frontend_view_cache_ttl', 3600));
-
                 $navMenus = Menu::query()
                     ->whereNull('parent_id')
                     ->where('is_active', true)
@@ -44,8 +41,32 @@ class ViewServiceProvider extends ServiceProvider
                 $settings = collect();
             }
 
-            $shared = compact('navMenus', 'settings');
-            $view->with($shared);
+            $footerNavBySlot = [
+                1 => ['title' => 'Explore', 'links' => collect()],
+                2 => ['title' => 'Company', 'links' => collect()],
+            ];
+            try {
+                if (Schema::hasTable('footer_nav_columns') && Schema::hasTable('footer_nav_links')) {
+                    foreach ([1, 2] as $slot) {
+                        $footerNavBySlot[$slot]['title'] = FooterNavColumn::query()->where('slot', $slot)->value('title')
+                            ?? ($slot === 1 ? 'Explore' : 'Company');
+                        $footerNavBySlot[$slot]['links'] = FooterNavLink::query()
+                            ->where('slot', $slot)
+                            ->where('is_active', true)
+                            ->orderBy('sort_order')
+                            ->orderBy('id')
+                            ->get();
+                    }
+                }
+            } catch (\Exception $e) {
+                // keep defaults
+            }
+
+            $newsletterFooter = Cache::remember(FrontendViewCache::NEWSLETTER_FOOTER_KEY, $ttl, function () {
+                return NewsletterFooterContent::viewDataWithDefaults();
+            });
+
+            $view->with(compact('navMenus', 'settings', 'footerNavBySlot', 'newsletterFooter'));
         });
     }
 }

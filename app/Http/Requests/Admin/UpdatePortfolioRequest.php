@@ -1,15 +1,43 @@
 <?php
 namespace App\Http\Requests\Admin;
+use App\Http\Requests\Admin\Concerns\SortOrderValidationMessage;
 use App\Support\ImageUploadRules;
+use App\Support\SortOrderRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class UpdatePortfolioRequest extends FormRequest {
+    use SortOrderValidationMessage;
     public function authorize() { return true; }
+
+    public function messages(): array
+    {
+        return array_merge($this->sortOrderValidationMessages(), [
+            'slug.unique' => 'A project with this URL slug already exists. Use a different slug or title.',
+        ]);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('sort_order') && $this->input('sort_order') === '') {
+            $this->merge(['sort_order' => null]);
+        }
+
+        $title = trim((string) $this->input('title', ''));
+        $slugInput = trim((string) $this->input('slug', ''));
+        $slug = $slugInput !== ''
+            ? Str::slug($slugInput)
+            : ($title !== '' ? Str::slug($title) : '');
+        if ($slug !== '') {
+            $this->merge(['slug' => $slug]);
+        }
+    }
+
     public function rules() {
-        $id = $this->route('portfolio')?->id;
         return [
             'title'          => 'required|string|max:255',
-            'slug'           => "nullable|string|max:255|unique:portfolios,slug,{$id}",
+            'slug'           => ['nullable', 'string', 'max:255', Rule::unique('portfolios', 'slug')->ignore($this->route('portfolio'))->whereNull('deleted_at')],
             'description'    => 'nullable|string',
             'project_type'   => 'required|in:reference,real',
             'cover_image'    => ImageUploadRules::nullable(4096),
@@ -17,7 +45,7 @@ class UpdatePortfolioRequest extends FormRequest {
             'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'clear_gallery'  => 'nullable|boolean',
             'tags_raw'       => 'nullable|string',
-            'sort_order'     => 'nullable|integer|min:0',
+            'sort_order'     => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('portfolios', [], $this->route('portfolio'))],
             'is_active'      => 'nullable|boolean',
         ];
     }

@@ -17,7 +17,7 @@ class UpdateSettingRequest extends FormRequest
     /**
      * Which Site settings tab contains this request field (for redirect UX).
      *
-     * @return 'general'|'notifications'|'social'|'logos'
+     * @return 'general'|'notifications'|'social'|'logos'|'smtp'|'theme'
      */
     public static function settingsTabForField(string $field): string
     {
@@ -31,6 +31,12 @@ class UpdateSettingRequest extends FormRequest
         }
         if ($field === 'admin_notification_email') {
             return 'notifications';
+        }
+        if (str_starts_with($field, 'mail_smtp_') || str_starts_with($field, 'mail_from_')) {
+            return 'smtp';
+        }
+        if ($field === 'theme_use_defaults' || str_starts_with($field, 'theme_')) {
+            return 'theme';
         }
         if (in_array($field, ['site_phone_country_id', 'site_phone_national'], true)) {
             return 'general';
@@ -60,6 +66,24 @@ class UpdateSettingRequest extends FormRequest
         if ($social !== []) {
             $this->merge($social);
         }
+
+        if ($this->has('mail_smtp_host') && trim((string) $this->input('mail_smtp_host')) === '') {
+            $this->merge(['mail_smtp_host' => null]);
+        }
+        if ($this->has('mail_smtp_port') && ($this->input('mail_smtp_port') === '' || $this->input('mail_smtp_port') === null)) {
+            $this->merge(['mail_smtp_port' => null]);
+        } elseif ($this->has('mail_smtp_port')) {
+            $this->merge(['mail_smtp_port' => (int) $this->input('mail_smtp_port')]);
+        }
+        if ($this->has('mail_smtp_username') && trim((string) $this->input('mail_smtp_username')) === '') {
+            $this->merge(['mail_smtp_username' => null]);
+        }
+        if ($this->has('mail_from_address') && trim((string) $this->input('mail_from_address')) === '') {
+            $this->merge(['mail_from_address' => null]);
+        }
+        if ($this->has('mail_from_name') && trim((string) $this->input('mail_from_name')) === '') {
+            $this->merge(['mail_from_name' => null]);
+        }
     }
 
     public function rules(): array
@@ -82,6 +106,26 @@ class UpdateSettingRequest extends FormRequest
             'backend_logo' => ImageUploadRules::nullable(2048),
             'site_logo_footer' => ImageUploadRules::nullable(2048),
             'site_favicon' => ['nullable', File::types(['ico', 'png', 'svg', 'jpg', 'jpeg', 'gif', 'webp'])->max(512)],
+            'mail_smtp_host' => 'nullable|string|max:255',
+            'mail_smtp_port' => 'nullable|integer|min:1|max:65535',
+            'mail_smtp_username' => 'nullable|string|max:255',
+            'mail_smtp_password' => 'nullable|string|max:255',
+            'mail_smtp_encryption' => ['nullable', 'string', Rule::in(['', 'tls', 'ssl'])],
+            'mail_from_address' => 'nullable|email|max:255',
+            'mail_from_name' => 'nullable|string|max:150',
+            'theme_use_defaults' => 'nullable|boolean',
+            'theme_wine' => [
+                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
+                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
+            ],
+            'theme_wine_dark' => [
+                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
+                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
+            ],
+            'theme_gold' => [
+                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
+                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
+            ],
         ];
     }
 
@@ -118,6 +162,10 @@ class UpdateSettingRequest extends FormRequest
             'site_logo_footer.max' => 'Footer logo file is too large — check the Site logos tab.',
             'site_favicon.max' => 'Favicon file is too large — check the Site logos tab.',
             'site_phone_country_id.exists' => 'Choose a valid country from the list.',
+            'mail_from_address.email' => 'Enter a valid “From” email on the SMTP tab, or leave it empty.',
+            'theme_wine.regex' => 'Accent colour must be a full hex value like #C96B3F — check the Theme tab.',
+            'theme_wine_dark.regex' => 'Dark accent must be a full hex value — check the Theme tab.',
+            'theme_gold.regex' => 'Gold trim must be a full hex value — check the Theme tab.',
         ];
     }
 
@@ -137,6 +185,16 @@ class UpdateSettingRequest extends FormRequest
             'site_favicon' => 'favicon',
             'site_phone_country_id' => 'phone country',
             'site_phone_national' => 'phone number',
+            'mail_smtp_host' => 'SMTP host',
+            'mail_smtp_port' => 'SMTP port',
+            'mail_smtp_username' => 'SMTP username',
+            'mail_smtp_password' => 'SMTP password',
+            'mail_smtp_encryption' => 'SMTP encryption',
+            'mail_from_address' => 'from email address',
+            'mail_from_name' => 'from name',
+            'theme_wine' => 'primary accent colour',
+            'theme_wine_dark' => 'dark accent colour',
+            'theme_gold' => 'gold trim colour',
         ];
     }
 }

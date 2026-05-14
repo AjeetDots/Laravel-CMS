@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\EmailTemplateController;
 use App\Http\Controllers\Admin\FinishController as AdminFinishController;
 use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
+use App\Http\Controllers\Admin\FooterNavigationController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
@@ -98,6 +99,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Navigation & pages
         Route::resource('menus', MenuController::class);
+        Route::get('footer-navigation', [FooterNavigationController::class, 'edit'])->name('footer-navigation.edit');
+        Route::put('footer-navigation', [FooterNavigationController::class, 'update'])->name('footer-navigation.update');
         Route::resource('pages', AdminPageController::class);
 
         // Blog
@@ -133,6 +136,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('theme-options/about-page', [SettingController::class, 'updateAboutPage'])->name('theme-options.about.update');
         Route::get('theme-options/contact-page', [SettingController::class, 'contactPage'])->name('theme-options.contact.index');
         Route::post('theme-options/contact-page', [SettingController::class, 'updateContactPage'])->name('theme-options.contact.update');
+        Route::get('theme-options/footer-newsletter', [SettingController::class, 'newsletterFooterPage'])->name('theme-options.newsletter-footer.index');
+        Route::post('theme-options/footer-newsletter', [SettingController::class, 'updateNewsletterFooterPage'])->name('theme-options.newsletter-footer.update');
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::put('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::post('profile/confirm-email', [ProfileController::class, 'confirmEmailOtp'])

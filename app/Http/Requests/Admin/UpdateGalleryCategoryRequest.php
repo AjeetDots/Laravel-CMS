@@ -2,11 +2,15 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\SortOrderValidationMessage;
+use App\Support\SortOrderRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdateGalleryCategoryRequest extends FormRequest
 {
+    use SortOrderValidationMessage;
+
     public function authorize(): bool
     {
         return true;
@@ -22,9 +26,9 @@ class UpdateGalleryCategoryRequest extends FormRequest
                 'nullable',
                 'string',
                 'max:160',
-                Rule::unique('gallery_categories', 'slug')->ignore($category),
+                Rule::unique('gallery_categories', 'slug')->ignore($category)->whereNull('deleted_at'),
             ],
-            'sort_order' => 'integer',
+            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_categories', [], $category)],
         ];
     }
 }

@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\SortOrderValidationMessage;
 use App\Support\ImageUploadRules;
+use App\Support\SortOrderRules;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateTestimonialRequest extends FormRequest
 {
+    use SortOrderValidationMessage;
     public function authorize(): bool
     {
         return true;
@@ -26,7 +29,7 @@ class UpdateTestimonialRequest extends FormRequest
                 : ImageUploadRules::required(1024),
             'message'         => 'required|string',
             'rating'          => 'integer|min:1|max:5',
-            'sort_order'      => 'integer',
+            'sort_order'      => ['integer', 'min:0', SortOrderRules::uniqueAmong('testimonials', [], $this->route('testimonial'))],
             'is_active'       => 'boolean',
         ];
     }

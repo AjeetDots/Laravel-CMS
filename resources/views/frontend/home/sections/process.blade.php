@@ -11,7 +11,7 @@
 <section class="home-process section-white">
     <div class="container">
         <div class="text-center mb-5 reveal">
-            <span class="eyebrow d-inline-block">{{ $processEyebrow }}</span>
+            <span class="finishes-intro__eyebrow ">{{ $processEyebrow }}</span>
             <h2 class="home-process-title mt-3 mb-0">{{ $processHeadingLine1 }}<br /> {{ $processHeadingLine2 }}</h2>
         </div>
         <ol class="home-process-steps list-unstyled mb-0">

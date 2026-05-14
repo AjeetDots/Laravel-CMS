@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Admin;
 
 use App\Support\ImageUploadRules;
+use App\Support\ThemeContentPageTabs;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateContactPageContentRequest extends FormRequest
 {
@@ -15,6 +17,8 @@ class UpdateContactPageContentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'contact_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::CONTACT)],
+
             'page_title' => 'nullable|string|max:120',
             'hero_line_1' => 'nullable|string|max:255',
             'hero_line_2' => 'nullable|string|max:255',
@@ -32,7 +36,6 @@ class UpdateContactPageContentRequest extends FormRequest
             'fallback_whatsapp_label' => 'nullable|string|max:80',
             'form_title' => 'nullable|string|max:120',
             'form_error_intro' => 'nullable|string|max:500',
-            'subject_default' => 'nullable|string|max:255',
             'name_placeholder' => 'nullable|string|max:120',
             'email_placeholder' => 'nullable|string|max:120',
             'phone_field_label' => 'nullable|string|max:120',

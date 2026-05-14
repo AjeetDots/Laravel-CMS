@@ -9,7 +9,6 @@ use App\Models\Finish;
 use App\Models\GalleryItem;
 use App\Models\HomePageSection;
 use App\Models\PhoneCountry;
-use App\Models\Portfolio;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\Testimonial;
@@ -31,18 +30,22 @@ class HomePageService implements HomePageServiceInterface
             return is_array($raw) ? $raw : [];
         };
 
+        $pageMeta = $pick('page_meta');
+        $homePageBrowserTitle = isset($pageMeta['page_title']) ? trim((string) $pageMeta['page_title']) : '';
+
         $atelierSection = $this->getAtelierSectionData($pick('atelier'));
         $finishesSection = $this->getFinishesSectionData($pick('finishes'));
         $servicesSection = $this->getServicesSectionData($pick('services'));
-        $commissionsSection = $this->getCommissionsSectionData($pick('commissions'));
         $whySection = $this->getWhySectionData($pick('why'));
         $processSection = $this->getProcessSectionData($pick('process'));
+        $commissionsSection = $this->getCommissionsSectionData($pick('commissions'));
         $beginCtaSection = $this->getBeginCtaSectionData($pick('begin_cta'));
         $contactBandSection = $this->getContactBandSectionData($pick('contact_band'));
         $brandsStripSection = $this->getBrandsStripSectionData($pick('brands_strip'));
         $blogPreviewSection = $this->getBlogPreviewSectionData($pick('blog_preview'));
 
         return [
+            'homePageBrowserTitle' => $homePageBrowserTitle,
             'sliders' => Slider::query()
                 ->where('is_active', true)
                 ->where('panel', 'main')
@@ -68,16 +71,6 @@ class HomePageService implements HomePageServiceInterface
                 ->orderBy('title')
                 ->limit(6)
                 ->get(),
-            'portfolios' => Portfolio::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->limit(4)
-                ->get(),
-            'gallery' => GalleryItem::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->limit(8)
-                ->get(),
             'testimonials' => Testimonial::query()
                 ->where('is_active', true)
                 ->whereNotNull('message')
@@ -93,12 +86,18 @@ class HomePageService implements HomePageServiceInterface
                 ->orderByDesc('published_at')
                 ->limit(3)
                 ->get(),
+            'gallery' => GalleryItem::query()
+                ->with('galleryCategory')
+                ->where('is_active', true)
+                ->orderBy('sort_order')
+                ->orderBy('id')
+                ->get(),
             'atelierSection' => $atelierSection,
             'finishesSection' => $finishesSection,
             'servicesSection' => $servicesSection,
-            'commissionsSection' => $commissionsSection,
             'whySection' => $whySection,
             'processSection' => $processSection,
+            'commissionsSection' => $commissionsSection,
             'beginCtaSection' => $beginCtaSection,
             'contactBandSection' => $contactBandSection,
             'brandsStripSection' => $brandsStripSection,
@@ -122,7 +121,6 @@ class HomePageService implements HomePageServiceInterface
             'cta_text' => $data['cta_text'] ?? null,
             'cta_url' => $data['cta_url'] ?? null,
             'booking_label' => $data['booking_label'] ?? null,
-            'booking_text' => $data['booking_text'] ?? null,
             'booking_url' => $data['booking_url'] ?? null,
             'primary_image' => $data['primary_image'] ?? null,
             'secondary_image' => $data['secondary_image'] ?? null,
@@ -162,22 +160,6 @@ class HomePageService implements HomePageServiceInterface
             'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
             'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
             'card_link_text' => isset($data['card_link_text']) ? trim((string) $data['card_link_text']) : '',
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    private function getCommissionsSectionData(array $data): array
-    {
-        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
-
-        return [
-            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
-            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
-            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
-            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
-            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
         ];
     }
 
@@ -236,6 +218,24 @@ class HomePageService implements HomePageServiceInterface
     }
 
     /**
+     * Selected work grid (active Gallery module items).
+     *
+     * @return array<string, mixed>
+     */
+    private function getCommissionsSectionData(array $data): array
+    {
+        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
+            'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
+            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
+            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
+        ];
+    }
+
+    /**
      * @return array<string, mixed>
      */
     private function getBeginCtaSectionData(array $data): array
@@ -271,7 +271,6 @@ class HomePageService implements HomePageServiceInterface
             'phone_placeholder' => isset($data['phone_placeholder']) ? trim((string) $data['phone_placeholder']) : '',
             'message_placeholder' => isset($data['message_placeholder']) ? trim((string) $data['message_placeholder']) : '',
             'submit_text' => isset($data['submit_text']) ? trim((string) $data['submit_text']) : '',
-            'subject' => isset($data['subject']) ? trim((string) $data['subject']) : '',
             'visual_image' => isset($data['visual_image']) && $data['visual_image'] !== '' ? $data['visual_image'] : null,
         ];
     }

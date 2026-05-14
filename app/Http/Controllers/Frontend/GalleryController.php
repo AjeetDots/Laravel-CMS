@@ -22,8 +22,8 @@ class GalleryController extends Controller
             ->orderBy('name')
             ->get();
         $galleryPage = GalleryPageContent::listingDataWithDefaults();
-        $galleryPage['empty_btn_href'] = CmsOutboundHref::resolve($galleryPage['empty_btn_url'] ?? null);
-        $galleryPage['bottom_btn_href'] = CmsOutboundHref::resolve($galleryPage['bottom_btn_url'] ?? null);
+        $galleryPage['empty_btn_href'] = CmsOutboundHref::resolve($galleryPage['empty_btn_url'] ?? null, 'contact');
+        $galleryPage['bottom_btn_href'] = CmsOutboundHref::resolve($galleryPage['bottom_btn_url'] ?? null, 'contact');
 
         return view('frontend.gallery', compact('gallery', 'categories', 'galleryPage'));
     }

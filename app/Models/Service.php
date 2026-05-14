@@ -2,10 +2,12 @@
 namespace App\Models;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Service extends Model {
     use HasSeo;
+    use SoftDeletes;
     protected $fillable = ['title', 'slug', 'short_description', 'description', 'image', 'icon', 'badge', 'features', 'sort_order', 'is_active'];
     protected $casts = ['is_active' => 'boolean', 'features' => 'array'];
     protected static function boot() {
@@ -14,6 +16,12 @@ class Service extends Model {
             if (empty($service->slug)) {
                 $service->slug = Str::slug($service->title);
             }
+        });
+        static::deleting(function (Service $service) {
+            if ($service->isForceDeleting()) {
+                return;
+            }
+            $service->finishes()->detach();
         });
     }
     public function getImageUrlAttribute(): ?string {

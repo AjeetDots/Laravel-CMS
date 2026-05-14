@@ -11,10 +11,10 @@ class ServiceController extends Controller
 {
     public function index()
     {
-        $services = Service::where('is_active', true)->orderBy('sort_order')->get();
+        $services = Service::where('is_active', true)->orderBy('sort_order')->paginate(8)->withQueryString();
         $servicesPage = ServicesPageContent::listingDataWithDefaults();
-        $servicesPage['empty_btn_href'] = CmsOutboundHref::resolve($servicesPage['empty_btn_url'] ?? null);
-        $servicesPage['bottom_btn_href'] = CmsOutboundHref::resolve($servicesPage['bottom_btn_url'] ?? null);
+        $servicesPage['empty_btn_href'] = CmsOutboundHref::resolve($servicesPage['empty_btn_url'] ?? null, 'contact');
+        $servicesPage['bottom_btn_href'] = CmsOutboundHref::resolve($servicesPage['bottom_btn_url'] ?? null, 'contact');
 
         return view('frontend.services', compact('services', 'servicesPage'));
     }

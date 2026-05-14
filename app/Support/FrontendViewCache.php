@@ -12,6 +12,9 @@ final class FrontendViewCache
     /** Plain array in cache (not Collection) — safe for database/redis serializers. */
     public const SETTINGS_PLUCK_KEY = 'cms:frontend:settings_pluck_v2';
 
+    /** Footer newsletter copy (see NewsletterFooterContent). */
+    public const NEWSLETTER_FOOTER_KEY = 'cms:frontend:newsletter_footer_v1';
+
     /** @deprecated Legacy key when menus were cached as Eloquent; cleared on menu save. */
     public const NAV_MENUS_LEGACY_KEY = 'cms:frontend:nav_menus';
 
@@ -30,5 +33,11 @@ final class FrontendViewCache
     {
         self::forgetSettingsPluck();
         self::forgetNavMenus();
+        self::forgetNewsletterFooter();
+    }
+
+    public static function forgetNewsletterFooter(): void
+    {
+        Cache::forget(self::NEWSLETTER_FOOTER_KEY);
     }
 }

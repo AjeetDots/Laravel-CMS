@@ -3,7 +3,9 @@
 namespace App\Http\Requests\Admin;
 
 use App\Support\ImageUploadRules;
+use App\Support\ThemeContentPageTabs;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateAboutPageContentRequest extends FormRequest
 {
@@ -15,6 +17,9 @@ class UpdateAboutPageContentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'about_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::ABOUT)],
+
+            'page_title' => 'nullable|string|max:120',
             'intro_eyebrow' => 'nullable|string|max:120',
             'intro_title' => 'nullable|string|max:500',
             'story_heading' => 'nullable|string|max:255',

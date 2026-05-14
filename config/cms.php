@@ -39,4 +39,29 @@ return [
 
     'admin_email_change_otp_ttl' => (int) env('CMS_ADMIN_EMAIL_CHANGE_OTP_TTL', 15),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Admin login page presentation
+    |--------------------------------------------------------------------------
+    |
+    | Hero: public URL for the left-panel image (config only; override with
+    | ADMIN_LOGIN_HERO_URL in .env).
+    |
+    | Brand logo on the login form is resolved automatically from settings:
+    | Header logo (site_logo) → Backend logo (backend_logo) → this fallback
+    | (path under storage/ or a full http(s) URL). Set ADMIN_LOGIN_BRAND_LOGO
+    | to empty in .env to disable the fallback when both logos are absent.
+    |
+    */
+
+    'admin_login_hero_url' => env(
+        'ADMIN_LOGIN_HERO_URL',
+        'https://bop.24livehost.com/storage/home/sections/THirz3ff7fhF3oOT7maG1eGwIZ9L7bWLKw15OM0Y.png'
+    ),
+
+    'admin_login_brand_logo' => env(
+        'ADMIN_LOGIN_BRAND_LOGO',
+        'https://bop.24livehost.com/storage/settings/EyjffpYW8aV32xerRr0ZoLKrfZhw9FmngiKC6zzy.png'
+    ),
+
 ];

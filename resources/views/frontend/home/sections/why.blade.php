@@ -12,14 +12,13 @@
     <div class="container">
         <div class="row g-4 g-lg-5 align-items-end mb-5">
             <div class="col-lg-5 reveal-left">
-                <span class="eyebrow">{{ $whyEyebrow }}</span>
-                <span class="section-rule"></span>
+                <span class="finishes-intro__eyebrow">{{ $whyEyebrow }}</span>
                 <h2 class="home-section-title-md mb-0">{{ $whyHeading }}</h2>
             </div>
             <div class="col-lg-6 offset-lg-1 reveal-right">
-                <p class="home-why-lead mb-0">
+                <!-- <p class="home-why-lead mb-0">
                     {{ $whyLead }}
-                </p>
+                </p> -->
             </div>
         </div>
         <div class="row g-4">
@@ -33,7 +32,7 @@
             <div class="col-md-6 col-xl-3 reveal delay-{{ $index + 1 }}">
                 <div class="home-why-card">
                     @if($icon !== '')
-                    <span class="home-why-card__icon" aria-hidden="true"><i class="fa-solid {{ $icon }}"></i></span>
+                    <span class="home-why-card__icon" aria-hidden="true"> <img src="../images/considered.png" /></span>
                     @endif
                     <h3 class="home-why-card__title">{{ $card['title'] ?? '' }}</h3>
                     <p class="home-why-card__desc">{{ $card['desc'] ?? '' }}</p>

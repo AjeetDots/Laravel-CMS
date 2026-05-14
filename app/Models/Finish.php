@@ -2,10 +2,12 @@
 namespace App\Models;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Finish extends Model {
     use HasSeo;
+    use SoftDeletes;
 
     protected $fillable = [
         'title', 'slug', 'description', 'use_cases',
@@ -24,6 +26,12 @@ class Finish extends Model {
             if (empty($finish->slug)) {
                 $finish->slug = Str::slug($finish->title);
             }
+        });
+        static::deleting(function (Finish $finish) {
+            if ($finish->isForceDeleting()) {
+                return;
+            }
+            $finish->services()->detach();
         });
     }
 

@@ -1,20 +1,45 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreGalleryRequest;
 use App\Http\Requests\Admin\UpdateGalleryRequest;
 use App\Models\GalleryCategory;
 use App\Models\GalleryItem;
+use App\Support\AdminDefaultSortOrder;
 use Illuminate\Support\Facades\Storage;
 
 class GalleryController extends Controller {
+    use AppliesAdminTableFilters;
+
     public function index() {
-        $items = GalleryItem::with('galleryCategory')->orderBy('sort_order')->get();
-        return view('admin.gallery.index', compact('items'));
+        $query = GalleryItem::with('galleryCategory');
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['title']);
+        if (request('gallery_category_id') === 'none') {
+            $query->whereNull('gallery_category_id');
+        } elseif (request()->filled('gallery_category_id')) {
+            $query->where('gallery_category_id', (int) request('gallery_category_id'));
+        }
+        $items = $query->orderBy('sort_order')->get();
+        $galleryCategoryOptions = GalleryCategory::orderBy('name')->pluck('name', 'id');
+
+        return view('admin.gallery.index', compact('items', 'galleryCategoryOptions'));
     }
     public function create() {
         $categories = GalleryCategory::orderBy('sort_order')->orderBy('name')->get();
-        return view('admin.gallery.form', ['item' => new GalleryItem(), 'categories' => $categories]);
+        $pre = request('gallery_category_id');
+        $categoryScope = null;
+        if ($pre !== null && $pre !== '' && $pre !== 'none') {
+            $categoryScope = (int) $pre;
+        }
+        $defaultSortOrder = AdminDefaultSortOrder::next(GalleryItem::class, ['gallery_category_id' => $categoryScope]);
+
+        return view('admin.gallery.form', [
+            'item' => new GalleryItem(),
+            'categories' => $categories,
+            'defaultSortOrder' => $defaultSortOrder,
+        ]);
     }
     public function store(StoreGalleryRequest $request) {
         $data = $request->validated();
@@ -25,7 +50,12 @@ class GalleryController extends Controller {
     }
     public function edit(GalleryItem $gallery) {
         $categories = GalleryCategory::orderBy('sort_order')->orderBy('name')->get();
-        return view('admin.gallery.form', ['item' => $gallery, 'categories' => $categories]);
+
+        return view('admin.gallery.form', [
+            'item' => $gallery,
+            'categories' => $categories,
+            'defaultSortOrder' => null,
+        ]);
     }
     public function update(UpdateGalleryRequest $request, GalleryItem $gallery) {
         $data = $request->validated();
@@ -38,8 +68,7 @@ class GalleryController extends Controller {
         return redirect()->route('admin.gallery.index')->with('success', 'Image updated.');
     }
     public function destroy(GalleryItem $gallery) {
-        if ($gallery->image) Storage::disk('public')->delete($gallery->image);
         $gallery->delete();
-        return back()->with('success', 'Image deleted.');
+        return back()->with('success', 'The gallery item has been removed.');
     }
 }

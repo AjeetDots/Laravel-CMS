@@ -9,12 +9,15 @@
          data-hero-lead-default="{{ e($heroLeadDefault) }}">
 
     @forelse($sliders as $i => $slide)
+        @php
+            $heroSlots = $slide->heroHeadlineDataSlots();
+        @endphp
         <div class="hero-slide-item {{ $i === 0 ? 'active' : '' }}"
              style="background-image:url('{{ $slide->image_url }}');"
-             data-title="{{ e($slide->title) }}"
-             data-title-line-2="{{ e($slide->title_line_2 ?? '') }}"
-             data-title-line-3="{{ e($slide->title_line_3 ?? '') }}"
-             data-title-line-4="{{ e($slide->title_line_4 ?? '') }}"
+             data-title="{{ e($heroSlots[0]) }}"
+             data-title-line-2="{{ e($heroSlots[1]) }}"
+             data-title-line-3="{{ e($heroSlots[2]) }}"
+             data-title-line-4="{{ e($heroSlots[3]) }}"
              data-subtitle="{{ e($slide->subtitle) }}"
              data-lead="{{ e($slide->lead_text ?? '') }}"
              data-btn-text="{{ e($slide->button_text) }}"
@@ -43,16 +46,9 @@
                             <span class="hero-title-line">Plaster <span class="hero-amp">&amp;</span> Bespoke</span>
                             <span class="hero-title-line">Media Walls</span>
                         @elseif($firstSlide->usesHeroTitleLines())
-                            <span class="hero-title-line">{{ $firstSlide->title }}</span>
-                            @if(filled($firstSlide->title_line_2))
-                                <span class="hero-title-line">{{ $firstSlide->title_line_2 }}</span>
-                            @endif
-                            @if(filled($firstSlide->title_line_3))
-                                <span class="hero-title-line">{{ $firstSlide->title_line_3 }}</span>
-                            @endif
-                            @if(filled($firstSlide->title_line_4))
-                                <span class="hero-title-line">{{ $firstSlide->title_line_4 }}</span>
-                            @endif
+                            @foreach($firstSlide->heroHeadlineLines() as $heroLine)
+                                <span class="hero-title-line">{{ $heroLine }}</span>
+                            @endforeach
                         @else
                             {{ $firstSlide->title }}
                         @endif

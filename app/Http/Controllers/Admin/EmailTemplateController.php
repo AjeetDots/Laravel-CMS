@@ -1,12 +1,14 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateEmailTemplateRequest;
 use App\Models\EmailTemplate;
 use Illuminate\Support\Str;
 
 class EmailTemplateController extends Controller {
+    use AppliesAdminTableFilters;
 
     public function index() {
         $this->ensureDefaultTemplates();
@@ -15,13 +17,22 @@ class EmailTemplateController extends Controller {
             $audience = 'client';
         }
         $allowedTypes = array_keys(EmailTemplate::$templateTypeLabels);
-        $templates = EmailTemplate::query()
-            ->whereIn('template_type', $allowedTypes)
-            ->get()
-            ->filter(fn (EmailTemplate $template) => EmailTemplate::audienceForType($template->template_type) === $audience)
-            ->sortBy(fn (EmailTemplate $template) => ($template->is_active ? '0' : '1') . '-' . $template->name);
+        $typesForAudience = array_values(array_filter(
+            $allowedTypes,
+            fn (string $type) => EmailTemplate::audienceForType($type) === $audience
+        ));
+
+        $query = EmailTemplate::query()->whereIn('template_type', $typesForAudience);
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['name', 'slug']);
+        $templates = $query
+            ->orderByDesc('is_active')
+            ->orderBy('name')
+            ->get();
+
         $templateTypeLabels = EmailTemplate::$templateTypeLabels;
         $audienceLabels = EmailTemplate::$templateAudienceLabels;
+
         return view('admin.email-templates.index', compact('templates', 'templateTypeLabels', 'audience', 'audienceLabels'));
     }
 

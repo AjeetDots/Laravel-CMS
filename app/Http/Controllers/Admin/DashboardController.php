@@ -17,7 +17,7 @@ class DashboardController extends Controller {
             'portfolio'        => Portfolio::count(),
             'gallery'          => GalleryItem::count(),
         ];
-        $recentEnquiries = Contact::latest()->limit(8)->get();
+        $recentEnquiries = Contact::latest()->limit(5)->get();
         return view('admin.dashboard', compact('stats', 'recentEnquiries'));
     }
 }

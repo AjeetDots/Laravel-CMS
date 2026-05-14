@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\UpdateContactPageContentRequest;
 use App\Http\Requests\Admin\UpdateFinishesPageContentRequest;
 use App\Http\Requests\Admin\UpdateGalleryPageContentRequest;
 use App\Http\Requests\Admin\UpdateHomePageSettingRequest;
+use App\Http\Requests\Admin\UpdateNewsletterFooterContentRequest;
 use App\Http\Requests\Admin\UpdatePortfolioPageContentRequest;
 use App\Http\Requests\Admin\UpdateServicesPageContentRequest;
 use App\Http\Requests\Admin\UpdateSettingRequest;
@@ -16,13 +17,17 @@ use App\Models\ContactPageContent;
 use App\Models\FinishesPageContent;
 use App\Models\GalleryPageContent;
 use App\Models\HomePageSection;
+use App\Models\NewsletterFooterContent;
 use App\Models\PhoneCountry;
 use App\Models\PortfolioPageContent;
 use App\Models\ServicesPageContent;
 use App\Models\Setting;
 use App\Support\FrontendViewCache;
+use App\Support\HomePageAdminTabs;
+use App\Support\ThemeContentPageTabs;
 use App\Support\SitePhone;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -43,6 +48,19 @@ class SettingController extends Controller
         // Handle file uploads separately
         unset($data['site_logo'], $data['backend_logo'], $data['site_logo_footer'], $data['site_favicon']);
 
+        if ($request->boolean('theme_use_defaults')) {
+            Setting::set('theme_wine', null);
+            Setting::set('theme_wine_dark', null);
+            Setting::set('theme_gold', null);
+        }
+        unset($data['theme_use_defaults']);
+
+        $smtpPassword = null;
+        if (array_key_exists('mail_smtp_password', $data)) {
+            $smtpPassword = trim((string) $data['mail_smtp_password']);
+            unset($data['mail_smtp_password']);
+        }
+
         $phoneCountryId = isset($data['site_phone_country_id']) ? (int) $data['site_phone_country_id'] : null;
         $phoneNational = isset($data['site_phone_national']) ? trim((string) $data['site_phone_national']) : '';
         unset($data['site_phone_country_id'], $data['site_phone_national']);
@@ -51,6 +69,10 @@ class SettingController extends Controller
 
         foreach ($data as $key => $value) {
             Setting::set($key, $value);
+        }
+
+        if ($smtpPassword !== null && $smtpPassword !== '') {
+            Setting::set('mail_smtp_password', Crypt::encryptString($smtpPassword));
         }
 
         foreach (['site_logo', 'backend_logo', 'site_logo_footer', 'site_favicon'] as $field) {
@@ -151,7 +173,7 @@ class SettingController extends Controller
                 return back()->with('warning', 'Old caches were cleared, but finishing the refresh had a problem. Try again, or contact your developer if the site misbehaves.');
             }
 
-            return back()->with('success', 'Done — site caches were refreshed. Your latest changes should now appear on the website.');
+            return back()->with('success', 'Site caches were refreshed successfully. The live website should now reflect your latest changes.');
         } catch (\Throwable $e) {
             Log::error('Admin cache purge failed', ['exception' => $e]);
 
@@ -179,12 +201,6 @@ class SettingController extends Controller
         if (! is_array($servicesSection)) {
             $servicesSection = [];
         }
-        $commissionsSection = HomePageSection::query()
-            ->where('section_key', 'commissions')
-            ->value('data') ?? [];
-        if (! is_array($commissionsSection)) {
-            $commissionsSection = [];
-        }
         $whySection = HomePageSection::query()
             ->where('section_key', 'why')
             ->value('data') ?? [];
@@ -196,6 +212,12 @@ class SettingController extends Controller
             ->value('data') ?? [];
         if (! is_array($processSection)) {
             $processSection = [];
+        }
+        $commissionsSection = HomePageSection::query()
+            ->where('section_key', 'commissions')
+            ->value('data') ?? [];
+        if (! is_array($commissionsSection)) {
+            $commissionsSection = [];
         }
         $beginCtaSection = HomePageSection::query()
             ->where('section_key', 'begin_cta')
@@ -222,7 +244,33 @@ class SettingController extends Controller
             $blogPreviewSection = [];
         }
 
-        return view('admin.theme-options.home-page', compact('atelierSection', 'finishesSection', 'servicesSection', 'commissionsSection', 'whySection', 'processSection', 'beginCtaSection', 'contactBandSection', 'brandsStripSection', 'blogPreviewSection'));
+        $pageMetaSection = HomePageSection::query()
+            ->where('section_key', 'page_meta')
+            ->value('data') ?? [];
+        if (! is_array($pageMetaSection)) {
+            $pageMetaSection = [];
+        }
+        $homePageTitle = $pageMetaSection['page_title'] ?? '';
+
+        $querySection = request()->query('section');
+        $homeActiveSection = is_string($querySection) && $querySection !== ''
+            ? HomePageAdminTabs::normalize($querySection)
+            : HomePageAdminTabs::normalize(session('home_active_section'));
+
+        return view('admin.theme-options.home-page', compact(
+            'atelierSection',
+            'finishesSection',
+            'servicesSection',
+            'whySection',
+            'processSection',
+            'commissionsSection',
+            'beginCtaSection',
+            'contactBandSection',
+            'brandsStripSection',
+            'blogPreviewSection',
+            'homeActiveSection',
+            'homePageTitle',
+        ));
     }
 
     public function finishesPage()
@@ -232,8 +280,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = FinishesPageContent::listingDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM, 'intro');
 
-        return view('admin.theme-options.finishes-page', compact('data'));
+        return view('admin.theme-options.finishes-page', compact('data', 'activeContentSection'));
     }
 
     public function updateFinishesPage(UpdateFinishesPageContentRequest $request)
@@ -242,9 +291,19 @@ class SettingController extends Controller
             ['page_key' => FinishesPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $content->update(['data' => $request->validated()]);
+        $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM,
+            'intro',
+            $request->input('finishes_page_active_section')
+        );
+        unset($validated['finishes_page_active_section']);
+        $content->update(['data' => $validated]);
 
-        return back()->with('success', 'Finishes page saved.');
+        return redirect()
+            ->route('admin.theme-options.finishes.index', ['section' => $active])
+            ->with('success', 'Finishes page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
     }
 
     public function servicesPage()
@@ -254,8 +313,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = ServicesPageContent::listingDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM, 'intro');
 
-        return view('admin.theme-options.services-page', compact('data'));
+        return view('admin.theme-options.services-page', compact('data', 'activeContentSection'));
     }
 
     public function updateServicesPage(UpdateServicesPageContentRequest $request)
@@ -264,9 +324,19 @@ class SettingController extends Controller
             ['page_key' => ServicesPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $content->update(['data' => $request->validated()]);
+        $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM,
+            'intro',
+            $request->input('services_page_active_section')
+        );
+        unset($validated['services_page_active_section']);
+        $content->update(['data' => $validated]);
 
-        return back()->with('success', 'Services page saved.');
+        return redirect()
+            ->route('admin.theme-options.services.index', ['section' => $active])
+            ->with('success', 'Services page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
     }
 
     public function galleryPage()
@@ -276,8 +346,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = GalleryPageContent::listingDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM, 'intro');
 
-        return view('admin.theme-options.gallery-page', compact('data'));
+        return view('admin.theme-options.gallery-page', compact('data', 'activeContentSection'));
     }
 
     public function updateGalleryPage(UpdateGalleryPageContentRequest $request)
@@ -286,9 +357,19 @@ class SettingController extends Controller
             ['page_key' => GalleryPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $content->update(['data' => $request->validated()]);
+        $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM,
+            'intro',
+            $request->input('gallery_page_active_section')
+        );
+        unset($validated['gallery_page_active_section']);
+        $content->update(['data' => $validated]);
 
-        return back()->with('success', 'Gallery page saved.');
+        return redirect()
+            ->route('admin.theme-options.gallery.index', ['section' => $active])
+            ->with('success', 'Gallery page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
     }
 
     public function portfolioPage()
@@ -298,8 +379,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = PortfolioPageContent::listingDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM, 'intro');
 
-        return view('admin.theme-options.portfolio-page', compact('data'));
+        return view('admin.theme-options.portfolio-page', compact('data', 'activeContentSection'));
     }
 
     public function updatePortfolioPage(UpdatePortfolioPageContentRequest $request)
@@ -308,9 +390,19 @@ class SettingController extends Controller
             ['page_key' => PortfolioPageContent::PAGE_KEY_LISTING],
             ['data' => []]
         );
-        $content->update(['data' => $request->validated()]);
+        $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM,
+            'intro',
+            $request->input('portfolio_page_active_section')
+        );
+        unset($validated['portfolio_page_active_section']);
+        $content->update(['data' => $validated]);
 
-        return back()->with('success', 'Portfolio page saved.');
+        return redirect()
+            ->route('admin.theme-options.portfolio.index', ['section' => $active])
+            ->with('success', 'Portfolio page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
     }
 
     public function aboutPage()
@@ -320,8 +412,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = AboutPageContent::listingDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::ABOUT, 'intro');
 
-        return view('admin.theme-options.about-page', compact('data'));
+        return view('admin.theme-options.about-page', compact('data', 'activeContentSection'));
     }
 
     public function updateAboutPage(UpdateAboutPageContentRequest $request)
@@ -332,9 +425,15 @@ class SettingController extends Controller
         );
         $sectionData = is_array($content->data) ? $content->data : [];
         $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::ABOUT,
+            'intro',
+            $request->input('about_page_active_section')
+        );
+        unset($validated['about_page_active_section']);
 
         foreach ([
-            'intro_eyebrow', 'intro_title', 'story_heading', 'story_body_1', 'story_body_2', 'story_body_3',
+            'page_title', 'intro_eyebrow', 'intro_title', 'story_heading', 'story_body_1', 'story_body_2', 'story_body_3',
             'image_main_alt', 'image_accent_alt', 'image_studio_alt',
             'stat1_num', 'stat1_label', 'stat2_num', 'stat2_label', 'stat3_num', 'stat3_label',
             'workshop_eyebrow', 'workshop_heading', 'workshop_body', 'workshop_btn_text', 'workshop_btn_url',
@@ -363,7 +462,10 @@ class SettingController extends Controller
 
         $content->update(['data' => $sectionData]);
 
-        return back()->with('success', 'About page saved.');
+        return redirect()
+            ->route('admin.theme-options.about.index', ['section' => $active])
+            ->with('success', 'About page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
     }
 
     public function contactPage()
@@ -373,8 +475,9 @@ class SettingController extends Controller
             ['data' => []]
         );
         $data = ContactPageContent::viewDataWithDefaults();
+        $activeContentSection = ThemeContentPageTabs::resolve(ThemeContentPageTabs::CONTACT, 'hero');
 
-        return view('admin.theme-options.contact-page', compact('data'));
+        return view('admin.theme-options.contact-page', compact('data', 'activeContentSection'));
     }
 
     public function updateContactPage(UpdateContactPageContentRequest $request)
@@ -385,13 +488,19 @@ class SettingController extends Controller
         );
         $sectionData = is_array($content->data) ? $content->data : [];
         $validated = $request->validated();
+        $active = ThemeContentPageTabs::normalizeIn(
+            ThemeContentPageTabs::CONTACT,
+            'hero',
+            $request->input('contact_page_active_section')
+        );
+        unset($validated['contact_page_active_section']);
 
         foreach ([
             'page_title', 'hero_line_1', 'hero_line_2', 'hero_cta',
             'info_eyebrow', 'info_heading_1', 'info_heading_2', 'info_lead',
             'studio_label', 'studio_body', 'hours_label', 'hours_body', 'appointment_line',
             'fallback_phone_display', 'fallback_whatsapp_label',
-            'form_title', 'form_error_intro', 'subject_default',
+            'form_title', 'form_error_intro',
             'name_placeholder', 'email_placeholder', 'phone_field_label', 'national_placeholder',
             'message_placeholder', 'submit_label', 'map_embed_url',
         ] as $field) {
@@ -418,12 +527,51 @@ class SettingController extends Controller
 
         $content->update(['data' => $sectionData]);
 
-        return back()->with('success', 'Contact page saved.');
+        return redirect()
+            ->route('admin.theme-options.contact.index', ['section' => $active])
+            ->with('success', 'Contact page saved.')
+            ->with(ThemeContentPageTabs::SESSION_FLASH_KEY, $active);
+    }
+
+    public function newsletterFooterPage()
+    {
+        NewsletterFooterContent::query()->firstOrCreate(
+            ['page_key' => NewsletterFooterContent::PAGE_KEY],
+            ['data' => []]
+        );
+        $data = NewsletterFooterContent::viewDataWithDefaults();
+
+        return view('admin.theme-options.newsletter-footer', compact('data'));
+    }
+
+    public function updateNewsletterFooterPage(UpdateNewsletterFooterContentRequest $request)
+    {
+        $content = NewsletterFooterContent::query()->firstOrCreate(
+            ['page_key' => NewsletterFooterContent::PAGE_KEY],
+            ['data' => []]
+        );
+        $sectionData = is_array($content->data) ? $content->data : [];
+        $validated = $request->validated();
+
+        foreach (array_keys($validated) as $field) {
+            $sectionData[$field] = $validated[$field];
+        }
+
+        $content->update(['data' => $sectionData]);
+        FrontendViewCache::forgetNewsletterFooter();
+
+        return back()->with('success', 'Footer newsletter saved.');
     }
 
     public function updateHomePage(UpdateHomePageSettingRequest $request)
     {
         $data = $request->validated();
+
+        $pageMetaRow = HomePageSection::query()->firstOrCreate(['section_key' => 'page_meta'], ['data' => []]);
+        $pageMetaData = is_array($pageMetaRow->data) ? $pageMetaRow->data : [];
+        $pageMetaData['page_title'] = trim((string) ($data['home_page_title'] ?? ''));
+        $pageMetaRow->update(['data' => $pageMetaData]);
+
         $section = HomePageSection::query()->firstOrCreate(['section_key' => 'atelier'], ['data' => []]);
         $sectionData = is_array($section->data) ? $section->data : [];
 
@@ -436,8 +584,8 @@ class SettingController extends Controller
         $sectionData['cta_text'] = $data['home_atelier_cta_text'] ?? null;
         $sectionData['cta_url'] = $data['home_atelier_cta_url'] ?? null;
         $sectionData['booking_label'] = $data['home_atelier_booking_label'] ?? null;
-        $sectionData['booking_text'] = $data['home_atelier_booking_text'] ?? null;
         $sectionData['booking_url'] = $data['home_atelier_booking_url'] ?? null;
+        unset($sectionData['booking_text']);
 
         if ($request->hasFile('home_atelier_primary_image')) {
             $oldPrimary = $sectionData['primary_image'] ?? null;
@@ -491,15 +639,6 @@ class SettingController extends Controller
         $servicesData['card_link_text'] = $data['home_services_card_link_text'] ?? null;
         $services->update(['data' => $servicesData]);
 
-        $commissions = HomePageSection::query()->firstOrCreate(['section_key' => 'commissions'], ['data' => []]);
-        $commissionsData = is_array($commissions->data) ? $commissions->data : [];
-        $commissionsData['is_enabled'] = $request->boolean('home_commissions_is_enabled');
-        $commissionsData['eyebrow'] = $data['home_commissions_eyebrow'] ?? null;
-        $commissionsData['heading_line_1'] = $data['home_commissions_heading_line_1'] ?? null;
-        $commissionsData['button_text'] = $data['home_commissions_button_text'] ?? null;
-        $commissionsData['button_url'] = $data['home_commissions_button_url'] ?? null;
-        $commissions->update(['data' => $commissionsData]);
-
         $why = HomePageSection::query()->firstOrCreate(['section_key' => 'why'], ['data' => []]);
         $whyData = is_array($why->data) ? $why->data : [];
         $whyData['is_enabled'] = $request->boolean('home_why_is_enabled');
@@ -544,6 +683,15 @@ class SettingController extends Controller
         ];
         $process->update(['data' => $processData]);
 
+        $commissions = HomePageSection::query()->firstOrCreate(['section_key' => 'commissions'], ['data' => []]);
+        $commissionsData = is_array($commissions->data) ? $commissions->data : [];
+        $commissionsData['is_enabled'] = $request->boolean('home_commissions_is_enabled');
+        $commissionsData['eyebrow'] = $data['home_commissions_eyebrow'] ?? null;
+        $commissionsData['heading_line_1'] = $data['home_commissions_heading_line_1'] ?? null;
+        $commissionsData['button_text'] = $data['home_commissions_button_text'] ?? null;
+        $commissionsData['button_url'] = $data['home_commissions_button_url'] ?? null;
+        $commissions->update(['data' => $commissionsData]);
+
         $beginCta = HomePageSection::query()->firstOrCreate(['section_key' => 'begin_cta'], ['data' => []]);
         $beginCtaData = is_array($beginCta->data) ? $beginCta->data : [];
         $beginCtaData['is_enabled'] = $request->boolean('home_begin_cta_is_enabled');
@@ -582,7 +730,7 @@ class SettingController extends Controller
         $contactBandData['phone_placeholder'] = $data['home_contact_band_phone_placeholder'] ?? null;
         $contactBandData['message_placeholder'] = $data['home_contact_band_message_placeholder'] ?? null;
         $contactBandData['submit_text'] = $data['home_contact_band_submit_text'] ?? null;
-        $contactBandData['subject'] = $data['home_contact_band_subject'] ?? null;
+        unset($contactBandData['subject']);
 
         if ($request->hasFile('home_contact_band_visual_image')) {
             $oldVisualImage = $contactBandData['visual_image'] ?? null;
@@ -621,6 +769,11 @@ class SettingController extends Controller
         $blogPreviewData['read_more_text'] = $data['home_blog_preview_read_more_text'] ?? null;
         $blogPreview->update(['data' => $blogPreviewData]);
 
-        return back()->with('success', 'Homepage saved.');
+        $activeSection = HomePageAdminTabs::normalize($request->string('home_active_section')->toString());
+
+        return redirect()
+            ->route('admin.theme-options.home.index', ['section' => $activeSection])
+            ->with('success', 'Home Page saved.')
+            ->with('home_active_section', $activeSection);
     }
 }

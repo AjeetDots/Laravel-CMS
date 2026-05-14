@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\ThemeContentPageTabs;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateServicesPageContentRequest extends FormRequest
 {
@@ -14,6 +16,9 @@ class UpdateServicesPageContentRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'services_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::LISTING_INTRO_GRID_BOTTOM)],
+
+            'page_title' => 'nullable|string|max:120',
             'intro_eyebrow' => 'nullable|string|max:120',
             'intro_title' => 'nullable|string|max:500',
             'intro_body' => 'nullable|string|max:2000',

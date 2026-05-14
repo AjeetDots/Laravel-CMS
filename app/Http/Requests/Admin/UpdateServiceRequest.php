@@ -2,14 +2,43 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\SortOrderValidationMessage;
 use App\Support\ImageUploadRules;
+use App\Support\ServiceFormLimits;
+use App\Support\SortOrderRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class UpdateServiceRequest extends FormRequest
 {
+    use SortOrderValidationMessage;
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function messages(): array
+    {
+        return array_merge($this->sortOrderValidationMessages(), [
+            'slug.unique' => 'A service with this URL slug already exists. Use a different slug or title.',
+            'title.max' => 'The title may not be longer than :max characters.',
+            'short_description.max' => 'The short description may not be longer than :max characters (used on listing cards).',
+            'description.max' => 'The full description is too long. Reduce content to at most :max characters (including HTML).',
+            'seo.schema_markup.max' => 'Schema / JSON-LD may not exceed :max characters.',
+        ]);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        $title = trim((string) $this->input('title', ''));
+        $slugInput = trim((string) $this->input('slug', ''));
+        $slug = $slugInput !== ''
+            ? Str::slug($slugInput)
+            : ($title !== '' ? Str::slug($title) : '');
+        if ($slug !== '') {
+            $this->merge(['slug' => $slug]);
+        }
     }
 
     public function rules(): array
@@ -17,19 +46,19 @@ class UpdateServiceRequest extends FormRequest
         $id = $this->route('service')?->id;
 
         return array_merge([
-            'title'             => 'required|string|max:200',
-            'slug'              => 'nullable|string|unique:services,slug,' . $id . '|max:200',
-            'short_description' => 'required|string',
-            'description'       => 'nullable|string',
+            'title'             => 'required|string|max:'.ServiceFormLimits::TITLE_MAX,
+            'slug'              => ['nullable', 'string', 'max:'.ServiceFormLimits::SLUG_MAX, Rule::unique('services', 'slug')->ignore($id)->whereNull('deleted_at')],
+            'short_description' => 'required|string|max:'.ServiceFormLimits::SHORT_DESCRIPTION_MAX,
+            'description'       => 'nullable|string|max:'.ServiceFormLimits::DESCRIPTION_MAX,
             'image'             => ImageUploadRules::nullable(2048),
-            'icon'              => 'nullable|string|max:100',
-            'badge'             => 'nullable|string|max:100',
+            'icon'              => 'nullable|string|max:'.ServiceFormLimits::ICON_MAX,
+            'badge'             => 'nullable|string|max:'.ServiceFormLimits::BADGE_MAX,
             'features'          => 'nullable|array',
-            'features.*'        => 'nullable|string|max:255',
-            'sort_order'        => 'integer',
+            'features.*'        => 'nullable|string|max:'.ServiceFormLimits::FEATURE_LINE_MAX,
+            'sort_order'        => ['integer', 'min:0', SortOrderRules::uniqueAmong('services', [], $this->route('service'))],
             'is_active'         => 'boolean',
             'finish_ids'        => 'nullable|array',
-            'finish_ids.*'      => 'integer|exists:finishes,id',
+            'finish_ids.*'      => ['integer', Rule::exists('finishes', 'id')->whereNull('deleted_at')],
         ], $this->seoRules());
     }
 
@@ -49,7 +78,7 @@ class UpdateServiceRequest extends FormRequest
             'seo.twitter_title'       => 'nullable|string|max:70',
             'seo.twitter_description' => 'nullable|string|max:200',
             'seo.twitter_image'       => 'nullable|string|max:500',
-            'seo.schema_markup'       => 'nullable|string',
+            'seo.schema_markup'       => 'nullable|string|max:65535',
         ];
     }
 }

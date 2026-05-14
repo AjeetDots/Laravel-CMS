@@ -1,12 +1,19 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Models\NewsletterSubscriber;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class NewsletterController extends Controller {
+    use AppliesAdminTableFilters;
+
     public function index() {
-        $subscribers = NewsletterSubscriber::orderByDesc('created_at')->paginate(20);
+        $query = NewsletterSubscriber::query()->orderByDesc('created_at');
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['email']);
+        $subscribers = $query->latest()->get();
+
         return view('admin.newsletter.index', compact('subscribers'));
     }
 
@@ -19,13 +26,12 @@ class NewsletterController extends Controller {
         return response()->streamDownload(function () {
             $handle = fopen('php://output', 'w');
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputcsv($handle, ['ID', 'Email', 'Name', 'Status', 'Subscribed at']);
+            fputcsv($handle, ['ID', 'Email', 'Status', 'Subscribed at']);
 
             foreach (NewsletterSubscriber::query()->orderByDesc('created_at')->cursor() as $sub) {
                 fputcsv($handle, [
                     $sub->id,
                     $sub->email,
-                    $sub->name ?? '',
                     $sub->is_active ? 'Active' : 'Inactive',
                     $sub->created_at?->format('Y-m-d H:i:s') ?? '',
                 ]);
@@ -38,6 +44,6 @@ class NewsletterController extends Controller {
     }
     public function destroy(NewsletterSubscriber $subscriber) {
         $subscriber->delete();
-        return back()->with('success', 'Subscriber removed.');
+        return back()->with('success', 'The subscriber has been removed.');
     }
 }

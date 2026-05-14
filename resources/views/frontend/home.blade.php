@@ -14,9 +14,10 @@
     @include('frontend.home.sections.atelier')
     @include('frontend.home.sections.finishes')
     @include('frontend.home.sections.services')
-    @include('frontend.home.sections.commissions')
+      @include('frontend.home.sections.commissions')
     @include('frontend.home.sections.why')
     @include('frontend.home.sections.process')
+  
     @include('frontend.home.sections.testimonials')
     @include('frontend.home.sections.begin-cta')
     @include('frontend.home.sections.contact-band')

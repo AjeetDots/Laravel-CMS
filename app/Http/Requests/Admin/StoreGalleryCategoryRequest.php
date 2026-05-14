@@ -2,11 +2,14 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\SortOrderValidationMessage;
+use App\Support\SortOrderRules;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
 class StoreGalleryCategoryRequest extends FormRequest
 {
+    use SortOrderValidationMessage;
+
     public function authorize(): bool
     {
         return true;
@@ -17,7 +20,7 @@ class StoreGalleryCategoryRequest extends FormRequest
         return [
             'name'       => 'required|string|max:120',
             'slug'       => 'nullable|string|max:160',
-            'sort_order' => 'integer',
+            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_categories', [])],
         ];
     }
 }

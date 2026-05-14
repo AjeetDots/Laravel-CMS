@@ -1,5 +1,6 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Models\Contact;
 use App\Models\ContactReplyLog;
@@ -8,9 +9,16 @@ use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ContactController extends Controller {
+    use AppliesAdminTableFilters;
+
     public function index() {
-        $contacts = Contact::latest()->paginate(20);
-        return view('admin.contacts.index', compact('contacts'));
+        $query = Contact::query()->latest();
+        $this->applyAdminSearch($query, request('q'), ['name', 'email', 'subject']);
+        $this->applyAdminReadFilter($query, request('read'));
+        $contacts = $query->latest()->get();
+        $unreadCount = Contact::where('is_read', false)->count();
+
+        return view('admin.contacts.index', compact('contacts', 'unreadCount'));
     }
 
     /**
@@ -89,6 +97,6 @@ class ContactController extends Controller {
 
     public function destroy(Contact $contact) {
         $contact->delete();
-        return back()->with('success', 'Message deleted.');
+        return back()->with('success', 'The enquiry has been removed.');
     }
 }

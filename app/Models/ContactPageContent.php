@@ -17,6 +17,9 @@ class ContactPageContent extends Model
 
     public const PAGE_KEY = 'contact_page';
 
+    /** Default value for the hidden `subject` field on the public contact form (email routing / inbox context). */
+    public const DEFAULT_ENQUIRY_SUBJECT = 'Website enquiry (contact)';
+
     /**
      * @return array<string, mixed>
      */
@@ -44,7 +47,7 @@ class ContactPageContent extends Model
             'fallback_whatsapp_label' => '',
             'form_title' => '',
             'form_error_intro' => '',
-            'subject_default' => '',
+            'subject_default' => self::DEFAULT_ENQUIRY_SUBJECT,
             'name_placeholder' => '',
             'email_placeholder' => '',
             'phone_field_label' => '',
@@ -67,5 +70,31 @@ class ContactPageContent extends Model
         }
 
         return $out;
+    }
+
+    /**
+     * Public hero image URL for the contact layout (stored path, absolute URL, or gallery fallback).
+     */
+    public static function resolveHeroBackgroundUrl(?string $storedPath): ?string
+    {
+        $storedPath = $storedPath !== null ? trim($storedPath) : '';
+        if ($storedPath !== '') {
+            return filter_var($storedPath, FILTER_VALIDATE_URL)
+                ? $storedPath
+                : asset('storage/'.ltrim($storedPath, '/'));
+        }
+
+        $contactHeroImage = GalleryItem::query()
+            ->where('is_active', true)
+            ->orderBy('sort_order')
+            ->value('image');
+
+        if (! $contactHeroImage) {
+            return null;
+        }
+
+        return filter_var($contactHeroImage, FILTER_VALIDATE_URL)
+            ? $contactHeroImage
+            : asset('storage/'.$contactHeroImage);
     }
 }

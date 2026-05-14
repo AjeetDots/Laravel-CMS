@@ -22,7 +22,9 @@ class AuthController extends Controller
             return redirect('/admin');
         }
 
-        return view('admin.auth.login', $this->authGuestBranding());
+        $branding = $this->authGuestBranding();
+
+        return view('admin.auth.login', array_merge($branding, $this->loginPresentation()));
     }
 
     public function login(LoginRequest $request)
@@ -124,21 +126,75 @@ class AuthController extends Controller
     }
 
     /**
-     * @return array{loginBrandName: string, backendLogo: ?string}
+     * @return array{loginBrandName: string, backendLogo: ?string, loginFaviconUrl: string}
      */
     private function authGuestBranding(): array
     {
         try {
             $name = trim((string) (Setting::get('site_name') ?? ''));
             $logo = Setting::get('backend_logo');
+            $favicon = Setting::get('site_favicon');
         } catch (\Throwable) {
             $name = '';
             $logo = null;
+            $favicon = null;
         }
+
+        $faviconPath = $favicon ? (string) $favicon : null;
+        $loginFaviconUrl = $faviconPath !== null && $faviconPath !== ''
+            ? asset('storage/'.$faviconPath)
+            : asset('images/brand/favicon-bop.svg');
 
         return [
             'loginBrandName' => $name !== '' ? $name : (string) config('cms.panel_name', 'BOP CMS'),
             'backendLogo' => $logo ? (string) $logo : null,
+            'loginFaviconUrl' => $loginFaviconUrl,
+        ];
+    }
+
+    /**
+     * Login hero image URL (config) and brand logo URL: site header logo, then
+     * admin backend logo, then optional config fallback.
+     *
+     * @return array{loginHeroUrl: string, loginBrandLogoUrl: ?string}
+     */
+    private function loginPresentation(): array
+    {
+        $hero = trim((string) config('cms.admin_login_hero_url', ''));
+        if ($hero === '') {
+            $hero = 'https://bop.24livehost.com/storage/home/sections/THirz3ff7fhF3oOT7maG1eGwIZ9L7bWLKw15OM0Y.png';
+        }
+
+        $loginBrandLogoUrl = null;
+
+        try {
+            $siteLogo = Setting::get('site_logo');
+            $backendLogo = Setting::get('backend_logo');
+        } catch (\Throwable) {
+            $siteLogo = null;
+            $backendLogo = null;
+        }
+
+        $siteLogoPath = is_string($siteLogo) ? trim($siteLogo) : '';
+        $backendLogoPath = is_string($backendLogo) ? trim($backendLogo) : '';
+
+        if ($siteLogoPath !== '') {
+            $loginBrandLogoUrl = asset('storage/'.$siteLogoPath);
+        } elseif ($backendLogoPath !== '') {
+            $loginBrandLogoUrl = asset('storage/'.$backendLogoPath);
+        } else {
+            $configured = config('cms.admin_login_brand_logo');
+            $configuredTrim = is_string($configured) ? trim($configured) : '';
+            if ($configuredTrim !== '') {
+                $loginBrandLogoUrl = Str::startsWith($configuredTrim, ['http://', 'https://'])
+                    ? $configuredTrim
+                    : asset('storage/'.ltrim($configuredTrim, '/'));
+            }
+        }
+
+        return [
+            'loginHeroUrl' => $hero,
+            'loginBrandLogoUrl' => $loginBrandLogoUrl,
         ];
     }
 }

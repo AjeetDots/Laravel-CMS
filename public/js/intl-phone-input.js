@@ -1,5 +1,5 @@
 /**
- * International-style phone widget — country list from data-itl-countries (JSON).
+ * International-style phone widget — country list from data-itl-countries-b64 (base64 JSON).
  * No external API. Modes: "split" (hidden country id + national) or "combined" (single hidden phone).
  */
 (function () {

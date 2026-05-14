@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Homepage')
+@section('title', 'Home Page')
 
 @section('styles')
 @include('admin.partials.theme-section-tabs-styles')
@@ -9,15 +9,20 @@
 @section('content')
 <div class="page-header-bar">
     <div>
-        <h1>Homepage</h1>
+        <h1>Home Page</h1>
         <p class="text-muted mb-0 small">Section tabs organize the form; a single save updates every section below.</p>
     </div>
 </div>
 
 @include('admin.partials.theme-content-nav', ['active' => 'home'])
 
+@php
+    $activeHomeSection = \App\Support\HomePageAdminTabs::normalize(old('home_active_section', $homeActiveSection ?? null));
+@endphp
+
 <form action="{{ route('admin.theme-options.home.update') }}" method="POST" enctype="multipart/form-data">
     @csrf
+    <input type="hidden" name="home_active_section" id="home_active_section" value="{{ $activeHomeSection }}">
 
     @if($errors->any())
         <div class="alert alert-danger mb-4">
@@ -26,55 +31,60 @@
     @endif
 
     <div class="card mb-4">
-        <div class="card-header pb-0">
+        <div class="card-header border-bottom-0 pb-0">
+            <div class="px-2 pt-2 pb-3 border-bottom">
+                <label class="form-label" for="home_page_title">Browser tab title</label>
+                <input type="text" name="home_page_title" id="home_page_title" class="form-control" value="{{ old('home_page_title', $homePageTitle ?? '') }}" maxlength="120" placeholder="e.g. Home">
+                <div class="form-text">Shown before your site name in the visitor’s browser tab (for example <strong>Home</strong> — <strong>Your studio</strong>). Leave blank to use “Home”.</div>
+            </div>
             <ul class="nav nav-tabs card-header-tabs theme-section-tabs" id="homeSectionsTabs" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="atelier-tab" data-bs-toggle="tab" data-bs-target="#atelier-pane" type="button" role="tab" aria-controls="atelier-pane" aria-selected="true">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'atelier') active @endif" id="atelier-tab" data-bs-toggle="tab" data-bs-target="#atelier-pane" aria-controls="atelier-pane" data-theme-section="atelier" aria-selected="{{ $activeHomeSection === 'atelier' ? 'true' : 'false' }}">
                         Atelier Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="finishes-tab" data-bs-toggle="tab" data-bs-target="#finishes-pane" type="button" role="tab" aria-controls="finishes-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'finishes') active @endif" id="finishes-tab" data-bs-toggle="tab" data-bs-target="#finishes-pane" aria-controls="finishes-pane" data-theme-section="finishes" aria-selected="{{ $activeHomeSection === 'finishes' ? 'true' : 'false' }}">
                         Finishes Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="services-tab" data-bs-toggle="tab" data-bs-target="#services-pane" type="button" role="tab" aria-controls="services-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'services') active @endif" id="services-tab" data-bs-toggle="tab" data-bs-target="#services-pane" aria-controls="services-pane" data-theme-section="services" aria-selected="{{ $activeHomeSection === 'services' ? 'true' : 'false' }}">
                         Services Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="commissions-tab" data-bs-toggle="tab" data-bs-target="#commissions-pane" type="button" role="tab" aria-controls="commissions-pane" aria-selected="false">
-                        Selected Work
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="why-tab" data-bs-toggle="tab" data-bs-target="#why-pane" type="button" role="tab" aria-controls="why-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'why') active @endif" id="why-tab" data-bs-toggle="tab" data-bs-target="#why-pane" aria-controls="why-pane" data-theme-section="why" aria-selected="{{ $activeHomeSection === 'why' ? 'true' : 'false' }}">
                         Why Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-pane" type="button" role="tab" aria-controls="process-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'process') active @endif" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-pane" aria-controls="process-pane" data-theme-section="process" aria-selected="{{ $activeHomeSection === 'process' ? 'true' : 'false' }}">
                         Process Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="begin-cta-tab" data-bs-toggle="tab" data-bs-target="#begin-cta-pane" type="button" role="tab" aria-controls="begin-cta-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'commissions') active @endif" id="commissions-tab" data-bs-toggle="tab" data-bs-target="#commissions-pane" aria-controls="commissions-pane" data-theme-section="commissions" aria-selected="{{ $activeHomeSection === 'commissions' ? 'true' : 'false' }}">
+                        Selected work
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'begin-cta') active @endif" id="begin-cta-tab" data-bs-toggle="tab" data-bs-target="#begin-cta-pane" aria-controls="begin-cta-pane" data-theme-section="begin-cta" aria-selected="{{ $activeHomeSection === 'begin-cta' ? 'true' : 'false' }}">
                         Begin CTA Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="contact-band-tab" data-bs-toggle="tab" data-bs-target="#contact-band-pane" type="button" role="tab" aria-controls="contact-band-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'contact-band') active @endif" id="contact-band-tab" data-bs-toggle="tab" data-bs-target="#contact-band-pane" aria-controls="contact-band-pane" data-theme-section="contact-band" aria-selected="{{ $activeHomeSection === 'contact-band' ? 'true' : 'false' }}">
                         Contact Band Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="brands-strip-tab" data-bs-toggle="tab" data-bs-target="#brands-strip-pane" type="button" role="tab" aria-controls="brands-strip-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'brands-strip') active @endif" id="brands-strip-tab" data-bs-toggle="tab" data-bs-target="#brands-strip-pane" aria-controls="brands-strip-pane" data-theme-section="brands-strip" aria-selected="{{ $activeHomeSection === 'brands-strip' ? 'true' : 'false' }}">
                         Brands Strip Section
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="blog-preview-tab" data-bs-toggle="tab" data-bs-target="#blog-preview-pane" type="button" role="tab" aria-controls="blog-preview-pane" aria-selected="false">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'blog-preview') active @endif" id="blog-preview-tab" data-bs-toggle="tab" data-bs-target="#blog-preview-pane" aria-controls="blog-preview-pane" data-theme-section="blog-preview" aria-selected="{{ $activeHomeSection === 'blog-preview' ? 'true' : 'false' }}">
                         Blog Preview Section
                     </button>
                 </li>
@@ -82,7 +92,7 @@
         </div>
         <div class="card-body">
             <div class="tab-content theme-section-tabs__panels" id="homeSectionsTabsContent">
-                <div class="tab-pane fade show active" id="atelier-pane" role="tabpanel" aria-labelledby="atelier-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'atelier') show active @endif" id="atelier-pane" role="tabpanel" aria-labelledby="atelier-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -100,13 +110,13 @@
                             <label class="form-label">Kicker</label>
                             <input type="text" name="home_atelier_kicker" class="form-control"
                                    value="{{ old('home_atelier_kicker', $atelierSection['kicker'] ?? '') }}"
-                                   placeholder="The Atelier">
+                                   placeholder="e.g. The Atelier">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Get In Touch Button Text</label>
                             <input type="text" name="home_atelier_cta_text" class="form-control"
                                    value="{{ old('home_atelier_cta_text', $atelierSection['cta_text'] ?? '') }}"
-                                   placeholder="Get in touch">
+                                   placeholder="e.g. Get in touch">
                         </div>
 
                         <div class="col-md-4">
@@ -134,29 +144,22 @@
                             <label class="form-label">Get In Touch Button URL</label>
                             <input type="text" name="home_atelier_cta_url" class="form-control"
                                    value="{{ old('home_atelier_cta_url', $atelierSection['cta_url'] ?? '') }}"
-                                   placeholder="https://example.com or /contact">
+                                   placeholder="e.g. https://example.com or /contact">
                             <div class="form-text">Optional. If left empty, button will open the Contact page.</div>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Booking Label</label>
                             <input type="text" name="home_atelier_booking_label" class="form-control"
                                    value="{{ old('home_atelier_booking_label', $atelierSection['booking_label'] ?? '') }}"
-                                   placeholder="Booking Now">
+                                   placeholder="e.g. Booking Now">
                         </div>
 
-                        <div class="col-md-6">
-                            <label class="form-label">Booking Text</label>
-                            <input type="text" name="home_atelier_booking_text" class="form-control"
-                                   value="{{ old('home_atelier_booking_text', $atelierSection['booking_text'] ?? '') }}"
-                                   placeholder="+44 20 7946 0958">
-                            <div class="form-text">This text is shown on frontend (phone number or any text).</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Booking URL</label>
+                        <div class="col-12">
+                            <label class="form-label">Booking URL or phone</label>
                             <input type="text" name="home_atelier_booking_url" class="form-control"
                                    value="{{ old('home_atelier_booking_url', $atelierSection['booking_url'] ?? '') }}"
-                                   placeholder="tel:+442079460958 or https://wa.me/...">
-                            <div class="form-text">If this is a phone number like +44..., it auto-converts to a clickable tel link.</div>
+                                   placeholder="e.g. tel:+44… or https://wa.me/…">
+                            <div class="form-text">Shown as the clickable link on the site. Plain phone numbers become tel: links; you can also use a full URL.</div>
                         </div>
 
                         <div class="col-md-6">
@@ -189,7 +192,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="finishes-pane" role="tabpanel" aria-labelledby="finishes-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'finishes') show active @endif" id="finishes-pane" role="tabpanel" aria-labelledby="finishes-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -207,43 +210,43 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_finishes_eyebrow" class="form-control"
                                    value="{{ old('home_finishes_eyebrow', $finishesSection['eyebrow'] ?? '') }}"
-                                   placeholder="The Finishes">
+                                   placeholder="e.g. The Finishes">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 1</label>
                             <input type="text" name="home_finishes_heading_line_1" class="form-control"
                                    value="{{ old('home_finishes_heading_line_1', $finishesSection['heading_line_1'] ?? '') }}"
-                                   placeholder="Six surfaces,">
+                                   placeholder="e.g. Six surfaces,">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 2</label>
                             <input type="text" name="home_finishes_heading_line_2" class="form-control"
                                    value="{{ old('home_finishes_heading_line_2', $finishesSection['heading_line_2'] ?? '') }}"
-                                   placeholder="infinite tones.">
+                                   placeholder="e.g. infinite tones.">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card Label</label>
                             <input type="text" name="home_finishes_card_label" class="form-control"
                                    value="{{ old('home_finishes_card_label', $finishesSection['card_label'] ?? '') }}"
-                                   placeholder="Finish">
+                                   placeholder="e.g. Finish">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Button Text</label>
                             <input type="text" name="home_finishes_button_text" class="form-control"
                                    value="{{ old('home_finishes_button_text', $finishesSection['button_text'] ?? '') }}"
-                                   placeholder="All finishes">
+                                   placeholder="e.g. All finishes">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Button URL</label>
                             <input type="text" name="home_finishes_button_url" class="form-control"
                                    value="{{ old('home_finishes_button_url', $finishesSection['button_url'] ?? '') }}"
-                                   placeholder="{{ route('finishes') }}">
+                                   placeholder="e.g. /finishes">
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="services-pane" role="tabpanel" aria-labelledby="services-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'services') show active @endif" id="services-pane" role="tabpanel" aria-labelledby="services-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -261,83 +264,42 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_services_eyebrow" class="form-control"
                                    value="{{ old('home_services_eyebrow', $servicesSection['eyebrow'] ?? '') }}"
-                                   placeholder="Our Services">
+                                   placeholder="e.g. Our Services">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 1</label>
                             <input type="text" name="home_services_heading_line_1" class="form-control"
                                    value="{{ old('home_services_heading_line_1', $servicesSection['heading_line_1'] ?? '') }}"
-                                   placeholder="Three disciplines,">
+                                   placeholder="e.g. Three disciplines,">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 2</label>
                             <input type="text" name="home_services_heading_line_2" class="form-control"
                                    value="{{ old('home_services_heading_line_2', $servicesSection['heading_line_2'] ?? '') }}"
-                                   placeholder="one obsession.">
+                                   placeholder="e.g. one obsession.">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card Link Text</label>
                             <input type="text" name="home_services_card_link_text" class="form-control"
                                    value="{{ old('home_services_card_link_text', $servicesSection['card_link_text'] ?? '') }}"
-                                   placeholder="Discover">
+                                   placeholder="e.g. Discover">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Button Text</label>
                             <input type="text" name="home_services_button_text" class="form-control"
                                    value="{{ old('home_services_button_text', $servicesSection['button_text'] ?? '') }}"
-                                   placeholder="See all services">
+                                   placeholder="e.g. See all services">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Button URL</label>
                             <input type="text" name="home_services_button_url" class="form-control"
                                    value="{{ old('home_services_button_url', $servicesSection['button_url'] ?? '') }}"
-                                   placeholder="{{ route('services') }}">
+                                   placeholder="e.g. /services">
                         </div>
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="commissions-pane" role="tabpanel" aria-labelledby="commissions-tab" tabindex="0">
-                    <div class="mb-3">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" role="switch"
-                                   name="home_commissions_is_enabled" value="1" id="home_commissions_is_enabled"
-                                   {{ old('home_commissions_is_enabled', array_key_exists('is_enabled', $commissionsSection ?? []) ? !empty($commissionsSection['is_enabled']) : true) ? 'checked' : '' }}>
-                            <label class="form-check-label fw-semibold" for="home_commissions_is_enabled">Show Selected Work Section on Home Page</label>
-                        </div>
-                        <div class="form-text">
-                            Control visibility of the selected work/commissions section. Gallery cards still come from Gallery module.
-                        </div>
-                    </div>
-
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label">Eyebrow</label>
-                            <input type="text" name="home_commissions_eyebrow" class="form-control"
-                                   value="{{ old('home_commissions_eyebrow', $commissionsSection['eyebrow'] ?? '') }}"
-                                   placeholder="Selected Work">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Heading</label>
-                            <input type="text" name="home_commissions_heading_line_1" class="form-control"
-                                   value="{{ old('home_commissions_heading_line_1', $commissionsSection['heading_line_1'] ?? '') }}"
-                                   placeholder="Recent commissions.">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Button Text</label>
-                            <input type="text" name="home_commissions_button_text" class="form-control"
-                                   value="{{ old('home_commissions_button_text', $commissionsSection['button_text'] ?? '') }}"
-                                   placeholder="View full gallery">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Button URL</label>
-                            <input type="text" name="home_commissions_button_url" class="form-control"
-                                   value="{{ old('home_commissions_button_url', $commissionsSection['button_url'] ?? '') }}"
-                                   placeholder="{{ route('gallery') }}">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="tab-pane fade" id="why-pane" role="tabpanel" aria-labelledby="why-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'why') show active @endif" id="why-pane" role="tabpanel" aria-labelledby="why-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -355,19 +317,19 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_why_eyebrow" class="form-control"
                                    value="{{ old('home_why_eyebrow', $whySection['eyebrow'] ?? '') }}"
-                                   placeholder="Why Bespoke Ornate">
+                                   placeholder="e.g. Why choose us">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading</label>
                             <input type="text" name="home_why_heading" class="form-control"
                                    value="{{ old('home_why_heading', $whySection['heading'] ?? '') }}"
-                                   placeholder="A studio defined by its hands.">
+                                   placeholder="e.g. A studio defined by its craft.">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Lead Text</label>
                             <input type="text" name="home_why_lead" class="form-control"
                                    value="{{ old('home_why_lead', $whySection['lead'] ?? '') }}"
-                                   placeholder="Each project is led by master artisans...">
+                                   placeholder="e.g. Short supporting line…">
                         </div>
                     </div>
 
@@ -379,7 +341,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 1 Icon</label>
-                            <input type="text" name="home_why_card_1_icon" class="form-control" value="{{ old('home_why_card_1_icon', $whyCards[0]['icon'] ?? 'fa-award') }}" placeholder="fa-award">
+                            <input type="text" name="home_why_card_1_icon" class="form-control" value="{{ old('home_why_card_1_icon', $whyCards[0]['icon'] ?? 'fa-award') }}" placeholder="e.g. fa-award">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 1 Title</label>
@@ -392,7 +354,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 2 Icon</label>
-                            <input type="text" name="home_why_card_2_icon" class="form-control" value="{{ old('home_why_card_2_icon', $whyCards[1]['icon'] ?? 'fa-palette') }}" placeholder="fa-palette">
+                            <input type="text" name="home_why_card_2_icon" class="form-control" value="{{ old('home_why_card_2_icon', $whyCards[1]['icon'] ?? 'fa-palette') }}" placeholder="e.g. fa-palette">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 2 Title</label>
@@ -405,7 +367,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 3 Icon</label>
-                            <input type="text" name="home_why_card_3_icon" class="form-control" value="{{ old('home_why_card_3_icon', $whyCards[2]['icon'] ?? 'fa-clapperboard') }}" placeholder="fa-clapperboard">
+                            <input type="text" name="home_why_card_3_icon" class="form-control" value="{{ old('home_why_card_3_icon', $whyCards[2]['icon'] ?? 'fa-clapperboard') }}" placeholder="e.g. fa-clapperboard">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 3 Title</label>
@@ -418,7 +380,7 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 4 Icon</label>
-                            <input type="text" name="home_why_card_4_icon" class="form-control" value="{{ old('home_why_card_4_icon', $whyCards[3]['icon'] ?? 'fa-leaf') }}" placeholder="fa-leaf">
+                            <input type="text" name="home_why_card_4_icon" class="form-control" value="{{ old('home_why_card_4_icon', $whyCards[3]['icon'] ?? 'fa-leaf') }}" placeholder="e.g. fa-leaf">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 4 Title</label>
@@ -431,7 +393,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="process-pane" role="tabpanel" aria-labelledby="process-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'process') show active @endif" id="process-pane" role="tabpanel" aria-labelledby="process-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -446,19 +408,19 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_process_eyebrow" class="form-control"
                                    value="{{ old('home_process_eyebrow', $processSection['eyebrow'] ?? '') }}"
-                                   placeholder="Our Process">
+                                   placeholder="e.g. Our Process">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 1</label>
                             <input type="text" name="home_process_heading_line_1" class="form-control"
                                    value="{{ old('home_process_heading_line_1', $processSection['heading_line_1'] ?? '') }}"
-                                   placeholder="From first conversation">
+                                   placeholder="e.g. From first conversation">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading Line 2</label>
                             <input type="text" name="home_process_heading_line_2" class="form-control"
                                    value="{{ old('home_process_heading_line_2', $processSection['heading_line_2'] ?? '') }}"
-                                   placeholder="to final polish.">
+                                   placeholder="e.g. to final polish.">
                         </div>
                     </div>
 
@@ -484,7 +446,48 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="begin-cta-pane" role="tabpanel" aria-labelledby="begin-cta-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'commissions') show active @endif" id="commissions-pane" role="tabpanel" aria-labelledby="commissions-tab" tabindex="0">
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" role="switch"
+                                   name="home_commissions_is_enabled" value="1" id="home_commissions_is_enabled"
+                                   {{ old('home_commissions_is_enabled', array_key_exists('is_enabled', $commissionsSection ?? []) ? !empty($commissionsSection['is_enabled']) : true) ? 'checked' : '' }}>
+                            <label class="form-check-label fw-semibold" for="home_commissions_is_enabled">Show selected work on Home Page</label>
+                        </div>
+                        <div class="form-text">
+                            Grid uses active items from <a href="{{ route('admin.gallery.index') }}">Gallery</a> (up to eight). Headings and button are set here.
+                        </div>
+                    </div>
+
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Eyebrow</label>
+                            <input type="text" name="home_commissions_eyebrow" class="form-control"
+                                   value="{{ old('home_commissions_eyebrow', $commissionsSection['eyebrow'] ?? '') }}"
+                                   placeholder="e.g. Selected work">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Heading</label>
+                            <input type="text" name="home_commissions_heading_line_1" class="form-control"
+                                   value="{{ old('home_commissions_heading_line_1', $commissionsSection['heading_line_1'] ?? '') }}"
+                                   placeholder="e.g. Recent commissions">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Button text</label>
+                            <input type="text" name="home_commissions_button_text" class="form-control"
+                                   value="{{ old('home_commissions_button_text', $commissionsSection['button_text'] ?? '') }}"
+                                   placeholder="e.g. View full gallery">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Button URL</label>
+                            <input type="text" name="home_commissions_button_url" class="form-control"
+                                   value="{{ old('home_commissions_button_url', $commissionsSection['button_url'] ?? '') }}"
+                                   placeholder="e.g. /gallery">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade @if($activeHomeSection === 'begin-cta') show active @endif" id="begin-cta-pane" role="tabpanel" aria-labelledby="begin-cta-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -499,45 +502,45 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_begin_cta_eyebrow" class="form-control"
                                    value="{{ old('home_begin_cta_eyebrow', $beginCtaSection['eyebrow'] ?? '') }}"
-                                   placeholder="Begin a Project">
+                                   placeholder="e.g. Begin a project">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Title Line 1</label>
                             <input type="text" name="home_begin_cta_title_line_1" class="form-control"
                                    value="{{ old('home_begin_cta_title_line_1', $beginCtaSection['title_line_1'] ?? '') }}"
-                                   placeholder="Transform your space">
+                                   placeholder="e.g. Transform your space">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Title Line 2</label>
                             <input type="text" name="home_begin_cta_title_line_2" class="form-control"
                                    value="{{ old('home_begin_cta_title_line_2', $beginCtaSection['title_line_2'] ?? '') }}"
-                                   placeholder="into a quiet masterpiece.">
+                                   placeholder="e.g. into a quiet masterpiece.">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Primary Button Text</label>
                             <input type="text" name="home_begin_cta_primary_btn_text" class="form-control"
                                    value="{{ old('home_begin_cta_primary_btn_text', $beginCtaSection['primary_btn_text'] ?? '') }}"
-                                   placeholder="Get free consultation">
+                                   placeholder="e.g. Get a consultation">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Primary Button URL</label>
                             <input type="text" name="home_begin_cta_primary_btn_url" class="form-control"
                                    value="{{ old('home_begin_cta_primary_btn_url', $beginCtaSection['primary_btn_url'] ?? '') }}"
-                                   placeholder="{{ route('contact') }}">
+                                   placeholder="e.g. /contact">
                         </div>
 
                         <div class="col-md-6">
                             <label class="form-label">Secondary Button Text</label>
                             <input type="text" name="home_begin_cta_secondary_btn_text" class="form-control"
                                    value="{{ old('home_begin_cta_secondary_btn_text', $beginCtaSection['secondary_btn_text'] ?? '') }}"
-                                   placeholder="Call the studio">
+                                   placeholder="e.g. Call the studio">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Secondary Button URL</label>
                             <input type="text" name="home_begin_cta_secondary_btn_url" class="form-control"
                                    value="{{ old('home_begin_cta_secondary_btn_url', $beginCtaSection['secondary_btn_url'] ?? '') }}"
-                                   placeholder="tel:+442079460958">
+                                   placeholder="e.g. tel:+44…">
                             <div class="form-text">If empty, phone button auto-uses Site Phone from settings.</div>
                         </div>
 
@@ -557,7 +560,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="contact-band-pane" role="tabpanel" aria-labelledby="contact-band-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'contact-band') show active @endif" id="contact-band-pane" role="tabpanel" aria-labelledby="contact-band-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -572,60 +575,53 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_contact_band_eyebrow" class="form-control"
                                    value="{{ old('home_contact_band_eyebrow', $contactBandSection['eyebrow'] ?? '') }}"
-                                   placeholder="Contact Us">
+                                   placeholder="e.g. Contact us">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading</label>
                             <input type="text" name="home_contact_band_heading" class="form-control"
                                    value="{{ old('home_contact_band_heading', $contactBandSection['heading'] ?? '') }}"
-                                   placeholder="How we can help?">
+                                   placeholder="e.g. How can we help?">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Panel Title</label>
                             <input type="text" name="home_contact_band_panel_title" class="form-control"
                                    value="{{ old('home_contact_band_panel_title', $contactBandSection['panel_title'] ?? '') }}"
-                                   placeholder="Contact Us">
+                                   placeholder="e.g. Contact us">
                         </div>
 
                         <div class="col-md-3">
                             <label class="form-label">Name Placeholder</label>
                             <input type="text" name="home_contact_band_name_placeholder" class="form-control"
                                    value="{{ old('home_contact_band_name_placeholder', $contactBandSection['name_placeholder'] ?? '') }}"
-                                   placeholder="Your Name">
+                                   placeholder="e.g. Your name">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Email Placeholder</label>
                             <input type="text" name="home_contact_band_email_placeholder" class="form-control"
                                    value="{{ old('home_contact_band_email_placeholder', $contactBandSection['email_placeholder'] ?? '') }}"
-                                   placeholder="Email">
+                                   placeholder="e.g. Email">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Phone Placeholder</label>
                             <input type="text" name="home_contact_band_phone_placeholder" class="form-control"
                                    value="{{ old('home_contact_band_phone_placeholder', $contactBandSection['phone_placeholder'] ?? '') }}"
-                                   placeholder="Phone(Optional)">
+                                   placeholder="e.g. Phone (optional)">
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Message Placeholder</label>
                             <input type="text" name="home_contact_band_message_placeholder" class="form-control"
                                    value="{{ old('home_contact_band_message_placeholder', $contactBandSection['message_placeholder'] ?? '') }}"
-                                   placeholder="Tell us about your space">
+                                   placeholder="e.g. Tell us about your project">
                         </div>
 
                         <div class="col-md-4">
                             <label class="form-label">Submit Button Text</label>
                             <input type="text" name="home_contact_band_submit_text" class="form-control"
                                    value="{{ old('home_contact_band_submit_text', $contactBandSection['submit_text'] ?? '') }}"
-                                   placeholder="Send Enquiry">
+                                   placeholder="e.g. Send enquiry">
                         </div>
                         <div class="col-md-8">
-                            <label class="form-label">Form Subject (Hidden)</label>
-                            <input type="text" name="home_contact_band_subject" class="form-control"
-                                   value="{{ old('home_contact_band_subject', $contactBandSection['subject'] ?? '') }}"
-                                   placeholder="Website enquiry (home)">
-                        </div>
-
-                        <div class="col-md-6">
                             <label class="form-label">Left Visual Image</label>
                             @if(!empty($contactBandSection['visual_image']))
                                 <div class="mb-2">
@@ -641,7 +637,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="brands-strip-pane" role="tabpanel" aria-labelledby="brands-strip-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'brands-strip') show active @endif" id="brands-strip-pane" role="tabpanel" aria-labelledby="brands-strip-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -659,19 +655,19 @@
                             <label class="form-label">Kicker</label>
                             <input type="text" name="home_brands_strip_kicker" class="form-control"
                                    value="{{ old('home_brands_strip_kicker', $brandsStripSection['kicker'] ?? '') }}"
-                                   placeholder="Partners & collaborators">
+                                   placeholder="e.g. Partners & collaborators">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Title Line 1</label>
                             <input type="text" name="home_brands_strip_title_line_1" class="form-control"
                                    value="{{ old('home_brands_strip_title_line_1', $brandsStripSection['title_line_1'] ?? '') }}"
-                                   placeholder="Trusted by">
+                                   placeholder="e.g. Trusted by">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Title Line 2</label>
                             <input type="text" name="home_brands_strip_title_line_2" class="form-control"
                                    value="{{ old('home_brands_strip_title_line_2', $brandsStripSection['title_line_2'] ?? '') }}"
-                                   placeholder="leading names">
+                                   placeholder="e.g. leading names">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Marquee Segments</label>
@@ -681,7 +677,7 @@
                     </div>
                 </div>
 
-                <div class="tab-pane fade" id="blog-preview-pane" role="tabpanel" aria-labelledby="blog-preview-tab" tabindex="0">
+                <div class="tab-pane fade @if($activeHomeSection === 'blog-preview') show active @endif" id="blog-preview-pane" role="tabpanel" aria-labelledby="blog-preview-tab" tabindex="0">
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" role="switch"
@@ -699,31 +695,31 @@
                             <label class="form-label">Eyebrow</label>
                             <input type="text" name="home_blog_preview_eyebrow" class="form-control"
                                    value="{{ old('home_blog_preview_eyebrow', $blogPreviewSection['eyebrow'] ?? '') }}"
-                                   placeholder="Our Blog">
+                                   placeholder="e.g. Our blog">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Heading</label>
                             <input type="text" name="home_blog_preview_heading" class="form-control"
                                    value="{{ old('home_blog_preview_heading', $blogPreviewSection['heading'] ?? '') }}"
-                                   placeholder="Latest News">
+                                   placeholder="e.g. Latest news">
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Read More Text</label>
                             <input type="text" name="home_blog_preview_read_more_text" class="form-control"
                                    value="{{ old('home_blog_preview_read_more_text', $blogPreviewSection['read_more_text'] ?? '') }}"
-                                   placeholder="Read More">
+                                   placeholder="e.g. Read more">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Button Text</label>
                             <input type="text" name="home_blog_preview_button_text" class="form-control"
                                    value="{{ old('home_blog_preview_button_text', $blogPreviewSection['button_text'] ?? '') }}"
-                                   placeholder="All Blogs">
+                                   placeholder="e.g. All posts">
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Button URL</label>
                             <input type="text" name="home_blog_preview_button_url" class="form-control"
                                    value="{{ old('home_blog_preview_button_url', $blogPreviewSection['button_url'] ?? '') }}"
-                                   placeholder="{{ route('blog.index') }}">
+                                   placeholder="e.g. /blog">
                         </div>
                     </div>
                 </div>
@@ -735,4 +731,8 @@
         <i class="fas fa-save me-2"></i>Save Home Page
     </button>
 </form>
+@endsection
+
+@section('scripts')
+@include('admin.partials.theme-section-tab-persist-script', ['tabListId' => 'homeSectionsTabs', 'inputId' => 'home_active_section'])
 @endsection

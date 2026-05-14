@@ -14,15 +14,14 @@
     <div class="container">
         <div class="row align-items-end mb-5">
             <div class="col-lg-7 reveal-left">
-                <span class="eyebrow">{{ $servicesEyebrow }}</span>
-                <span class="section-rule"></span>
+                <span class="finishes-intro__eyebrow">{{ $servicesEyebrow }}</span>
                 <h2 class="disciplines-headline">
                     {{ $servicesHeadingLine1 }}<br>{{ $servicesHeadingLine2 }}
                 </h2>
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right">
                 @if(trim($servicesBtnUrl) !== '' && trim($servicesBtnText) !== '')
-                <a href="{{ $servicesBtnUrl }}" class="btn-outline-site">
+                <a href="{{ $servicesBtnUrl }}">
                     {{ $servicesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.7rem;"></i>
                 </a>
                 @endif
@@ -47,7 +46,7 @@
                             <p class="disc-card-desc">{{ $service->short_description }}</p>
                         @endif
                         <span class="disc-card-link">
-                            {{ $servicesCardLinkText }} <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
+                             <i class="fas fa-arrow-right" style="font-size:.65rem;"></i>
                         </span>
                     </div>
                 </a>

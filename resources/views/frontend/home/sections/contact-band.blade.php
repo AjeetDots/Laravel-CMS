@@ -19,11 +19,11 @@
 <section class="home-contact-band section-white" id="home-contact">
     <div class="container">
         <div class="text-center mb-5 reveal">
-            <span class="eyebrow">{{ $contactBandEyebrow }}</span>
+            <span class="finishes-intro__eyebrow">{{ $contactBandEyebrow }}</span>
             <h2 class="home-contact-band__title mt-2 mb-0">{{ $contactBandHeading }}</h2>
         </div>
-        <div class="row g-4 g-xl-5 align-items-stretch">
-            <div class="col-lg-5 reveal-left d-none d-lg-block">
+        <div class="row g-4 g-xl-5 align-items-stretch mt-4">
+            <div class="col-lg-6 reveal-left d-none d-lg-block">
                 @if($contactBandVisualImage !== '')
                 <div class="home-contact-band__visual" aria-hidden="true">
                     <span class="home-contact-band__corner home-contact-band__corner--tl"></span>
@@ -36,7 +36,7 @@
                 </div>
                 @endif
             </div>
-            <div class="col-lg-7 reveal-right">
+            <div class="col-lg-6 reveal-right">
                 <div class="home-contact-panel">
                     <h3 class="home-contact-panel__title">{{ $contactBandPanelTitle }}</h3>
                     <div id="homeContactFormAjaxFeedback" class="d-none" role="status" aria-live="polite"></div>
@@ -69,7 +69,9 @@
                             @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <div class="mb-3">
-                            <label class="form-label small text-muted mb-1" for="home_contact_phone_national">{{ $contactBandPhonePlaceholder }}</label>
+                            @if(trim((string) $contactBandPhonePlaceholder) !== '')
+                                <label class="form-label small text-muted mb-1" for="home_contact_phone_national">{{ e($contactBandPhonePlaceholder) }}</label>
+                            @endif
                             @include('partials.intl-phone-field', [
                                 'countries' => $phoneCountries ?? collect(),
                                 'mode' => 'combined',
@@ -91,7 +93,7 @@
                             @error('message')<div class="invalid-feedback">{{ $message }}</div>@enderror
                         </div>
                         <button type="submit" class="home-contact-submit w-100">
-                            {{ $contactBandSubmitText }} <span aria-hidden="true">↗</span>
+                            {{ $contactBandSubmitText }} <span aria-hidden="true"><i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i></span>
                         </button>
                     </form>
                 </div>

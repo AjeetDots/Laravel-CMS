@@ -26,6 +26,7 @@ class GalleryPageContent extends Model
         $stored = is_array($row?->data) ? $row->data : [];
 
         $defaults = [
+            'page_title' => '',
             'intro_eyebrow' => '',
             'intro_title' => '',
             'filter_all_label' => '',

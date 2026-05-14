@@ -188,24 +188,35 @@
             <div class="col-12 col-lg-4">
                 <div class="footer-connect">
                     <h6 class="footer-col-title">Get in touch</h6>
-                    @if($settings->get('site_email'))
-                    <div class="footer-contact-line">
-                        <i class="fas fa-envelope" aria-hidden="true"></i>
-                        <a href="mailto:{{ $settings->get('site_email') }}">{{ $settings->get('site_email') }}</a>
-                    </div>
-                    @endif
+                   
                     @if(\App\Support\SitePhone::hasPhone($settings))
                     <div class="footer-contact-line">
-                        <i class="fas fa-phone" aria-hidden="true"></i>
+                        <i class="fa-solid fa-phone"></i>
                         <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">{{ \App\Support\SitePhone::display($settings) }}</a>
                     </div>
                     @endif
-                    @if($settings->get('site_address'))
+                     @if(\App\Support\SitePhone::hasPhone($settings))
                     <div class="footer-contact-line">
-                        <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                        <span>{{ $settings->get('site_address') }}</span>
+                        <i class="fa-solid fa-comment"></i>
+                        <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">Whatsapp</a>
                     </div>
                     @endif
+                    <!-- @if($settings->get('site_address'))
+                    <div class="footer-contact-line">
+                        <i class="fa-regular fa-location-dot" aria-hidden="true"></i>
+                        <span>{{ $settings->get('site_address') }}</span>
+                    </div>
+                    @endif -->
+                     @if($settings->get('site_email'))
+                    <div class="footer-contact-line">
+                <i class="fa-solid fa-envelope"></i>
+                        <a href="mailto:{{ $settings->get('site_email') }}">{{ $settings->get('site_email') }}</a>
+                    </div>
+                    @endif
+                     <div class="footer-contact-line">
+                     <i class="fa-brands fa-square-instagram"></i>
+                        <a href="#">@bespoken</a>
+                    </div>
                     <div class="footer-newsletter-wrap">
                         @include('partials.newsletter-form-compact')
                     </div>
@@ -219,10 +230,10 @@
                 @if($settings->get('copyright_text'))
                     {!! $settings->get('copyright_text') !!}
                 @elseif(trim((string) $settings->get('site_name')) !== '')
-                    &copy; {{ date('Y') }} {{ $settings->get('site_name') }}. All rights reserved.
+                    &copy; {{ date('Y') }} <span class="gold"> {{ $settings->get('site_name') }} </span>. All rights reserved.
                 @endif
             </span>
-            <span><a href="https://www.dotsquares.com/" target="_blank"><img src="{{ asset('images/dotsquaresit.png') }}" alt="Dotsquares" class="footer-logo"></a> Crafted by Dotsquares – Where Innovation Meets Quality</span>
+            <span>Website Designed & Developed by: <a href="https://www.dotsquares.com/" target="_blank"><img src="{{ asset('images/dotsquaresit.png') }}" alt="Dotsquares" class="footer-logo" /></a> Dotsquares</span>
         </div>
     </div>
 </footer>

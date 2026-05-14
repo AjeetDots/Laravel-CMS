@@ -1,25 +1,24 @@
 @extends('layouts.frontend')
 @section('title', $post->title)
-@section('body_class', 'nav-solid')
+@section('body_class', 'nav-solid page-blog')
 @section('content')
 
-{{-- ── Hero ─────────────────────────────────────────────────────── --}}
-<div class="page-hero">
+<section class="finishes-intro">
     <div class="container">
         @if($post->category)
             <a href="{{ route('blog.category', $post->category->slug) }}"
-               class="eyebrow eyebrow-link">{{ $post->category->name }}</a>
+               class="finishes-intro__eyebrow finishes-intro__eyebrow--link">{{ $post->category->name }}</a>
         @else
-            <span class="eyebrow">Journal</span>
+            <span class="finishes-intro__eyebrow">Journal</span>
         @endif
-        <h1 class="page-hero-title-wide">{{ $post->title }}</h1>
-        <div class="blog-hero-meta">
-            @if($post->author)<span><i class="fas fa-user me-1"></i>{{ $post->author }}</span>@endif
-            @if($post->published_at)<span><i class="far fa-calendar me-1"></i>{{ $post->published_at->format('d F Y') }}</span>@endif
-            <span><i class="far fa-clock me-1"></i>{{ $post->reading_time }}</span>
+        <h1 class="finishes-intro__title">{{ $post->title }}</h1>
+        <div class="finishes-intro__blog-meta">
+            @if($post->author)<span><i class="fas fa-user me-1" aria-hidden="true"></i>{{ $post->author }}</span>@endif
+            @if($post->published_at)<span><i class="far fa-calendar me-1" aria-hidden="true"></i>{{ $post->published_at->format('d F Y') }}</span>@endif
+            <span><i class="far fa-clock me-1" aria-hidden="true"></i>{{ $post->reading_time }}</span>
         </div>
-        <nav aria-label="breadcrumb" class="mt-1">
-            <ol class="breadcrumb">
+        <nav class="finishes-intro__breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('blog.index') }}">Blog</a></li>
                 @if($post->category)
@@ -27,99 +26,96 @@
                         <a href="{{ route('blog.category', $post->category->slug) }}">{{ $post->category->name }}</a>
                     </li>
                 @endif
-                <li class="breadcrumb-item active">{{ Str::limit($post->title, 40) }}</li>
+                <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($post->title, 40) }}</li>
             </ol>
         </nav>
     </div>
-</div>
+</section>
 
-{{-- ── Main + Sidebar ───────────────────────────────────────────── --}}
+{{-- Main + sidebar — same structure as finish / service detail --}}
 <section class="section section-white">
     <div class="container">
         <div class="row g-5">
 
-            {{-- Main Content --}}
             <div class="col-lg-8">
                 @if($post->image)
-                    <div class="media-frame blog-lead-img">
+                    <div class="media-frame media-frame--short service-detail-lead-img mb-4">
                         <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
                     </div>
                 @endif
 
-                <div class="blog-post-content">
+                <div class="service-detail-body blog-post-content">
                     {!! $post->content !!}
                 </div>
 
-                {{-- Category tag at bottom --}}
                 @if($post->category)
                 <div class="mt-4 pt-3" style="border-top:1px solid var(--border);">
                     <span style="font-size:.83rem;color:var(--ink-light);font-weight:500;text-transform:uppercase;letter-spacing:.08em;">Filed under</span>
                     <a href="{{ route('blog.category', $post->category->slug) }}" class="blog-cat-tag ms-2">
-                        <i class="fas fa-folder me-1"></i>{{ $post->category->name }}
+                        <i class="fas fa-folder me-1" aria-hidden="true"></i>{{ $post->category->name }}
                     </a>
                 </div>
                 @endif
 
                 <div class="mt-4">
                     <a href="{{ route('blog.index') }}" class="btn-outline-site">
-                        <i class="fas fa-arrow-left me-2"></i>Back to Blog
+                        <i class="fas fa-arrow-left me-2" aria-hidden="true"></i>Back to Blog
                     </a>
                 </div>
             </div>
 
-            {{-- Sidebar --}}
             <div class="col-lg-4">
+                <div class="service-sidebar-wrap">
+                    @if($post->category)
+                    <div class="service-sidebar-card mb-4">
+                        <span class="eyebrow">Category</span>
+                        <h4>{{ $post->category->name }}</h4>
+                        <p class="sub mb-0">Posts filed under this topic.</p>
+                        <a href="{{ route('blog.category', $post->category->slug) }}" class="btn-outline-site w-100 justify-content-center mt-3">
+                            View category <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                    @endif
 
-                {{-- Category Widget --}}
-                @if($post->category)
-                <div class="sidebar-widget mb-4">
-                    <h4 class="sidebar-widget-title">Category</h4>
-                    <a href="{{ route('blog.category', $post->category->slug) }}" class="sidebar-cat-link">
-                        <i class="fas fa-folder-open me-2"></i>{{ $post->category->name }}
-                        <span class="ms-auto"><i class="fas fa-arrow-right"></i></span>
-                    </a>
-                </div>
-                @endif
-
-                {{-- Latest Posts Widget --}}
-                @if($latestPosts->count())
-                <div class="sidebar-widget">
-                    <h4 class="sidebar-widget-title">Latest Posts</h4>
-                    <ul class="sidebar-post-list">
-                        @foreach($latestPosts as $lp)
-                        <li class="sidebar-post-item">
-                            <a href="{{ route('blog.show', $lp->slug) }}" class="sidebar-post-link">
-                                @if($lp->image)
-                                    <img src="{{ $lp->image_url }}" alt="{{ $lp->title }}" class="sidebar-post-thumb">
-                                @else
-                                    <div class="sidebar-post-thumb-placeholder"><i class="fas fa-feather-alt"></i></div>
-                                @endif
-                                <div class="sidebar-post-info">
-                                    <span class="sidebar-post-title">{{ Str::limit($lp->title, 55) }}</span>
-                                    @if($lp->published_at)
-                                        <span class="sidebar-post-date">{{ $lp->published_at->format('d M Y') }}</span>
+                    @if($latestPosts->count())
+                    <div class="service-sidebar-card">
+                        <span class="eyebrow">Latest</span>
+                        <h4>From the journal</h4>
+                        <ul class="sidebar-post-list">
+                            @foreach($latestPosts as $lp)
+                            <li class="sidebar-post-item">
+                                <a href="{{ route('blog.show', $lp->slug) }}" class="sidebar-post-link">
+                                    @if($lp->image)
+                                        <img src="{{ $lp->image_url }}" alt="{{ $lp->title }}" class="sidebar-post-thumb">
+                                    @else
+                                        <div class="sidebar-post-thumb-placeholder"><i class="fas fa-feather-alt" aria-hidden="true"></i></div>
                                     @endif
-                                </div>
-                            </a>
-                        </li>
-                        @endforeach
-                    </ul>
+                                    <div class="sidebar-post-info">
+                                        <span class="sidebar-post-title">{{ Str::limit($lp->title, 55) }}</span>
+                                        @if($lp->published_at)
+                                            <span class="sidebar-post-date">{{ $lp->published_at->format('d M Y') }}</span>
+                                        @endif
+                                    </div>
+                                </a>
+                            </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
                 </div>
-                @endif
-
             </div>
         </div>
     </div>
 </section>
 
-{{-- ── Related Posts ────────────────────────────────────────────── --}}
 @if($related->count())
 <section class="section section-soft">
     <div class="container">
-        <div class="text-center mb-5">
-            <span class="eyebrow">More to read</span>
-            <h2 style="font-size:1.8rem;">Related Posts</h2>
-            <span class="section-rule centered"></span>
+        <div class="row align-items-end mb-4">
+            <div class="col">
+                <span class="finishes-intro__eyebrow">More to read</span>
+                <h2 class="h3 mb-0" style="font-family:Georgia,'Times New Roman',Times,serif;">Related posts</h2>
+            </div>
         </div>
         <div class="row g-4">
             @foreach($related as $r)

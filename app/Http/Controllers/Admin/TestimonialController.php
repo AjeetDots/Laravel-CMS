@@ -1,18 +1,31 @@
 <?php
 namespace App\Http\Controllers\Admin;
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreTestimonialRequest;
 use App\Http\Requests\Admin\UpdateTestimonialRequest;
 use App\Models\Testimonial;
+use App\Support\AdminDefaultSortOrder;
 use Illuminate\Support\Facades\Storage;
 
 class TestimonialController extends Controller {
+    use AppliesAdminTableFilters;
+
     public function index() {
-        $testimonials = Testimonial::orderBy('sort_order')->get();
+        $query = Testimonial::query();
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['client_name', 'client_company', 'message']);
+        $testimonials = $query->orderBy('sort_order')->get();
+
         return view('admin.testimonials.index', compact('testimonials'));
     }
     public function create() {
-        return view('admin.testimonials.form', ['testimonial' => new Testimonial()]);
+        $defaultSortOrder = AdminDefaultSortOrder::next(Testimonial::class);
+
+        return view('admin.testimonials.form', [
+            'testimonial' => new Testimonial(),
+            'defaultSortOrder' => $defaultSortOrder,
+        ]);
     }
     public function store(StoreTestimonialRequest $request) {
         $data = $request->validated();
@@ -24,7 +37,10 @@ class TestimonialController extends Controller {
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial created.');
     }
     public function edit(Testimonial $testimonial) {
-        return view('admin.testimonials.form', compact('testimonial'));
+        return view('admin.testimonials.form', [
+            'testimonial' => $testimonial,
+            'defaultSortOrder' => null,
+        ]);
     }
     public function update(UpdateTestimonialRequest $request, Testimonial $testimonial) {
         $data = $request->validated();
@@ -37,9 +53,8 @@ class TestimonialController extends Controller {
         return redirect()->route('admin.testimonials.index')->with('success', 'Testimonial updated.');
     }
     public function destroy(Testimonial $testimonial) {
-        if ($testimonial->client_image) Storage::disk('public')->delete($testimonial->client_image);
         $testimonial->delete();
-        return back()->with('success', 'Testimonial deleted.');
+        return back()->with('success', 'The testimonial has been removed.');
     }
     public function show(Testimonial $testimonial) {
         return redirect()->route('admin.testimonials.edit', $testimonial);

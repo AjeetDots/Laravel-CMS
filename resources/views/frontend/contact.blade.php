@@ -45,17 +45,17 @@
                         @endif
                         @php $waDigits = \App\Support\SitePhone::whatsappDigits($settings); @endphp
                         @if($waDigits !== '')
-                        <div class="contact-main__phone-line"><i class="fab fa-whatsapp" aria-hidden="true"></i> <a href="https://wa.me/{{ $waDigits }}" target="_blank" rel="noopener noreferrer">{{ \App\Support\SitePhone::display($settings) }}</a></div>
+                        <div class="contact-main__phone-line"><i class="fa-brands fa-square-whatsapp"></i> <a href="https://wa.me/{{ $waDigits }}" target="_blank" rel="noopener noreferrer">{{ \App\Support\SitePhone::display($settings) }}</a></div>
                         @else
                         @if(trim((string) ($contactPage['fallback_whatsapp_label'] ?? '')) !== '')
-                        <div><i class="fab fa-whatsapp" aria-hidden="true"></i> {{ $contactPage['fallback_whatsapp_label'] }}</div>
+                        <div><i class="fa-brands fa-square-whatsapp"></i> {{ $contactPage['fallback_whatsapp_label'] }}</div>
                         @endif
                         @endif
                         @if(trim((string) $settings->get('site_email')) !== '')
                         <div><i class="fas fa-envelope"></i> {{ $settings->get('site_email') }}</div>
                         @endif
                         @if(trim((string) ($contactPage['appointment_line'] ?? '')) !== '')
-                        <div><i class="far fa-clock"></i> {{ $contactPage['appointment_line'] }}</div>
+                     <div> <i class="fa-solid fa-clock"></i> {{ $contactPage['appointment_line'] }}</div>
                         @endif
                     </div>
 

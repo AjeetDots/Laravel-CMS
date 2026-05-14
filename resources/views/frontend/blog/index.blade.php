@@ -1,32 +1,32 @@
 @extends('layouts.frontend')
 @section('title', isset($category) ? $category->name . ' — Blog' : 'Blog')
-@section('body_class', 'nav-solid')
+@section('body_class', 'nav-solid page-blog')
 @section('content')
 
-<div class="page-hero">
+<section class="finishes-intro">
     <div class="container">
         @if(isset($category))
-            <span class="eyebrow">Category</span>
-            <h1 class="page-hero-title-wide">{{ $category->name }}</h1>
+            <span class="finishes-intro__eyebrow">Category</span>
+            <h1 class="finishes-intro__title">{{ $category->name }}</h1>
             @if($category->description)
-                <p>{{ $category->description }}</p>
+                <p class="finishes-intro__desc">{{ $category->description }}</p>
             @endif
         @else
-            <span class="eyebrow">Our Journal</span>
-            <h1 class="page-hero-title-wide">Blog &amp; Insights</h1>
-            <p>Tips, inspiration and project stories from our studio.</p>
+            <span class="finishes-intro__eyebrow">Our Journal</span>
+            <h1 class="finishes-intro__title">Blog &amp; Insights</h1>
+            <p class="finishes-intro__desc">Tips, inspiration and project stories from our studio.</p>
         @endif
-        <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
+        <nav class="finishes-intro__breadcrumb" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('blog.index') }}">Blog</a></li>
                 @if(isset($category))
-                    <li class="breadcrumb-item active">{{ $category->name }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ $category->name }}</li>
                 @endif
             </ol>
         </nav>
     </div>
-</div>
+</section>
 
 <section class="section section-white">
     <div class="container">

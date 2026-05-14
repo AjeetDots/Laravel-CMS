@@ -28,7 +28,13 @@
                 <div class="col-md-8">
                     <div class="mb-3">
                         <label class="form-label">Title</label>
-                        <input type="text" name="title" class="form-control" value="{{ old('title', $item->title) }}" placeholder="Optional title">
+                        <input type="text" name="title" class="form-control" value="{{ old('title', $item->title) }}" placeholder="e.g. Optional title">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Section content</label>
+                        <textarea name="section_content" class="form-control" rows="4" maxlength="2000"
+                                  placeholder="Optional. Shown on the home page &quot;Selected work&quot; grid under the title (e.g. a short project caption).">{{ old('section_content', $item->section_content ?? '') }}</textarea>
+                        <div class="form-text">Used on the home page gallery strip; leave blank if you only need the image and title.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category</label>
@@ -36,7 +42,7 @@
                             <option value="">— None —</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}"
-                                    {{ (string) old('gallery_category_id', $item->gallery_category_id) === (string) $cat->id ? 'selected' : '' }}>
+                                    {{ (string) old('gallery_category_id', $item->gallery_category_id ?? request('gallery_category_id')) === (string) $cat->id ? 'selected' : '' }}>
                                     {{ $cat->name }}
                                 </option>
                             @endforeach
@@ -47,7 +53,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $item->sort_order ?? 0) }}" min="0">
+                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $item->exists ? $item->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                        <div class="form-text">Must be unique within the same gallery category (including “uncategorised”).</div>
                     </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" id="isActive"

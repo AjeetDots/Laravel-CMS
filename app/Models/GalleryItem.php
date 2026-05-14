@@ -2,9 +2,11 @@
 namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class GalleryItem extends Model {
-    protected $fillable = ['title', 'image', 'gallery_category_id', 'sort_order', 'is_active'];
+    use SoftDeletes;
+    protected $fillable = ['title', 'section_content', 'image', 'gallery_category_id', 'sort_order', 'is_active'];
     protected $casts = ['is_active' => 'boolean'];
 
     public function galleryCategory(): BelongsTo

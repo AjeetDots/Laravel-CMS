@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\HomePageAdminTabs;
 use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateHomePageSettingRequest extends FormRequest
 {
@@ -15,6 +17,10 @@ class UpdateHomePageSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'home_active_section' => ['nullable', 'string', Rule::in(HomePageAdminTabs::SECTION_KEYS)],
+
+            'home_page_title' => 'nullable|string|max:120',
+
             'home_atelier_is_enabled' => 'boolean',
             'home_atelier_kicker' => 'nullable|string|max:120',
             'home_atelier_heading_line_1' => 'nullable|string|max:255',
@@ -24,7 +30,6 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_atelier_cta_text' => 'nullable|string|max:120',
             'home_atelier_cta_url' => 'nullable|string|max:1000',
             'home_atelier_booking_label' => 'nullable|string|max:120',
-            'home_atelier_booking_text' => 'nullable|string|max:120',
             'home_atelier_booking_url' => 'nullable|string|max:1000',
             'home_atelier_primary_image' => ImageUploadRules::nullable(4096),
             'home_atelier_secondary_image' => ImageUploadRules::nullable(4096),
@@ -44,12 +49,6 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_services_button_text' => 'nullable|string|max:120',
             'home_services_button_url' => 'nullable|string|max:1000',
             'home_services_card_link_text' => 'nullable|string|max:80',
-
-            'home_commissions_is_enabled' => 'boolean',
-            'home_commissions_eyebrow' => 'nullable|string|max:120',
-            'home_commissions_heading_line_1' => 'nullable|string|max:255',
-            'home_commissions_button_text' => 'nullable|string|max:120',
-            'home_commissions_button_url' => 'nullable|string|max:1000',
 
             'home_why_is_enabled' => 'boolean',
             'home_why_eyebrow' => 'nullable|string|max:120',
@@ -86,6 +85,12 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_process_step_4_title' => 'nullable|string|max:120',
             'home_process_step_4_desc' => 'nullable|string|max:300',
 
+            'home_commissions_is_enabled' => 'boolean',
+            'home_commissions_eyebrow' => 'nullable|string|max:120',
+            'home_commissions_heading_line_1' => 'nullable|string|max:255',
+            'home_commissions_button_text' => 'nullable|string|max:120',
+            'home_commissions_button_url' => 'nullable|string|max:1000',
+
             'home_begin_cta_is_enabled' => 'boolean',
             'home_begin_cta_eyebrow' => 'nullable|string|max:120',
             'home_begin_cta_title_line_1' => 'nullable|string|max:255',
@@ -105,7 +110,6 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_contact_band_phone_placeholder' => 'nullable|string|max:120',
             'home_contact_band_message_placeholder' => 'nullable|string|max:255',
             'home_contact_band_submit_text' => 'nullable|string|max:120',
-            'home_contact_band_subject' => 'nullable|string|max:255',
             'home_contact_band_visual_image' => ImageUploadRules::nullable(4096),
 
             'home_brands_strip_is_enabled' => 'boolean',

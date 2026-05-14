@@ -21,8 +21,7 @@
             </div>
             <span class="brands-strip__rule" aria-hidden="true"></span>
         </header>
-    </div>
-    <div class="brands-strip__marquee" role="presentation">
+        <div class="brands-strip__marquee" role="presentation">
         <div class="brands-slider-wrap">
             <div class="brand-track" style="--brand-segments: {{ $brandMarqueeSegments }}">
                 @foreach(range(1, $brandMarqueeSegments) as $seg)
@@ -43,5 +42,7 @@
             </div>
         </div>
     </div>
+    </div>
+    
 </section>
 @endif

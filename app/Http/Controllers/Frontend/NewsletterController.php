@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Contracts\Frontend\NewsletterSubscriptionServiceInterface;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\NewsletterSubscribeRequest;
+use App\Models\NewsletterFooterContent;
 
 class NewsletterController extends Controller
 {
@@ -14,6 +15,8 @@ class NewsletterController extends Controller
 
     public function subscribe(NewsletterSubscribeRequest $request)
     {
+        $copy = NewsletterFooterContent::viewDataWithDefaults();
+
         $result = $this->newsletterSubscriptionService->subscribe(
             $request->email,
             $request->input('name')
@@ -21,7 +24,7 @@ class NewsletterController extends Controller
 
         if ($request->expectsJson()) {
             if ($result->isAlreadySubscribed()) {
-                $msg = 'You have already subscribed with this email address.';
+                $msg = $copy['message_already_subscribed'];
 
                 return response()->json([
                     'message' => $msg,
@@ -30,16 +33,16 @@ class NewsletterController extends Controller
             }
 
             return response()->json([
-                'message' => 'Thank you for subscribing!',
+                'message' => $copy['message_success'],
             ]);
         }
 
         if ($result->isAlreadySubscribed()) {
             return back()
-                ->withErrors(['email' => 'You have already subscribed with this email address.'])
+                ->withErrors(['email' => $copy['message_already_subscribed']])
                 ->withInput();
         }
 
-        return back()->with('newsletter_success', 'Thank you for subscribing!');
+        return back()->with('newsletter_success', $copy['message_success']);
     }
 }

@@ -1,27 +1,37 @@
 <?php
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreFinishRequest;
 use App\Http\Requests\Admin\UpdateFinishRequest;
 use App\Models\Finish;
+use App\Support\AdminDefaultSortOrder;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class FinishController extends Controller {
+    use AppliesAdminTableFilters;
 
     public function index() {
-        $finishes = Finish::orderBy('sort_order')->orderBy('title')->get();
+        $query = Finish::query();
+        $this->applyAdminStatus($query, request('status'));
+        $this->applyAdminSearch($query, request('q'), ['title', 'slug']);
+        $finishes = $query->orderBy('sort_order')->orderBy('title')->get();
+
         return view('admin.finishes.index', compact('finishes'));
     }
 
     public function create() {
-        return view('admin.finishes.form', ['finish' => new Finish()]);
+        $defaultSortOrder = AdminDefaultSortOrder::next(Finish::class);
+
+        return view('admin.finishes.form', [
+            'finish' => new Finish(),
+            'defaultSortOrder' => $defaultSortOrder,
+        ]);
     }
 
     public function store(StoreFinishRequest $request) {
         $data = $request->validated();
-        if (empty($data['slug'])) $data['slug'] = Str::slug($data['title']);
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('cover_image')) {
@@ -45,12 +55,15 @@ class FinishController extends Controller {
 
     public function edit(Finish $finish) {
         $finish->load('seoMeta');
-        return view('admin.finishes.form', compact('finish'));
+
+        return view('admin.finishes.form', [
+            'finish' => $finish,
+            'defaultSortOrder' => null,
+        ]);
     }
 
     public function update(UpdateFinishRequest $request, Finish $finish) {
         $data = $request->validated();
-        if (empty($data['slug'])) $data['slug'] = Str::slug($data['title']);
         $data['is_active'] = $request->boolean('is_active');
 
         if ($request->hasFile('cover_image')) {
@@ -78,10 +91,8 @@ class FinishController extends Controller {
     }
 
     public function destroy(Finish $finish) {
-        if ($finish->cover_image) Storage::disk('public')->delete($finish->cover_image);
-        foreach ($finish->gallery ?? [] as $img) Storage::disk('public')->delete($img);
         $finish->delete();
-        return back()->with('success', 'Finish deleted.');
+        return back()->with('success', 'The finish has been removed.');
     }
 
     public function show(Finish $finish) {

@@ -101,5 +101,19 @@ class PageSeeder extends Seeder {
         foreach ($pages as $page) {
             Page::updateOrCreate(['slug' => $page['slug']], $page);
         }
+
+        Page::updateOrCreate(
+            ['slug' => 'contact-us'],
+            [
+                'title' => 'Contact Us',
+                'slug' => 'contact-us',
+                'template' => Page::TEMPLATE_CONTACT,
+                'meta_title' => 'Contact Us',
+                'meta_description' => 'Get in touch with Bespoke Ornate Plaster.',
+                'content' => null,
+                'body_order' => Page::BODY_ORDER_CONTENT_FIRST,
+                'is_active' => true,
+            ]
+        );
     }
 }

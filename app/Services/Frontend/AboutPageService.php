@@ -27,7 +27,7 @@ class AboutPageService
             'image_main_fallback' => '',
             'image_accent_fallback' => '',
             'image_studio_fallback' => '',
-            'workshop_btn_href' => CmsOutboundHref::resolve($data['workshop_btn_url'] ?? null),
+            'workshop_btn_href' => CmsOutboundHref::resolve($data['workshop_btn_url'] ?? null, 'contact'),
         ]);
     }
 

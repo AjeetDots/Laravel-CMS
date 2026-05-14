@@ -59,10 +59,7 @@
     if (! $displayRow && count($rows) > 0) {
         $displayRow = $rows[0];
     }
-@endphp
 
-@if(count($rows) > 0)
-@php
     $itlJsonFlags = JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT;
     if (defined('JSON_INVALID_UTF8_SUBSTITUTE')) {
         $itlJsonFlags |= JSON_INVALID_UTF8_SUBSTITUTE;
@@ -70,6 +67,8 @@
     $itlJson = json_encode($rows, $itlJsonFlags);
     $itlB64 = base64_encode($itlJson);
 @endphp
+
+@if(count($rows) > 0)
 <div class="itl-phone @if($invalid) is-invalid @endif"
      id="{{ $instanceId }}_wrap"
      data-itl-phone
@@ -106,7 +105,7 @@
                class="itl-phone__national-input form-control"
                id="{{ $instanceId }}_national"
                value="{{ preg_replace('/\D/', '', (string) $natVal) }}"
-               placeholder="{{ $ph }}"
+               placeholder="{{ e($ph) }}"
                maxlength="{{ (int) $nationalMaxLength }}"
                autocomplete="tel-national"
                inputmode="numeric"
@@ -118,14 +117,6 @@
         <input type="search" class="itl-phone__search" placeholder="Search" autocomplete="off" aria-label="Search countries">
         <ul class="itl-phone__list" role="listbox"></ul>
     </div>
-    {{-- JSON in a hidden textarea avoids </script> parsing bugs and script-in-form quirks. --}}
-    <textarea id="{{ $instanceId }}_countries_json"
-              class="itl-phone__json"
-              hidden
-              readonly
-              tabindex="-1"
-              autocomplete="off"
-              aria-hidden="true">{!! $itlJson !!}</textarea>
 </div>
 @else
     <p class="form-text text-warning small mb-0">No phone countries configured.</p>

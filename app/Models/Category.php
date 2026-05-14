@@ -4,10 +4,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 class Category extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = ['name', 'slug', 'description', 'parent_id', 'sort_order', 'is_active'];
     protected $casts    = ['is_active' => 'boolean'];
 
@@ -18,6 +21,12 @@ class Category extends Model
             if (empty($cat->slug)) {
                 $cat->slug = Str::slug($cat->name);
             }
+        });
+        static::deleting(function (Category $cat) {
+            if ($cat->isForceDeleting()) {
+                return;
+            }
+            $cat->children()->update(['parent_id' => $cat->parent_id]);
         });
     }
 

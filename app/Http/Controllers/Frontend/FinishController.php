@@ -11,10 +11,10 @@ class FinishController extends Controller
 {
     public function index()
     {
-        $finishes = Finish::where('is_active', true)->orderBy('sort_order')->orderBy('title')->get();
+        $finishes = Finish::where('is_active', true)->orderBy('sort_order')->orderBy('title')->paginate(12)->withQueryString();
         $finishesPage = FinishesPageContent::listingDataWithDefaults();
-        $finishesPage['empty_btn_href'] = CmsOutboundHref::resolve($finishesPage['empty_btn_url'] ?? null);
-        $finishesPage['bottom_btn_href'] = CmsOutboundHref::resolve($finishesPage['bottom_btn_url'] ?? null);
+        $finishesPage['empty_btn_href'] = CmsOutboundHref::resolve($finishesPage['empty_btn_url'] ?? null, 'contact');
+        $finishesPage['bottom_btn_href'] = CmsOutboundHref::resolve($finishesPage['bottom_btn_url'] ?? null, 'contact');
 
         return view('frontend.finishes', compact('finishes', 'finishesPage'));
     }
