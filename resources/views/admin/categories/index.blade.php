@@ -17,7 +17,7 @@
             <div class="text-center text-muted py-4">No categories match your filters. <a href="{{ route('admin.categories.index') }}">Clear filters</a>.</div>
         @else
             <div class="table-responsive">
-                <table class="table mb-0" data-admin-dt data-dt-searching="false">
+                <table class="table mb-0" data-admin-dt>
                     <thead>
                         <tr>
                             <th>Name</th>

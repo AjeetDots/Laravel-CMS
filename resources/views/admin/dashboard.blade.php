@@ -98,7 +98,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table mb-0">
+                <table class="table mb-0" data-admin-dt data-dt-page-length="10">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -106,7 +106,7 @@
                             <th>Phone</th>
                             <th>Date</th>
                             <th width="80" class="text-center">Status</th>
-                            <th width="80"></th>
+                            <th width="80" data-dt-orderable="false"></th>
                         </tr>
                     </thead>
                     <tbody>

@@ -17,7 +17,7 @@
             <div class="text-center py-5 text-muted">No subscribers match your filters.</div>
         @else
             <div class="table-responsive">
-                <table class="table table-hover mb-0" data-admin-dt data-dt-searching="false">
+                <table class="table table-hover mb-0" data-admin-dt>
                     <thead>
                         <tr>
                             <th>#</th>

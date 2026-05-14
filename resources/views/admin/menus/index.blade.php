@@ -24,7 +24,7 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table mb-0" data-admin-dt data-dt-ordering="false" data-dt-searching="false">
+                <table class="table mb-0" data-admin-dt data-dt-ordering="false">
                     <thead>
                         <tr>
                             <th>Label</th>

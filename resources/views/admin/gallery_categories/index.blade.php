@@ -24,7 +24,7 @@
             <div class="text-center text-muted py-4">No categories match your filters. <a href="{{ route('admin.gallery-categories.index') }}">Clear filters</a> or <a href="{{ route('admin.gallery-categories.create') }}">create one</a>.</div>
         @else
             <div class="table-responsive">
-                <table class="table mb-0" data-admin-dt data-dt-searching="false">
+                <table class="table mb-0" data-admin-dt>
                     <thead>
                         <tr>
                             <th>Name</th>

@@ -757,6 +757,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.15.10/dist/sweetalert2.all.min.js"></script>
+{{-- DataTables 2.x UMD build requires a global jQuery (see factory(jQuery, window, document) in dataTables.min.js). --}}
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/2.1.8/js/dataTables.bootstrap5.min.js"></script>
 <script>
@@ -769,7 +771,7 @@
             var paging = table.getAttribute('data-dt-paging') !== 'false';
             var searching = table.getAttribute('data-dt-searching') !== 'false';
             var ordering = table.getAttribute('data-dt-ordering') !== 'false';
-            var pageLen = parseInt(table.getAttribute('data-dt-page-length') || '25', 10);
+            var pageLen = parseInt(table.getAttribute('data-dt-page-length') || '10', 10);
             var nonOrderable = [];
             var headerRow = table.querySelector('thead tr');
             if (headerRow) {

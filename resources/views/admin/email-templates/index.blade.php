@@ -39,7 +39,7 @@
             </div>
         @else
         <div class="table-responsive">
-            <table class="table mb-0" data-admin-dt data-dt-searching="false">
+            <table class="table mb-0" data-admin-dt>
                 <thead>
                     <tr>
                         <th>Name</th>
