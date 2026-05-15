@@ -1380,9 +1380,8 @@ body.nav-solid .contact-form-panel {
     }
 }
 
-/* ── CMS pages (default / full-width / sidebar templates) ── */
-body.nav-solid .cms-page-layout,
-body.nav-solid .cms-page-default-centered {
+/* ── CMS pages (full-width / sidebar sectioned layouts) ── */
+body.nav-solid .cms-page-layout {
     overflow-x: clip;
     width: 100%;
 }
@@ -1399,43 +1398,6 @@ body.nav-solid .cms-page-section {
 
 body.nav-solid .cms-page-section--sidebar .cms-page-intro {
     max-width: var(--cms-max-text);
-}
-
-body.nav-solid .cms-page-default-centered .page-hero .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-}
-
-body.nav-solid .cms-page-default-centered .page-hero .eyebrow::before {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-body.nav-solid .cms-page-default-centered .page-hero .breadcrumb {
-    justify-content: center;
-}
-
-body.nav-solid .cms-page-section--default .cms-page-intro {
-    max-width: var(--cms-max-text);
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
-}
-
-body.nav-solid .cms-page-section--default .cms-page-intro .page-content > p,
-body.nav-solid .cms-page-section--default .cms-page-intro p {
-    margin-left: auto;
-    margin-right: auto;
-}
-
-body.nav-solid .cms-page-section--default .cms-page-intro ul,
-body.nav-solid .cms-page-section--default .cms-page-intro ol {
-    display: inline-block;
-    text-align: left;
-    margin-left: auto;
-    margin-right: auto;
 }
 
 body.nav-solid .cms-page-inner-wide {
@@ -1672,17 +1634,6 @@ body.nav-solid .cms-sidebar-card__cta {
         padding-right: max(1rem, env(safe-area-inset-right));
     }
 
-    body.nav-solid .cms-page-section--default .cms-page-intro {
-        text-align: left;
-    }
-
-    body.nav-solid .cms-page-section--default .cms-page-intro ul,
-    body.nav-solid .cms-page-section--default .cms-page-intro ol {
-        display: block;
-        margin-left: 0;
-        margin-right: 0;
-    }
-
     body.nav-solid .cms-page-block-row + .cms-page-block-row {
         margin-top: 1.75rem;
         padding-top: 1.75rem;
@@ -1711,23 +1662,6 @@ body.nav-solid .cms-page-layout--full {
     --cms-builder-gutter: clamp(1rem, 3vw, 2.5rem);
     --cms-builder-band-pad: clamp(3rem, 6vw, 5.5rem);
     background: #fcfaf8;
-}
-
-body.nav-solid .cms-builder-hero {
-    padding: clamp(4.5rem, 10vw, 7rem) 0 clamp(3rem, 6vw, 4.5rem);
-    border-bottom: 1px solid rgba(200, 162, 90, 0.2);
-}
-
-body.nav-solid .cms-builder-hero .page-hero-title-wide {
-    max-width: min(100%, 20ch);
-    font-size: clamp(2.35rem, 5.5vw, 3.75rem);
-    line-height: 1.06;
-    letter-spacing: -0.03em;
-}
-
-body.nav-solid .cms-builder-hero p {
-    max-width: min(100%, 38rem);
-    font-size: clamp(1.05rem, 2vw, 1.2rem);
 }
 
 body.nav-solid .cms-builder {
@@ -1810,8 +1744,18 @@ body.nav-solid .cms-builder-eyebrow {
 }
 
 body.nav-solid .cms-page-section .story-label.cms-builder-label {
-    border-bottom: none;
+    /* Beat .story-label (0.66rem); builder blocks use title as real heading */
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.45rem, 3.2vw, 2.05rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+    text-transform: none;
+    color: var(--ink);
+    margin-bottom: 1.1rem;
     padding-bottom: 0;
+    border-bottom: none;
+    max-width: none;
 }
 
 body.nav-solid .cms-builder-label {
@@ -1921,10 +1865,6 @@ body.nav-solid .cms-builder__empty {
 }
 
 @media (max-width: 991px) {
-    body.nav-solid .cms-builder-hero .page-hero-title-wide {
-        max-width: 100%;
-    }
-
     body.nav-solid .cms-builder-media {
         aspect-ratio: 16 / 10;
         max-height: 400px;
@@ -2212,6 +2152,172 @@ body.nav-solid .cms-sidebar-custom a {
     body.nav-solid .cms-sidebar-panel__cta {
         width: 100%;
         text-align: center;
+    }
+}
+
+/* ── About page: same builder shell as full-width CMS pages ── */
+body.nav-solid .cms-page-layout--about {
+    --cms-builder-gutter: clamp(1rem, 3vw, 2.5rem);
+    --cms-builder-band-pad: clamp(2.25rem, 4.5vw, 3.5rem);
+    background: #fcfaf8;
+}
+
+body.nav-solid .cms-builder--about {
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+body.nav-solid .cms-page-layout--about .cms-builder__shell {
+    max-width: 1440px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-about-band--story {
+    padding: var(--cms-builder-band-pad, clamp(2.25rem, 4.5vw, 3.5rem)) 0;
+}
+
+body.nav-solid .cms-about-collage {
+    max-width: 520px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-about-story-copy {
+    max-width: 36rem;
+    margin-left: auto;
+    font-size: clamp(0.98rem, 1.8vw, 1.06rem);
+    line-height: 1.82;
+    color: var(--ink-mid);
+    min-width: 0;
+}
+
+body.nav-solid .cms-about-story-copy__title {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.5rem, 3.2vw, 2.05rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    color: var(--ink);
+    margin: 0 0 1.25rem;
+    padding-bottom: 0;
+}
+
+body.nav-solid .cms-about-story-copy__title::after {
+    content: '';
+    display: block;
+    width: clamp(2.5rem, 8vw, 4rem);
+    height: 2px;
+    margin-top: 0.85rem;
+    background: linear-gradient(90deg, var(--gold, #c8a25a), rgba(200, 162, 90, 0.15));
+}
+
+body.nav-solid .cms-about-story-copy p {
+    margin-bottom: 1.1em;
+}
+
+body.nav-solid .cms-page-layout--about .cms-about-stats {
+    margin-top: clamp(1rem, 3vw, 2rem);
+    margin-bottom: clamp(1rem, 3vw, 2rem);
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding: clamp(3rem, 6vw, 5rem) var(--cms-builder-gutter);
+    background: var(--secondary);
+    border: none;
+}
+
+body.nav-solid .cms-about-stats__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 3vw, 2rem);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body.nav-solid .cms-about-stats__item {
+    text-align: center;
+}
+
+body.nav-solid .cms-about-stats__num {
+    display: block;
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    color: #ba9358;
+    font-size: clamp(2.5rem, 4.5vw, 3.75rem);
+    line-height: 1;
+    margin-bottom: 0.65rem;
+}
+
+body.nav-solid .cms-about-stats__label {
+    display: block;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+}
+
+body.nav-solid .cms-page-layout--about .cms-about-band--workshop {
+    margin-top: 0;
+}
+
+body.nav-solid .cms-about-workshop-copy {
+    max-width: 28rem;
+    min-width: 0;
+}
+
+body.nav-solid .cms-about-workshop-copy .cms-builder-eyebrow {
+    margin-bottom: 0.75rem;
+}
+
+body.nav-solid .cms-about-workshop-copy__title {
+    font-family: var(--font-display, "Playfair Display", Georgia, serif);
+    font-size: clamp(1.45rem, 3vw, 1.85rem);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    margin: 0 0 1rem;
+    line-height: 1.15;
+}
+
+body.nav-solid .cms-about-workshop-copy p {
+    font-size: clamp(0.98rem, 1.8vw, 1.05rem);
+    line-height: 1.78;
+    color: var(--ink-mid);
+    margin-bottom: 1.25rem;
+}
+
+body.nav-solid .cms-about-workshop__frame {
+    aspect-ratio: 5 / 3;
+    max-height: min(420px, 50vh);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+body.nav-solid .cms-about-workshop__frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 991px) {
+    body.nav-solid .cms-about-stats__grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    body.nav-solid .cms-page-layout--about .cms-about-stats {
+        padding-left: var(--cms-builder-gutter, 1.25rem);
+        padding-right: var(--cms-builder-gutter, 1.25rem);
+    }
+}
+
+@media (max-width: 767px) {
+    body.nav-solid .cms-about-band--story {
+        padding: clamp(1.75rem, 6vw, 2.5rem) 0;
+    }
+
+    body.nav-solid .cms-about-workshop-copy {
+        margin-top: 1rem;
     }
 }
 

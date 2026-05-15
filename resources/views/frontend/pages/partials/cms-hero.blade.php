@@ -4,18 +4,29 @@
         'docs' => 'Documentation',
         'help' => 'Support',
     ];
-    $heroEyebrow = $heroEyebrows[$page->slug] ?? '';
-    $useFluid = ! empty($fluid);
-    $isBuilderHero = ! empty($builder);
+    $eyebrowCustom = trim((string) ($customHeroEyebrow ?? ''));
+    $heroEyebrow = $eyebrowCustom !== ''
+        ? $eyebrowCustom
+        : ($heroEyebrows[$page->slug] ?? '');
+    $titleCustom = trim((string) ($customHeroTitle ?? ''));
+    $ledeCustom = trim((string) ($customHeroLede ?? ''));
 @endphp
 
-<div class="page-hero{{ $isBuilderHero ? ' cms-builder-hero' : '' }}">
-    <div class="{{ $useFluid ? 'container-fluid cms-page-container px-3 px-sm-4 px-lg-5' : 'container' }}">
-        @if(trim((string) $heroEyebrow) !== '')
+<div class="page-hero">
+    <div class="container">
+        @if($heroEyebrow !== '')
             <span class="eyebrow">{{ $heroEyebrow }}</span>
         @endif
-        <h1 class="page-hero-title-wide">{{ $page->title }}</h1>
-        @if($page->meta_description && \Illuminate\Support\Str::length($page->meta_description) < 220)
+        <h1 class="page-hero-title-wide">
+            @if($titleCustom !== '')
+                {!! nl2br(e($titleCustom)) !!}
+            @else
+                {{ $page->title }}
+            @endif
+        </h1>
+        @if($ledeCustom !== '')
+            <p>{!! nl2br(e($ledeCustom)) !!}</p>
+        @elseif($page->meta_description && \Illuminate\Support\Str::length($page->meta_description) < 220)
             <p>{{ $page->meta_description }}</p>
         @endif
         <nav aria-label="breadcrumb">

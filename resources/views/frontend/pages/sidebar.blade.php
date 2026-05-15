@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="cms-page-layout cms-page-layout--sidebar">
-        @include('frontend.pages.partials.cms-hero', ['page' => $page, 'builder' => true])
+        @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
         <div class="cms-builder cms-builder--sidebar">
             <div class="container cms-builder__shell cms-builder__shell--sidebar px-3 px-sm-4 px-xl-5">

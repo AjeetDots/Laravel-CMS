@@ -9,7 +9,7 @@ class PageSeeder extends Seeder {
             [
                 'title'       => 'About Us',
                 'slug'        => 'about',
-                'template'    => 'default',
+                'template'    => 'about',
                 'meta_title'  => 'About Us - Bespoke Ornate Plaster',
                 'meta_description' => 'Learn more about Bespoke Ornate Plaster, our team, mission, and values.',
                 'content'     => '<h2>About Bespoke Ornate Plaster</h2>
@@ -31,7 +31,7 @@ class PageSeeder extends Seeder {
             [
                 'title'       => 'FAQ',
                 'slug'        => 'faq',
-                'template'    => 'default',
+                'template'    => 'full-width',
                 'meta_title'  => 'Frequently Asked Questions - Bespoke Ornate Plaster',
                 'meta_description' => 'Find answers to the most common questions about our services.',
                 'content'     => '<h2>Frequently Asked Questions</h2>
@@ -60,7 +60,7 @@ class PageSeeder extends Seeder {
             [
                 'title'       => 'Documentation',
                 'slug'        => 'docs',
-                'template'    => 'default',
+                'template'    => 'full-width',
                 'meta_title'  => 'Documentation - Bespoke Ornate Plaster',
                 'meta_description' => 'Technical documentation and guides for Bespoke Ornate Plaster.',
                 'content'     => '<h2>Documentation</h2>
@@ -79,7 +79,7 @@ class PageSeeder extends Seeder {
             [
                 'title'       => 'Help Desk',
                 'slug'        => 'help',
-                'template'    => 'default',
+                'template'    => 'full-width',
                 'meta_title'  => 'Help Desk - Bespoke Ornate Plaster',
                 'meta_description' => 'Get help and support from the Bespoke Ornate Plaster team.',
                 'content'     => '<h2>Help Desk</h2>

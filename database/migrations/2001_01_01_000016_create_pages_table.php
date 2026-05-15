@@ -12,7 +12,7 @@ return new class extends Migration {
             $table->longText('content')->nullable();
             $table->string('meta_title')->nullable();
             $table->string('meta_description')->nullable();
-            $table->string('template')->default('default');
+            $table->string('template')->default('full-width');
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

@@ -8,7 +8,7 @@
 
 @section('content')
     <div class="cms-page-layout cms-page-layout--full">
-        @include('frontend.pages.partials.cms-hero', ['page' => $page, 'fluid' => true, 'builder' => true])
+        @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
         <div class="cms-builder">
             <div class="container-fluid cms-page-container cms-builder__shell px-3 px-sm-4 px-xl-5">

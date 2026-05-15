@@ -1,15 +1,15 @@
 @php
     $hasImage = !empty($data['image']);
-    $imageRight = $hasImage && ($data['image_position'] ?? 'left') === 'right';
-    $layoutKey = $layout ?? 'default';
+    $posRaw = strtolower(trim((string) ($data['image_position'] ?? 'left')));
+    $imageRight = $hasImage && ($posRaw === 'right');
+    $layoutKey = $layout ?? 'full';
     $isBuilder = in_array($layoutKey, ['full', 'sidebar'], true);
     $isSidebar = $layoutKey === 'sidebar';
     $colClass = $hasImage
         ? ($isSidebar ? 'col-12' : 'col-12 col-lg-6')
         : 'col-12';
-    $textOrderClass = (! $isSidebar && $imageRight) ? 'order-1 order-lg-1' : 'order-2 order-lg-2';
-    $mediaOrderClass = (! $isSidebar && $imageRight) ? 'order-2 order-lg-2' : 'order-1 order-lg-1';
-    $bandIndex = $bandIndex ?? 1;
+    $textOrderClass = $imageRight ? 'order-1 order-lg-1' : 'order-2 order-lg-2';
+    $mediaOrderClass = $imageRight ? 'order-2 order-lg-2' : 'order-1 order-lg-1';
 @endphp
 
 @if($hasImage && ! $imageRight)
@@ -27,9 +27,6 @@
 @endif
 
 <div class="{{ $colClass }} {{ $textOrderClass }} {{ $isBuilder ? 'cms-builder-split__copy cms-builder-copy' : 'cms-section-media__prose pt-0 pt-lg-4' }}">
-    @if($isBuilder)
-        <span class="cms-builder-eyebrow" aria-hidden="true">Section {{ str_pad((string) $bandIndex, 2, '0', STR_PAD_LEFT) }}</span>
-    @endif
     <span class="story-label {{ $isBuilder ? 'cms-builder-label' : '' }}">{{ $data['title'] }}</span>
     <div class="{{ $isBuilder ? 'cms-builder-copy__body page-content' : '' }}">
         {!! $data['content'] !!}
