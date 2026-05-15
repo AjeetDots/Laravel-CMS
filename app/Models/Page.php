@@ -28,9 +28,6 @@ class Page extends Model
 
     public const TEMPLATE_FULL_WIDTH = 'full-width';
 
-    /** Centred column layout (narrower than full width). */
-    public const TEMPLATE_DEFAULT = 'default';
-
     /** Uses theme contact content + enquiry form (see `frontend.pages.contact`). */
     public const TEMPLATE_CONTACT = 'contact';
 
@@ -88,7 +85,7 @@ class Page extends Model
      */
     public static function sectionedTemplates(): array
     {
-        return [self::TEMPLATE_DEFAULT, self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
+        return [self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
     }
 
     /**
@@ -101,7 +98,6 @@ class Page extends Model
         return [
             self::TEMPLATE_FULL_WIDTH => 'Full width',
             self::TEMPLATE_SIDEBAR => 'With sidebar',
-            self::TEMPLATE_DEFAULT => 'Default (centred column)',
         ];
     }
 

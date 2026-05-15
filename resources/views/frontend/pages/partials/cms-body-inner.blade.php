@@ -2,9 +2,9 @@
     $hasIntro = trim((string) ($page->content ?? '')) !== '';
     $hasBlocks = $page->sections->count() > 0;
     $sectionsFirst = ($page->body_order ?? \App\Models\Page::BODY_ORDER_CONTENT_FIRST) === \App\Models\Page::BODY_ORDER_SECTIONS_FIRST;
-    $layoutKey = $layout ?? 'default';
+    $layoutKey = $layout ?? 'full';
     $isBuilderLayout = in_array($layoutKey, ['full', 'sidebar'], true);
-    $sectionLayout = $isBuilderLayout ? $layoutKey : $layoutKey;
+    $sectionLayout = $layoutKey;
 @endphp
 
 @if($sectionsFirst)
@@ -14,8 +14,8 @@
                 @if($isBuilderLayout)
                     <section class="cms-builder-band{{ $loop->even ? ' cms-builder-band--alt' : '' }}" aria-label="Section {{ $loop->iteration }}">
                 @endif
-                <div class="row align-items-center g-4 g-xl-5 {{ $isBuilderLayout ? 'cms-builder-band__grid' : 'cms-page-block-row' }}">
-                    @include('frontend.sections.'.$section->type, ['data' => $section->data, 'layout' => $sectionLayout, 'bandIndex' => $loop->iteration])
+                <div class="row align-items-center align-items-lg-start g-4 g-xl-5 {{ $isBuilderLayout ? 'cms-builder-band__grid' : 'cms-page-block-row' }}">
+                    @include('frontend.sections.'.$section->type, ['data' => $section->data, 'layout' => $sectionLayout])
                 </div>
                 @if($isBuilderLayout)
                     </section>
@@ -40,8 +40,8 @@
                 @if($isBuilderLayout)
                     <section class="cms-builder-band{{ $loop->even ? ' cms-builder-band--alt' : '' }}" aria-label="Section {{ $loop->iteration }}">
                 @endif
-                <div class="row align-items-center g-4 g-xl-5 {{ $isBuilderLayout ? 'cms-builder-band__grid' : 'cms-page-block-row' }}">
-                    @include('frontend.sections.'.$section->type, ['data' => $section->data, 'layout' => $sectionLayout, 'bandIndex' => $loop->iteration])
+                <div class="row align-items-center align-items-lg-start g-4 g-xl-5 {{ $isBuilderLayout ? 'cms-builder-band__grid' : 'cms-page-block-row' }}">
+                    @include('frontend.sections.'.$section->type, ['data' => $section->data, 'layout' => $sectionLayout])
                 </div>
                 @if($isBuilderLayout)
                     </section>

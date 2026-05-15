@@ -4,7 +4,7 @@
 .hero-full {
     position: relative;
     height: 100vh;
-    min-height: 600px;
+    min-height: normalpx;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -298,6 +298,13 @@
     }
 }
 @media only screen and (max-width:680px){
+    .finishes-home-band .home-finishes-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-auto-rows: auto ;
+}
+    .site-nav{
+        padding:0 !important;
+    }
       .hero-full-btns .hero-btn,
     .hero-full-btns .hero-btn-outline {
         width: 100%;
@@ -410,7 +417,7 @@
 .disc-card-title {
     font-family: 'Georgia Regular';
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: normal;
     color: var(--ink);
     margin-bottom: 8px;
     letter-spacing: 0;
@@ -587,10 +594,10 @@
 }
 
 @media (max-width: 991px) {
-    .commissions-grid {
+    /* .commissions-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         grid-auto-rows: 240px;
-    }
+    } */
 
     .commission-item:first-child {
         grid-row: span 2;
@@ -715,7 +722,7 @@
 }
 
 .page-home .hero-full-title {
-    font-weight: 600;
+    font-weight: normal;
     font-size: clamp(2.35rem, 4.8vw, 3.95rem);
     letter-spacing: -0.02em;
     line-height: 1.12;
@@ -904,7 +911,7 @@
 
 .page-home .intro-headline {
     font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
-    font-weight: 600;
+    font-weight: normal;
     font-size: clamp(2rem, 4vw, 3rem);
     letter-spacing: -0.02em;
 }
@@ -933,7 +940,7 @@
 .page-home .intro-body {
     font-size: 1.05rem;
     line-height: 2;
-    color: var(--ink-mid);
+    color: var(--secondary);
 }
 
 /* ── Disciplines: service cards ── */
@@ -977,7 +984,7 @@
     top: 9px;
     right: 0;
     rotate: -45deg;
-    font-size: 21px;
+    font-size: 18px;
 }
 
 .disciplines-section .disc-card-body .disc-card-link .fas {
@@ -1062,7 +1069,7 @@
 
 .page-home .stat-lbl {
     letter-spacing: 0.22em;
-    font-weight: 600;
+    font-weight: normal;
 }
 
 /* ── Commissions: warm ivory gallery (distinct from cool stats) ── */
@@ -1107,7 +1114,7 @@
     color: #ba8f57;
     letter-spacing: 0.34em;
     font-size: 0.56rem;
-    font-weight: 600;
+    font-weight: normal;
     margin-bottom: 10px;
 }
 
@@ -1768,8 +1775,8 @@
 
 @media (max-width: 991px) {
     .finishes-home-band .home-finishes-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        grid-auto-rows: 220px;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-auto-rows: auto; 
     }
 
     .finishes-home-band .home-finishes-grid .commission-item:first-child {
@@ -1837,6 +1844,7 @@
     margin-bottom: 10px;
     color: #fff;
     /* padding-top: 12px; */
+    text-transform: capitalize;
 }
 .home-why-card__title-dark{
    font-family: 'Georgia Regular';
@@ -1845,7 +1853,7 @@
     color: var(--secondary);
 }
 .home-why-card__desc {
-    font-size: 0.875rem;
+    font-size: clamp(1rem, 2.2vw, 0.875rem);
     line-height: 1.65;
     color: var(--gray-100);
     margin: 0;
@@ -1917,7 +1925,7 @@
 
 
 .home-process-step__desc {
-    font-size: 0.875rem;
+    font-size: clamp(1rem, 2.2vw, 0.875rem);
     color: var(--text);
     line-height: 1.65;
     margin: 0;
@@ -1989,7 +1997,7 @@
 .home-begin-cta__title {
     font-family: 'Georgia Regular';
     font-size: clamp(2rem, 4.2vw, 3.35rem);
-    font-weight: 600;
+    font-weight: normal;
     color: #fff;
     max-width: 720px;
     margin: 20px auto;
@@ -2144,7 +2152,7 @@
 .home-contact-panel::before {
     content: '';
     position: absolute;
-    left: 36px;
+    left: 70px;
     top: 4px;
     transform: translateY(-50%);
     width: 74px;
@@ -2286,7 +2294,7 @@
 
 .page-home .testi-split__photo-name {
     font-size: clamp(1.18rem, 1.9vw, 1.45rem);
-    font-weight: 600;
+    font-weight: normal;
     line-height: 1.12;
 }
 
@@ -2315,7 +2323,7 @@
     font-size: 30px;
     line-height: 40px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: normal;
 }
 
 .page-home .testi-split__dots-wrap {
@@ -2324,7 +2332,7 @@
 
 .page-home .testi-split__panel-name {
     font-size: clamp(1.2rem, 1.7vw, 1.5rem);
-    font-weight: 600;
+    font-weight: normal;
 }
 
 .page-home .testi-split__panel-role {
@@ -2396,7 +2404,11 @@
     color: var(--secondary);
     background: #fff;
 }
-
+@media (max-width:1024px){
+        .home-atelier-collage__float, .home-atelier-collage__accent, .home-atelier-collage__accent, .home-atelier-collage__shape--square, .home-atelier-collage__accent, .home-atelier-collage__accent, .blue_Section img, .home-atelier-collage__shape--dot {
+       display: none;
+    }
+}
 @media (max-width: 991px) {
     .home-process-steps {
         grid-template-columns: 1fr;
@@ -2427,21 +2439,16 @@
         bottom: 20px;
     }
 
-    .home-atelier-collage__shape--square {
+    /* .home-atelier-collage__shape--square {
         width: 60px;
         height: 60px;
         right: 36px;
         top: 58px;
-    }
+    } */
+.home-atelier-collage , .home-atelier-collage__main{
+    max-width: 100%;
+}
 
-    .home-atelier-collage__main {
-        left: 14px;
-    }
-
-    .home-atelier-collage__float {
-        right: 10px;
-        bottom: 4px;
-    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -2574,12 +2581,12 @@ body.page-home {
 .testimonial-section {
     overflow: hidden;
     border-radius: 0;
+    position: relative;
 }
-
 .testimonial-left {
     position: relative;
     background: #81694d;
-    min-height: 600px;
+    min-height: normalpx;
 }
 .testimonial-left img,
 .testimonial-left__img {
@@ -2630,7 +2637,7 @@ body.page-home {
 
 .testimonial-right {
     position: relative;
-    min-height: 600px;
+    min-height: normalpx;
     padding: 200px;
     margin: auto;
     overflow: hidden;
@@ -2699,7 +2706,7 @@ body.page-home {
 .client-name {
     color: #fff;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: normal;
     margin-bottom: 8px;
 }
 
@@ -2710,13 +2717,21 @@ body.page-home {
     text-transform: uppercase;
     opacity: .9;
 }
+.testimonial-left::after{
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: rgba(33, 31, 28, 0.12);
+}
 
 @media(max-width:991px) {
 
-    .testimonial-left {
-        min-height: 500px;
-        border-top-right-radius: 70px;
-    }
+ .testimonial-left {
+    height: 200px;
+    overflow: hidden;
+    border-top-right-radius: 0;
+}
 
     .testimonial-right {
         padding: 60px 40px;
@@ -2869,7 +2884,7 @@ a.svc-split__cta i {
     display: flex;
     align-items: center;
     gap: 16px;
-    font-size: 14px;
+    font-size: clamp(1rem, 2.2vw, 0.875rem);
     line-height: 1.4;
     color: var(--text);
     font-weight: 400;
@@ -2903,4 +2918,15 @@ a.svc-split__cta i {
 }
 .rotate-45{
 rotate: -45deg;
+}
+
+.home-finishes-grid .commission-item:hover .home-why-card__title {
+    color: var(--primary);
+}
+.commission-item:hover .commission-img{
+    transform: scale(1.1) ;
+}
+.imgFinshes{
+    overflow: hidden;
+
 }

@@ -242,7 +242,7 @@
                                 Sections first, then main content
                             </option>
                         </select>
-                        <p class="form-text small mb-0">Applies to Default, Full width, and With sidebar templates on the public site.</p>
+                        <p class="form-text small mb-0">Applies to Full width and With sidebar templates on the public site.</p>
                     </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" id="isActive"
@@ -343,10 +343,10 @@
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Position</label>
-                        <select class="form-control image-position-field">
-                            <option value="left">Left</option>
-                            <option value="right">Right</option>
+                        <label class="form-label">Image position</label>
+                        <select class="form-select image-position-field">
+                            <option value="left">Left (image first)</option>
+                            <option value="right">Right (image second)</option>
                         </select>
                     </div>
                 </div>

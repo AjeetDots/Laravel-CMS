@@ -56,9 +56,7 @@ class PageController extends Controller
                     'title' => $section['title'],
                     'content' => $section['content'],
                     'image' => $image,
-                    'image_position' => $section[
-                            'image_position'
-                        ],
+                    'image_position' => $this->normalizeSectionImagePosition($section['image_position'] ?? null),
                     'buttons' => $section['buttons']
                         ?? [],
                 ],
@@ -137,9 +135,7 @@ class PageController extends Controller
                     'title' => $section['title'],
                     'content' => $section['content'],
                     'image' => $image,
-                    'image_position' => $section[
-                            'image_position'
-                        ],
+                    'image_position' => $this->normalizeSectionImagePosition($section['image_position'] ?? null),
                     'buttons' => $buttons,
                     // $section['buttons']
                     // ?? []
@@ -169,7 +165,6 @@ class PageController extends Controller
     private function templates(): array
     {
         return [
-            'default' => 'Default',
             'about' => 'About Page (Editorial)',
             'full-width' => 'Full Width',
             'sidebar' => 'With Sidebar',
@@ -186,5 +181,12 @@ class PageController extends Controller
         $allowed = Page::allowedTemplatesForSlug($slug);
 
         return array_intersect_key($this->templates(), array_flip($allowed));
+    }
+
+    private function normalizeSectionImagePosition(mixed $value): string
+    {
+        $v = strtolower(trim((string) ($value ?? '')));
+
+        return $v === 'right' ? 'right' : 'left';
     }
 }

@@ -23,7 +23,7 @@ class PageController extends Controller
 
         $template = 'frontend.pages.'.$page->template;
         if (! view()->exists($template)) {
-            $template = 'frontend.pages.default';
+            $template = 'frontend.pages.'.Page::TEMPLATE_FULL_WIDTH;
         }
 
         $viewData = [

@@ -64,10 +64,11 @@
             </div>
 
             <div class="mb-3">
-                <label>Position</label>
-                <select name="sections[{{ $index }}][image_position]" class="form-control">
-                    <option value="left" {{ ($data['image_position'] ?? '') == 'left' ? 'selected' : '' }}>Left</option>
-                    <option value="right" {{ ($data['image_position'] ?? '') == 'right' ? 'selected' : '' }}>Right</option>
+                <label class="form-label" for="section-{{ $index }}-image-position">Image position</label>
+                <select id="section-{{ $index }}-image-position" name="sections[{{ $index }}][image_position]" class="form-select image-position-field">
+                    @php $pos = strtolower(trim((string) ($data['image_position'] ?? 'left'))); @endphp
+                    <option value="left" @selected($pos !== 'right')>Left (image first)</option>
+                    <option value="right" @selected($pos === 'right')>Right (image second)</option>
                 </select>
             </div>
 
