@@ -33,11 +33,11 @@
 </section>
 
 {{-- Main + sidebar — same structure as finish / service detail --}}
-<section class="section section-white">
+<section class="section section-white editorMain">
     <div class="container">
         <div class="row g-5">
 
-            <div class="col-lg-8">
+            <div class="col-lg-8 editorInner">
                 @if($post->image)
                     <div class="media-frame media-frame--short service-detail-lead-img mb-4">
                         <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="lazy" decoding="async">

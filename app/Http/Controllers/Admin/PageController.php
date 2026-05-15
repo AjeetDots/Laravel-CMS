@@ -25,7 +25,7 @@ class PageController extends Controller
     public function create()
     {
         return view('admin.pages.form', [
-            'page' => new Page,
+            'page' => new Page(['template' => Page::defaultTemplate()]),
             'templates' => $this->templatesForForm(new Page),
         ]);
     }
@@ -179,11 +179,12 @@ class PageController extends Controller
 
     private function templatesForForm(Page $page): array
     {
-        $templates = $this->templates();
-        if (! $page->exists || $page->slug !== Page::ABOUT_SLUG) {
-            unset($templates['about']);
-        }
+        $slug = $page->exists
+            ? (string) $page->slug
+            : '';
 
-        return $templates;
+        $allowed = Page::allowedTemplatesForSlug($slug);
+
+        return array_intersect_key($this->templates(), array_flip($allowed));
     }
 }

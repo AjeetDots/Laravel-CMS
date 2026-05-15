@@ -45,7 +45,16 @@ class StorePageRequest extends FormRequest
             'sidebar_cta_text' => 'nullable|string|max:600',
             'meta_title' => 'nullable|string|max:200',
             'meta_description' => 'nullable|string|max:500',
-            'template' => ['required', 'string', Rule::in(Page::creatableTemplates())],
+            'template' => [
+                'required',
+                'string',
+                Rule::in(Page::allowedTemplatesForSlug(
+                    Page::resolveSlugFromInput(
+                        is_string($this->input('slug')) ? $this->input('slug') : null,
+                        (string) $this->input('title', '')
+                    )
+                )),
+            ],
             'is_active' => 'boolean',
         ], $this->seoRules());
     }

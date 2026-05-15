@@ -5,6 +5,7 @@ use App\Models\Service;
 use App\Models\Finish;
 use App\Models\GalleryItem;
 use App\Models\Contact;
+use App\Models\Portfolio;
 
 class DashboardController extends Controller {
     public function index() {
@@ -13,6 +14,7 @@ class DashboardController extends Controller {
             'unread_enquiries' => Contact::where('is_read', false)->count(),
             'services'         => Service::count(),
             'finishes'         => Finish::count(),
+            'portfolio'        => Portfolio::count(),
             'gallery'          => GalleryItem::count(),
         ];
         $recentEnquiries = Contact::latest()->limit(5)->get();

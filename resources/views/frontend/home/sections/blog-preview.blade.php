@@ -14,7 +14,7 @@
         <div class="row align-items-end mb-5">
             <div class="col-12 col-lg-12 text-center visible">
                 <span class="finishes-intro__eyebrow">{{ $blogPreviewEyebrow }}</span>
-                <h2 class="home-section-title-lg mb-0">
+                <h2 class="home-atelier-headline">
                     {{ $blogPreviewHeading }}
                 </h2>
             </div>
@@ -27,9 +27,9 @@
             </div>
         </div>
         <div class="home-blog-scroller" id="homeBlogScroller">
-            <div class="row g-4 flex-nowrap flex-lg-wrap pb-1 home-blog-row">
+            <div class="row g-4 pb-1 home-blog-row">
             @foreach($blogPosts as $i => $post)
-            <div class="col-10 col-md-6 col-lg-4 flex-shrink-0 flex-lg-shrink-1 reveal delay-{{ $i + 1 }}">
+            <div class="col-12 col-md-6 col-lg-4 flex-shrink-0 flex-lg-shrink-1 reveal delay-{{ $i + 1 }}">
                 <a href="{{ route('blog.show', $post->slug) }}" class="blog-card d-block h-100">
                     <div class="blog-card-img-wrap">
                         @if($post->image)
@@ -40,15 +40,15 @@
                         @if($post->category)<span class="blog-badge">{{ $post->category }}</span>@endif
                     </div>
                     <div class="blog-card-body">
-                         <span class="eyebrow text-eyebrow">journal</span>
-                        <h3 class="blog-card-title">{{ $post->title }}</h3>
+                         <span class="finishes-intro__eyebrow">journal</span>
+                        <h3 class="home-why-card__title-dark">{{ $post->title }}</h3>
                         @if($post->excerpt)
                             <!-- <p class="blog-card-excerpt">{{ Str::limit($post->excerpt, 90) }}</p> -->
                         @endif
-                        <div class="blog-card-meta">
+                        <!-- <div class="blog-card-meta">
                             @if($post->author)<span><i class="fas fa-user me-1"></i>{{ $post->author }}</span>@endif
                             <span><i class="far fa-clock me-1"></i>{{ $post->reading_time }}</span>
-                        </div>
+                        </div> -->
                         <!-- <span class="blog-read-more">{{ $blogPreviewReadMoreText }} <i class="fas fa-arrow-right"></i></span> -->
                     </div>
                 </a>
@@ -56,9 +56,9 @@
             @endforeach
             </div>
         </div>
-        @if($blogPosts->count() > 1)
+        <!-- @if($blogPosts->count() > 1)
         <div class="home-blog-dots d-flex justify-content-center gap-2 mt-3" id="homeBlogDots" aria-hidden="true"></div>
-        @endif
+        @endif -->
     </div>
 </section>
 @endif

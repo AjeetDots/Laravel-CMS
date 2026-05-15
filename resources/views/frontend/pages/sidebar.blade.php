@@ -7,18 +7,20 @@
 @section('body_class', 'nav-solid')
 
 @section('content')
-    @include('frontend.pages.partials.cms-hero', ['page' => $page])
+    <div class="cms-page-layout cms-page-layout--sidebar">
+        @include('frontend.pages.partials.cms-hero', ['page' => $page, 'builder' => true])
 
-    <section class="section section-white cms-page-section cms-page-section--sidebar">
-        <div class="container">
-            <div class="row g-4 g-xl-5 align-items-start justify-content-center">
-                <div class="col-12 col-lg-8">
-                    @include('frontend.pages.partials.cms-body-inner', ['page' => $page])
-                </div>
-                <div class="col-12 col-lg-4 col-xl-3">
-                    @include('frontend.pages.partials.cms-sidebar')
+        <div class="cms-builder cms-builder--sidebar">
+            <div class="container cms-builder__shell cms-builder__shell--sidebar px-3 px-sm-4 px-xl-5">
+                <div class="row g-4 g-xl-5 align-items-start cms-builder-sidebar__grid">
+                    <main class="col-12 col-lg-8 cms-builder-main order-2 order-lg-1">
+                        @include('frontend.pages.partials.cms-body-inner', ['page' => $page, 'layout' => 'sidebar'])
+                    </main>
+                    <div class="col-12 col-lg-4 col-xl-3 cms-builder-aside order-1 order-lg-2">
+                        @include('frontend.pages.partials.cms-sidebar')
+                    </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 @endsection

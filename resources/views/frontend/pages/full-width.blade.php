@@ -7,17 +7,13 @@
 @section('body_class', 'nav-solid')
 
 @section('content')
-    @include('frontend.pages.partials.cms-hero', ['page' => $page])
+    <div class="cms-page-layout cms-page-layout--full">
+        @include('frontend.pages.partials.cms-hero', ['page' => $page, 'fluid' => true, 'builder' => true])
 
-    <section class="section section-white cms-page-section cms-page-section--full">
-        <div class="container-fluid px-3 px-sm-4 px-lg-5">
-            <div class="row">
-                <div class="col-12">
-                    <div class="cms-page-inner-wide">
-                        @include('frontend.pages.partials.cms-body-inner', ['page' => $page])
-                    </div>
-                </div>
+        <div class="cms-builder">
+            <div class="container-fluid cms-page-container cms-builder__shell px-3 px-sm-4 px-xl-5">
+                @include('frontend.pages.partials.cms-body-inner', ['page' => $page, 'layout' => 'full'])
             </div>
         </div>
-    </section>
+    </div>
 @endsection

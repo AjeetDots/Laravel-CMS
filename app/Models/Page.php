@@ -15,6 +15,9 @@ class Page extends Model
     /** Slug reserved for the site About page (About Editorial template is only offered here). */
     public const ABOUT_SLUG = 'about';
 
+    /** Slugs that may use the Contact layout template. */
+    public const CONTACT_SLUGS = ['contact', 'contact-us'];
+
     /** Main HTML body appears before section blocks on the public page. */
     public const BODY_ORDER_CONTENT_FIRST = 'content_first';
 
@@ -23,8 +26,16 @@ class Page extends Model
 
     public const TEMPLATE_SIDEBAR = 'sidebar';
 
+    public const TEMPLATE_FULL_WIDTH = 'full-width';
+
+    /** Centred column layout (narrower than full width). */
+    public const TEMPLATE_DEFAULT = 'default';
+
     /** Uses theme contact content + enquiry form (see `frontend.pages.contact`). */
     public const TEMPLATE_CONTACT = 'contact';
+
+    /** Setting key for the template pre-selected when creating a new page. */
+    public const SETTING_DEFAULT_TEMPLATE = 'page_default_template';
 
     protected $fillable = [
         'title',
@@ -77,17 +88,65 @@ class Page extends Model
      */
     public static function sectionedTemplates(): array
     {
-        return ['default', 'full-width', 'sidebar'];
+        return [self::TEMPLATE_DEFAULT, self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
     }
 
     /**
-     * Templates allowed when creating a page (sections builder + contact layout).
+     * Layout templates that can be chosen as the site default for new pages.
      *
+     * @return array<string, string> value => admin label
+     */
+    public static function defaultTemplateOptions(): array
+    {
+        return [
+            self::TEMPLATE_FULL_WIDTH => 'Full width',
+            self::TEMPLATE_SIDEBAR => 'With sidebar',
+            self::TEMPLATE_DEFAULT => 'Default (centred column)',
+        ];
+    }
+
+    /** Template pre-selected in admin when creating a new page. */
+    public static function defaultTemplate(): string
+    {
+        $value = Setting::get(self::SETTING_DEFAULT_TEMPLATE, self::TEMPLATE_FULL_WIDTH);
+        $value = is_string($value) ? trim($value) : '';
+
+        return array_key_exists($value, self::defaultTemplateOptions())
+            ? $value
+            : self::TEMPLATE_FULL_WIDTH;
+    }
+
+    /**
+     * Templates allowed for a page slug (admin form + validation).
+     *
+     * @return list<string>
+     */
+    public static function allowedTemplatesForSlug(?string $slug): array
+    {
+        $slug = strtolower(trim((string) $slug));
+        $templates = self::sectionedTemplates();
+
+        if ($slug === self::ABOUT_SLUG) {
+            $templates[] = 'about';
+        }
+        if (self::isContactSlug($slug)) {
+            $templates[] = self::TEMPLATE_CONTACT;
+        }
+
+        return $templates;
+    }
+
+    public static function isContactSlug(?string $slug): bool
+    {
+        return in_array(strtolower(trim((string) $slug)), self::CONTACT_SLUGS, true);
+    }
+
+    /**
      * @return list<string>
      */
     public static function creatableTemplates(): array
     {
-        return array_merge(self::sectionedTemplates(), [self::TEMPLATE_CONTACT]);
+        return self::sectionedTemplates();
     }
 
     /**

@@ -8,6 +8,7 @@
 
 @section('styles')
 <link href="{{ asset('css/about.css') }}" rel="stylesheet">
+<link href="{{ asset('css/home.css') }}" rel="stylesheet">
 @endsection
 
 @section('content')
@@ -18,10 +19,10 @@
 <section class="about-intro">
     <div class="container">
         @if(trim((string) ($ap['intro_eyebrow'] ?? '')) !== '')
-        <span class="about-intro__eyebrow">{{ $ap['intro_eyebrow'] }}</span>
+        <span class="finishes-intro__eyebrow">{{ $ap['intro_eyebrow'] }}</span>
         @endif
         @if(trim((string) ($ap['intro_title'] ?? '')) !== '')
-        <h1 class="about-intro__title">{!! nl2br(e($ap['intro_title'])) !!}</h1>
+        <h1 class="finishes-intro__title">{!! nl2br(e($ap['intro_title'])) !!}</h1>
         @endif
     </div>
 </section>
@@ -39,7 +40,7 @@
     <div class="container">
         <div class="row g-5 align-items-center">
             <div class="col-lg-6">
-                <div class="about-story__collage">
+                <!-- <div class="about-story__collage">
                     <span class="about-story__shape about-story__shape--arc" aria-hidden="true"></span>
                     <span class="about-story__shape about-story__shape--bar" aria-hidden="true"></span>
                     <span class="about-story__shape about-story__shape--square" aria-hidden="true"></span>
@@ -55,13 +56,38 @@
                         <img src="{{ $ap['image_accent_display'] }}" alt="{{ $ap['image_accent_alt'] ?? '' }}" class="img-fallback" data-fallback="{{ $ap['image_accent_fallback'] ?? '' }}">
                     </div>
                     @endif
+                </div> -->
+                 <div class="home-atelier-collage" aria-hidden="true">
+                    <div class="home-atelier-collage__accent"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--halo"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--dot"></div>
+                    <div class="home-atelier-collage__shape home-atelier-collage__shape--square"></div>
+                     @if(trim((string) ($ap['image_main_display'] ?? '')) !== '')
+                    <div class="home-atelier-collage__main">
+                        <img src="{{ $ap['image_accent_display'] }}"
+                             alt=""
+                             loading="lazy" decoding="async"
+                             class="home-atelier-collage__img home-atelier-collage__img--primary img-fluid">
+                    </div>
+                    <div class="blue_Section">
+                        <img src="../images/blue.png" class="img-fluid"/>
+                    </div>
+                    @endif
+                   @if(trim((string) ($ap['image_accent_display'] ?? '')) !== '')
+                    <div class="home-atelier-collage__float">
+                        <img src="{{$ap['image_accent_display']}}"
+                             alt=""
+                             loading="lazy" decoding="async"
+                             class="home-atelier-collage__img home-atelier-collage__img--inset img-fluid">
+                    </div>
+                    @endif
                 </div>
             </div>
 
             <div class="col-lg-6">
                 <div class="about-story__content">
                     @if(trim((string) ($ap['story_heading'] ?? '')) !== '')
-                    <h2>{{ $ap['story_heading'] }}</h2>
+                    <h2 class="home-atelier-headline mb-4">{{ $ap['story_heading'] }}</h2>
                     @endif
                     @if(trim((string) ($ap['story_body_1'] ?? '')) !== '')
                     <p>{{ $ap['story_body_1'] }}</p>
@@ -132,7 +158,7 @@
                     <p>{{ $ap['workshop_body'] }}</p>
                     @endif
                     @if(trim((string) ($ap['workshop_btn_text'] ?? '')) !== '' && trim((string) ($ap['workshop_btn_href'] ?? '')) !== '')
-                    <a href="{{ $ap['workshop_btn_href'] }}" class="about-workshop__btn">{{ $ap['workshop_btn_text'] }}</a>
+                    <a href="{{ $ap['workshop_btn_href'] }}" class="hero-btn hero-btn--gold home-atelier-btn">{{ $ap['workshop_btn_text'] }}</a>
                     @endif
                 </div>
             </div>

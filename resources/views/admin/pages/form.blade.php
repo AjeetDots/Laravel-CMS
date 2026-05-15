@@ -208,9 +208,18 @@
                                 <span class="visually-hidden">Template types — hover or click for help</span>
                             </button>
                         </label>
+                        @php
+                            $selectedTemplate = old('template', $page->template ?? \App\Models\Page::defaultTemplate());
+                            if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug($page->slug ?? '')) {
+                                $selectedTemplate = \App\Models\Page::defaultTemplate();
+                            }
+                            if ($selectedTemplate === 'about' && ($page->slug ?? '') !== \App\Models\Page::ABOUT_SLUG) {
+                                $selectedTemplate = \App\Models\Page::defaultTemplate();
+                            }
+                        @endphp
                         <select name="template" id="pageTemplateSelect" class="form-select">
                             @foreach($templates as $value => $label)
-                                <option value="{{ $value }}" {{ old('template', $page->template ?? 'default') == $value ? 'selected' : '' }}>{{ $label }}</option>
+                                <option value="{{ $value }}" {{ $selectedTemplate === $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -283,7 +292,8 @@
         <li class="mb-2"><strong>Default</strong> — Main story in a centred column; best for articles, policies, FAQs.</li>
         <li class="mb-2"><strong>Full width</strong> — Wider main column; use for long guides or when you want more horizontal room.</li>
         <li class="mb-2"><strong>With sidebar</strong> — Main column + sidebar. Optional rich <strong>Sidebar content</strong>; contact card heading/intro are editable; phone, email, and “Contact us” use site settings.</li>
-        <li><strong>About Page (Editorial)</strong> — Only offered on the About Us page; uses the dedicated About layout and theme options instead of the main/section builders.</li>
+        <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on the About page (<code>about</code> slug).</li>
+        <li><strong>Contact</strong> — Only on Contact pages (<code>contact</code> or <code>contact-us</code> slug); uses theme contact content and the enquiry form.</li>
     </ul>
 </div>
 

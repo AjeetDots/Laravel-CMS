@@ -1,71 +1,59 @@
 @php
     $hasImage = !empty($data['image']);
+    $imageRight = $hasImage && ($data['image_position'] ?? 'left') === 'right';
+    $layoutKey = $layout ?? 'default';
+    $isBuilder = in_array($layoutKey, ['full', 'sidebar'], true);
+    $isSidebar = $layoutKey === 'sidebar';
+    $colClass = $hasImage
+        ? ($isSidebar ? 'col-12' : 'col-12 col-lg-6')
+        : 'col-12';
+    $textOrderClass = (! $isSidebar && $imageRight) ? 'order-1 order-lg-1' : 'order-2 order-lg-2';
+    $mediaOrderClass = (! $isSidebar && $imageRight) ? 'order-2 order-lg-2' : 'order-1 order-lg-1';
+    $bandIndex = $bandIndex ?? 1;
 @endphp
 
-@if($hasImage && $data['image_position'] == 'left')
-
-    <div class="col-lg-6">
-        <div class="media-frame about-feature-frame">
+@if($hasImage && ! $imageRight)
+    <div class="{{ $colClass }} {{ $mediaOrderClass }} {{ $isBuilder ? 'cms-builder-split__media' : 'mb-4 mb-lg-0' }}">
+        <div class="media-frame about-feature-frame {{ $isBuilder ? 'cms-builder-media'.($isSidebar ? ' cms-builder-media--sidebar' : '') : 'cms-section-media__frame' }}">
             <img
-                src="{{ asset(
-                    'storage/'
-                    .$data['image']
-                ) }}"
+                src="{{ asset('storage/'.$data['image']) }}"
                 alt="{{ $data['title'] }}"
-                class="feature-img img-fluid"
+                class="feature-img img-fluid w-100"
+                loading="lazy"
+                decoding="async"
             >
         </div>
     </div>
-
 @endif
 
-
-
-<div class="
-    {{
-        $hasImage
-        ? 'col-lg-6'
-        : 'col-lg-12'
-    }}
-    pt-lg-5
-">
-
-    <span class="story-label">
-        {{ $data['title'] }}
-    </span>
-
-    {!! $data['content'] !!}
+<div class="{{ $colClass }} {{ $textOrderClass }} {{ $isBuilder ? 'cms-builder-split__copy cms-builder-copy' : 'cms-section-media__prose pt-0 pt-lg-4' }}">
+    @if($isBuilder)
+        <span class="cms-builder-eyebrow" aria-hidden="true">Section {{ str_pad((string) $bandIndex, 2, '0', STR_PAD_LEFT) }}</span>
+    @endif
+    <span class="story-label {{ $isBuilder ? 'cms-builder-label' : '' }}">{{ $data['title'] }}</span>
+    <div class="{{ $isBuilder ? 'cms-builder-copy__body page-content' : '' }}">
+        {!! $data['content'] !!}
+    </div>
 
     @if(!empty($data['buttons']))
-        <div class="d-flex gap-3 mt-4 flex-wrap">
+        <div class="d-flex gap-2 gap-sm-3 mt-4 flex-wrap {{ $isBuilder ? 'cms-builder-actions' : '' }}">
             @foreach($data['buttons'] as $button)
-                <a
-                    href="{{
-                        $button['link']
-                    }}"
-                    class="btn btn-dark">
-                    {{
-                        $button['text']
-                    }}
-                </a>
+                <a href="{{ $button['link'] }}" class="btn btn-dark {{ $isBuilder ? 'cms-builder-btn' : 'btn-cms-section' }}">{{ $button['text'] }}</a>
             @endforeach
         </div>
     @endif
-
 </div>
 
-@if($hasImage && $data['image_position'] == 'right')
-    <div class="col-lg-6">
-        <div class="media-frame about-feature-frame">
+@if($imageRight)
+    <div class="{{ $colClass }} {{ $mediaOrderClass }} {{ $isBuilder ? 'cms-builder-split__media mt-4 mt-lg-0' : 'mt-4 mt-lg-0' }}">
+        <div class="media-frame about-feature-frame {{ $isBuilder ? 'cms-builder-media'.($isSidebar ? ' cms-builder-media--sidebar' : '') : 'cms-section-media__frame' }}">
             <img
-                src="{{ asset(
-                    'storage/'
-                    .$data['image']
-                ) }}"
+                src="{{ asset('storage/'.$data['image']) }}"
                 alt="{{ $data['title'] }}"
-                class="feature-img img-fluid"
+                class="feature-img img-fluid w-100"
+                loading="lazy"
+                decoding="async"
             >
         </div>
     </div>
-
 @endif

@@ -3,10 +3,11 @@
 @section('body_class', 'nav-solid page-finishes')
 @section('content')
 
+
 <section class="finishes-intro">
     <div class="container">
         <span class="finishes-intro__eyebrow">Finish</span>
-        <h1 class="finishes-intro__title">{{ $finish->title }}</h1>
+        <h1 class="home-atelier-headline-inner">{{ $finish->title }}</h1>
         @if($finish->description)
             <p class="finishes-intro__desc">{{ \Illuminate\Support\Str::limit(strip_tags($finish->description), 220) }}</p>
         @endif
@@ -20,7 +21,7 @@
     </div>
 </section>
 
-<section class="section section-white">
+<section class="section section-white editorMain">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-8">
@@ -38,8 +39,8 @@
 
                 @if($finish->use_cases)
                     <div class="mt-5">
-                        <span class="eyebrow">Ideal for</span>
-                        <div class="fs-5 mt-2" style="font-family:'Cormorant Garamond',serif;">{!! $finish->use_cases !!}</div>
+                        <span class="finishes-intro__eyebrow">Ideal for</span>
+                        <div class="editorInner mt-2">{!! $finish->use_cases !!}</div>
                     </div>
                 @endif
 
@@ -51,7 +52,7 @@
                 @endphp
                 @if(count($galleryExtra))
                 <div class="mt-5">
-                    <h3 class="h5 mb-4" style="font-family:'Playfair Display',serif;">Gallery</h3>
+                    <h3 class="h5 mb-4">Gallery</h3>
                     <div class="row g-3">
                         @foreach($galleryExtra as $url)
                         <div class="col-6 col-md-4">
@@ -76,15 +77,15 @@
             <div class="col-lg-4">
                 <div class="service-sidebar-wrap">
                     <div class="service-sidebar-card">
-                        <span class="eyebrow">Interested in this finish?</span>
-                        <h4>Get in touch</h4>
+                        <span class="finishes-intro__eyebrow">Interested in this finish?</span>
+                        <h4 class="home-atelier-headline-inner">Get in touch</h4>
                         <p class="sub">Tell us about your space and we’ll recommend options and samples.</p>
-                        <a href="{{ route('contact') }}" class="btn-primary-site w-100 justify-content-center mb-3">
+                        <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold home-atelier-btn w-100  mb-3 text-center">
                             Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
                         </a>
-                        <a href="{{ route('finishes') }}" class="btn-outline-site w-100 justify-content-center">
+                        <!-- <a href="{{ route('finishes') }}" class="btn-outline-site w-100 justify-content-center">
                             All finishes
-                        </a>
+                        </a> -->
                     </div>
 
                     @if($finish->services->count())
@@ -109,14 +110,14 @@
     <div class="container">
         <div class="row align-items-end mb-4">
             <div class="col">
-                <span class="eyebrow">More finishes</span>
-                <h2 class="h3 mb-0" style="font-family:'Playfair Display',serif;">You may also like</h2>
+                <span class="finishes-intro__eyebrow">More finishes</span>
+                <h2 class="home-why-card__title-dark">You may also like</h2>
             </div>
         </div>
         <div class="row g-4">
             @foreach($related as $r)
             <div class="col-md-6 col-lg-3">
-                <a href="{{ route('finishes.show', $r->slug) }}" class="service-grid-card">
+                <a href="{{ route('finishes.show', $r->slug) }}" class="service-grid-card finishesDetail">
                     <div class="service-grid-card__media">
                         @if($r->thumbnail_url)
                             <img src="{{ $r->thumbnail_url }}" alt="{{ $r->title }}" loading="lazy">

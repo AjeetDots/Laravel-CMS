@@ -5,10 +5,12 @@
         'help' => 'Support',
     ];
     $heroEyebrow = $heroEyebrows[$page->slug] ?? '';
+    $useFluid = ! empty($fluid);
+    $isBuilderHero = ! empty($builder);
 @endphp
 
-<div class="page-hero">
-    <div class="container">
+<div class="page-hero{{ $isBuilderHero ? ' cms-builder-hero' : '' }}">
+    <div class="{{ $useFluid ? 'container-fluid cms-page-container px-3 px-sm-4 px-lg-5' : 'container' }}">
         @if(trim((string) $heroEyebrow) !== '')
             <span class="eyebrow">{{ $heroEyebrow }}</span>
         @endif

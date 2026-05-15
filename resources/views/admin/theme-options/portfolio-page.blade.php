@@ -10,7 +10,7 @@
 <div class="page-header-bar">
     <div>
         <h1>Portfolio page</h1>
-        <p class="text-muted mb-0 small">Public listing at <code>/portfolio</code>. Section tabs organize the form; a single save updates every section. Individual projects are not edited here anymore; the live site still shows existing portfolio records from the database.</p>
+        <p class="text-muted mb-0 small">Public listing at <code>/portfolio</code>. Section tabs organize the form; a single save updates every section. Individual projects are managed under <a href="{{ route('admin.portfolio.index') }}">Portfolio</a> in Content.</p>
     </div>
 </div>
 

@@ -28,12 +28,12 @@
     </div>
 </section>
 
-<section class="section section-white">
+<section class="section section-white ">
     <div class="container">
 
         @if(isset($category))
         <div class="d-flex align-items-center gap-3 mb-5">
-            <span style="font-size:.85rem;color:var(--ink-light);">
+            <span style="font-size:.85rem;color:var(--secondary);">
                 <i class="fas fa-folder-open me-1"></i>
                 Showing posts in <strong>{{ $category->name }}</strong>
                 ({{ $posts->total() }} {{ Str::plural('post', $posts->total()) }})

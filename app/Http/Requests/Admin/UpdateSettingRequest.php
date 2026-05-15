@@ -98,6 +98,7 @@ class UpdateSettingRequest extends FormRequest
             'site_address' => 'nullable|string|max:500',
             'footer_about' => 'nullable|string|max:1000',
             'copyright_text' => 'nullable|string',
+            'page_default_template' => ['required', 'string', Rule::in(array_keys(\App\Models\Page::defaultTemplateOptions()))],
             'social_facebook' => 'nullable|url',
             'social_twitter' => 'nullable|url',
             'social_linkedin' => 'nullable|url',
@@ -195,6 +196,7 @@ class UpdateSettingRequest extends FormRequest
             'theme_wine' => 'primary accent colour',
             'theme_wine_dark' => 'dark accent colour',
             'theme_gold' => 'gold trim colour',
+            'page_default_template' => 'default page template',
         ];
     }
 }

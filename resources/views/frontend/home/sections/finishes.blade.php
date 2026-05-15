@@ -15,7 +15,7 @@
         <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-3">
             <div class="reveal-left">
                 <span class="finishes-intro__eyebrow">{{ $finishesEyebrow }}</span>
-                <h2 class="home-section-title-lg">
+                <h2 class="home-atelier-headline-white">
                     {{ $finishesHeadingLine1 }}<br />{{ $finishesHeadingLine2 }}
                 </h2>
             </div>
@@ -33,13 +33,13 @@
             @foreach($finishes->take(6) as $i => $f)
             <a href="{{ route('finishes.show', $f->slug) }}" class="commission-item @if($i === 0) is-lead @endif">
                 @if($f->cover_image)
-                    <img src="{{ $f->cover_image_url }}" alt="{{ $f->title }}" class="commission-img">
+                    <div class="imgFinshes"> <img src="{{ $f->cover_image_url }}" alt="{{ $f->title }}" class="commission-img"></div>
                 @else
                     <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
                 @endif
                 <div class="commission-body">
                     <div class="commission-meta">
-                        <span class="commission-category">{{ $finishesCardLabel }}</span>
+                        <span class="home-why-card__title">{{ $finishesCardLabel }}</span>
                         <p class="commission-title">{{ $f->title }}</p>
                     </div>
                 </div>

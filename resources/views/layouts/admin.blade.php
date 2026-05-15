@@ -542,6 +542,9 @@
         <a href="{{ route('admin.finishes.index') }}" class="sidebar-link {{ request()->routeIs('admin.finishes*') ? 'active' : '' }}">
             <i class="fas fa-paint-brush"></i> Finishes
         </a>
+        <a href="{{ route('admin.portfolio.index') }}" class="sidebar-link {{ request()->routeIs('admin.portfolio*') ? 'active' : '' }}">
+            <i class="fas fa-briefcase"></i> Portfolio
+        </a>
         @php
             $galleryOpen = request()->routeIs('admin.gallery.*') || request()->routeIs('admin.gallery-categories.*');
             $galleryListActive = request()->routeIs('admin.gallery.*') && ! request()->routeIs('admin.gallery-categories.*');

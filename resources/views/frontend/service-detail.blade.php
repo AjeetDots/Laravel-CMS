@@ -5,8 +5,8 @@
 
 <div class="page-hero">
     <div class="container">
-        <span class="eyebrow">Our services</span>
-        <h1 class="page-hero-title-wide">{{ $service->title }}</h1>
+        <span class="finishes-intro__eyebrow">Our services</span>
+        <h1 class="home-atelier-headline-inner">{{ $service->title }}</h1>
         @if(trim((string) ($service->short_description ?? '')) !== '')
         <p>{{ $service->short_description }}</p>
         @endif
@@ -39,8 +39,8 @@
 
                 @if($service->finishes->count())
                 <div class="mt-5 pt-4" style="border-top:1px solid rgba(0,0,0,.06);">
-                    <span class="eyebrow">Related finishes</span>
-                    <h3 class="h5 mt-2 mb-4" style="font-family:'Playfair Display',serif;">Styles we often pair with this service</h3>
+                    <span class="finishes-intro__eyebrow">Related finishes</span>
+                    <h3 class="home-atelier-headline mb-3">Styles we often pair with this service</h3>
                     <div class="row g-3">
                         @foreach($service->finishes as $fin)
                         <div class="col-6 col-md-4">
@@ -52,7 +52,7 @@
                                         <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted"><i class="fas fa-paint-brush"></i></div>
                                     @endif
                                 </div>
-                                <p class="small mt-2 mb-0 fw-semibold" style="color:var(--ink);">{{ $fin->title }}</p>
+                                <p class="home-why-card__title-dark">{{ $fin->title }}</p>
                             </a>
                         </div>
                         @endforeach
@@ -66,12 +66,12 @@
                         <span class="eyebrow">Ready to start?</span>
                         <h4>Let's work together</h4>
                         <p class="sub">Tell us about your project and we'll get back to you within 24 hours.</p>
-                        <a href="{{ route('contact') }}" class="btn-primary-site w-100 justify-content-center mb-3">
+                        <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold home-atelier-btn w-100 mb-3 text-center">
                             Get in touch <i class="fas fa-arrow-right" style="font-size:.75rem;"></i>
                         </a>
-                        <a href="{{ route('services') }}" class="btn-outline-site w-100 justify-content-center">
+                        <!-- <a href="{{ route('services') }}" class="btn-outline-site w-100 justify-content-center">
                             All services
-                        </a>
+                        </a> -->
                     </div>
                     @php $otherServices = \App\Models\Service::where('is_active',true)->where('slug','!=',$service->slug)->limit(4)->get(); @endphp
                     @if($otherServices->count())

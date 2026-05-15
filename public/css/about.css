@@ -12,18 +12,18 @@
     margin-bottom: 16px;
 }
 .about-intro__title {
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Georgia Regular';
     font-size: clamp(2.45rem, 4.9vw, 4.15rem);
     font-weight: 500;
     line-height: 1.03;
     letter-spacing: -0.02em;
-    color: #1f1b18;
+    color: var(--secondary);
     margin: 0;
     max-width: 39rem;
 }
 
 .about-story {
-    padding: 10px 0 88px;
+    padding: 10px 0 150px;
 }
 .about-story__collage {
     position: relative;
@@ -98,22 +98,22 @@
     max-width: 32rem;
 }
 .about-story__content h2 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.45rem, 4vw, 3.45rem);
+    font-family: 'Georgia Regular';
+    font-size: clamp(2.45rem, 4vw, 3rem);
     font-weight: 500;
     line-height: 1.04;
-    color: #1f1b18;
+    color: var(--secondary);
     margin: 0 0 18px;
 }
 .about-story__content p {
-    color: #3f3933;
+    color: var(--text);
     font-size: 0.98rem;
     line-height: 1.85;
     margin-bottom: 16px;
 }
 
 .about-stats-band {
-    background: #181715;
+    background: var(--secondary);
     padding: 78px 0 84px;
 }
 .about-stats-band__grid {
@@ -126,7 +126,7 @@
 }
 .about-stats-band__num {
     display: block;
-    font-family: 'Playfair Display', Georgia, serif;
+    font-family: 'Georgia Regular';
     color: #ba9358;
     font-size: clamp(3rem, 5.2vw, 4.35rem);
     line-height: 1;
@@ -157,16 +157,16 @@
     margin-bottom: 16px;
 }
 .about-workshop h2 {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(2.25rem, 3.8vw, 3.25rem);
+    font-family: 'Georgia Regular';
+    font-size: clamp(2.25rem, 3.8vw, 3rem);
     font-weight: 500;
     line-height: 1.08;
-    color: #1f1b18;
+    color: var(--secondary);
     margin: 0 0 14px;
 }
 .about-workshop p {
-    color: #4f4740;
-    font-size: 0.95rem;
+    color: var(--text);
+    font-size: 0.875rem;
     line-height: 1.74;
     max-width: 24rem;
     margin-bottom: 24px;

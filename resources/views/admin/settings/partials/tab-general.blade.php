@@ -71,6 +71,21 @@
 
     <div class="row g-3">
         <div class="col-12">
+            <label class="form-label" for="page_default_template">Default page template</label>
+            <select name="page_default_template" id="page_default_template" class="form-select @error('page_default_template') is-invalid @enderror">
+                @foreach(\App\Models\Page::defaultTemplateOptions() as $value => $label)
+                    <option value="{{ $value }}" @selected(old('page_default_template', $settings->get('page_default_template', \App\Models\Page::TEMPLATE_FULL_WIDTH)) === $value)>{{ $label }}</option>
+                @endforeach
+            </select>
+            <p class="form-text small mb-0">Pre-selected when you create a new page in Pages. Existing pages keep their current template until you change it.</p>
+            @error('page_default_template')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-12">
             <label class="form-label" for="site_address">Address</label>
             <textarea name="site_address" id="site_address" class="form-control @error('site_address') is-invalid @enderror" rows="3">{{ old('site_address', $settings->get('site_address')) }}</textarea>
             @error('site_address')

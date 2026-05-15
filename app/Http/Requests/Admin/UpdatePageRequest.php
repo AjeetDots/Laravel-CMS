@@ -37,14 +37,11 @@ class UpdatePageRequest extends FormRequest
     {
         $id = $this->route('page')?->id;
 
-        $allowedTemplates = Page::creatableTemplates();
         $resolvedSlug = Page::resolveSlugFromInput(
             $this->input('slug'),
             (string) $this->input('title', '')
         );
-        if ($resolvedSlug === Page::ABOUT_SLUG) {
-            $allowedTemplates[] = 'about';
-        }
+        $allowedTemplates = Page::allowedTemplatesForSlug($resolvedSlug);
 
         return array_merge([
             'title' => 'required|string|max:200',

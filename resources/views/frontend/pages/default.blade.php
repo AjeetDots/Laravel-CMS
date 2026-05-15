@@ -11,7 +11,7 @@
         @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
         <section class="section section-white cms-page-section cms-page-section--default">
-            <div class="container">
+            <div class="container cms-page-container px-3 px-sm-4">
                 <div class="row justify-content-center">
                     <div class="col-12 col-lg-10 col-xl-9">
                         @include('frontend.pages.partials.cms-body-inner', ['page' => $page])
