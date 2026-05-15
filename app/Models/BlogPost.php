@@ -32,14 +32,15 @@ class BlogPost extends Model {
      */
     public function resolvedCategoryLabel(): string
     {
-        if ($this->category_id) {
-            $name = optional($this->category)->name;
-            if (filled($name)) {
-                return (string) $name;
-            }
-        }
+        // if ($this->category_id) {
+        //     $name = optional($this->category)->name;
+        //     if (filled($name)) {
+        //         return (string) $name;
+        //     }
+        // }
 
-        return trim((string) $this->getRawOriginal('category'));
+        // return trim((string) $this->getRawOriginal('category'));
+        return $this->getRelationValue('category')?->name ?? trim((string) $this->getRawOriginal('category'));
     }
 
     public function getImageUrlAttribute(): ?string

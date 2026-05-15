@@ -30,7 +30,7 @@
                     <tbody>
                         @foreach($subscribers as $sub)
                         <tr>
-                            <td class="text-muted" style="font-size:.82rem;">{{ $sub->id }}</td>
+                            <td class="text-muted" style="font-size:.82rem;">{{ $loop->iteration }}</td>
                             <td style="font-weight:600;">{{ $sub->email }}</td>
                             <td>
                                 @if($sub->is_active)

@@ -341,25 +341,25 @@
                     </div>
 
                     <div class="row g-3 mb-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label" for="home_why_eyebrow">Title</label>
                             <input type="text" name="home_why_eyebrow" id="home_why_eyebrow" class="form-control"
                                    data-sync-home-section-tab="why"
                                    value="{{ old('home_why_eyebrow', $whySection['eyebrow'] ?? '') }}"
                                    placeholder="e.g. Why choose us">
                         </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label">Heading</label>
                             <input type="text" name="home_why_heading" class="form-control"
                                    value="{{ old('home_why_heading', $whySection['heading'] ?? '') }}"
                                    placeholder="e.g. A studio defined by its craft.">
                         </div>
-                        <div class="col-md-4">
+                        <!-- <div class="col-md-4">
                             <label class="form-label">Lead Text</label>
                             <input type="text" name="home_why_lead" class="form-control"
                                    value="{{ old('home_why_lead', $whySection['lead'] ?? '') }}"
                                    placeholder="e.g. Short supporting line…">
-                        </div>
+                        </div> -->
                     </div>
 
                     @php
