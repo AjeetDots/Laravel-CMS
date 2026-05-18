@@ -11,6 +11,7 @@ final class HomePageAdminTabs
         'services',
         'why',
         'process',
+        'testimonials',
         'commissions',
         'begin-cta',
         'contact-band',

@@ -35,7 +35,7 @@
                         <label class="form-label">Section content</label>
                         <textarea name="section_content" class="form-control" rows="4" maxlength="2000"
                                   placeholder="Optional. Shown on the home page &quot;Selected work&quot; grid under the title (e.g. a short project caption).">{{ old('section_content', $item->section_content ?? '') }}</textarea>
-                        <div class="form-text">Used on the home page gallery strip; leave blank if you only need the image and title.</div>
+                        <div class="form-text">Shown on the home page &quot;Selected work&quot; grid and the public gallery page overlay; leave blank if you only need the image and title.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category</label>

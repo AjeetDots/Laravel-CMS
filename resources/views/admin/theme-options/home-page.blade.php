@@ -24,19 +24,21 @@
         'services' => 'Services Section',
         'why' => 'Why Section',
         'process' => 'Process Section',
+        'testimonials' => 'Testimonials Section',
         'commissions' => 'Selected work',
         'begin-cta' => 'Begin CTA Section',
         'contact-band' => 'Contact Band Section',
         'brands-strip' => 'Brands Strip Section',
         'blog-preview' => 'Blog Preview Section',
     ];
-    $homeSectionTabTitle = function (string $key) use ($homeSectionTabDefaults, $atelierSection, $finishesSection, $servicesSection, $whySection, $processSection, $commissionsSection, $beginCtaSection, $contactBandSection, $brandsStripSection, $blogPreviewSection): string {
+    $homeSectionTabTitle = function (string $key) use ($homeSectionTabDefaults, $atelierSection, $finishesSection, $servicesSection, $whySection, $processSection, $testimonialsSection, $commissionsSection, $beginCtaSection, $contactBandSection, $brandsStripSection, $blogPreviewSection): string {
         $raw = match ($key) {
             'atelier' => old('home_atelier_kicker', $atelierSection['kicker'] ?? ''),
             'finishes' => old('home_finishes_eyebrow', $finishesSection['eyebrow'] ?? ''),
             'services' => old('home_services_eyebrow', $servicesSection['eyebrow'] ?? ''),
             'why' => old('home_why_eyebrow', $whySection['eyebrow'] ?? ''),
             'process' => old('home_process_eyebrow', $processSection['eyebrow'] ?? ''),
+            'testimonials' => old('home_testimonials_left_eyebrow', $testimonialsSection['left_eyebrow'] ?? ''),
             'commissions' => old('home_commissions_eyebrow', $commissionsSection['eyebrow'] ?? ''),
             'begin-cta' => old('home_begin_cta_eyebrow', $beginCtaSection['eyebrow'] ?? ''),
             'contact-band' => old('home_contact_band_eyebrow', $contactBandSection['eyebrow'] ?? ''),
@@ -86,6 +88,11 @@
                 <li class="nav-item" role="presentation">
                     <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'process') active @endif" id="process-tab" data-bs-toggle="tab" data-bs-target="#process-pane" aria-controls="process-pane" data-theme-section="process" data-home-tab-default="{{ $homeSectionTabDefaults['process'] }}" aria-selected="{{ $activeHomeSection === 'process' ? 'true' : 'false' }}">
                         <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('process') }}</span>
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button type="button" role="tab" class="nav-link @if($activeHomeSection === 'testimonials') active @endif" id="testimonials-tab" data-bs-toggle="tab" data-bs-target="#testimonials-pane" aria-controls="testimonials-pane" data-theme-section="testimonials" data-home-tab-default="{{ $homeSectionTabDefaults['testimonials'] }}" aria-selected="{{ $activeHomeSection === 'testimonials' ? 'true' : 'false' }}">
+                        <span class="js-home-section-tab-label">{{ $homeSectionTabTitle('testimonials') }}</span>
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -475,6 +482,8 @@
                         <div class="col-md-5"><label class="form-label">Step 4 Description</label><input type="text" name="home_process_step_4_desc" class="form-control" value="{{ old('home_process_step_4_desc', $processSteps[3]['desc'] ?? 'Hand-applied by our master artisans on site.') }}"></div>
                     </div>
                 </div>
+
+                @include('admin.theme-options.partials.home-testimonials-tab')
 
                 <div class="tab-pane fade @if($activeHomeSection === 'commissions') show active @endif" id="commissions-pane" role="tabpanel" aria-labelledby="commissions-tab" tabindex="0">
                     <div class="mb-3">

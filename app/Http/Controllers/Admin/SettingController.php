@@ -219,6 +219,12 @@ class SettingController extends Controller
         if (! is_array($commissionsSection)) {
             $commissionsSection = [];
         }
+        $testimonialsSection = HomePageSection::query()
+            ->where('section_key', 'testimonials')
+            ->value('data') ?? [];
+        if (! is_array($testimonialsSection)) {
+            $testimonialsSection = [];
+        }
         $beginCtaSection = HomePageSection::query()
             ->where('section_key', 'begin_cta')
             ->value('data') ?? [];
@@ -256,6 +262,7 @@ class SettingController extends Controller
             'whySection',
             'processSection',
             'commissionsSection',
+            'testimonialsSection',
             'beginCtaSection',
             'contactBandSection',
             'brandsStripSection',
@@ -677,6 +684,29 @@ class SettingController extends Controller
         $commissionsData['button_text'] = $data['home_commissions_button_text'] ?? null;
         $commissionsData['button_url'] = $data['home_commissions_button_url'] ?? null;
         $commissions->update(['data' => $commissionsData]);
+
+        $testimonials = HomePageSection::query()->firstOrCreate(['section_key' => 'testimonials'], ['data' => []]);
+        $testimonialsData = is_array($testimonials->data) ? $testimonials->data : [];
+        $testimonialsData['is_enabled'] = $request->boolean('home_testimonials_is_enabled');
+        $testimonialsData['left_eyebrow'] = $data['home_testimonials_left_eyebrow'] ?? null;
+        $testimonialsData['left_headline'] = $data['home_testimonials_left_headline'] ?? null;
+        $testimonialsData['right_eyebrow'] = $data['home_testimonials_right_eyebrow'] ?? null;
+
+        if ($request->hasFile('home_testimonials_left_image')) {
+            $oldLeftImage = $testimonialsData['left_image'] ?? null;
+            if ($oldLeftImage && Storage::disk('public')->exists($oldLeftImage)) {
+                Storage::disk('public')->delete($oldLeftImage);
+            }
+            $testimonialsData['left_image'] = $request->file('home_testimonials_left_image')->store('home/sections', 'public');
+        } elseif ($request->boolean('remove_home_testimonials_left_image')) {
+            $oldLeftImage = $testimonialsData['left_image'] ?? null;
+            if ($oldLeftImage && Storage::disk('public')->exists($oldLeftImage)) {
+                Storage::disk('public')->delete($oldLeftImage);
+            }
+            $testimonialsData['left_image'] = null;
+        }
+
+        $testimonials->update(['data' => $testimonialsData]);
 
         $beginCta = HomePageSection::query()->firstOrCreate(['section_key' => 'begin_cta'], ['data' => []]);
         $beginCtaData = is_array($beginCta->data) ? $beginCta->data : [];

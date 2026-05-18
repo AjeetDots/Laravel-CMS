@@ -83,6 +83,12 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_process_step_4_title' => 'nullable|string|max:120',
             'home_process_step_4_desc' => 'nullable|string|max:300',
 
+            'home_testimonials_is_enabled' => 'boolean',
+            'home_testimonials_left_eyebrow' => 'nullable|string|max:120',
+            'home_testimonials_left_headline' => 'nullable|string|max:255',
+            'home_testimonials_right_eyebrow' => 'nullable|string|max:120',
+            'home_testimonials_left_image' => ImageUploadRules::nullable(4096),
+
             'home_commissions_is_enabled' => 'boolean',
             'home_commissions_eyebrow' => 'nullable|string|max:120',
             'home_commissions_heading_line_1' => 'nullable|string|max:255',
