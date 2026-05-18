@@ -64,8 +64,8 @@
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--square"></div>
                      @if(trim((string) ($ap['image_main_display'] ?? '')) !== '')
                     <div class="home-atelier-collage__main">
-                        <img src="{{ $ap['image_accent_display'] }}"
-                             alt=""
+                        <img src="{{ $ap['image_main_display'] }}"
+                             alt="{{ $ap['image_main_alt'] ?? '' }}"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--primary img-fluid">
                     </div>
@@ -75,8 +75,8 @@
                     @endif
                    @if(trim((string) ($ap['image_accent_display'] ?? '')) !== '')
                     <div class="home-atelier-collage__float">
-                        <img src="{{$ap['image_accent_display']}}"
-                             alt=""
+                        <img src="{{ $ap['image_accent_display'] }}"
+                             alt="{{ $ap['image_accent_alt'] ?? '' }}"
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--inset img-fluid">
                     </div>
