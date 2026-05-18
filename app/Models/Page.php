@@ -26,6 +26,9 @@ class Page extends Model
 
     public const TEMPLATE_SIDEBAR = 'sidebar';
 
+    /** Centred reading column; simpler layout without the full-width builder shell. */
+    public const TEMPLATE_DEFAULT = 'default';
+
     public const TEMPLATE_FULL_WIDTH = 'full-width';
 
     /** Uses theme contact content + enquiry form (see `frontend.pages.contact`). */
@@ -37,6 +40,8 @@ class Page extends Model
     protected $fillable = [
         'title',
         'slug',
+        'hero_eyebrow',
+        'hero_lede',
         'content',
         'body_order',
         'sidebar_content',
@@ -79,13 +84,13 @@ class Page extends Model
     }
 
     /**
-     * Templates that use the stacked “Sections” builder in admin.
+     * Templates with main content editor, optional sections, and content order in admin.
      *
      * @return list<string>
      */
     public static function sectionedTemplates(): array
     {
-        return [self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
+        return [self::TEMPLATE_DEFAULT, self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
     }
 
     /**
@@ -96,6 +101,7 @@ class Page extends Model
     public static function defaultTemplateOptions(): array
     {
         return [
+            self::TEMPLATE_DEFAULT => 'Default',
             self::TEMPLATE_FULL_WIDTH => 'Full width',
             self::TEMPLATE_SIDEBAR => 'With sidebar',
         ];

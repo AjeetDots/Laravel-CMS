@@ -38,6 +38,8 @@ class StorePageRequest extends FormRequest
         return array_merge([
             'title' => 'required|string|max:200',
             'slug' => ['nullable', 'string', 'max:200', Rule::unique('pages', 'slug')->whereNull('deleted_at')],
+            'hero_eyebrow' => 'nullable|string|max:120',
+            'hero_lede' => 'nullable|string|max:1000',
             'content' => 'nullable|string',
             'body_order' => ['nullable', 'string', Rule::in([Page::BODY_ORDER_CONTENT_FIRST, Page::BODY_ORDER_SECTIONS_FIRST])],
             'sidebar_content' => 'nullable|string',

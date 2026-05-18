@@ -78,19 +78,9 @@
                     </div>
                     <hr class="my-4">
                     <p class="text-muted small fw-semibold mb-3">Empty state (no published items)</p>
-                    <div class="mb-3">
+                    <div class="mb-0">
                         <label class="form-label" for="empty_message">Message</label>
                         <input type="text" name="empty_message" id="empty_message" class="form-control" value="{{ old('empty_message', $data['empty_message'] ?? '') }}" maxlength="500">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="empty_btn_text">Button text <span class="text-muted fw-normal">(optional)</span></label>
-                            <input type="text" name="empty_btn_text" id="empty_btn_text" class="form-control" value="{{ old('empty_btn_text', $data['empty_btn_text'] ?? '') }}" maxlength="120">
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label class="form-label" for="empty_btn_url">Button URL</label>
-                            <input type="text" name="empty_btn_url" id="empty_btn_url" class="form-control" value="{{ old('empty_btn_url', $data['empty_btn_url'] ?? '') }}" maxlength="1000" placeholder="Leave blank for Contact page">
-                        </div>
                     </div>
                 </div>
 

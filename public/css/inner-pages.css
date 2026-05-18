@@ -413,6 +413,25 @@ body.page-blog {
     background-attachment: scroll;
 }
 
+/* CMS pages (Default / Full width / With sidebar): same plaster nav + intro band as Finishes */
+body.page-cms {
+    background-color: #f8f6f1;
+    background-image: url(../images/header-bg.jpg);
+    background-repeat: no-repeat;
+    background-position: center top;
+    background-size: cover;
+    background-attachment: scroll;
+}
+
+body.page-cms .finishes-intro {
+    background: transparent;
+}
+
+body.page-cms .cms-page-body,
+body.page-cms .finishes-grid-section {
+    background-color: #f8f6f1;
+}
+
 
 
 /*

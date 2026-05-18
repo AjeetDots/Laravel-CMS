@@ -166,9 +166,10 @@ class PageController extends Controller
     {
         return [
             'about' => 'About Page (Editorial)',
-            'full-width' => 'Full Width',
-            'sidebar' => 'With Sidebar',
-            'contact' => 'Contact (theme content and form)',
+            Page::TEMPLATE_DEFAULT => 'Default',
+            Page::TEMPLATE_FULL_WIDTH => 'Full Width',
+            Page::TEMPLATE_SIDEBAR => 'With Sidebar',
+            Page::TEMPLATE_CONTACT => 'Contact (theme content and form)',
         ];
     }
 

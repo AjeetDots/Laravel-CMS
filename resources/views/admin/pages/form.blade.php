@@ -23,9 +23,21 @@
         font-weight: 600;
         letter-spacing: 0.03em;
     }
-    .cms-page-form-actions {
+    .cms-page-form-sidebar {
         top: 1rem;
         z-index: 1010;
+    }
+
+    @media (min-width: 992px) {
+        .cms-page-form-sidebar {
+            max-width: 100%;
+        }
+        .cms-page-edit-layout > .cms-page-edit-main {
+            order: 1;
+        }
+        .cms-page-edit-layout > .cms-page-edit-sidebar {
+            order: 2;
+        }
     }
 </style>
 @endsection
@@ -50,8 +62,8 @@
         </div>
     @endif
 
-    <div class="row g-4">
-        <div class="col-lg-8">
+    <div class="row g-4 align-items-start cms-page-edit-layout">
+        <div class="col-lg-8 cms-page-edit-main order-lg-1">
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <span>Page Content</span>
@@ -73,6 +85,41 @@
                         <label class="form-label">Slug</label>
                         <input type="text" name="slug" id="slugInput" class="form-control"
                                value="{{ old('slug', $page->slug) }}" placeholder="auto-generated if empty">
+                    </div>
+                    <div class="mb-3" data-cms-sectioned-panel>
+                        <div class="card border shadow-sm overflow-hidden">
+                            <div class="card-header p-0 bg-light border-bottom">
+                                <button type="button"
+                                        class="btn btn-link w-100 text-start text-decoration-none py-2 px-3 rounded-0 d-flex align-items-center gap-2 cms-panel-toggle"
+                                        data-bs-toggle="collapse"
+                                        data-bs-target="#collapsePageHero"
+                                        aria-expanded="true"
+                                        aria-controls="collapsePageHero">
+                                    <i class="fas fa-chevron-down section-item-chevron text-muted small" aria-hidden="true"></i>
+                                    <span class="fw-semibold text-dark">Page header</span>
+                                </button>
+                            </div>
+                            <div id="collapsePageHero" class="collapse show">
+                                <fieldset id="pageHeroFieldset" class="border-0 p-0 m-0 w-100" data-cms-sectioned-only>
+                                    <legend class="visually-hidden">Page header</legend>
+                                    <div class="card-body border-0 pt-0">
+                                        <p class="text-muted small mb-3">Finishes-style intro: eyebrow, title (from page title above), and intro line.</p>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="heroEyebrowInput">Eyebrow</label>
+                                            <input type="text" name="hero_eyebrow" id="heroEyebrowInput" class="form-control" maxlength="120"
+                                                   value="{{ old('hero_eyebrow', $page->hero_eyebrow) }}"
+                                                   placeholder="e.g. Our finishes">
+                                        </div>
+                                        <div class="mb-0">
+                                            <label class="form-label" for="heroLedeInput">Intro text</label>
+                                            <textarea name="hero_lede" id="heroLedeInput" class="form-control" rows="3" maxlength="1000"
+                                                      placeholder="Short line under the title…">{{ old('hero_lede', $page->hero_lede) }}</textarea>
+                                            <div class="form-text small">Optional. If empty, a short SEO description may appear instead.</div>
+                                        </div>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
                     </div>
                     <div class="mb-3" data-cms-sectioned-panel>
                         <div class="card border shadow-sm overflow-hidden">
@@ -192,7 +239,8 @@
                 'contentFieldId' => 'postContent',
             ])
         </div>
-        <div class="col-lg-4">
+        <div class="col-lg-4 cms-page-edit-sidebar order-lg-2">
+            <div class="cms-page-form-sidebar sticky-lg-top">
             <div class="card mb-4">
                 <div class="card-header">Settings</div>
                 <div class="card-body">
@@ -251,13 +299,14 @@
                     </div>
                 </div>
             </div>
-            <div class="card mb-4 shadow-sm sticky-lg-top cms-page-form-actions">
+            <div class="card mb-4 shadow-sm">
                 <div class="card-body d-grid gap-2">
                     <button type="submit" class="btn btn-primary">
                         <i class="fas fa-save me-2"></i>{{ isset($page->id) ? 'Update Page' : 'Create Page' }}
                     </button>
                     <a href="{{ route('admin.pages.index') }}" class="btn btn-outline-secondary">Cancel</a>
                 </div>
+            </div>
             </div>
             {{-- Legacy fields kept for backwards compatibility --}}
             <input type="hidden" name="meta_title"       value="{{ old('seo.meta_title',       $page->seoMeta?->meta_title       ?? $page->meta_title) }}">
@@ -270,6 +319,7 @@
     <ul class="small mb-0 ps-3 text-start">
         <li class="mb-2"><strong>Title</strong> — Page headline and default browser tab title (override in SEO if needed).</li>
         <li class="mb-2"><strong>Slug</strong> — Part of the URL. Leave empty to auto-build from the title.</li>
+        <li class="mb-2"><strong>Page header</strong> — Eyebrow and intro line under the title (same style as Finishes / Services pages).</li>
         <li class="mb-2"><strong>Main content</strong> — Optional rich text (intro, policy, long copy). Use the editor toolbar for headings, lists, links, and images.</li>
         <li class="mb-2"><strong>Sections</strong> — Add one or more blocks with title, body, optional image, and buttons—good for story-style layouts.</li>
         <li class="mb-2"><strong>Content order</strong> — In Settings, choose whether main content or sections appears first on the live page.</li>
