@@ -10,7 +10,7 @@
 <div class="page-header-bar">
     <div>
         <h1>Contact page</h1>
-        <p class="text-muted mb-0 small">Public page at <code>/contact</code>. Phone, email and WhatsApp links still use <a href="{{ route('admin.settings.index') }}">Site settings</a> where configured.</p>
+        <p class="text-muted mb-0 small">Public page at <code>{{ \App\Support\ContactPageUrl::path() }}</code> (from the active Contact page slug in <a href="{{ route('admin.pages.index') }}">Pages</a>). Phone, email and WhatsApp links still use <a href="{{ route('admin.settings.index') }}">Site settings</a> where configured.</p>
     </div>
 </div>
 
@@ -119,15 +119,6 @@
                         <div class="col-12 col-md-6">
                             <label class="form-label" for="hours_body">Hours text <span class="text-muted fw-normal">(line breaks allowed)</span></label>
                             <textarea name="hours_body" id="hours_body" class="form-control" rows="3" maxlength="500">{{ old('hours_body', $data['hours_body'] ?? '') }}</textarea>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="fallback_phone_display">Fallback phone text</label>
-                            <input type="text" name="fallback_phone_display" id="fallback_phone_display" class="form-control" value="{{ old('fallback_phone_display', $data['fallback_phone_display'] ?? '') }}" maxlength="80">
-                            <span class="form-text">Shown when no phone is set in Site settings.</span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="fallback_whatsapp_label">Fallback WhatsApp label</label>
-                            <input type="text" name="fallback_whatsapp_label" id="fallback_whatsapp_label" class="form-control" value="{{ old('fallback_whatsapp_label', $data['fallback_whatsapp_label'] ?? '') }}" maxlength="80">
                         </div>
                     </div>
                 </div>

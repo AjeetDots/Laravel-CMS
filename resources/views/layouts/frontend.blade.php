@@ -163,29 +163,7 @@
                     @endif
                 </div>
             </div>
-            {{-- Explore (IA aligned with proposal: Services, Finishes, Gallery, Portfolio) --}}
-            <div class="col-12 col-sm-6 col-lg-2">
-                <h6 class="footer-col-title">Explore</h6>
-                <nav class="footer-nav" aria-label="Explore">
-                    <a href="{{ route('finishes') }}">Finishes</a>
-                    <a href="{{ route('services') }}">Services</a>
-                    <a href="{{ route('gallery') }}">Gallery</a>
-                    <!-- <a href="{{ route('portfolio') }}">Portfolio</a> -->
-                    <a href="{{ route('blog.index') }}">Blog</a>
-                </nav>
-            </div>
-            {{-- Company --}}
-            <div class="col-12 col-sm-6 col-lg-2">
-                <h6 class="footer-col-title">Company</h6>
-                <nav class="footer-nav" aria-label="Company">
-                    <a href="{{ route('home') }}">Home</a>
-                    <a href="{{ url('/about') }}">About Us</a>
-                    <a href="{{ route('contact') }}">Contact</a>
-                    <a href="{{ url('/privacy-policy') }}">Privacy Policy</a>
-                    <a href="{{ url('/terms-and-conditions') }}">Terms &amp; Conditions</a>
-                    <a href="{{ url('/cookie-policy') }}">Cookie Policy</a>
-                </nav>
-            </div>
+            @include('partials.footer-menu-columns')
             {{-- Contact + newsletter: one column (stacked) so the footer reads as four areas, not five --}}
             <div class="col-12 col-lg-4">
                 <div class="footer-connect">

@@ -36,7 +36,7 @@ class StoreBrandRequest extends FormRequest
             'name'       => ['required', 'string', 'max:100', Rule::unique('brands', 'name')->whereNull('deleted_at')],
             'logo'       => ImageUploadRules::required(1024),
             'website'    => 'nullable|url|max:200',
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('brands', [])],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('brands', [])],
             'is_active'  => 'boolean',
         ];
     }

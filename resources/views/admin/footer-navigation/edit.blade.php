@@ -39,40 +39,28 @@
                         <button type="button" class="btn btn-sm btn-outline-primary" data-add-footer-link="1">+ Add link</button>
                     </div>
                     <div class="table-responsive border rounded">
-                        <table class="table table-sm align-middle mb-0">
+                        <table class="table table-sm align-middle mb-0 footer-links-table">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width:28%">Label</th>
-                                    <th style="width:44%">URL</th>
-                                    <th style="width:20%">Target</th>
-                                    <th style="width:8%"></th>
+                                    <th style="width:4%" class="text-center" title="Drag to reorder"><i class="fas fa-grip-vertical text-muted opacity-50"></i></th>
+                                    <th style="width:24%">Label</th>
+                                    <th style="width:40%">Page / URL</th>
+                                    <th style="width:18%">Target</th>
+                                    <th style="width:6%"></th>
                                 </tr>
                             </thead>
-                            <tbody id="footer-links-tbody-1">
+                            <tbody id="footer-links-tbody-1" data-footer-links-sortable>
                                 @foreach($links1 as $i => $link)
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="links_1[{{ $i }}][id]" value="{{ $link->id }}">
-                                            <input type="text" name="links_1[{{ $i }}][label]" class="form-control form-control-sm" value="{{ old('links_1.'.$i.'.label', $link->label) }}" maxlength="150" placeholder="e.g. Link label">
-                                        </td>
-                                        <td>
-                                            <input type="text" name="links_1[{{ $i }}][url]" class="form-control form-control-sm font-monospace" value="{{ old('links_1.'.$i.'.url', $link->url) }}" maxlength="500" placeholder="/page or https://…">
-                                        </td>
-                                        <td>
-                                            <select name="links_1[{{ $i }}][target]" class="form-select form-select-sm">
-                                                <option value="_self" {{ old('links_1.'.$i.'.target', $link->target) === '_blank' ? '' : 'selected' }}>Same tab</option>
-                                                <option value="_blank" {{ old('links_1.'.$i.'.target', $link->target) === '_blank' ? 'selected' : '' }}>New tab</option>
-                                            </select>
-                                        </td>
-                                        <td class="text-end">
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-footer-link title="Remove row">&times;</button>
-                                        </td>
-                                    </tr>
+                                    @include('admin.footer-navigation._link-row', [
+                                        'namePrefix' => 'links_1',
+                                        'index' => $i,
+                                        'link' => $link,
+                                    ])
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <p class="form-text mb-0 mt-2">Use paths like <code>/contact</code> or full URLs. Leave a row blank (or remove it) before saving to delete it.</p>
+                    <p class="form-text mb-0 mt-2">Choose a page from the list or pick Custom URL. Drag rows to set order, then save.</p>
                 </div>
             </div>
         </div>
@@ -94,35 +82,23 @@
                         <button type="button" class="btn btn-sm btn-outline-primary" data-add-footer-link="2">+ Add link</button>
                     </div>
                     <div class="table-responsive border rounded">
-                        <table class="table table-sm align-middle mb-0">
+                        <table class="table table-sm align-middle mb-0 footer-links-table">
                             <thead class="table-light">
                                 <tr>
-                                    <th style="width:28%">Label</th>
-                                    <th style="width:44%">URL</th>
-                                    <th style="width:20%">Target</th>
-                                    <th style="width:8%"></th>
+                                    <th style="width:4%" class="text-center" title="Drag to reorder"><i class="fas fa-grip-vertical text-muted opacity-50"></i></th>
+                                    <th style="width:24%">Label</th>
+                                    <th style="width:40%">Page / URL</th>
+                                    <th style="width:18%">Target</th>
+                                    <th style="width:6%"></th>
                                 </tr>
                             </thead>
-                            <tbody id="footer-links-tbody-2">
+                            <tbody id="footer-links-tbody-2" data-footer-links-sortable>
                                 @foreach($links2 as $i => $link)
-                                    <tr>
-                                        <td>
-                                            <input type="hidden" name="links_2[{{ $i }}][id]" value="{{ $link->id }}">
-                                            <input type="text" name="links_2[{{ $i }}][label]" class="form-control form-control-sm" value="{{ old('links_2.'.$i.'.label', $link->label) }}" maxlength="150" placeholder="e.g. Link label">
-                                        </td>
-                                        <td>
-                                            <input type="text" name="links_2[{{ $i }}][url]" class="form-control form-control-sm font-monospace" value="{{ old('links_2.'.$i.'.url', $link->url) }}" maxlength="500" placeholder="/page or https://…">
-                                        </td>
-                                        <td>
-                                            <select name="links_2[{{ $i }}][target]" class="form-select form-select-sm">
-                                                <option value="_self" {{ old('links_2.'.$i.'.target', $link->target) === '_blank' ? '' : 'selected' }}>Same tab</option>
-                                                <option value="_blank" {{ old('links_2.'.$i.'.target', $link->target) === '_blank' ? 'selected' : '' }}>New tab</option>
-                                            </select>
-                                        </td>
-                                        <td class="text-end">
-                                            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-footer-link title="Remove row">&times;</button>
-                                        </td>
-                                    </tr>
+                                    @include('admin.footer-navigation._link-row', [
+                                        'namePrefix' => 'links_2',
+                                        'index' => $i,
+                                        'link' => $link,
+                                    ])
                                 @endforeach
                             </tbody>
                         </table>
@@ -141,32 +117,127 @@
 </form>
 
 <template id="footer-link-row-template">
-    <tr>
-        <td>
-            <input type="hidden" name="__NAME_PREFIX__[__I__][id]" value="">
-            <input type="text" name="__NAME_PREFIX__[__I__][label]" class="form-control form-control-sm" maxlength="150" placeholder="e.g. Link label">
-        </td>
-        <td>
-            <input type="text" name="__NAME_PREFIX__[__I__][url]" class="form-control form-control-sm font-monospace" maxlength="500" placeholder="/page or https://…">
-        </td>
-        <td>
-            <select name="__NAME_PREFIX__[__I__][target]" class="form-select form-select-sm">
-                <option value="_self" selected>Same tab</option>
-                <option value="_blank">New tab</option>
-            </select>
-        </td>
-        <td class="text-end">
-            <button type="button" class="btn btn-sm btn-outline-danger" data-remove-footer-link title="Remove row">&times;</button>
-        </td>
-    </tr>
+    @include('admin.footer-navigation._link-row', [
+        'namePrefix' => '__NAME_PREFIX__',
+        'index' => '__I__',
+        'link' => null,
+    ])
 </template>
 @endsection
 
+@push('styles')
+<style>
+.footer-links-table .footer-drag-handle { cursor: grab; }
+.footer-links-table .sortable-ghost { opacity: 0.45; background: #f8fafc; }
+.footer-links-table .sortable-drag .footer-drag-handle { cursor: grabbing; }
+.footer-links-table .footer-url-input[readonly] { background-color: var(--bs-light, #f8f9fa); }
+</style>
+@endpush
+
 @push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var tpl = document.getElementById('footer-link-row-template');
     if (!tpl) return;
+
+    function menuPathForMatch(raw) {
+        raw = (raw || '').trim();
+        if (!raw || raw === '#') return '';
+        if (/^https?:\/\//i.test(raw)) {
+            try {
+                var u = new URL(raw);
+                if (u.origin !== window.location.origin) return null;
+                raw = u.pathname || '/';
+            } catch (e) {
+                return null;
+            }
+        }
+        if (raw === '/') return '/';
+        return '/' + raw.replace(/^\/+|\/+$/g, '');
+    }
+
+    function isExternalUrl(raw) {
+        raw = (raw || '').trim();
+        if (!/^https?:\/\//i.test(raw)) return false;
+        try {
+            return new URL(raw).origin !== window.location.origin;
+        } catch (e) {
+            return true;
+        }
+    }
+
+    function initFooterUrlRow(tr) {
+        if (!tr || tr.dataset.footerUrlInit === '1') return;
+        var preset = tr.querySelector('.footer-url-preset');
+        var input = tr.querySelector('.footer-url-input');
+        var labelInput = tr.querySelector('.footer-link-label');
+        if (!preset || !input) return;
+        tr.dataset.footerUrlInit = '1';
+
+        function applyLock(isPreset) {
+            if (isPreset) {
+                input.readOnly = true;
+                input.classList.add('bg-light');
+            } else {
+                input.readOnly = false;
+                input.classList.remove('bg-light');
+            }
+        }
+
+        preset.addEventListener('change', function () {
+            var val = preset.value;
+            if (val === '' || val === '__custom__') {
+                applyLock(false);
+                return;
+            }
+            input.value = val;
+            applyLock(true);
+            if (labelInput && labelInput.value.trim() === '') {
+                var opt = preset.options[preset.selectedIndex];
+                if (opt && opt.text) {
+                    labelInput.value = opt.text.replace(/\s*\(draft\)\s*$/i, '').trim();
+                }
+            }
+        });
+
+        function syncPresetFromInput() {
+            if (isExternalUrl(input.value)) {
+                preset.value = '__custom__';
+                applyLock(false);
+                return;
+            }
+            var needle = menuPathForMatch(input.value);
+            if (needle === null) {
+                preset.value = '__custom__';
+                applyLock(false);
+                return;
+            }
+            if (needle === '' && input.value.trim() === '') {
+                preset.value = '';
+                applyLock(false);
+                return;
+            }
+            var found = false;
+            for (var i = 0; i < preset.options.length; i++) {
+                var opt = preset.options[i];
+                if (!opt.value || opt.value === '__custom__') continue;
+                if (menuPathForMatch(opt.value) === needle) {
+                    preset.value = opt.value;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                preset.value = input.value.trim() ? '__custom__' : '';
+            }
+            applyLock(found);
+        }
+
+        input.addEventListener('input', syncPresetFromInput);
+        input.addEventListener('change', syncPresetFromInput);
+        syncPresetFromInput();
+    }
 
     function slotFromTbody(tbody) {
         var m = tbody.id.match(/footer-links-tbody-(\d+)/);
@@ -177,19 +248,33 @@ document.addEventListener('DOMContentLoaded', function () {
         var slot = slotFromTbody(tbody);
         if (!slot) return;
         var prefix = 'links_' + slot;
-        tbody.querySelectorAll('tr').forEach(function (tr, i) {
+        tbody.querySelectorAll('tr[data-footer-link-row]').forEach(function (tr, i) {
             tr.querySelectorAll('[name]').forEach(function (el) {
-        el.name = el.name.replace(/^links_\d+\[\d+\]/, prefix + '[' + i + ']');
+                el.name = el.name.replace(/^links_\d+\[\d+\]/, prefix + '[' + i + ']');
             });
         });
     }
+
+    document.querySelectorAll('[data-footer-links-sortable]').forEach(function (tbody) {
+        if (typeof Sortable === 'undefined') return;
+        Sortable.create(tbody, {
+            handle: '.footer-drag-handle',
+            animation: 150,
+            ghostClass: 'sortable-ghost',
+            dragClass: 'sortable-drag',
+            onEnd: function () {
+                renumberRows(tbody);
+            },
+        });
+        tbody.querySelectorAll('tr[data-footer-link-row]').forEach(initFooterUrlRow);
+    });
 
     document.querySelectorAll('[data-add-footer-link]').forEach(function (btn) {
         btn.addEventListener('click', function () {
             var slot = btn.getAttribute('data-add-footer-link');
             var tbody = document.getElementById('footer-links-tbody-' + slot);
             if (!tbody || !tpl) return;
-            var i = tbody.querySelectorAll('tr').length;
+            var i = tbody.querySelectorAll('tr[data-footer-link-row]').length;
             var prefix = 'links_' + slot;
             var html = tpl.innerHTML
                 .replace(/__NAME_PREFIX__/g, prefix)
@@ -197,16 +282,17 @@ document.addEventListener('DOMContentLoaded', function () {
             var wrap = document.createElement('tbody');
             wrap.innerHTML = html.trim();
             var tr = wrap.firstElementChild;
-            if (tr) tbody.appendChild(tr);
+            if (!tr) return;
+            tbody.appendChild(tr);
+            initFooterUrlRow(tr);
+            renumberRows(tbody);
         });
     });
 
     document.addEventListener('click', function (e) {
-        var t = e.target;
-        if (!t || !t.closest) return;
-        var rm = t.closest('[data-remove-footer-link]');
+        var rm = e.target && e.target.closest ? e.target.closest('[data-remove-footer-link]') : null;
         if (!rm) return;
-        var tr = rm.closest('tr');
+        var tr = rm.closest('tr[data-footer-link-row]');
         var tbody = tr && tr.parentElement;
         if (!tr || !tbody || !tbody.id || !tbody.id.startsWith('footer-links-tbody-')) return;
         tr.remove();

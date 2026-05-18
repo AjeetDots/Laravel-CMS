@@ -25,6 +25,7 @@ use App\Models\Setting;
 use App\Support\FrontendViewCache;
 use App\Support\HomePageAdminTabs;
 use App\Support\ThemeContentPageTabs;
+use App\Support\PhoneDigits;
 use App\Support\SitePhone;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
@@ -48,13 +49,6 @@ class SettingController extends Controller
         // Handle file uploads separately
         unset($data['site_logo'], $data['backend_logo'], $data['site_logo_footer'], $data['site_favicon']);
 
-        if ($request->boolean('theme_use_defaults')) {
-            Setting::set('theme_wine', null);
-            Setting::set('theme_wine_dark', null);
-            Setting::set('theme_gold', null);
-        }
-        unset($data['theme_use_defaults']);
-
         $smtpPassword = null;
         if (array_key_exists('mail_smtp_password', $data)) {
             $smtpPassword = trim((string) $data['mail_smtp_password']);
@@ -62,11 +56,15 @@ class SettingController extends Controller
         }
 
         $phoneCountryId = isset($data['site_phone_country_id']) ? (int) $data['site_phone_country_id'] : null;
-        $phoneNational = isset($data['site_phone_national']) ? trim((string) $data['site_phone_national']) : '';
+        $phoneNational = isset($data['site_phone_national'])
+            ? PhoneDigits::sanitizeNational((string) $data['site_phone_national'])
+            : '';
         unset($data['site_phone_country_id'], $data['site_phone_national']);
 
         $whatsappCountryId = isset($data['site_whatsapp_country_id']) ? (int) $data['site_whatsapp_country_id'] : null;
-        $whatsappNational = isset($data['site_whatsapp_national']) ? trim((string) $data['site_whatsapp_national']) : '';
+        $whatsappNational = isset($data['site_whatsapp_national'])
+            ? PhoneDigits::sanitizeNational((string) $data['site_whatsapp_national'])
+            : '';
         unset($data['site_whatsapp_country_id'], $data['site_whatsapp_national']);
 
         $this->persistSitePhone($phoneCountryId ?: null, $phoneNational);
@@ -133,15 +131,15 @@ class SettingController extends Controller
             return;
         }
 
-        $nationalDigits = preg_replace('/\D/', '', $national);
+        $nationalDigits = PhoneDigits::sanitizeNational($national);
         $dialDigits = preg_replace('/\D/', '', $country->dial_code);
         $e164 = '+'.$dialDigits.$nationalDigits;
-        $display = SitePhone::formatFromCountry($country, $national);
+        $display = SitePhone::formatFromCountry($country, $nationalDigits);
 
         Setting::set('site_phone_e164', $e164);
         Setting::set('site_phone', $display);
         Setting::set('site_phone_country_id', (string) $countryId);
-        Setting::set('site_phone_national', $national);
+        Setting::set('site_phone_national', $nationalDigits);
     }
 
     /**
@@ -174,15 +172,15 @@ class SettingController extends Controller
             return;
         }
 
-        $nationalDigits = preg_replace('/\D/', '', $national);
+        $nationalDigits = PhoneDigits::sanitizeNational($national);
         $dialDigits = preg_replace('/\D/', '', $country->dial_code);
         $e164 = '+'.$dialDigits.$nationalDigits;
-        $display = SitePhone::formatFromCountry($country, $national);
+        $display = SitePhone::formatFromCountry($country, $nationalDigits);
 
         Setting::set('site_whatsapp_e164', $e164);
         Setting::set('site_whatsapp', $display);
         Setting::set('site_whatsapp_country_id', (string) $countryId);
-        Setting::set('site_whatsapp_national', $national);
+        Setting::set('site_whatsapp_national', $nationalDigits);
     }
 
     /**
@@ -412,7 +410,6 @@ class SettingController extends Controller
         foreach ($validated as $key => $value) {
             $sectionData[$key] = $value;
         }
-        unset($sectionData['empty_btn_text'], $sectionData['empty_btn_url']);
         $content->update(['data' => $sectionData]);
 
         return redirect()
@@ -548,7 +545,6 @@ class SettingController extends Controller
             'hero_line_1', 'hero_line_2', 'hero_cta',
             'info_eyebrow', 'info_heading_1', 'info_heading_2', 'info_lead',
             'studio_label', 'studio_body', 'hours_label', 'hours_body', 'appointment_line',
-            'fallback_phone_display', 'fallback_whatsapp_label',
             'form_title', 'form_error_intro',
             'name_placeholder', 'email_placeholder', 'phone_field_label', 'national_placeholder',
             'message_placeholder', 'submit_label', 'map_embed_url',
@@ -558,6 +554,7 @@ class SettingController extends Controller
             }
         }
         $sectionData['show_map'] = $request->boolean('show_map');
+        unset($sectionData['fallback_phone_display'], $sectionData['fallback_whatsapp_label']);
 
         if ($request->hasFile('contact_hero_bg_image')) {
             $old = $sectionData['hero_bg_image'] ?? null;
@@ -680,7 +677,7 @@ class SettingController extends Controller
         $servicesData['heading_line_2'] = $data['home_services_heading_line_2'] ?? null;
         $servicesData['button_text'] = $data['home_services_button_text'] ?? null;
         $servicesData['button_url'] = $data['home_services_button_url'] ?? null;
-        $servicesData['card_link_text'] = $data['home_services_card_link_text'] ?? null;
+        unset($servicesData['card_link_text']);
         $services->update(['data' => $servicesData]);
 
         $why = HomePageSection::query()->firstOrCreate(['section_key' => 'why'], ['data' => []]);
@@ -688,7 +685,7 @@ class SettingController extends Controller
         $whyData['is_enabled'] = $request->boolean('home_why_is_enabled');
         $whyData['eyebrow'] = $data['home_why_eyebrow'] ?? null;
         $whyData['heading'] = $data['home_why_heading'] ?? null;
-        $whyData['lead'] = $data['home_why_lead'] ?? null;
+        unset($whyData['lead']);
         $whyData['cards'] = [
             [
                 'icon' => $data['home_why_card_1_icon'] ?? null,
@@ -832,8 +829,7 @@ class SettingController extends Controller
         $blogPreviewData['eyebrow'] = $data['home_blog_preview_eyebrow'] ?? null;
         $blogPreviewData['heading'] = $data['home_blog_preview_heading'] ?? null;
         $blogPreviewData['button_text'] = $data['home_blog_preview_button_text'] ?? null;
-        $blogPreviewData['button_url'] = $data['home_blog_preview_button_url'] ?? null;
-        $blogPreviewData['read_more_text'] = $data['home_blog_preview_read_more_text'] ?? null;
+        unset($blogPreviewData['button_url'], $blogPreviewData['read_more_text']);
         $blogPreview->update(['data' => $blogPreviewData]);
 
         $activeSection = HomePageAdminTabs::normalize($request->string('home_active_section')->toString());

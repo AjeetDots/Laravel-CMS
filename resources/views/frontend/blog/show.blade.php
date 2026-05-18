@@ -5,9 +5,9 @@
 
 <section class="finishes-intro">
     <div class="container">
-        @if($post->category)
-            <a href="{{ route('blog.category', $post->category->slug) }}"
-               class="finishes-intro__eyebrow finishes-intro__eyebrow--link">{{ $post->category->name }}</a>
+        @if($post->postCategory)
+            <a href="{{ route('blog.category', $post->postCategory->slug) }}"
+               class="finishes-intro__eyebrow finishes-intro__eyebrow--link">{{ $post->postCategory->name }}</a>
         @else
             <span class="finishes-intro__eyebrow">Journal</span>
         @endif
@@ -21,9 +21,9 @@
             <ol class="breadcrumb mb-0">
                 <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('blog.index') }}">Blog</a></li>
-                @if($post->category)
+                @if($post->postCategory)
                     <li class="breadcrumb-item">
-                        <a href="{{ route('blog.category', $post->category->slug) }}">{{ $post->category->name }}</a>
+                        <a href="{{ route('blog.category', $post->postCategory->slug) }}">{{ $post->postCategory->name }}</a>
                     </li>
                 @endif
                 <li class="breadcrumb-item active" aria-current="page">{{ Str::limit($post->title, 40) }}</li>
@@ -48,11 +48,11 @@
                     {!! $post->content !!}
                 </div>
 
-                @if($post->category)
+                @if($post->postCategory)
                 <div class="mt-4 pt-3" style="border-top:1px solid var(--border);">
                     <span style="font-size:.83rem;color:var(--ink-light);font-weight:500;text-transform:uppercase;letter-spacing:.08em;">Filed under</span>
-                    <a href="{{ route('blog.category', $post->category->slug) }}" class="blog-cat-tag ms-2">
-                        <i class="fas fa-folder me-1" aria-hidden="true"></i>{{ $post->category->name }}
+                    <a href="{{ route('blog.category', $post->postCategory->slug) }}" class="blog-cat-tag ms-2">
+                        <i class="fas fa-folder me-1" aria-hidden="true"></i>{{ $post->postCategory->name }}
                     </a>
                 </div>
                 @endif
@@ -66,12 +66,12 @@
 
             <div class="col-lg-4">
                 <div class="service-sidebar-wrap">
-                    @if($post->category)
+                    @if($post->postCategory)
                     <div class="service-sidebar-card mb-4">
                         <span class="eyebrow">Category</span>
-                        <h4>{{ $post->category->name }}</h4>
+                        <h4>{{ $post->postCategory->name }}</h4>
                         <p class="sub mb-0">Posts filed under this topic.</p>
-                        <a href="{{ route('blog.category', $post->category->slug) }}" class="btn-outline-site w-100 justify-content-center mt-3">
+                        <a href="{{ route('blog.category', $post->postCategory->slug) }}" class="btn-outline-site w-100 justify-content-center mt-3">
                             View category <i class="fas fa-arrow-right" style="font-size:.75rem;" aria-hidden="true"></i>
                         </a>
                     </div>
@@ -127,8 +127,8 @@
                         @else
                             <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
                         @endif
-                        @if($r->category)
-                            <a href="{{ route('blog.category', $r->category->slug) }}" class="blog-badge">{{ $r->category->name }}</a>
+                        @if($r->postCategory)
+                            <a href="{{ route('blog.category', $r->postCategory->slug) }}" class="blog-badge">{{ $r->postCategory->name }}</a>
                         @endif
                     </div>
                     <div class="blog-card-body">

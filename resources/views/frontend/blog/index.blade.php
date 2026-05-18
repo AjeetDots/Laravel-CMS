@@ -54,10 +54,10 @@
                         @else
                             <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
                         @endif
-                        @if($post->category)
-                            <a href="{{ route('blog.category', $post->category->slug) }}"
+                        @if($post->postCategory)
+                            <a href="{{ route('blog.category', $post->postCategory->slug) }}"
                                class="blog-badge"
-                               onclick="event.stopPropagation()">{{ $post->category->name }}</a>
+                               onclick="event.stopPropagation()">{{ $post->postCategory->name }}</a>
                         @endif
                     </div>
                     <div class="blog-card-body">

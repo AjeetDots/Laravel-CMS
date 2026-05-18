@@ -38,9 +38,26 @@
             var eyebrow = document.getElementById('heroEyebrow');
             var title = document.getElementById('heroTitle');
             var leadEl = document.getElementById('heroLead');
+            var contactHref = heroEl && heroEl.dataset.heroFallbackContactHref ? heroEl.dataset.heroFallbackContactHref : '';
             var btnText = document.getElementById('heroBtnText');
             var btnEl = document.getElementById('heroBtnPrimary');
+            var btn2Text = document.getElementById('heroBtnSecondaryText');
+            var btn2El = document.getElementById('heroBtnSecondary');
             var leadDefault = heroEl && heroEl.dataset.heroLeadDefault ? heroEl.dataset.heroLeadDefault : '';
+
+            function resolveBtnHref(raw) {
+                var h = (raw || '').trim();
+                if (!h.length) {
+                    return contactHref;
+                }
+                if (/^https?:\/\//i.test(h)) {
+                    return h;
+                }
+                if (h.charAt(0) === '/') {
+                    return h;
+                }
+                return '/' + h.replace(/^\/+/, '');
+            }
 
             if (slides.length < 2) return;
             var current = 0,
@@ -77,9 +94,31 @@
                     if (eyebrow) eyebrow.textContent = (sub && sub.length) ? sub : eyebrowDefault;
                     if (title) renderHeroTitleFromSlide(title, slide);
                     var bt = slide.getAttribute('data-btn-text');
-                    if (btnText && bt) btnText.textContent = bt;
-                    var bh = slide.getAttribute('data-btn-link');
-                    if (btnEl && bh) btnEl.href = bh;
+                    if (btnEl && btnText) {
+                        var t = (bt || '').trim();
+                        if (!t.length) {
+                            btnEl.classList.add('d-none');
+                            btnEl.setAttribute('aria-hidden', 'true');
+                        } else {
+                            btnEl.classList.remove('d-none');
+                            btnEl.removeAttribute('aria-hidden');
+                            btnText.textContent = t;
+                            btnEl.setAttribute('href', resolveBtnHref(slide.getAttribute('data-btn-link')));
+                        }
+                    }
+                    var b2t = slide.getAttribute('data-btn2-text');
+                    if (btn2El && btn2Text) {
+                        var t2 = (b2t || '').trim();
+                        if (!t2.length) {
+                            btn2El.classList.add('d-none');
+                            btn2El.setAttribute('aria-hidden', 'true');
+                        } else {
+                            btn2El.classList.remove('d-none');
+                            btn2El.removeAttribute('aria-hidden');
+                            btn2Text.textContent = t2;
+                            btn2El.setAttribute('href', resolveBtnHref(slide.getAttribute('data-btn2-link')));
+                        }
+                    }
                     var ld = slide.getAttribute('data-lead');
                     if (leadEl) leadEl.textContent = (ld && ld.length) ? ld : leadDefault;
                     content.classList.remove('fading');

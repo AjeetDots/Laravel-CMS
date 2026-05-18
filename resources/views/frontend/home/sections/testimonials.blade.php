@@ -1,7 +1,7 @@
 @if($testimonials->isNotEmpty())
 @php
     $leftPanels = $testimonials->map(function ($t) {
-        $msg = trim((string) $t->message);
+        $msg = $t->plain_message;
         $sentences = preg_split('/(?<=[.!?])\s+/u', $msg, -1, PREG_SPLIT_NO_EMPTY);
         $sentences = array_values(array_filter(array_map('trim', $sentences)));
         if (count($sentences) >= 1) {
@@ -24,7 +24,7 @@
 
     $featured = $testimonials->first();
     $featuredPhoto = $featured->client_image_url;
-    $msgFeatured = trim((string) $featured->message);
+    $msgFeatured = $featured->plain_message;
     $sentencesF = preg_split('/(?<=[.!?])\s+/u', $msgFeatured, -1, PREG_SPLIT_NO_EMPTY);
     $sentencesF = array_values(array_filter(array_map('trim', $sentencesF)));
     if (count($sentencesF) >= 1) {
@@ -67,11 +67,12 @@
     .swiper-pagination-bullet {
         width: 8px;
         height: 8px;
-        background: #fff;
-        opacity: .4;
+        background: rgba(255, 255, 255, 0.45);
+        opacity: 1;
     }
 
     .swiper-pagination-bullet-active {
+        background: #c4a06a;
         opacity: 1;
     }
 </style>
@@ -79,7 +80,11 @@
     <div class="row g-0 align-items-stretch">
         <div class="col-lg-6">
             <div class="testimonial-left">
-                <img src="{{ $leftPanelImage }}" class="img-fluid" alt="" />
+                <img src="{{ $hasLeftPanelImage ? $leftPanelImage : ($featuredPhoto ?: $leftPanelImage) }}"
+                     class="img-fluid"
+                     alt=""
+                     id="testimonialLeftImg"
+                     @if(!$hasLeftPanelImage && !$featuredPhoto) style="display:none" @endif />
                 <div class="testimonial-left__photo-fallback"
                      id="testimonialLeftFallback"
                      role="presentation"
@@ -107,15 +112,16 @@
                             @endphp
                             <div class="swiper-slide">
                                 <div class="testimonial-slide">
-                                    <h3>&ldquo;{{ $t->message }}&rdquo;</h3>
+                                    <h3>&ldquo;{{ $t->plain_message }}&rdquo;</h3>
                                     <div class="d-flex gap-3 align-items-center ">
-                                        <div><img src="{{ $featuredPhoto ?: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
-                                                            alt="{{ $featured->client_name }}"
-                                                            class="testi-img"
-                                                            id="testimonialLeftImg"
-                                                            @unless($featuredPhoto) style="display:none" @endunless
-                                                            loading="eager"
-                                                            decoding="async" />
+                                        <div>
+                                            @php $clientPhoto = $t->client_image_url; @endphp
+                                            <img src="{{ $clientPhoto ?: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+                                                 alt="{{ $t->client_name }}"
+                                                 class="testi-img"
+                                                 @unless($clientPhoto) style="display:none" @endunless
+                                                 loading="lazy"
+                                                 decoding="async" />
                                         </div>
                                     <div>
                                     <div class="client-name">{{ $t->client_name }}</div>
@@ -141,6 +147,7 @@
         var el = document.querySelector('.testimonial-slider');
         if (!el) return;
         var multi = {{ $testimonials->count() > 1 ? 'true' : 'false' }};
+        var leftPanelStatic = {{ $hasLeftPanelImage ? 'true' : 'false' }};
         var dataEl = document.getElementById('testimonialLeftPanelsData');
         var panels = [];
         if (dataEl && dataEl.textContent) {
@@ -158,7 +165,7 @@
         var designationEl = document.getElementById('testimonialLeftDesignation');
 
         function applyLeftPanel(index) {
-            if (!panels.length) return;
+            if (!panels.length || leftPanelStatic) return;
             var i = index;
             if (i < 0 || i >= panels.length) {
                 i = 0;

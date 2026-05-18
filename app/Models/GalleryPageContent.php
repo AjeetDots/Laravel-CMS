@@ -31,7 +31,7 @@ class GalleryPageContent extends Model
             'filter_all_label' => '',
             'grid_category_fallback' => '',
             'empty_message' => '',
-            'empty_btn_text' => '',
+            'empty_btn_text' => 'Get in touch',
             'empty_btn_url' => '',
             'bottom_heading' => '',
             'bottom_btn_text' => '',

@@ -39,14 +39,6 @@
                             <label class="form-label">Company</label>
                             <input type="text" name="client_company" class="form-control" value="{{ old('client_company', $testimonial->client_company) }}">
                         </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Rating</label>
-                            <select name="rating" class="form-select">
-                                @for($i=5;$i>=1;$i--)
-                                    <option value="{{ $i }}" {{ old('rating', $testimonial->rating ?? 5) == $i ? 'selected' : '' }}>{{ $i }} Star{{ $i > 1 ? 's' : '' }}</option>
-                                @endfor
-                            </select>
-                        </div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Message *</label>
@@ -69,7 +61,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $testimonial->exists ? $testimonial->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $testimonial->exists ? $testimonial->sort_order : ($defaultSortOrder ?? 1)) }}" min="1">
                         <div class="form-text">Must be unique among all testimonials.</div>
                     </div>
                     <div class="form-check form-switch">

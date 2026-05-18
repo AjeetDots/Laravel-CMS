@@ -26,14 +26,16 @@ class NewsletterController extends Controller {
         return response()->streamDownload(function () {
             $handle = fopen('php://output', 'w');
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputcsv($handle, ['ID', 'Email', 'Status', 'Subscribed at']);
+            fputcsv($handle, ['Sr.', 'Email', 'Status', 'Subscribed at']);
 
+            $serial = 0;
             foreach (NewsletterSubscriber::query()->orderByDesc('created_at')->cursor() as $sub) {
+                $serial++;
                 fputcsv($handle, [
-                    $sub->id,
+                    $serial,
                     $sub->email,
                     $sub->is_active ? 'Active' : 'Inactive',
-                    $sub->created_at?->format('Y-m-d H:i:s') ?? '',
+                    $sub->created_at?->format('d M Y H:i') ?? '',
                 ]);
             }
 

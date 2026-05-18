@@ -22,8 +22,9 @@
                 </div>
                 <div class="reveal-right d-flex flex-wrap gap-2 justify-content-lg-end">
                     @if(trim((string) $commissionsBtnText) !== '')
-                        <a href="{{ \App\Support\CmsOutboundHref::resolve($commissionsBtnUrlStr !== '' ? $commissionsBtnUrlStr : null, 'gallery') }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
-                            {{ $commissionsBtnText }} <i class="fas fa-arrow-right ms-1"></i>
+                        <a href="{{ \App\Support\CmsOutboundHref::resolve($commissionsBtnUrlStr !== '' ? $commissionsBtnUrlStr : null, 'gallery') }}" class="hero-btn hero-btn--gold home-atelier-btn">
+                            {{ $commissionsBtnText }}
+                            <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
                         </a>
                     @endif
                 </div>

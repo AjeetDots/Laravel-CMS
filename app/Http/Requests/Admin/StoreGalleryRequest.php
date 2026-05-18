@@ -40,7 +40,7 @@ class StoreGalleryRequest extends FormRequest
             'section_content' => 'nullable|string|max:2000',
             'image'      => ImageUploadRules::required(4096),
             'gallery_category_id' => ['nullable', Rule::exists('gallery_categories', 'id')->whereNull('deleted_at')],
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_items', ['gallery_category_id' => 'gallery_category_id'])],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('gallery_items', ['gallery_category_id' => 'gallery_category_id'])],
             'is_active'  => 'boolean',
         ];
     }

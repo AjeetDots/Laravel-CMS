@@ -741,9 +741,10 @@
 }
 
 /* Gold primary + ghost secondary (matches design board) */
-.hero-btn.hero-btn--primary {
-    background: #c5a070;
-    border-color: #c5a070;
+.hero-btn.hero-btn--primary,
+.hero-btn.hero-btn--gold {
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
     border-radius: 0;
     letter-spacing: 0.16em;
@@ -751,11 +752,12 @@
     padding: 14px 26px;
 }
 
-.hero-btn.hero-btn--primary:hover {
+.hero-btn.hero-btn--primary:hover,
+.hero-btn.hero-btn--gold:hover {
     background: var(--secondary) !important;
     border-color: var(--secondary) !important;
     color: #fff !important;
-    box-shadow: none;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 
 .hero-btn-outline.hero-btn-outline--hero {
@@ -955,8 +957,13 @@
     overflow: hidden;
 }
 
-.disciplines-section .disc-card img:hover {
+.disciplines-section .disc-card:not(.disc-card-img-wrap--has-hover) img:hover,
+.disciplines-section .disc-card-img-wrap:not(.disc-card-img-wrap--has-hover) img:hover {
     transform: translateY(-8px);
+}
+
+.disciplines-section .disc-card-img-wrap--has-hover img:hover {
+    transform: none;
 }
 
 /* Equal-height cards + ellipsis: columns stretch; Discover pinned to bottom */
@@ -2818,30 +2825,45 @@ a.commission-item:hover .commission-category {
     object-fit: cover;
 }
 
-.hover-img{
+.disc-card-img-wrap--has-hover .disc-card-img {
     position: absolute;
     inset: 0;
+    width: 100%;
+    height: 100%;
+    transition: opacity .45s ease, transform .6s ease;
+}
+
+.disc-card-img-wrap--has-hover .hover-img {
     opacity: 0;
     visibility: hidden;
 }
 
-.disc-card-img-wrap:hover .hover-img{
+.disc-card-img-wrap--has-hover:hover .hover-img {
     opacity: 1;
     visibility: visible;
 }
 
-.disc-card-img-wrap:hover .default-img{
+.disc-card-img-wrap--has-hover:hover .default-img {
     opacity: 0;
-}
-.disc-card-img-wrap:hover .hover-img{
-    opacity: 1;
-    visibility: visible;
-    transform: scale(1.05);
 }
 
-.disc-card-img-wrap:hover .default-img{
-    opacity: 0;
-    transform: scale(1.05);
+.disciplines-section .disc-card-img-wrap--has-hover:hover .disc-card-img {
+    transform: scale(1.04);
+}
+
+.disciplines-section .disc-card--has-hover-title:hover .disc-card-title__default {
+    display: none;
+}
+
+.disciplines-section .disc-card-title--has-hover .disc-card-title__hover {
+    display: none;
+}
+
+.disciplines-section .disc-card--has-hover-title:hover .disc-card-title__hover {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
 }
 .disciplines-section .reveal-right.visible a:hover .hover-gold{
     color: var(--primary)!important;

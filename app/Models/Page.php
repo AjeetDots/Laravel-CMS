@@ -15,6 +15,9 @@ class Page extends Model
     /** Slug reserved for the site About page (About Editorial template is only offered here). */
     public const ABOUT_SLUG = 'about';
 
+    /** Home page slugs stored in DB (empty, “home”, or “/” for the site root). */
+    public const HOME_SLUG = 'home';
+
     /** Slugs that may use the Contact layout template. */
     public const CONTACT_SLUGS = ['contact', 'contact-us'];
 
@@ -25,6 +28,9 @@ class Page extends Model
     public const BODY_ORDER_SECTIONS_FIRST = 'sections_first';
 
     public const TEMPLATE_SIDEBAR = 'sidebar';
+
+    /** Centred reading column; simpler layout without the full-width builder shell. */
+    public const TEMPLATE_DEFAULT = 'default';
 
     public const TEMPLATE_FULL_WIDTH = 'full-width';
 
@@ -37,11 +43,14 @@ class Page extends Model
     protected $fillable = [
         'title',
         'slug',
+        'hero_eyebrow',
+        'hero_lede',
         'content',
         'body_order',
         'sidebar_content',
         'sidebar_cta_title',
         'sidebar_cta_text',
+        'sidebar_cta_button_text',
         'meta_title',
         'meta_description',
         'template',
@@ -79,13 +88,13 @@ class Page extends Model
     }
 
     /**
-     * Templates that use the stacked “Sections” builder in admin.
+     * Templates with main content editor, optional sections, and content order in admin.
      *
      * @return list<string>
      */
     public static function sectionedTemplates(): array
     {
-        return [self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
+        return [self::TEMPLATE_DEFAULT, self::TEMPLATE_FULL_WIDTH, self::TEMPLATE_SIDEBAR];
     }
 
     /**
@@ -96,6 +105,7 @@ class Page extends Model
     public static function defaultTemplateOptions(): array
     {
         return [
+            self::TEMPLATE_DEFAULT => 'Default',
             self::TEMPLATE_FULL_WIDTH => 'Full width',
             self::TEMPLATE_SIDEBAR => 'With sidebar',
         ];
@@ -168,11 +178,27 @@ class Page extends Model
         ];
     }
 
+    public static function normalizeSlugKey(?string $slug): string
+    {
+        $slug = strtolower(trim(trim((string) $slug), '/'));
+
+        return $slug === '' ? self::HOME_SLUG : $slug;
+    }
+
+    public static function isHomeSlug(?string $slug): bool
+    {
+        return self::normalizeSlugKey($slug) === self::HOME_SLUG;
+    }
+
     public function isDeletionProtected(): bool
     {
-        $slug = strtolower(trim((string) ($this->slug ?? '')));
+        $slug = self::normalizeSlugKey($this->slug);
+        $protected = array_map(
+            static fn (string $protectedSlug) => self::normalizeSlugKey($protectedSlug),
+            static::protectedDeletionSlugs()
+        );
 
-        return in_array($slug, static::protectedDeletionSlugs(), true);
+        return in_array($slug, $protected, true);
     }
 
     public function resolvedSidebarCtaTitle(): string
@@ -183,5 +209,12 @@ class Page extends Model
     public function resolvedSidebarCtaText(): string
     {
         return trim((string) ($this->sidebar_cta_text ?? ''));
+    }
+
+    public function resolvedSidebarCtaButtonText(): string
+    {
+        $text = trim((string) ($this->sidebar_cta_button_text ?? ''));
+
+        return $text !== '' ? $text : 'Contact us';
     }
 }

@@ -136,7 +136,46 @@
         .main-content .dt-container { padding: 0 1rem 1rem; font-size: .88rem; max-width: 100%; min-width: 0; overflow-x: auto; }
         .main-content .dt-container .dt-length label,
         .main-content .dt-container .dt-search label { font-weight: 500; color: var(--admin-charcoal-muted); margin-right: .35rem; }
-        .main-content .dt-container .dt-paging .pagination { margin-bottom: 0; justify-content: flex-end; flex-wrap: wrap; gap: .15rem; }
+        .main-content .dt-container .dt-paging .pagination { margin-bottom: 0; justify-content: flex-end; flex-wrap: wrap; gap: .35rem; }
+
+        /* Pagination — brand gold (matches logo / primary buttons) */
+        .main-content .pagination {
+            --bs-pagination-padding-x: 0.7rem;
+            --bs-pagination-padding-y: 0.4rem;
+            --bs-pagination-font-size: 0.88rem;
+            --bs-pagination-color: var(--primary-dark);
+            --bs-pagination-bg: #fffefb;
+            --bs-pagination-border-width: 1px;
+            --bs-pagination-border-color: rgba(184, 151, 90, 0.4);
+            --bs-pagination-border-radius: 8px;
+            --bs-pagination-hover-color: #fff;
+            --bs-pagination-hover-bg: var(--primary);
+            --bs-pagination-hover-border-color: var(--primary);
+            --bs-pagination-focus-color: var(--primary-dark);
+            --bs-pagination-focus-bg: rgba(184, 151, 90, 0.14);
+            --bs-pagination-focus-box-shadow: 0 0 0 3px rgba(184, 151, 90, 0.28);
+            --bs-pagination-active-color: #fff;
+            --bs-pagination-active-bg: var(--primary-dark);
+            --bs-pagination-active-border-color: var(--primary-dark);
+            --bs-pagination-disabled-color: #9a8f82;
+            --bs-pagination-disabled-bg: #f5f0ea;
+            --bs-pagination-disabled-border-color: #e8dfd4;
+            gap: 0.35rem;
+        }
+        .main-content .pagination .page-link {
+            font-weight: 500;
+            transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .main-content .pagination .page-item.active .page-link {
+            background: linear-gradient(180deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border-color: var(--primary-dark);
+            color: #fff;
+        }
+        .main-content .pagination .page-item:not(.disabled) .page-link:hover {
+            background: linear-gradient(180deg, #c4a86a 0%, var(--primary) 100%);
+            border-color: var(--primary);
+            color: #fff;
+        }
 
         /* Badges */
         .badge-active { background: rgba(88, 108, 92, 0.12); color: #3d4a40; border: 1px solid rgba(88, 108, 92, 0.22); }
@@ -788,11 +827,12 @@
                 });
             }
             var columnDefs = nonOrderable.length ? [{ orderable: false, targets: nonOrderable }] : [];
+            var renumberCol = table.getAttribute('data-dt-renumber-col');
             var domTop = searching
                 ? '<"row g-2 mb-2 align-items-center"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>'
                 : '<"row g-2 mb-2"<"col-sm-12 col-md-6"l>>';
             var domBot = '<"row g-2 mt-2 align-items-center"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>';
-            new DataTable(table, {
+            var dtOptions = {
                 paging: paging,
                 searching: searching,
                 ordering: ordering,
@@ -815,7 +855,20 @@
                         last: '»',
                     },
                 },
-            });
+            };
+            if (renumberCol !== null && renumberCol !== '') {
+                var serialColIdx = parseInt(renumberCol, 10);
+                if (! isNaN(serialColIdx)) {
+                    dtOptions.drawCallback = function () {
+                        var api = this.api();
+                        var start = api.page.info().start;
+                        api.column(serialColIdx, { page: 'current' }).nodes().each(function (cell, i) {
+                            cell.textContent = String(start + i + 1);
+                        });
+                    };
+                }
+            }
+            new DataTable(table, dtOptions);
         });
     }
     if (document.readyState === 'loading') {

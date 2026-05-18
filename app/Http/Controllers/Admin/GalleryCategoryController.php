@@ -41,6 +41,7 @@ class GalleryCategoryController extends Controller
         $data = $request->validated();
         $baseSlug = filled($data['slug'] ?? null) ? $data['slug'] : Str::slug($data['name']);
         $data['slug'] = $this->ensureUniqueSlug((string) $baseSlug);
+        $data['sort_order'] = max(1, (int) ($data['sort_order'] ?? 1));
         GalleryCategory::create($data);
 
         return redirect()->route('admin.gallery-categories.index')
@@ -60,6 +61,9 @@ class GalleryCategoryController extends Controller
         $data = $request->validated();
         $baseSlug = filled($data['slug'] ?? null) ? $data['slug'] : Str::slug($data['name']);
         $data['slug'] = $this->ensureUniqueSlug((string) $baseSlug, $gallery_category->id);
+        if (array_key_exists('sort_order', $data)) {
+            $data['sort_order'] = max(1, (int) $data['sort_order']);
+        }
         $gallery_category->update($data);
 
         return redirect()->route('admin.gallery-categories.index')

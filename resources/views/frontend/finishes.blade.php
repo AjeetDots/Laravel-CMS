@@ -51,9 +51,20 @@
             <div class="col-12 text-center py-5 finishes-grid-empty">
                 <i class="fas fa-palette fa-3x mb-3"></i>
                 <p>{{ $finishesPage['empty_message'] }}</p>
-                @if(!empty(trim($finishesPage['empty_btn_text'] ?? '')) && !empty(trim($finishesPage['empty_btn_href'] ?? '')))
-                <a href="{{ $finishesPage['empty_btn_href'] }}" class="btn-outline-site mt-2">{{ $finishesPage['empty_btn_text'] }}</a>
-                @endif
+                @php
+                    $finishesEmptyBtnText = trim((string) ($finishesPage['empty_btn_text'] ?? ''));
+                    $finishesEmptyBtnHref = trim((string) ($finishesPage['empty_btn_href'] ?? ''));
+                    if ($finishesEmptyBtnText === '') {
+                        $finishesEmptyBtnText = 'Get in touch';
+                    }
+                    if ($finishesEmptyBtnHref === '') {
+                        $finishesEmptyBtnHref = route('contact');
+                    }
+                @endphp
+                <a href="{{ $finishesEmptyBtnHref }}" class="hero-btn hero-btn--gold home-atelier-btn mt-2">
+                    {{ $finishesEmptyBtnText }}
+                    <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
+                </a>
             </div>
             @endforelse
         </div>
@@ -66,7 +77,10 @@
         <h2>{{ $finishesPage['bottom_heading'] }}</h2>
         <p>{{ $finishesPage['bottom_body'] }}</p>
         @if(!empty(trim($finishesPage['bottom_btn_text'] ?? '')) && !empty(trim($finishesPage['bottom_btn_href'] ?? '')))
-        <a href="{{ $finishesPage['bottom_btn_href'] }}" class="hero-btn hero-btn--gold home-atelier-btn">{{ $finishesPage['bottom_btn_text'] }}</a>
+        <a href="{{ $finishesPage['bottom_btn_href'] }}" class="hero-btn hero-btn--gold home-atelier-btn">
+            {{ $finishesPage['bottom_btn_text'] }}
+            <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
+        </a>
         @endif
     </div>
 </section>

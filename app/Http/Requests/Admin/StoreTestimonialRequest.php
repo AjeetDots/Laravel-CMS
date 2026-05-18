@@ -23,8 +23,7 @@ class StoreTestimonialRequest extends FormRequest
             'client_company'  => 'nullable|string|max:100',
             'client_image'    => ImageUploadRules::required(1024),
             'message'         => 'required|string',
-            'rating'          => 'integer|min:1|max:5',
-            'sort_order'      => ['integer', 'min:0', SortOrderRules::uniqueAmong('testimonials', [])],
+            'sort_order'      => ['integer', 'min:1', SortOrderRules::uniqueAmong('testimonials', [])],
             'is_active'       => 'boolean',
         ];
     }

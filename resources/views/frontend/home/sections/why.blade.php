@@ -3,7 +3,6 @@
     $whyEnabled = array_key_exists('is_enabled', $whyCfg) ? !empty($whyCfg['is_enabled']) : true;
     $whyEyebrow = $whyCfg['eyebrow'] ?? '';
     $whyHeading = $whyCfg['heading'] ?? '';
-    $whyLead = $whyCfg['lead'] ?? '';
     $whyCards = is_array($whyCfg['cards'] ?? null) ? $whyCfg['cards'] : [];
     $whyIconImageMap = [
         'fa-award' => asset('images/master-craftmanship.png'),
@@ -20,11 +19,6 @@
             <div class="col-lg-5 reveal-left">
                 <span class="finishes-intro__eyebrow">{{ $whyEyebrow }}</span>
                 <h2 class="home-atelier-headline-white">{{ $whyHeading }}</h2>
-            </div>
-            <div class="col-lg-6 offset-lg-1 reveal-right">
-                @if($whyLead !== '')
-                <p class="home-why-lead mb-0">{{ $whyLead }}</p>
-                @endif
             </div>
         </div>
         <div class="row g-4">

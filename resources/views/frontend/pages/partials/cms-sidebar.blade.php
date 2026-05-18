@@ -6,8 +6,6 @@
     @endif
 
     <div class="cms-sidebar-panel cms-sidebar-panel--contact">
-        <p class="cms-sidebar-panel__eyebrow">Get in touch</p>
-
         @if($page->resolvedSidebarCtaTitle() !== '')
             <h2 class="cms-sidebar-panel__title">{{ $page->resolvedSidebarCtaTitle() }}</h2>
         @endif
@@ -42,6 +40,6 @@
             @endif
         </ul>
 
-        <a href="{{ route('contact') }}" class="btn btn-dark cms-sidebar-panel__cta w-100">Contact us</a>
+        <a href="{{ route('contact') }}" class="btn btn-dark cms-sidebar-panel__cta w-100">{{ $page->resolvedSidebarCtaButtonText() }}</a>
     </div>
 </aside>

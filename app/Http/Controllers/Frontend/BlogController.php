@@ -9,7 +9,7 @@ class BlogController extends Controller
 {
     public function index()
     {
-        $posts = BlogPost::with('category')
+        $posts = BlogPost::with('postCategory')
             ->where('is_active', true)
             ->orderByDesc('published_at')
             ->paginate(9);
@@ -23,7 +23,7 @@ class BlogController extends Controller
             ->where('is_active', true)
             ->firstOrFail();
 
-        $posts = BlogPost::with('category')
+        $posts = BlogPost::with('postCategory')
             ->where('is_active', true)
             ->where('category_id', $category->id)
             ->orderByDesc('published_at')
@@ -34,14 +34,14 @@ class BlogController extends Controller
 
     public function show(string $slug)
     {
-        $post = BlogPost::with(['seoMeta', 'category'])
+        $post = BlogPost::with(['seoMeta', 'postCategory'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
         // 5 latest posts excluding this one
         $latestPosts = BlogPost::query()
-            ->with('category')
+            ->with('postCategory')
             ->where('is_active', true)
             ->where('id', '!=', $post->id)
             ->orderByDesc('published_at')
@@ -52,7 +52,7 @@ class BlogController extends Controller
         $related = collect();
         if ($post->category_id) {
             $related = BlogPost::query()
-                ->with('category')
+                ->with('postCategory')
                 ->where('is_active', true)
                 ->where('id', '!=', $post->id)
                 ->where('category_id', $post->category_id)

@@ -73,11 +73,11 @@
     use App\Http\Requests\Admin\UpdateSettingRequest;
 
     $settingsActiveTab = request()->query('tab', 'general');
-    if (! in_array($settingsActiveTab, ['general', 'notifications', 'social', 'logos', 'smtp', 'theme'], true)) {
+    if (! in_array($settingsActiveTab, ['general', 'notifications', 'social', 'logos', 'smtp'], true)) {
         $settingsActiveTab = 'general';
     }
     if ($errors->any()) {
-        $tabPriority = ['logos', 'social', 'notifications', 'smtp', 'theme', 'general'];
+        $tabPriority = ['logos', 'social', 'notifications', 'smtp', 'general'];
         foreach ($tabPriority as $tab) {
             foreach ($errors->keys() as $field) {
                 if (UpdateSettingRequest::settingsTabForField($field) === $tab) {
@@ -97,11 +97,11 @@
                 class="btn btn-link p-0 text-info settings-field-help-icon flex-shrink-0 mt-0"
                 data-bs-toggle="tooltip"
                 data-bs-placement="bottom"
-                title="You can edit any tab (General, Notifications, Social, Site logos, SMTP, Theme). One click on Save settings writes every tab—you do not need to open each tab before saving.">
+                title="You can edit any tab (General, Notifications, Social, Site logos, SMTP). One click on Save settings writes every tab—you do not need to open each tab before saving.">
                 <i class="fas fa-info-circle" aria-hidden="true"></i>
                 <span class="visually-hidden">How saving across tabs works</span>
             </button>
-            <p class="text-muted mb-0 small">General details, notifications, social links, branding, outbound email, and public theme colours. One save updates every tab.</p>
+            <p class="text-muted mb-0 small">General details, notifications, social links, branding, and outbound email. One save updates every tab.</p>
         </div>
     </div>
 </div>
@@ -134,9 +134,6 @@
                     <button class="nav-link @if($settingsActiveTab === 'smtp') active @endif" id="settings-tab-smtp" data-bs-toggle="pill" data-bs-target="#settings-pane-smtp" type="button" role="tab" aria-controls="settings-pane-smtp" aria-selected="{{ $settingsActiveTab === 'smtp' ? 'true' : 'false' }}">
                         <i class="fas fa-paper-plane me-2" aria-hidden="true"></i>SMTP
                     </button>
-                    <button class="nav-link @if($settingsActiveTab === 'theme') active @endif" id="settings-tab-theme" data-bs-toggle="pill" data-bs-target="#settings-pane-theme" type="button" role="tab" aria-controls="settings-pane-theme" aria-selected="{{ $settingsActiveTab === 'theme' ? 'true' : 'false' }}">
-                        <i class="fas fa-palette me-2" aria-hidden="true"></i>Theme
-                    </button>
                 </div>
             </div>
             <div class="col-lg-9 col-xl-10 settings-tabs-layout__panels p-3 p-lg-4">
@@ -156,9 +153,6 @@
                     <div class="tab-pane fade @if($settingsActiveTab === 'smtp') show active @endif" id="settings-pane-smtp" role="tabpanel" aria-labelledby="settings-tab-smtp" tabindex="0">
                         @include('admin.settings.partials.tab-smtp', ['settings' => $settings])
                     </div>
-                    <div class="tab-pane fade @if($settingsActiveTab === 'theme') show active @endif" id="settings-pane-theme" role="tabpanel" aria-labelledby="settings-tab-theme" tabindex="0">
-                        @include('admin.settings.partials.tab-theme', ['settings' => $settings])
-                    </div>
                 </div>
             </div>
         </div>
@@ -166,7 +160,7 @@
 
     <div class="settings-save-bar d-flex flex-wrap align-items-center justify-content-end column-gap-3 row-gap-2 mt-3 pt-3 border-top">
         <span class="text-muted small mb-0 text-end" style="max-width: min(22rem, 100%);" id="site-settings-save-hint">
-            Saves every tab (General, Notifications, Social, Site logos, SMTP, Theme) in one submission.
+            Saves every tab (General, Notifications, Social, Site logos, SMTP) in one submission.
         </span>
         <button type="submit" class="btn btn-primary btn-lg flex-shrink-0" aria-describedby="site-settings-save-hint">
             <i class="fas fa-save me-2" aria-hidden="true"></i>Save settings

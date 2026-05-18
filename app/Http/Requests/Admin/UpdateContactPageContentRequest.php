@@ -40,8 +40,6 @@ class UpdateContactPageContentRequest extends FormRequest
             'hours_label' => 'nullable|string|max:120',
             'hours_body' => 'nullable|string|max:500',
             'appointment_line' => 'nullable|string|max:255',
-            'fallback_phone_display' => 'nullable|string|max:80',
-            'fallback_whatsapp_label' => 'nullable|string|max:80',
             'form_title' => 'nullable|string|max:120',
             'form_error_intro' => 'nullable|string|max:500',
             'name_placeholder' => 'nullable|string|max:120',

@@ -44,7 +44,7 @@ class UpdateCategoryRequest extends FormRequest
             'slug'        => ['nullable', 'string', 'max:120', Rule::unique('categories', 'slug')->ignore($this->route('category'))],
             'description' => 'nullable|string|max:500',
             'parent_id'   => ['nullable', Rule::exists('categories', 'id')->whereNull('deleted_at')],
-            'sort_order'  => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('categories', ['parent_id' => 'parent_id'], $this->route('category'))],
+            'sort_order'  => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('categories', ['parent_id' => 'parent_id'], $this->route('category'))],
             'is_active'   => 'nullable|boolean',
         ];
     }

@@ -96,9 +96,20 @@
 <div class="container text-center py-5 services-empty-state">
     <i class="fas fa-concierge-bell fa-3x mb-3" aria-hidden="true"></i>
     <p class="mb-3">{{ $servicesPage['empty_message'] }}</p>
-    @if(!empty(trim($servicesPage['empty_btn_text'] ?? '')) && !empty(trim($servicesPage['empty_btn_href'] ?? '')))
-        <a href="{{ $servicesPage['empty_btn_href'] }}" class="btn-outline-site">{{ $servicesPage['empty_btn_text'] }}</a>
-    @endif
+    @php
+        $servicesEmptyBtnText = trim((string) ($servicesPage['empty_btn_text'] ?? ''));
+        $servicesEmptyBtnHref = trim((string) ($servicesPage['empty_btn_href'] ?? ''));
+        if ($servicesEmptyBtnText === '') {
+            $servicesEmptyBtnText = 'Get in touch';
+        }
+        if ($servicesEmptyBtnHref === '') {
+            $servicesEmptyBtnHref = route('contact');
+        }
+    @endphp
+    <a href="{{ $servicesEmptyBtnHref }}" class="hero-btn hero-btn--gold home-atelier-btn">
+        {{ $servicesEmptyBtnText }}
+        <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
+    </a>
 </div>
 @endforelse
 
@@ -110,7 +121,10 @@
             <p class="mb-4">{{ $servicesPage['bottom_body'] }}</p>
         @endif
         @if(!empty(trim($servicesPage['bottom_btn_text'] ?? '')) && !empty(trim($servicesPage['bottom_btn_href'] ?? '')))
-        <a href="{{ $servicesPage['bottom_btn_href'] }}" class="hero-btn hero-btn--gold home-atelier-btn">{{ $servicesPage['bottom_btn_text'] }} <i class="fas fa-arrow-right rotate-45"  aria-hidden="true"></i></a>
+        <a href="{{ $servicesPage['bottom_btn_href'] }}" class="hero-btn hero-btn--gold home-atelier-btn">
+            {{ $servicesPage['bottom_btn_text'] }}
+            <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
+        </a>
         @endif
     </div>
 </div>

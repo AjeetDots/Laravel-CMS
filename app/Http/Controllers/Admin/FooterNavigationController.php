@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\UpdateFooterNavigationRequest;
 use App\Models\FooterNavColumn;
 use App\Models\FooterNavLink;
+use App\Support\MenuLinkDirectory;
 
 class FooterNavigationController extends Controller
 {
@@ -16,7 +17,9 @@ class FooterNavigationController extends Controller
         $links1 = FooterNavLink::query()->where('slot', 1)->orderBy('sort_order')->orderBy('id')->get();
         $links2 = FooterNavLink::query()->where('slot', 2)->orderBy('sort_order')->orderBy('id')->get();
 
-        return view('admin.footer-navigation.edit', compact('col1', 'col2', 'links1', 'links2'));
+        $menuLinkGroups = MenuLinkDirectory::choiceGroups();
+
+        return view('admin.footer-navigation.edit', compact('col1', 'col2', 'links1', 'links2', 'menuLinkGroups'));
     }
 
     public function update(UpdateFooterNavigationRequest $request)

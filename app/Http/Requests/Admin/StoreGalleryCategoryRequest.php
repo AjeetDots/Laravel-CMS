@@ -20,7 +20,7 @@ class StoreGalleryCategoryRequest extends FormRequest
         return [
             'name'       => 'required|string|max:120',
             'slug'       => 'nullable|string|max:160',
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_categories', [])],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('gallery_categories', [])],
         ];
     }
 }

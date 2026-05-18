@@ -86,12 +86,14 @@ class PageController extends Controller
             $data['sidebar_content'] = null;
             $data['sidebar_cta_title'] = null;
             $data['sidebar_cta_text'] = null;
+            $data['sidebar_cta_button_text'] = null;
         }
         if (($data['template'] ?? '') === Page::TEMPLATE_CONTACT) {
             $data['body_order'] = Page::BODY_ORDER_CONTENT_FIRST;
             $data['sidebar_content'] = null;
             $data['sidebar_cta_title'] = null;
             $data['sidebar_cta_text'] = null;
+            $data['sidebar_cta_button_text'] = null;
         }
         $page->update($data);
         $page->sections()->delete();
@@ -166,9 +168,10 @@ class PageController extends Controller
     {
         return [
             'about' => 'About Page (Editorial)',
-            'full-width' => 'Full Width',
-            'sidebar' => 'With Sidebar',
-            'contact' => 'Contact (theme content and form)',
+            Page::TEMPLATE_DEFAULT => 'Default',
+            Page::TEMPLATE_FULL_WIDTH => 'Full Width',
+            Page::TEMPLATE_SIDEBAR => 'With Sidebar',
+            Page::TEMPLATE_CONTACT => 'Contact (theme content and form)',
         ];
     }
 

@@ -25,6 +25,21 @@ class Slider extends Model {
         'right_bottom' => 'Right Bottom Thumbnail',
     ];
     protected $casts = ['is_active' => 'boolean'];
+
+    public function listedSortOrder(): int
+    {
+        return max(1, (int) $this->sort_order);
+    }
+
+    public static function minimumRequiredCount(): int
+    {
+        return 1;
+    }
+
+    public static function canRemoveOne(): bool
+    {
+        return static::count() > static::minimumRequiredCount();
+    }
     public function getImageUrlAttribute(): string {
         if (filter_var($this->image, FILTER_VALIDATE_URL)) {
             return $this->image;

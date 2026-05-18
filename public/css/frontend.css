@@ -28,6 +28,9 @@
     --violet: #AA8453;
     --gradient: linear-gradient(135deg, #AA8453 0%, #E0885C 100%);
     --gradient-glow: radial-gradient(ellipse at 60% 40%, rgba(201, 107, 63, .15) 0%, transparent 65%);
+    --brand-gold: #AA8453;
+    --brand-gold-dark: #927848;
+    --brand-gold-gradient: linear-gradient(180deg, var(--brand-gold) 0%, var(--brand-gold-dark) 100%);
     /* Logo slot — primary brand mark (larger = more focal) */
     --nav-logo-max-height: 152px;
     --nav-logo-max-height-scrolled: 118px;
@@ -305,21 +308,20 @@ img {
 }
 
 .btn-quote {
-    background: var(--secondary);
+    background: var(--primary);
     color: #fff !important;
-    border: none;
+    border: 1px solid var(--primary);
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 0.6rem;
-    padding: 11px 16px;
+    font-size: 0.75rem;
+    padding: 11px 18px;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    font-family: 'Inter';
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
     font-weight: normal;
-    font-size: 14px;
-    transition: ease-in-out 0.25s;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     position: relative;
 }
 
@@ -333,9 +335,10 @@ img {
 
 
 .btn-quote:hover {
-    background: var(--primary);
+    background: var(--secondary);
+    border-color: var(--secondary);
     color: #fff !important;
-    /* transform: translateY(-1px); */
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 .btn-quote:hover .btn-quote__ico {
     top: -2px;
@@ -1066,6 +1069,53 @@ img {
     background: var(--secondary);
     color: #fff;
     border: 1px solid var(--secondary);
+}
+
+.hero-btn.hero-btn--gold,
+.hero-btn.hero-btn--primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.hero-btn.hero-btn--gold:hover,
+.hero-btn.hero-btn--primary:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+}
+
+.home-atelier-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    padding: 12px 22px;
+}
+
+.btn-outline-site {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 0;
+    background: transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-outline-site:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
 }
 
 .hero-btn-outline {
@@ -1825,7 +1875,7 @@ img {
 }
 
 .testi-dot.active {
-    background: linear-gradient(90deg, #d97757 0%, #c96b3f 100%);
+    background: var(--brand-gold-gradient);
     width: 40px;
 }
 
@@ -4230,4 +4280,55 @@ textarea.form-control {
 
 .cms-builder.innerGap .cms-builder__sections.cms-builder__sections--after-lead .cms-builder-band {
     padding-bottom: 128px;
+}
+
+/* ═══════════════════════════════════════
+   PAGINATION — brand gold (logo palette)
+═══════════════════════════════════════ */
+.pagination {
+    --bs-pagination-padding-x: 0.75rem;
+    --bs-pagination-padding-y: 0.45rem;
+    --bs-pagination-font-size: 0.9rem;
+    --bs-pagination-color: var(--brand-gold-dark);
+    --bs-pagination-bg: #fffefb;
+    --bs-pagination-border-width: 1px;
+    --bs-pagination-border-color: rgba(170, 132, 83, 0.38);
+    --bs-pagination-border-radius: 8px;
+    --bs-pagination-hover-color: #fff;
+    --bs-pagination-hover-bg: var(--brand-gold);
+    --bs-pagination-hover-border-color: var(--brand-gold);
+    --bs-pagination-focus-color: var(--brand-gold-dark);
+    --bs-pagination-focus-bg: rgba(170, 132, 83, 0.12);
+    --bs-pagination-focus-box-shadow: 0 0 0 3px rgba(170, 132, 83, 0.25);
+    --bs-pagination-active-color: #fff;
+    --bs-pagination-active-bg: var(--brand-gold-dark);
+    --bs-pagination-active-border-color: var(--brand-gold-dark);
+    --bs-pagination-disabled-color: #9a8f82;
+    --bs-pagination-disabled-bg: #f5f0ea;
+    --bs-pagination-disabled-border-color: #e8dfd4;
+    gap: 0.35rem;
+}
+.pagination .page-link {
+    font-weight: 500;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+.pagination .page-item.active .page-link {
+    background: var(--brand-gold-gradient);
+    border-color: var(--brand-gold-dark);
+    color: #fff;
+}
+.pagination .page-item:not(.disabled) .page-link:hover {
+    background: linear-gradient(180deg, #c4a06a 0%, var(--brand-gold) 100%);
+    border-color: var(--brand-gold);
+    color: #fff;
+}
+
+/* Swiper / slider dots */
+.swiper-pagination-bullet {
+    background: rgba(170, 132, 83, 0.35);
+    opacity: 1;
+}
+.swiper-pagination-bullet-active {
+    background: var(--brand-gold);
+    opacity: 1;
 }

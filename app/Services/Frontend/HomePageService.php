@@ -79,6 +79,7 @@ class HomePageService implements HomePageServiceInterface
                 ->orderBy('sort_order')
                 ->get(),
             'blogPosts' => BlogPost::query()
+                ->with('postCategory')
                 ->where('is_active', true)
                 ->orderByDesc('published_at')
                 ->limit(3)
@@ -157,7 +158,6 @@ class HomePageService implements HomePageServiceInterface
             'heading_line_2' => isset($data['heading_line_2']) ? trim((string) $data['heading_line_2']) : '',
             'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
             'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
-            'card_link_text' => isset($data['card_link_text']) ? trim((string) $data['card_link_text']) : '',
         ];
     }
 
@@ -183,7 +183,6 @@ class HomePageService implements HomePageServiceInterface
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
             'heading' => isset($data['heading']) ? trim((string) $data['heading']) : '',
-            'lead' => isset($data['lead']) ? trim((string) $data['lead']) : '',
             'cards' => $resolvedCards,
         ];
     }
@@ -316,15 +315,13 @@ class HomePageService implements HomePageServiceInterface
      */
     private function getBlogPreviewSectionData(array $data): array
     {
-        $buttonUrl = isset($data['button_url']) ? trim((string) $data['button_url']) : '';
+        $buttonText = isset($data['button_text']) ? trim((string) $data['button_text']) : '';
 
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'eyebrow' => isset($data['eyebrow']) ? trim((string) $data['eyebrow']) : '',
             'heading' => isset($data['heading']) ? trim((string) $data['heading']) : '',
-            'button_text' => isset($data['button_text']) ? trim((string) $data['button_text']) : '',
-            'button_url' => $buttonUrl !== '' ? $buttonUrl : null,
-            'read_more_text' => isset($data['read_more_text']) ? trim((string) $data['read_more_text']) : '',
+            'button_text' => $buttonText !== '' ? $buttonText : 'All Blogs',
         ];
     }
 }

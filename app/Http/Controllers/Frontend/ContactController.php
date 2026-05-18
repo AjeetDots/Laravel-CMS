@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Frontend\StoreContactRequest;
 use App\Models\ContactPageContent;
 use App\Models\PhoneCountry;
+use App\Support\ContactPageUrl;
 
 class ContactController extends Controller
 {
@@ -16,11 +17,19 @@ class ContactController extends Controller
 
     public function index()
     {
+        $page = ContactPageUrl::activePage();
+
+        if ($page === null) {
+            abort(404);
+        }
+
         $phoneCountries = PhoneCountry::listingQuery()->get(['id', 'iso_code', 'name', 'dial_code', 'flag_emoji']);
         $contactPage = ContactPageContent::viewDataWithDefaults();
         $contactHeroUrl = ContactPageContent::resolveHeroBackgroundUrl($contactPage['hero_bg_image'] ?? null);
 
-        return view('frontend.contact', compact('phoneCountries', 'contactPage', 'contactHeroUrl'));
+        return view('frontend.contact', compact('phoneCountries', 'contactPage', 'contactHeroUrl', 'page') + [
+            'seoModel' => $page,
+        ]);
     }
     public function store(StoreContactRequest $request)
     {

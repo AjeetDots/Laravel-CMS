@@ -28,7 +28,7 @@ class UpdateGalleryCategoryRequest extends FormRequest
                 'max:160',
                 Rule::unique('gallery_categories', 'slug')->ignore($category)->whereNull('deleted_at'),
             ],
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_categories', [], $category)],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('gallery_categories', [], $category)],
         ];
     }
 }

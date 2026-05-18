@@ -45,7 +45,7 @@ class UpdateFinishRequest extends FormRequest {
             'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'clear_gallery'  => 'nullable|boolean',
             'tags_raw'       => 'nullable|string',
-            'sort_order'     => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('finishes', [], $this->route('finish'))],
+            'sort_order'     => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('finishes', [], $this->route('finish'))],
             'is_active'      => 'nullable|boolean',
         ];
     }

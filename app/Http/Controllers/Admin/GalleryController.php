@@ -34,17 +34,28 @@ class GalleryController extends Controller {
             $categoryScope = (int) $pre;
         }
         $defaultSortOrder = AdminDefaultSortOrder::next(GalleryItem::class, ['gallery_category_id' => $categoryScope]);
+        $defaultSortOrderByCategory = [
+            '' => AdminDefaultSortOrder::next(GalleryItem::class, ['gallery_category_id' => null]),
+        ];
+        foreach ($categories as $cat) {
+            $defaultSortOrderByCategory[(string) $cat->id] = AdminDefaultSortOrder::next(
+                GalleryItem::class,
+                ['gallery_category_id' => $cat->id]
+            );
+        }
 
         return view('admin.gallery.form', [
             'item' => new GalleryItem(),
             'categories' => $categories,
             'defaultSortOrder' => $defaultSortOrder,
+            'defaultSortOrderByCategory' => $defaultSortOrderByCategory,
         ]);
     }
     public function store(StoreGalleryRequest $request) {
         $data = $request->validated();
         $data['image'] = $request->file('image')->store('gallery', 'public');
         $data['is_active'] = $request->boolean('is_active');
+        $data['sort_order'] = max(1, (int) ($data['sort_order'] ?? 1));
         GalleryItem::create($data);
         return redirect()->route('admin.gallery.index')->with('success', 'Image uploaded.');
     }
@@ -64,6 +75,9 @@ class GalleryController extends Controller {
             $data['image'] = $request->file('image')->store('gallery', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
+        if (array_key_exists('sort_order', $data)) {
+            $data['sort_order'] = max(1, (int) $data['sort_order']);
+        }
         $gallery->update($data);
         return redirect()->route('admin.gallery.index')->with('success', 'Image updated.');
     }

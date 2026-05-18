@@ -42,8 +42,6 @@ class ContactPageContent extends Model
             'hours_label' => '',
             'hours_body' => '',
             'appointment_line' => '',
-            'fallback_phone_display' => '',
-            'fallback_whatsapp_label' => '',
             'form_title' => '',
             'form_error_intro' => '',
             'subject_default' => self::DEFAULT_ENQUIRY_SUBJECT,

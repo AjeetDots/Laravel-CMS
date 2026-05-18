@@ -42,7 +42,7 @@
                     <div class="mb-3">
                         <label class="form-label">Sort order</label>
                         <input type="number" name="sort_order" class="form-control"
-                               value="{{ old('sort_order', $category->exists ? $category->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                               value="{{ old('sort_order', $category->exists ? max(1, (int) $category->sort_order) : ($defaultSortOrder ?? 1)) }}" min="1">
                         <div class="form-text">Must be unique among all gallery categories.</div>
                     </div>
                 </div>

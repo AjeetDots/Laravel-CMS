@@ -53,7 +53,7 @@ class UpdatePortfolioRequest extends FormRequest
             'gallery_images.*' => ImageUploadRules::nullable(5120),
             'clear_gallery' => 'nullable|boolean',
             'tags_raw' => 'nullable|string',
-            'sort_order' => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('portfolios', [], $this->route('portfolio'))],
+            'sort_order' => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('portfolios', [], $this->route('portfolio'))],
             'is_active' => 'nullable|boolean',
         ], $this->seoRules());
     }

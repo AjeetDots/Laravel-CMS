@@ -35,7 +35,6 @@
                         <tr>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Subject</th>
                             <th>Date</th>
                             <th>Client Mail</th>
                             <th>Admin Mail</th>
@@ -53,7 +52,6 @@
                                     {{ $contact->name }}
                                 </td>
                                 <td>{{ $contact->email }}</td>
-                                <td>{{ Str::limit($contact->subject ?? 'No subject', 40) }}</td>
                                 <td>{{ $contact->created_at->format('M d, Y') }}</td>
                                 <td>
                                     @php
