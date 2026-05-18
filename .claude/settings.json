@@ -8,7 +8,8 @@
       "Bash(Get-ChildItem -Path \"c:\\\\xampp\\\\htdocs\\\\laravel_cms\" -Force)",
       "Bash(Select-Object Name, FullName)",
       "WebFetch(domain:www.figma.com)",
-      "WebFetch(domain:192.168.9.129)"
+      "WebFetch(domain:192.168.9.129)",
+      "WebFetch(domain:img.lightshot.app)"
     ],
     "additionalDirectories": [
       "d:\\xampp\\htdocs\\laravel_cms\\public"

@@ -65,7 +65,12 @@ class SettingController extends Controller
         $phoneNational = isset($data['site_phone_national']) ? trim((string) $data['site_phone_national']) : '';
         unset($data['site_phone_country_id'], $data['site_phone_national']);
 
+        $whatsappCountryId = isset($data['site_whatsapp_country_id']) ? (int) $data['site_whatsapp_country_id'] : null;
+        $whatsappNational = isset($data['site_whatsapp_national']) ? trim((string) $data['site_whatsapp_national']) : '';
+        unset($data['site_whatsapp_country_id'], $data['site_whatsapp_national']);
+
         $this->persistSitePhone($phoneCountryId ?: null, $phoneNational);
+        $this->persistSiteWhatsapp($whatsappCountryId ?: null, $whatsappNational);
 
         foreach ($data as $key => $value) {
             Setting::set($key, $value);
@@ -137,6 +142,47 @@ class SettingController extends Controller
         Setting::set('site_phone', $display);
         Setting::set('site_phone_country_id', (string) $countryId);
         Setting::set('site_phone_national', $national);
+    }
+
+    /**
+     * Store display WhatsApp number, E.164, and country parts from the General tab.
+     */
+    protected function persistSiteWhatsapp(?int $countryId, string $national): void
+    {
+        if ($countryId === null || $national === '') {
+            $prevCountryId = Setting::get('site_whatsapp_country_id');
+            $prevDisplay = Setting::get('site_whatsapp');
+            if (($prevCountryId === null || $prevCountryId === '') && $prevDisplay) {
+                return;
+            }
+
+            Setting::set('site_whatsapp', null);
+            Setting::set('site_whatsapp_e164', null);
+            Setting::set('site_whatsapp_country_id', null);
+            Setting::set('site_whatsapp_national', null);
+
+            return;
+        }
+
+        $country = PhoneCountry::listingQuery()->whereKey($countryId)->first();
+        if (! $country) {
+            Setting::set('site_whatsapp', null);
+            Setting::set('site_whatsapp_e164', null);
+            Setting::set('site_whatsapp_country_id', null);
+            Setting::set('site_whatsapp_national', null);
+
+            return;
+        }
+
+        $nationalDigits = preg_replace('/\D/', '', $national);
+        $dialDigits = preg_replace('/\D/', '', $country->dial_code);
+        $e164 = '+'.$dialDigits.$nationalDigits;
+        $display = SitePhone::formatFromCountry($country, $national);
+
+        Setting::set('site_whatsapp_e164', $e164);
+        Setting::set('site_whatsapp', $display);
+        Setting::set('site_whatsapp_country_id', (string) $countryId);
+        Setting::set('site_whatsapp_national', $national);
     }
 
     /**
@@ -219,6 +265,12 @@ class SettingController extends Controller
         if (! is_array($commissionsSection)) {
             $commissionsSection = [];
         }
+        $testimonialsSection = HomePageSection::query()
+            ->where('section_key', 'testimonials')
+            ->value('data') ?? [];
+        if (! is_array($testimonialsSection)) {
+            $testimonialsSection = [];
+        }
         $beginCtaSection = HomePageSection::query()
             ->where('section_key', 'begin_cta')
             ->value('data') ?? [];
@@ -256,6 +308,7 @@ class SettingController extends Controller
             'whySection',
             'processSection',
             'commissionsSection',
+            'testimonialsSection',
             'beginCtaSection',
             'contactBandSection',
             'brandsStripSection',
@@ -355,7 +408,12 @@ class SettingController extends Controller
             $request->input('gallery_page_active_section')
         );
         unset($validated['gallery_page_active_section']);
-        $content->update(['data' => $validated]);
+        $sectionData = is_array($content->data) ? $content->data : [];
+        foreach ($validated as $key => $value) {
+            $sectionData[$key] = $value;
+        }
+        unset($sectionData['empty_btn_text'], $sectionData['empty_btn_url']);
+        $content->update(['data' => $sectionData]);
 
         return redirect()
             ->route('admin.theme-options.gallery.index', ['section' => $active])
@@ -677,6 +735,29 @@ class SettingController extends Controller
         $commissionsData['button_text'] = $data['home_commissions_button_text'] ?? null;
         $commissionsData['button_url'] = $data['home_commissions_button_url'] ?? null;
         $commissions->update(['data' => $commissionsData]);
+
+        $testimonials = HomePageSection::query()->firstOrCreate(['section_key' => 'testimonials'], ['data' => []]);
+        $testimonialsData = is_array($testimonials->data) ? $testimonials->data : [];
+        $testimonialsData['is_enabled'] = $request->boolean('home_testimonials_is_enabled');
+        $testimonialsData['left_eyebrow'] = $data['home_testimonials_left_eyebrow'] ?? null;
+        $testimonialsData['left_headline'] = $data['home_testimonials_left_headline'] ?? null;
+        $testimonialsData['right_eyebrow'] = $data['home_testimonials_right_eyebrow'] ?? null;
+
+        if ($request->hasFile('home_testimonials_left_image')) {
+            $oldLeftImage = $testimonialsData['left_image'] ?? null;
+            if ($oldLeftImage && Storage::disk('public')->exists($oldLeftImage)) {
+                Storage::disk('public')->delete($oldLeftImage);
+            }
+            $testimonialsData['left_image'] = $request->file('home_testimonials_left_image')->store('home/sections', 'public');
+        } elseif ($request->boolean('remove_home_testimonials_left_image')) {
+            $oldLeftImage = $testimonialsData['left_image'] ?? null;
+            if ($oldLeftImage && Storage::disk('public')->exists($oldLeftImage)) {
+                Storage::disk('public')->delete($oldLeftImage);
+            }
+            $testimonialsData['left_image'] = null;
+        }
+
+        $testimonials->update(['data' => $testimonialsData]);
 
         $beginCta = HomePageSection::query()->firstOrCreate(['section_key' => 'begin_cta'], ['data' => []]);
         $beginCtaData = is_array($beginCta->data) ? $beginCta->data : [];

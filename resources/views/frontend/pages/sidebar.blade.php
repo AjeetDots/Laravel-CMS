@@ -11,7 +11,7 @@
         @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
         <div class="cms-builder cms-builder--sidebar">
-            <div class="container cms-builder__shell cms-builder__shell--sidebar px-3 px-sm-4 px-xl-5">
+            <div class="container cms-builder__shell cms-builder__shell--sidebar">
                 <div class="row g-4 g-xl-5 align-items-start cms-builder-sidebar__grid">
                     <main class="col-12 col-lg-8 cms-builder-main order-2 order-lg-1">
                         @include('frontend.pages.partials.cms-body-inner', ['page' => $page, 'layout' => 'sidebar'])

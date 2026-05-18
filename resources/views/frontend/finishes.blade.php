@@ -37,7 +37,7 @@
                         <div class="finish-card__meta">
                             <span class="finish-card__eyebrow">{{ $finishLabel }}</span>
                             <span class="finish-card__link">
-                                <i class="fas fa-arrow-up-right"></i>
+                                <i class="fas fa-arrow-right gold"></i>
                             </span>
                         </div>
                         <h4 class="home-why-card__title-dark">{{ $finish->title }}</h4>

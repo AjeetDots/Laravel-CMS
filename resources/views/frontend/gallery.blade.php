@@ -51,6 +51,9 @@
                         @if($item->title)
                             <h3>{{ $item->title }}</h3>
                         @endif
+                        @if(filled($item->section_content))
+                            <p class="commission-title commission-text mt-3 text-white">{!! nl2br(e($item->section_content)) !!}</p>
+                        @endif
                         <span class="gallery-work-card__link"><i class="fas fa-arrow-up-right"></i></span>
                     </div>
                 </div>

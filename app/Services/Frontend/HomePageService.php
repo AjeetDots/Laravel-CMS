@@ -35,6 +35,7 @@ class HomePageService implements HomePageServiceInterface
         $servicesSection = $this->getServicesSectionData($pick('services'));
         $whySection = $this->getWhySectionData($pick('why'));
         $processSection = $this->getProcessSectionData($pick('process'));
+        $testimonialsSection = $this->getTestimonialsSectionData($pick('testimonials'));
         $commissionsSection = $this->getCommissionsSectionData($pick('commissions'));
         $beginCtaSection = $this->getBeginCtaSectionData($pick('begin_cta'));
         $contactBandSection = $this->getContactBandSectionData($pick('contact_band'));
@@ -93,6 +94,7 @@ class HomePageService implements HomePageServiceInterface
             'servicesSection' => $servicesSection,
             'whySection' => $whySection,
             'processSection' => $processSection,
+            'testimonialsSection' => $testimonialsSection,
             'commissionsSection' => $commissionsSection,
             'beginCtaSection' => $beginCtaSection,
             'contactBandSection' => $contactBandSection,
@@ -210,6 +212,25 @@ class HomePageService implements HomePageServiceInterface
             'heading_line_1' => isset($data['heading_line_1']) ? trim((string) $data['heading_line_1']) : '',
             'heading_line_2' => isset($data['heading_line_2']) ? trim((string) $data['heading_line_2']) : '',
             'steps' => $resolvedSteps,
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function getTestimonialsSectionData(array $data): array
+    {
+        $leftImage = isset($data['left_image']) && $data['left_image'] !== ''
+            ? (string) $data['left_image']
+            : null;
+
+        return [
+            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
+            'left_eyebrow' => isset($data['left_eyebrow']) ? trim((string) $data['left_eyebrow']) : '',
+            'left_headline' => isset($data['left_headline']) ? trim((string) $data['left_headline']) : '',
+            'right_eyebrow' => isset($data['right_eyebrow']) ? trim((string) $data['right_eyebrow']) : '',
+            'left_image' => $leftImage,
+            'left_image_url' => $leftImage ? asset('storage/' . $leftImage) : null,
         ];
     }
 

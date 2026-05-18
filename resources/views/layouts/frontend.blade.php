@@ -110,16 +110,18 @@
 
 {{-- ── Chat Floating button ───────────────────────────────── --}}
 @php
-    $whatsappNumber = \App\Support\SitePhone::whatsappDigits($settings);
-    $whatsappMessage = urlencode("Hello Bespoke Ornate, I'd like to discuss a project.");
+    $whatsappChatUrl = \App\Support\SitePhone::whatsappHref(
+        $settings,
+        "Hello Bespoke Ornate, I'd like to discuss a project."
+    );
 @endphp
 
-@if($whatsappNumber !== '')
-<a href="https://wa.me/{{ $whatsappNumber }}?text={{ $whatsappMessage }}"
+@if($whatsappChatUrl !== '')
+<a href="{{ $whatsappChatUrl }}"
    class="whatsapp-float home-atelier-btn"
    target="_blank"
+   rel="noopener noreferrer"
    aria-label="Chat with us on WhatsApp">
-
     <i class="fas fa-comments"></i>
     <span>Chat With Us</span>
 </a>
@@ -195,9 +197,9 @@
                         <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}"><i class="fa-solid fa-phone"></i> {{ \App\Support\SitePhone::display($settings) }}</a>
                     </div>
                     @endif
-                     @if(\App\Support\SitePhone::hasPhone($settings))
+                    @if(\App\Support\SitePhone::hasWhatsapp($settings))
                     <div class="footer-contact-line">
-                        <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}"><i class="fa-solid fa-comment"></i> Whatsapp</a>
+                        <a href="{{ \App\Support\SitePhone::whatsappHref($settings) }}" target="_blank" rel="noopener noreferrer"><i class="fa-brands fa-whatsapp"></i> {{ \App\Support\SitePhone::whatsappDisplay($settings) }}</a>
                     </div>
                     @endif
                     <!-- @if($settings->get('site_address'))
@@ -211,9 +213,9 @@
                         <a href="mailto:{{ $settings->get('site_email') }}"><i class="fa-solid fa-envelope"></i> {{ $settings->get('site_email') }}</a>
                     </div>
                     @endif
-                     <div class="footer-contact-line">
+                     {{-- <div class="footer-contact-line">
                         <a href="#"><i class="fa-brands fa-square-instagram"></i> @bespoken</a>
-                    </div>
+                    </div> --}}
                     <div class="footer-newsletter-wrap">
                         @include('partials.newsletter-form-compact')
                     </div>
