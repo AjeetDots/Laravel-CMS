@@ -120,15 +120,6 @@
                             <label class="form-label" for="hours_body">Hours text <span class="text-muted fw-normal">(line breaks allowed)</span></label>
                             <textarea name="hours_body" id="hours_body" class="form-control" rows="3" maxlength="500">{{ old('hours_body', $data['hours_body'] ?? '') }}</textarea>
                         </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="fallback_phone_display">Fallback phone text</label>
-                            <input type="text" name="fallback_phone_display" id="fallback_phone_display" class="form-control" value="{{ old('fallback_phone_display', $data['fallback_phone_display'] ?? '') }}" maxlength="80">
-                            <span class="form-text">Shown when no phone is set in Site settings.</span>
-                        </div>
-                        <div class="col-12 col-md-6">
-                            <label class="form-label" for="fallback_whatsapp_label">Fallback WhatsApp label</label>
-                            <input type="text" name="fallback_whatsapp_label" id="fallback_whatsapp_label" class="form-control" value="{{ old('fallback_whatsapp_label', $data['fallback_whatsapp_label'] ?? '') }}" maxlength="80">
-                        </div>
                     </div>
                 </div>
 

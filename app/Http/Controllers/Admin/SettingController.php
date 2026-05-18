@@ -25,6 +25,7 @@ use App\Models\Setting;
 use App\Support\FrontendViewCache;
 use App\Support\HomePageAdminTabs;
 use App\Support\ThemeContentPageTabs;
+use App\Support\PhoneDigits;
 use App\Support\SitePhone;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Crypt;
@@ -62,11 +63,15 @@ class SettingController extends Controller
         }
 
         $phoneCountryId = isset($data['site_phone_country_id']) ? (int) $data['site_phone_country_id'] : null;
-        $phoneNational = isset($data['site_phone_national']) ? trim((string) $data['site_phone_national']) : '';
+        $phoneNational = isset($data['site_phone_national'])
+            ? PhoneDigits::sanitizeNational((string) $data['site_phone_national'])
+            : '';
         unset($data['site_phone_country_id'], $data['site_phone_national']);
 
         $whatsappCountryId = isset($data['site_whatsapp_country_id']) ? (int) $data['site_whatsapp_country_id'] : null;
-        $whatsappNational = isset($data['site_whatsapp_national']) ? trim((string) $data['site_whatsapp_national']) : '';
+        $whatsappNational = isset($data['site_whatsapp_national'])
+            ? PhoneDigits::sanitizeNational((string) $data['site_whatsapp_national'])
+            : '';
         unset($data['site_whatsapp_country_id'], $data['site_whatsapp_national']);
 
         $this->persistSitePhone($phoneCountryId ?: null, $phoneNational);
@@ -133,15 +138,15 @@ class SettingController extends Controller
             return;
         }
 
-        $nationalDigits = preg_replace('/\D/', '', $national);
+        $nationalDigits = PhoneDigits::sanitizeNational($national);
         $dialDigits = preg_replace('/\D/', '', $country->dial_code);
         $e164 = '+'.$dialDigits.$nationalDigits;
-        $display = SitePhone::formatFromCountry($country, $national);
+        $display = SitePhone::formatFromCountry($country, $nationalDigits);
 
         Setting::set('site_phone_e164', $e164);
         Setting::set('site_phone', $display);
         Setting::set('site_phone_country_id', (string) $countryId);
-        Setting::set('site_phone_national', $national);
+        Setting::set('site_phone_national', $nationalDigits);
     }
 
     /**
@@ -174,15 +179,15 @@ class SettingController extends Controller
             return;
         }
 
-        $nationalDigits = preg_replace('/\D/', '', $national);
+        $nationalDigits = PhoneDigits::sanitizeNational($national);
         $dialDigits = preg_replace('/\D/', '', $country->dial_code);
         $e164 = '+'.$dialDigits.$nationalDigits;
-        $display = SitePhone::formatFromCountry($country, $national);
+        $display = SitePhone::formatFromCountry($country, $nationalDigits);
 
         Setting::set('site_whatsapp_e164', $e164);
         Setting::set('site_whatsapp', $display);
         Setting::set('site_whatsapp_country_id', (string) $countryId);
-        Setting::set('site_whatsapp_national', $national);
+        Setting::set('site_whatsapp_national', $nationalDigits);
     }
 
     /**
@@ -548,7 +553,6 @@ class SettingController extends Controller
             'hero_line_1', 'hero_line_2', 'hero_cta',
             'info_eyebrow', 'info_heading_1', 'info_heading_2', 'info_lead',
             'studio_label', 'studio_body', 'hours_label', 'hours_body', 'appointment_line',
-            'fallback_phone_display', 'fallback_whatsapp_label',
             'form_title', 'form_error_intro',
             'name_placeholder', 'email_placeholder', 'phone_field_label', 'national_placeholder',
             'message_placeholder', 'submit_label', 'map_embed_url',
@@ -558,6 +562,7 @@ class SettingController extends Controller
             }
         }
         $sectionData['show_map'] = $request->boolean('show_map');
+        unset($sectionData['fallback_phone_display'], $sectionData['fallback_whatsapp_label']);
 
         if ($request->hasFile('contact_hero_bg_image')) {
             $old = $sectionData['hero_bg_image'] ?? null;

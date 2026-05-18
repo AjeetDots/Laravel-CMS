@@ -54,6 +54,7 @@
                 'instanceId' => 'admin_site_phone',
                 'nationalPlaceholder' => 'National number',
                 'invalid' => $errors->has('site_phone_country_id') || $errors->has('site_phone_national'),
+                'showDigitsHint' => true,
             ])
             @error('site_phone_country_id')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -80,6 +81,7 @@
                 'instanceId' => 'admin_site_whatsapp',
                 'nationalPlaceholder' => 'WhatsApp number',
                 'invalid' => $errors->has('site_whatsapp_country_id') || $errors->has('site_whatsapp_national'),
+                'showDigitsHint' => true,
             ])
             @error('site_whatsapp_country_id')
                 <div class="invalid-feedback d-block">{{ $message }}</div>

@@ -19,6 +19,7 @@
     'nationalMaxLength' => 24,
     'invalid' => false,
     'nationalRequired' => false,
+    'showDigitsHint' => false,
 ])
 
 @php
@@ -50,7 +51,7 @@
         $phoneHiddenVal = '';
     }
 
-    $ph = $nationalPlaceholder ?? ($mode === 'combined' ? 'Phone (optional)' : 'National number');
+    $ph = $nationalPlaceholder ?? ($mode === 'combined' ? 'Digits only (optional)' : 'Digits only');
 
     $displayRow = collect($rows)->firstWhere('id', (int) ($selCountry ?? 0));
     if (! $displayRow) {
@@ -110,9 +111,13 @@
                autocomplete="tel-national"
                inputmode="numeric"
                pattern="[0-9]*"
+               title="Digits only"
                @if($mode === 'split' && $nationalRequired) required @endif
         >
     </div>
+    @if($showDigitsHint)
+    <p class="form-text small mb-0 mt-1">Digits only — country code is selected separately.</p>
+    @endif
     <div class="itl-phone__dropdown" hidden>
         <input type="search" class="itl-phone__search" placeholder="Search" autocomplete="off" aria-label="Search countries">
         <ul class="itl-phone__list" role="listbox"></ul>

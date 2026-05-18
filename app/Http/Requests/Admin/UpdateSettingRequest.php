@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Support\PhoneDigits;
 use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -48,9 +49,9 @@ class UpdateSettingRequest extends FormRequest
     protected function prepareForValidation(): void
     {
         if ($this->has('site_phone_national')) {
-            $this->merge(['site_phone_national' => trim((string) $this->input('site_phone_national'))]);
+            $this->merge(['site_phone_national' => PhoneDigits::sanitizeNational($this->input('site_phone_national'))]);
         }
-        $national = trim((string) $this->input('site_phone_national', ''));
+        $national = (string) $this->input('site_phone_national', '');
         if ($national === '') {
             $this->merge(['site_phone_country_id' => null]);
         } elseif ($this->input('site_phone_country_id') === '' || $this->input('site_phone_country_id') === null) {
@@ -58,9 +59,9 @@ class UpdateSettingRequest extends FormRequest
         }
 
         if ($this->has('site_whatsapp_national')) {
-            $this->merge(['site_whatsapp_national' => trim((string) $this->input('site_whatsapp_national'))]);
+            $this->merge(['site_whatsapp_national' => PhoneDigits::sanitizeNational($this->input('site_whatsapp_national'))]);
         }
-        $whatsappNational = trim((string) $this->input('site_whatsapp_national', ''));
+        $whatsappNational = (string) $this->input('site_whatsapp_national', '');
         if ($whatsappNational === '') {
             $this->merge(['site_whatsapp_country_id' => null]);
         } elseif ($this->input('site_whatsapp_country_id') === '' || $this->input('site_whatsapp_country_id') === null) {
@@ -104,9 +105,9 @@ class UpdateSettingRequest extends FormRequest
             'site_email' => 'nullable|email',
             'admin_notification_email' => 'nullable|email',
             'site_phone_country_id' => ['nullable', 'integer', Rule::exists('phone_countries', 'id')->where('is_active', true)],
-            'site_phone_national' => 'nullable|string|max:24',
+            'site_phone_national' => PhoneDigits::nationalRules(),
             'site_whatsapp_country_id' => ['nullable', 'integer', Rule::exists('phone_countries', 'id')->where('is_active', true)],
-            'site_whatsapp_national' => 'nullable|string|max:24',
+            'site_whatsapp_national' => PhoneDigits::nationalRules(),
             'site_address' => 'nullable|string|max:500',
             'footer_about' => 'nullable|string|max:1000',
             'copyright_text' => 'nullable|string',
@@ -145,28 +146,22 @@ class UpdateSettingRequest extends FormRequest
     public function withValidator($validator): void
     {
         $validator->after(function ($v) {
-            $nat = trim((string) $this->input('site_phone_national', ''));
+            $nat = (string) $this->input('site_phone_national', '');
             $cid = $this->input('site_phone_country_id');
             if ($nat !== '' && empty($cid)) {
                 $v->errors()->add('site_phone_country_id', 'Select a country / dial code when you enter a phone number.');
             }
             if (! empty($cid) && $nat === '') {
-                $v->errors()->add('site_phone_national', 'Enter the rest of the number (without the country code), or clear the country.');
-            }
-            if (! empty($cid) && $nat !== '' && preg_replace('/\D/', '', $nat) === '') {
-                $v->errors()->add('site_phone_national', 'Enter at least one digit for the phone number.');
+                $v->errors()->add('site_phone_national', 'Enter the rest of the number (digits only), or clear the country.');
             }
 
-            $waNat = trim((string) $this->input('site_whatsapp_national', ''));
+            $waNat = (string) $this->input('site_whatsapp_national', '');
             $waCid = $this->input('site_whatsapp_country_id');
             if ($waNat !== '' && empty($waCid)) {
                 $v->errors()->add('site_whatsapp_country_id', 'Select a country / dial code when you enter a WhatsApp number.');
             }
             if (! empty($waCid) && $waNat === '') {
-                $v->errors()->add('site_whatsapp_national', 'Enter the rest of the WhatsApp number (without the country code), or clear the country.');
-            }
-            if (! empty($waCid) && $waNat !== '' && preg_replace('/\D/', '', $waNat) === '') {
-                $v->errors()->add('site_whatsapp_national', 'Enter at least one digit for the WhatsApp number.');
+                $v->errors()->add('site_whatsapp_national', 'Enter the rest of the WhatsApp number (digits only), or clear the country.');
             }
         });
     }
@@ -187,6 +182,8 @@ class UpdateSettingRequest extends FormRequest
             'site_logo_footer.max' => 'Footer logo file is too large — check the Site logos tab.',
             'site_favicon.max' => 'Favicon file is too large — check the Site logos tab.',
             'site_phone_country_id.exists' => 'Choose a valid country from the list.',
+            'site_phone_national.regex' => 'Phone number must contain digits only (no letters or symbols).',
+            'site_whatsapp_national.regex' => 'WhatsApp number must contain digits only (no letters or symbols).',
             'mail_from_address.email' => 'Enter a valid “From” email on the SMTP tab, or leave it empty.',
             'theme_wine.regex' => 'Accent colour must be a full hex value like #C96B3F — check the Theme tab.',
             'theme_wine_dark.regex' => 'Dark accent must be a full hex value — check the Theme tab.',

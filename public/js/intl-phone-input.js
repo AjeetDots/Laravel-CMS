@@ -251,6 +251,55 @@
         stripNationalToDigits();
         syncHiddens();
 
+        function isNationalControlKey(key) {
+            return (
+                key === 'Backspace' ||
+                key === 'Delete' ||
+                key === 'Tab' ||
+                key === 'Enter' ||
+                key === 'Escape' ||
+                key === 'ArrowLeft' ||
+                key === 'ArrowRight' ||
+                key === 'ArrowUp' ||
+                key === 'ArrowDown' ||
+                key === 'Home' ||
+                key === 'End'
+            );
+        }
+
+        natInput.addEventListener('keydown', function (e) {
+            if (e.ctrlKey || e.metaKey || e.altKey) {
+                return;
+            }
+            if (isNationalControlKey(e.key)) {
+                return;
+            }
+            if (e.key.length === 1 && !/^\d$/.test(e.key)) {
+                e.preventDefault();
+            }
+        });
+
+        natInput.addEventListener('paste', function (e) {
+            e.preventDefault();
+            var clip = '';
+            if (e.clipboardData) {
+                clip = e.clipboardData.getData('text');
+            } else if (window.clipboardData) {
+                clip = window.clipboardData.getData('Text');
+            }
+            var cleaned = String(clip || '').replace(/\D/g, '');
+            var start = natInput.selectionStart;
+            var end = natInput.selectionEnd;
+            if (typeof start !== 'number' || typeof end !== 'number') {
+                natInput.value = cleaned;
+            } else {
+                natInput.value =
+                    natInput.value.slice(0, start) + cleaned + natInput.value.slice(end);
+            }
+            stripNationalToDigits();
+            syncHiddens();
+        });
+
         natInput.addEventListener('input', function () {
             stripNationalToDigits();
             syncHiddens();

@@ -38,18 +38,9 @@
                     <div class="contact-main__lines">
                         @if(\App\Support\SitePhone::hasPhone($settings))
                         <div class="contact-main__phone-line"><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:{{ \App\Support\SitePhone::telHref($settings) }}">{{ \App\Support\SitePhone::display($settings) }}</a></div>
-                        @else
-                        @if(trim((string) ($contactPage['fallback_phone_display'] ?? '')) !== '')
-                        <div><i class="fas fa-phone" aria-hidden="true"></i> {{ $contactPage['fallback_phone_display'] }}</div>
                         @endif
-                        @endif
-                        @php $waDigits = \App\Support\SitePhone::whatsappDigits($settings); @endphp
-                        @if($waDigits !== '')
-                        <div class="contact-main__phone-line"><i class="fa-brands fa-square-whatsapp"></i> <a href="https://wa.me/{{ $waDigits }}" target="_blank" rel="noopener noreferrer">{{ \App\Support\SitePhone::display($settings) }}</a></div>
-                        @else
-                        @if(trim((string) ($contactPage['fallback_whatsapp_label'] ?? '')) !== '')
-                        <div><i class="fa-brands fa-square-whatsapp"></i> {{ $contactPage['fallback_whatsapp_label'] }}</div>
-                        @endif
+                        @if(\App\Support\SitePhone::hasWhatsapp($settings))
+                        <div class="contact-main__phone-line"><i class="fa-brands fa-square-whatsapp"></i> <a href="{{ \App\Support\SitePhone::whatsappHref($settings) }}" target="_blank" rel="noopener noreferrer">{{ \App\Support\SitePhone::whatsappDisplay($settings) }}</a></div>
                         @endif
                         @if(trim((string) $settings->get('site_email')) !== '')
                         <div><i class="fas fa-envelope"></i> {{ $settings->get('site_email') }}</div>
