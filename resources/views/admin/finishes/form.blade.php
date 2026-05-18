@@ -102,15 +102,13 @@
                                {{ old('is_active', $finish->is_active ?? true) ? 'checked' : '' }}>
                         <label class="form-check-label" for="isActive">Active</label>
                     </div>
+                    <div class="d-flex gap-2 justify-content-end flex-wrap mt-4 pt-3 border-top">
+                        <a href="{{ route('admin.finishes.index') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>{{ isset($finish->id) ? 'Update Finish' : 'Create Finish' }}
+                        </button>
+                    </div>
                 </div>
-            </div>
-
-            <hr class="my-4">
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save me-2"></i>{{ isset($finish->id) ? 'Update Finish' : 'Create Finish' }}
-                </button>
-                <a href="{{ route('admin.finishes.index') }}" class="btn btn-outline-secondary">Cancel</a>
             </div>
         </form>
     </div>

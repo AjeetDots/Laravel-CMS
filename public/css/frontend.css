@@ -305,21 +305,20 @@ img {
 }
 
 .btn-quote {
-    background: var(--secondary);
+    background: var(--primary);
     color: #fff !important;
-    border: none;
+    border: 1px solid var(--primary);
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 0.6rem;
-    padding: 11px 16px;
+    font-size: 0.75rem;
+    padding: 11px 18px;
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    font-family: 'Inter';
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
     font-weight: normal;
-    font-size: 14px;
-    transition: ease-in-out 0.25s;
+    transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     position: relative;
 }
 
@@ -333,9 +332,10 @@ img {
 
 
 .btn-quote:hover {
-    background: var(--primary);
+    background: var(--secondary);
+    border-color: var(--secondary);
     color: #fff !important;
-    /* transform: translateY(-1px); */
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 .btn-quote:hover .btn-quote__ico {
     top: -2px;
@@ -1066,6 +1066,53 @@ img {
     background: var(--secondary);
     color: #fff;
     border: 1px solid var(--secondary);
+}
+
+.hero-btn.hero-btn--gold,
+.hero-btn.hero-btn--primary {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+.hero-btn.hero-btn--gold:hover,
+.hero-btn.hero-btn--primary:hover {
+    background: var(--secondary);
+    border-color: var(--secondary);
+    color: #fff;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+}
+
+.home-atelier-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    padding: 12px 22px;
+}
+
+.btn-outline-site {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 12px 22px;
+    border-radius: 0;
+    background: transparent;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    text-decoration: none;
+}
+
+.btn-outline-site:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
 }
 
 .hero-btn-outline {

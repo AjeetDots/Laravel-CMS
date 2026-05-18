@@ -741,9 +741,10 @@
 }
 
 /* Gold primary + ghost secondary (matches design board) */
-.hero-btn.hero-btn--primary {
-    background: #c5a070;
-    border-color: #c5a070;
+.hero-btn.hero-btn--primary,
+.hero-btn.hero-btn--gold {
+    background: var(--primary);
+    border-color: var(--primary);
     color: #fff;
     border-radius: 0;
     letter-spacing: 0.16em;
@@ -751,11 +752,12 @@
     padding: 14px 26px;
 }
 
-.hero-btn.hero-btn--primary:hover {
+.hero-btn.hero-btn--primary:hover,
+.hero-btn.hero-btn--gold:hover {
     background: var(--secondary) !important;
     border-color: var(--secondary) !important;
     color: #fff !important;
-    box-shadow: none;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 
 .hero-btn-outline.hero-btn-outline--hero {

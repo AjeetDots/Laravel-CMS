@@ -6,7 +6,8 @@
 
 <section class="hero-full hero-full--premium" id="hero"
          data-hero-eyebrow-default="{{ e($heroEyebrowDefault) }}"
-         data-hero-lead-default="{{ e($heroLeadDefault) }}">
+         data-hero-lead-default="{{ e($heroLeadDefault) }}"
+         data-hero-fallback-contact-href="{{ route('contact') }}">
 
     @forelse($sliders as $i => $slide)
         @php
@@ -20,8 +21,10 @@
              data-title-line-4="{{ e($heroSlots[3]) }}"
              data-subtitle="{{ e($slide->subtitle) }}"
              data-lead="{{ e($slide->lead_text ?? '') }}"
-             data-btn-text="{{ e($slide->button_text) }}"
-             data-btn-link="{{ e($slide->button_link) }}"></div>
+             data-btn-text="{{ e($slide->button_text ?? '') }}"
+             data-btn-link="{{ e($slide->button_link ?? '') }}"
+             data-btn2-text="{{ e($slide->button2_text ?? '') }}"
+             data-btn2-link="{{ e($slide->button2_link ?? '') }}"></div>
     @empty
         <div class="hero-full-bg"
              style="background:linear-gradient(135deg,#3b2412 0%,#2c1a0a 60%,#1a1008 100%);"></div>
@@ -54,20 +57,27 @@
                         @endif
                     </h1>
                     <p class="hero-full-sub" id="heroLead">{{ $firstSlide && filled($firstSlide->lead_text) ? $firstSlide->lead_text : $heroLeadDefault }}</p>
-                    <div class="hero-full-btns">
-                        @if($firstSlide && $firstSlide->button_text)
-                            <a href="{{ $firstSlide->button_link ?? route('contact') }}" class="hero-btn hero-btn--gold" id="heroBtnPrimary">
-                                <span id="heroBtnText">{{ $firstSlide->button_text }}</span>
+                    @if($sliders->isNotEmpty())
+                        @php
+                            $showHeroPrimary = filled(trim((string) ($firstSlide->button_text ?? '')));
+                            $showHeroSecondary = filled(trim((string) ($firstSlide->button2_text ?? '')));
+                        @endphp
+                        <div class="hero-full-btns">
+                            <a href="{{ $showHeroPrimary ? \App\Support\CmsOutboundHref::resolve($firstSlide->button_link ?? null, 'contact') : '#' }}"
+                               class="hero-btn hero-btn--gold {{ $showHeroPrimary ? '' : 'd-none' }}"
+                               id="heroBtnPrimary"
+                               @unless($showHeroPrimary) aria-hidden="true" @endunless>
+                                <span id="heroBtnText">@if($showHeroPrimary){{ $firstSlide->button_text }}@endif</span>
                                 <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
                             </a>
-                        @else
-                            <a href="{{ route('contact') }}" class="hero-btn hero-btn--gold" id="heroBtnPrimary">
-                                <span id="heroBtnText">Get in touch</span>
-                                <i class="fa-solid fa-arrow-up-right" style="font-size:.72rem;" aria-hidden="true"></i>
+                            <a href="{{ $showHeroSecondary ? \App\Support\CmsOutboundHref::resolve($firstSlide->button2_link ?? null, 'contact') : '#' }}"
+                               class="hero-btn-outline hero-btn-outline--hero {{ $showHeroSecondary ? '' : 'd-none' }}"
+                               id="heroBtnSecondary"
+                               @unless($showHeroSecondary) aria-hidden="true" @endunless>
+                                <span id="heroBtnSecondaryText">@if($showHeroSecondary){{ $firstSlide->button2_text }}@endif</span>
                             </a>
-                        @endif
-                        <a href="{{ route('contact') }}" class="hero-btn-outline hero-btn-outline--hero">Get in touch</a>
-                    </div>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>

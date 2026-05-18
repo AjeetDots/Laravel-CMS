@@ -417,7 +417,6 @@ class SettingController extends Controller
         foreach ($validated as $key => $value) {
             $sectionData[$key] = $value;
         }
-        unset($sectionData['empty_btn_text'], $sectionData['empty_btn_url']);
         $content->update(['data' => $sectionData]);
 
         return redirect()
