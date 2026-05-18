@@ -408,7 +408,12 @@ class SettingController extends Controller
             $request->input('gallery_page_active_section')
         );
         unset($validated['gallery_page_active_section']);
-        $content->update(['data' => $validated]);
+        $sectionData = is_array($content->data) ? $content->data : [];
+        foreach ($validated as $key => $value) {
+            $sectionData[$key] = $value;
+        }
+        unset($sectionData['empty_btn_text'], $sectionData['empty_btn_url']);
+        $content->update(['data' => $sectionData]);
 
         return redirect()
             ->route('admin.theme-options.gallery.index', ['section' => $active])

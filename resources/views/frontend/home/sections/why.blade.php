@@ -5,6 +5,12 @@
     $whyHeading = $whyCfg['heading'] ?? '';
     $whyLead = $whyCfg['lead'] ?? '';
     $whyCards = is_array($whyCfg['cards'] ?? null) ? $whyCfg['cards'] : [];
+    $whyIconImageMap = [
+        'fa-award' => asset('images/master-craftmanship.png'),
+        'fa-palette' => asset('images/bespoke-design.png'),
+        'fa-clapperboard' => asset('images/trusted.png'),
+        'fa-leaf' => asset('images/considered.png'),
+    ];
 @endphp
 
 @if($whyEnabled)
@@ -16,9 +22,9 @@
                 <h2 class="home-atelier-headline-white">{{ $whyHeading }}</h2>
             </div>
             <div class="col-lg-6 offset-lg-1 reveal-right">
-                <!-- <p class="home-why-lead mb-0">
-                    {{ $whyLead }}
-                </p> -->
+                @if($whyLead !== '')
+                <p class="home-why-lead mb-0">{{ $whyLead }}</p>
+                @endif
             </div>
         </div>
         <div class="row g-4">
@@ -27,12 +33,21 @@
                 $icon = trim((string) ($card['icon'] ?? ''));
                 $icon = str_replace('fa-solid', '', $icon);
                 $icon = trim($icon);
+                $iconSrc = $whyIconImageMap[$icon] ?? null;
+                if ($iconSrc === null && $icon !== '' && (str_contains($icon, '/') || preg_match('/\.(png|svg|jpe?g|webp)$/i', $icon))) {
+                    $iconSrc = str_starts_with($icon, 'http://') || str_starts_with($icon, 'https://') || str_starts_with($icon, '//')
+                        ? $icon
+                        : asset(ltrim($icon, '/'));
+                }
+                $iconFaClass = $iconSrc === null ? $icon : '';
             @endphp
             @continue(empty(trim((string) ($card['title'] ?? ''))) && empty(trim((string) ($card['desc'] ?? ''))) && $icon === '')
             <div class="col-md-6 col-xl-3 reveal delay-{{ $index + 1 }}">
                 <div class="home-why-card">
-                    @if($icon !== '')
-                    <span class="home-why-card__icon" aria-hidden="true"> <img src="../images/considered.png" /></span>
+                    @if($iconSrc)
+                    <span class="home-why-card__icon" aria-hidden="true"><img src="{{ $iconSrc }}" alt="" /></span>
+                    @elseif($iconFaClass !== '')
+                    <span class="home-why-card__icon" aria-hidden="true"><i class="fa-solid {{ $iconFaClass }}"></i></span>
                     @endif
                     <h3 class="home-why-card__title">{{ $card['title'] ?? '' }}</h3>
                     <p class="home-why-card__desc">{{ $card['desc'] ?? '' }}</p>
