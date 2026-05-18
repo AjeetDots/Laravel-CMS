@@ -28,7 +28,6 @@ class UpdateTestimonialRequest extends FormRequest
                 ? ImageUploadRules::nullable(1024)
                 : ImageUploadRules::required(1024),
             'message'         => 'required|string',
-            'rating'          => 'integer|min:1|max:5',
             'sort_order'      => ['integer', 'min:0', SortOrderRules::uniqueAmong('testimonials', [], $this->route('testimonial'))],
             'is_active'       => 'boolean',
         ];

@@ -14,7 +14,7 @@ class BlogController extends Controller {
     use AppliesAdminTableFilters;
 
     public function index() {
-        $query = BlogPost::with('category')->orderByDesc('created_at');
+        $query = BlogPost::with('postCategory')->orderByDesc('created_at');
         $this->applyAdminStatus($query, request('status'));
         $this->applyAdminSearch($query, request('q'), ['title', 'slug', 'author']);
         if (request()->filled('category_id')) {

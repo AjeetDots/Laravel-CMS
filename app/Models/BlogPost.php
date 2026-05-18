@@ -21,25 +21,37 @@ class BlogPost extends Model {
         });
     }
 
-    public function category(): BelongsTo
+    public function postCategory(): BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    public function getCategoryNameAttribute(): string
+    {
+        return $this->resolvedCategoryLabel();
     }
 
     /**
-     * Label for admin lists: prefers related Category name, else legacy `category` string column
-     * (the column name collides with the relationship when using attribute accessors).
+     * Category display name (related Category or legacy string column).
      */
     public function resolvedCategoryLabel(): string
     {
         if ($this->category_id) {
-            $name = optional($this->category)->name;
+            $related = $this->relationLoaded('postCategory')
+                ? $this->getRelation('postCategory')
+                : null;
+
+            if ($related && filled($related->name)) {
+                return (string) $related->name;
+            }
+
+            $name = Category::query()->whereKey($this->category_id)->value('name');
             if (filled($name)) {
                 return (string) $name;
             }
         }
 
-        return trim((string) $this->getRawOriginal('category'));
+        return trim((string) ($this->attributes['category'] ?? ''));
     }
 
     public function getImageUrlAttribute(): ?string

@@ -46,12 +46,10 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_services_heading_line_2' => 'nullable|string|max:255',
             'home_services_button_text' => 'nullable|string|max:120',
             'home_services_button_url' => 'nullable|string|max:1000',
-            'home_services_card_link_text' => 'nullable|string|max:80',
 
             'home_why_is_enabled' => 'boolean',
             'home_why_eyebrow' => 'nullable|string|max:120',
             'home_why_heading' => 'nullable|string|max:255',
-            'home_why_lead' => 'nullable|string|max:1000',
 
             'home_why_card_1_icon' => 'nullable|string|max:80',
             'home_why_card_1_title' => 'nullable|string|max:120',
@@ -126,8 +124,6 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_blog_preview_eyebrow' => 'nullable|string|max:120',
             'home_blog_preview_heading' => 'nullable|string|max:255',
             'home_blog_preview_button_text' => 'nullable|string|max:120',
-            'home_blog_preview_button_url' => 'nullable|string|max:1000',
-            'home_blog_preview_read_more_text' => 'nullable|string|max:80',
         ];
     }
 }

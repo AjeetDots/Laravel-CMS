@@ -28,7 +28,6 @@
                             <th>Client</th>
                             <th>Company</th>
                             <th>Message</th>
-                            <th data-dt-orderable="false">Rating</th>
                             <th>Status</th>
                             <th width="130" data-dt-orderable="false">Actions</th>
                         </tr>
@@ -41,12 +40,7 @@
                                     <div class="text-muted" style="font-size:.82rem;">{{ $t->client_position }}</div>
                                 </td>
                                 <td>{{ $t->client_company ?? '—' }}</td>
-                                <td>{{ Str::limit($t->message, 60) }}</td>
-                                <td>
-                                    @for($i=1;$i<=5;$i++)
-                                        <i class="fas fa-star {{ $i <= $t->rating ? 'text-warning' : 'text-muted' }}" style="font-size:.75rem;"></i>
-                                    @endfor
-                                </td>
+                                <td>{{ Str::limit(strip_tags($t->message), 60) }}</td>
                                 <td>
                                     <span class="badge {{ $t->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">
                                         {{ $t->is_active ? 'Active' : 'Inactive' }}

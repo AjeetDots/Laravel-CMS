@@ -6,7 +6,6 @@
     $servicesHeadingLine2 = $servicesCfg['heading_line_2'] ?? '';
     $servicesBtnText = $servicesCfg['button_text'] ?? '';
     $servicesBtnUrl = $servicesCfg['button_url'] ?? '';
-    $servicesCardLinkText = $servicesCfg['card_link_text'] ?? '';
 @endphp
 
 @if($servicesEnabled)

@@ -684,7 +684,7 @@ class SettingController extends Controller
         $servicesData['heading_line_2'] = $data['home_services_heading_line_2'] ?? null;
         $servicesData['button_text'] = $data['home_services_button_text'] ?? null;
         $servicesData['button_url'] = $data['home_services_button_url'] ?? null;
-        $servicesData['card_link_text'] = $data['home_services_card_link_text'] ?? null;
+        unset($servicesData['card_link_text']);
         $services->update(['data' => $servicesData]);
 
         $why = HomePageSection::query()->firstOrCreate(['section_key' => 'why'], ['data' => []]);
@@ -692,7 +692,7 @@ class SettingController extends Controller
         $whyData['is_enabled'] = $request->boolean('home_why_is_enabled');
         $whyData['eyebrow'] = $data['home_why_eyebrow'] ?? null;
         $whyData['heading'] = $data['home_why_heading'] ?? null;
-        $whyData['lead'] = $data['home_why_lead'] ?? null;
+        unset($whyData['lead']);
         $whyData['cards'] = [
             [
                 'icon' => $data['home_why_card_1_icon'] ?? null,
@@ -836,8 +836,7 @@ class SettingController extends Controller
         $blogPreviewData['eyebrow'] = $data['home_blog_preview_eyebrow'] ?? null;
         $blogPreviewData['heading'] = $data['home_blog_preview_heading'] ?? null;
         $blogPreviewData['button_text'] = $data['home_blog_preview_button_text'] ?? null;
-        $blogPreviewData['button_url'] = $data['home_blog_preview_button_url'] ?? null;
-        $blogPreviewData['read_more_text'] = $data['home_blog_preview_read_more_text'] ?? null;
+        unset($blogPreviewData['button_url'], $blogPreviewData['read_more_text']);
         $blogPreview->update(['data' => $blogPreviewData]);
 
         $activeSection = HomePageAdminTabs::normalize($request->string('home_active_section')->toString());

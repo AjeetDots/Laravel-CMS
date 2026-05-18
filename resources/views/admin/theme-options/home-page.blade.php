@@ -314,12 +314,6 @@
                                    placeholder="e.g. one obsession.">
                         </div>
                         <div class="col-md-4">
-                            <label class="form-label">Card Link Text</label>
-                            <input type="text" name="home_services_card_link_text" class="form-control"
-                                   value="{{ old('home_services_card_link_text', $servicesSection['card_link_text'] ?? '') }}"
-                                   placeholder="e.g. Discover">
-                        </div>
-                        <div class="col-md-4">
                             <label class="form-label">Button Text</label>
                             <input type="text" name="home_services_button_text" class="form-control"
                                    value="{{ old('home_services_button_text', $servicesSection['button_text'] ?? '') }}"
@@ -360,12 +354,6 @@
                             <input type="text" name="home_why_heading" class="form-control"
                                    value="{{ old('home_why_heading', $whySection['heading'] ?? '') }}"
                                    placeholder="e.g. A studio defined by its craft.">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Lead Text</label>
-                            <input type="text" name="home_why_lead" class="form-control"
-                                   value="{{ old('home_why_lead', $whySection['lead'] ?? '') }}"
-                                   placeholder="e.g. Short supporting line…">
                         </div>
                     </div>
 
@@ -729,41 +717,30 @@
                             <label class="form-check-label fw-semibold" for="home_blog_preview_is_enabled">Show Blog Preview Section on Home Page</label>
                         </div>
                         <div class="form-text">
-                            This controls heading/button/read-more text. Cards still come from the Blog module.
+                            Section title, heading, and button label. Blog cards are managed in the Blog module.
                         </div>
                     </div>
 
                     <div class="row g-3">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label class="form-label" for="home_blog_preview_eyebrow">Title</label>
                             <input type="text" name="home_blog_preview_eyebrow" id="home_blog_preview_eyebrow" class="form-control"
                                    data-sync-home-section-tab="blog-preview"
                                    value="{{ old('home_blog_preview_eyebrow', $blogPreviewSection['eyebrow'] ?? '') }}"
-                                   placeholder="e.g. Our blog">
+                                   placeholder="e.g. Our Blog">
                         </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Heading</label>
-                            <input type="text" name="home_blog_preview_heading" class="form-control"
+                        <div class="col-md-6">
+                            <label class="form-label" for="home_blog_preview_heading">Heading</label>
+                            <input type="text" name="home_blog_preview_heading" id="home_blog_preview_heading" class="form-control"
                                    value="{{ old('home_blog_preview_heading', $blogPreviewSection['heading'] ?? '') }}"
-                                   placeholder="e.g. Latest news">
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Read More Text</label>
-                            <input type="text" name="home_blog_preview_read_more_text" class="form-control"
-                                   value="{{ old('home_blog_preview_read_more_text', $blogPreviewSection['read_more_text'] ?? '') }}"
-                                   placeholder="e.g. Read more">
+                                   placeholder="e.g. Latest News">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Button Text</label>
-                            <input type="text" name="home_blog_preview_button_text" class="form-control"
+                            <label class="form-label" for="home_blog_preview_button_text">Button Text</label>
+                            <input type="text" name="home_blog_preview_button_text" id="home_blog_preview_button_text" class="form-control"
                                    value="{{ old('home_blog_preview_button_text', $blogPreviewSection['button_text'] ?? '') }}"
-                                   placeholder="e.g. All posts">
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Button URL</label>
-                            <input type="text" name="home_blog_preview_button_url" class="form-control"
-                                   value="{{ old('home_blog_preview_button_url', $blogPreviewSection['button_url'] ?? '') }}"
-                                   placeholder="e.g. /blog">
+                                   placeholder="e.g. All Blogs">
+                            <div class="form-text">Links to the blog page automatically. Leave empty to use &ldquo;All Blogs&rdquo;.</div>
                         </div>
                     </div>
                 </div>
