@@ -38,7 +38,7 @@ class UpdateSettingRequest extends FormRequest
         if ($field === 'theme_use_defaults' || str_starts_with($field, 'theme_')) {
             return 'theme';
         }
-        if (in_array($field, ['site_phone_country_id', 'site_phone_national'], true)) {
+        if (in_array($field, ['site_phone_country_id', 'site_phone_national', 'site_whatsapp_country_id', 'site_whatsapp_national'], true)) {
             return 'general';
         }
 
@@ -55,6 +55,16 @@ class UpdateSettingRequest extends FormRequest
             $this->merge(['site_phone_country_id' => null]);
         } elseif ($this->input('site_phone_country_id') === '' || $this->input('site_phone_country_id') === null) {
             $this->merge(['site_phone_country_id' => null]);
+        }
+
+        if ($this->has('site_whatsapp_national')) {
+            $this->merge(['site_whatsapp_national' => trim((string) $this->input('site_whatsapp_national'))]);
+        }
+        $whatsappNational = trim((string) $this->input('site_whatsapp_national', ''));
+        if ($whatsappNational === '') {
+            $this->merge(['site_whatsapp_country_id' => null]);
+        } elseif ($this->input('site_whatsapp_country_id') === '' || $this->input('site_whatsapp_country_id') === null) {
+            $this->merge(['site_whatsapp_country_id' => null]);
         }
 
         $social = [];
@@ -95,6 +105,8 @@ class UpdateSettingRequest extends FormRequest
             'admin_notification_email' => 'nullable|email',
             'site_phone_country_id' => ['nullable', 'integer', Rule::exists('phone_countries', 'id')->where('is_active', true)],
             'site_phone_national' => 'nullable|string|max:24',
+            'site_whatsapp_country_id' => ['nullable', 'integer', Rule::exists('phone_countries', 'id')->where('is_active', true)],
+            'site_whatsapp_national' => 'nullable|string|max:24',
             'site_address' => 'nullable|string|max:500',
             'footer_about' => 'nullable|string|max:1000',
             'copyright_text' => 'nullable|string',
@@ -144,6 +156,18 @@ class UpdateSettingRequest extends FormRequest
             if (! empty($cid) && $nat !== '' && preg_replace('/\D/', '', $nat) === '') {
                 $v->errors()->add('site_phone_national', 'Enter at least one digit for the phone number.');
             }
+
+            $waNat = trim((string) $this->input('site_whatsapp_national', ''));
+            $waCid = $this->input('site_whatsapp_country_id');
+            if ($waNat !== '' && empty($waCid)) {
+                $v->errors()->add('site_whatsapp_country_id', 'Select a country / dial code when you enter a WhatsApp number.');
+            }
+            if (! empty($waCid) && $waNat === '') {
+                $v->errors()->add('site_whatsapp_national', 'Enter the rest of the WhatsApp number (without the country code), or clear the country.');
+            }
+            if (! empty($waCid) && $waNat !== '' && preg_replace('/\D/', '', $waNat) === '') {
+                $v->errors()->add('site_whatsapp_national', 'Enter at least one digit for the WhatsApp number.');
+            }
         });
     }
 
@@ -186,6 +210,8 @@ class UpdateSettingRequest extends FormRequest
             'site_favicon' => 'favicon',
             'site_phone_country_id' => 'phone country',
             'site_phone_national' => 'phone number',
+            'site_whatsapp_country_id' => 'WhatsApp country',
+            'site_whatsapp_national' => 'WhatsApp number',
             'mail_smtp_host' => 'SMTP host',
             'mail_smtp_port' => 'SMTP port',
             'mail_smtp_username' => 'SMTP username',

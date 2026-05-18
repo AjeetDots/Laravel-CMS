@@ -67,6 +67,31 @@
                 <p class="form-text mb-0 small">Shown on the site as: <strong>{{ \App\Support\SitePhone::display($settings) ?: '—' }}</strong></p>
             @endif
         </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="admin_site_whatsapp_national">WhatsApp number</label>
+            @include('partials.intl-phone-field', [
+                'countries' => $phoneCountries ?? collect(),
+                'mode' => 'split',
+                'nameCountryId' => 'site_whatsapp_country_id',
+                'nameNational' => 'site_whatsapp_national',
+                'selectedCountryId' => $settings->get('site_whatsapp_country_id'),
+                'nationalValue' => $settings->get('site_whatsapp_national'),
+                'defaultIso' => 'GB',
+                'instanceId' => 'admin_site_whatsapp',
+                'nationalPlaceholder' => 'WhatsApp number',
+                'invalid' => $errors->has('site_whatsapp_country_id') || $errors->has('site_whatsapp_national'),
+            ])
+            @error('site_whatsapp_country_id')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+            @error('site_whatsapp_national')
+                <div class="invalid-feedback d-block">{{ $message }}</div>
+            @enderror
+            <p class="form-text mb-0 small">Used for the floating “Chat With Us” button and footer WhatsApp link. If empty, the site phone number is used.</p>
+            @if(($phoneCountries ?? collect())->isNotEmpty())
+                <p class="form-text mb-0 small">Shown on the site as: <strong>{{ \App\Support\SitePhone::whatsappDisplay($settings) ?: '—' }}</strong></p>
+            @endif
+        </div>
     </div>
 
     <div class="row g-3">
@@ -85,13 +110,13 @@
     </div>
 
     <div class="row g-3">
-        <div class="col-12">
+        {{-- <div class="col-12">
             <label class="form-label" for="site_address">Address</label>
             <textarea name="site_address" id="site_address" class="form-control @error('site_address') is-invalid @enderror" rows="3">{{ old('site_address', $settings->get('site_address')) }}</textarea>
             @error('site_address')
                 <div class="invalid-feedback d-block">{{ $message }}</div>
             @enderror
-        </div>
+        </div> --}}
         <div class="col-12">
             <label class="form-label" for="footer_about">Footer about text</label>
             <textarea name="footer_about" id="footer_about" class="form-control @error('footer_about') is-invalid @enderror" rows="4">{{ old('footer_about', $settings->get('footer_about')) }}</textarea>
