@@ -27,7 +27,6 @@
                         <tr>
                             <th width="80" data-dt-orderable="false">Image</th>
                             <th>Title</th>
-                            <th>Panel</th>
                             <th>Order</th>
                             <th>Status</th>
                             <th width="130" data-dt-orderable="false">Actions</th>
@@ -46,13 +45,7 @@
                                     @endif
                                 </td>
                                 <td class="fw-500">{{ $slider->title }}</td>
-                                <td>
-                                    @php $panelColors = ['main'=>'primary','right_top'=>'success','right_bottom'=>'warning']; @endphp
-                                    <span class="badge bg-{{ $panelColors[$slider->panel ?? 'main'] ?? 'secondary' }} bg-opacity-10 text-{{ $panelColors[$slider->panel ?? 'main'] ?? 'secondary' }} border border-{{ $panelColors[$slider->panel ?? 'main'] ?? 'secondary' }} border-opacity-25" style="font-size:.72rem;">
-                                        {{ ['main'=>'Center Main','right_top'=>'Right Top','right_bottom'=>'Right Bottom'][$slider->panel ?? 'main'] ?? $slider->panel }}
-                                    </span>
-                                </td>
-                                <td>{{ $slider->sort_order }}</td>
+                                <td>{{ $slider->listedSortOrder() }}</td>
                                 <td>
                                     <span class="badge {{ $slider->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">
                                         {{ $slider->is_active ? 'Active' : 'Inactive' }}
@@ -63,12 +56,23 @@
                                         <a href="{{ route('admin.sliders.edit', $slider) }}"
                                            class="btn btn-sm btn-icon btn-outline-primary"
                                            data-bs-toggle="tooltip" title="Edit"><i class="fas fa-pen"></i></a>
-                                        <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST" class="d-inline"
-                                              data-delete-confirm="This slide will be removed from the live website.">
-                                            @csrf @method('DELETE')
-                                            <button class="btn btn-sm btn-icon btn-outline-danger"
-                                                    data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                                        </form>
+                                        @if($canDeleteSliders)
+                                            <form action="{{ route('admin.sliders.destroy', $slider) }}" method="POST" class="d-inline"
+                                                  data-delete-confirm="This slide will be removed from the live website.">
+                                                @csrf @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-icon btn-outline-danger"
+                                                        data-bs-toggle="tooltip" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                            </form>
+                                        @else
+                                            <span class="d-inline-block"
+                                                  tabindex="0"
+                                                  data-bs-toggle="tooltip"
+                                                  title="At least one slider must remain on the homepage.">
+                                                <button type="button" class="btn btn-sm btn-icon btn-outline-danger disabled opacity-50" disabled aria-disabled="true">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </span>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>

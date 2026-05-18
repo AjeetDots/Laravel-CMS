@@ -42,7 +42,7 @@ class UpdateGalleryRequest extends FormRequest
             'section_content' => 'nullable|string|max:2000',
             'image'      => ImageUploadRules::nullable(4096),
             'gallery_category_id' => ['nullable', Rule::exists('gallery_categories', 'id')->whereNull('deleted_at')],
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('gallery_items', ['gallery_category_id' => 'gallery_category_id'], $this->route('gallery'))],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('gallery_items', ['gallery_category_id' => 'gallery_category_id'], $this->route('gallery'))],
             'is_active'  => 'boolean',
         ];
     }

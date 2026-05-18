@@ -45,7 +45,7 @@ class StoreCategoryRequest extends FormRequest
             'slug'        => ['nullable', 'string', 'max:120', Rule::unique('categories', 'slug')],
             'description' => 'nullable|string|max:500',
             'parent_id'   => ['nullable', Rule::exists('categories', 'id')->whereNull('deleted_at')],
-            'sort_order'  => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('categories', ['parent_id' => 'parent_id'])],
+            'sort_order'  => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('categories', ['parent_id' => 'parent_id'])],
             'is_active'   => 'nullable|boolean',
         ];
     }

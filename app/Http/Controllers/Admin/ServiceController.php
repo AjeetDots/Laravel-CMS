@@ -35,6 +35,9 @@ class ServiceController extends Controller {
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('services', 'public');
         }
+        if ($request->hasFile('hover_image')) {
+            $data['hover_image'] = $request->file('hover_image')->store('services', 'public');
+        }
         $data['is_active'] = $request->boolean('is_active');
         if (isset($data['features'])) {
             $data['features'] = array_values(array_filter($data['features']));
@@ -59,6 +62,17 @@ class ServiceController extends Controller {
         if ($request->hasFile('image')) {
             if ($service->image) Storage::disk('public')->delete($service->image);
             $data['image'] = $request->file('image')->store('services', 'public');
+        }
+        if ($request->boolean('remove_hover_image')) {
+            if ($service->hover_image) {
+                Storage::disk('public')->delete($service->hover_image);
+            }
+            $data['hover_image'] = null;
+        } elseif ($request->hasFile('hover_image')) {
+            if ($service->hover_image) {
+                Storage::disk('public')->delete($service->hover_image);
+            }
+            $data['hover_image'] = $request->file('hover_image')->store('services', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
         if (isset($data['features'])) {

@@ -10,7 +10,7 @@
 <div class="page-header-bar">
     <div>
         <h1>Contact page</h1>
-        <p class="text-muted mb-0 small">Public page at <code>/contact</code>. Phone, email and WhatsApp links still use <a href="{{ route('admin.settings.index') }}">Site settings</a> where configured.</p>
+        <p class="text-muted mb-0 small">Public page at <code>{{ \App\Support\ContactPageUrl::path() }}</code> (from the active Contact page slug in <a href="{{ route('admin.pages.index') }}">Pages</a>). Phone, email and WhatsApp links still use <a href="{{ route('admin.settings.index') }}">Site settings</a> where configured.</p>
     </div>
 </div>
 

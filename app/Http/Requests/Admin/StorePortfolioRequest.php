@@ -52,7 +52,7 @@ class StorePortfolioRequest extends FormRequest
             'gallery_images' => 'nullable|array',
             'gallery_images.*' => ImageUploadRules::nullable(5120),
             'tags_raw' => 'nullable|string',
-            'sort_order' => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('portfolios', [])],
+            'sort_order' => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('portfolios', [])],
             'is_active' => 'nullable|boolean',
         ], $this->seoRules());
     }

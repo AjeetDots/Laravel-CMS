@@ -16,11 +16,12 @@ class SliderController extends Controller {
         $this->applyAdminStatus($query, request('status'));
         $this->applyAdminSearch($query, request('q'), ['title', 'subtitle']);
         $sliders = $query->orderBy('sort_order')->orderBy('id')->get();
+        $canDeleteSliders = Slider::canRemoveOne();
 
-        return view('admin.sliders.index', compact('sliders'));
+        return view('admin.sliders.index', compact('sliders', 'canDeleteSliders'));
     }
     public function create() {
-        $defaultSortOrder = AdminDefaultSortOrder::next(Slider::class);
+        $defaultSortOrder = AdminDefaultSortOrder::next(Slider::class, ['panel' => 'main']);
 
         return view('admin.sliders.form', [
             'slider' => new Slider(),
@@ -33,6 +34,7 @@ class SliderController extends Controller {
             $data['image'] = $request->file('image')->store('sliders', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
+        $data['sort_order'] = max(1, (int) ($data['sort_order'] ?? 1));
         Slider::create($data);
         return redirect()->route('admin.sliders.index')->with('success', 'Slider created.');
     }
@@ -49,11 +51,19 @@ class SliderController extends Controller {
             $data['image'] = $request->file('image')->store('sliders', 'public');
         }
         $data['is_active'] = $request->boolean('is_active');
+        if (array_key_exists('sort_order', $data)) {
+            $data['sort_order'] = max(1, (int) $data['sort_order']);
+        }
         $slider->update($data);
         return redirect()->route('admin.sliders.index')->with('success', 'Slider updated.');
     }
     public function destroy(Slider $slider) {
+        if (! Slider::canRemoveOne()) {
+            return back()->with('error', 'At least one slider must remain on the homepage.');
+        }
+
         $slider->delete();
+
         return back()->with('success', 'The slide has been removed.');
     }
     public function show(Slider $slider) {

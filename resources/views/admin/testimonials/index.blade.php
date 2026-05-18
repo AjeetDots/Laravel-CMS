@@ -28,6 +28,7 @@
                             <th>Client</th>
                             <th>Company</th>
                             <th>Message</th>
+                            <th>Order</th>
                             <th>Status</th>
                             <th width="130" data-dt-orderable="false">Actions</th>
                         </tr>
@@ -41,6 +42,7 @@
                                 </td>
                                 <td>{{ $t->client_company ?? '—' }}</td>
                                 <td>{{ Str::limit(strip_tags($t->message), 60) }}</td>
+                                <td>{{ $t->listedSortOrder() }}</td>
                                 <td>
                                     <span class="badge {{ $t->is_active ? 'badge-active' : 'badge-inactive' }} px-2 py-1">
                                         {{ $t->is_active ? 'Active' : 'Inactive' }}

@@ -8,11 +8,12 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Default "next" sort_order for admin create forms: max(existing) + 1 within optional scopes.
- * Empty sibling group uses 0 (first row), matching prior "start at zero" behaviour.
+ * Default "next" sort_order for admin create forms: max(existing) + 1 within optional scopes (minimum 1).
  */
 final class AdminDefaultSortOrder
 {
+    public const START = 1;
+
     /**
      * @param  class-string<Model>  $modelClass
      * @param  array<string, mixed|null>  $scopes  Column => value; null value scopes with whereNull()
@@ -29,8 +30,14 @@ final class AdminDefaultSortOrder
             }
         }
 
-        $max = $query->max('sort_order');
+        $max = $query->pluck('sort_order')
+            ->map(static fn ($value) => max(self::START, (int) $value))
+            ->max();
 
-        return (int) ($max ?? -1) + 1;
+        if ($max === null) {
+            return self::START;
+        }
+
+        return $max + 1;
     }
 }

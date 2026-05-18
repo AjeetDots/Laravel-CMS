@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $brand->exists ? $brand->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $brand->exists ? $brand->sort_order : ($defaultSortOrder ?? 1)) }}" min="1">
                         <div class="form-text">Must be unique among all brands.</div>
                     </div>
                     <div class="form-check form-switch">

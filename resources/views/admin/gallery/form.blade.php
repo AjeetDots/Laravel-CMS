@@ -39,7 +39,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Category</label>
-                        <select name="gallery_category_id" class="form-select">
+                        <select name="gallery_category_id" id="galleryCategoryId" class="form-select">
                             <option value="">— None —</option>
                             @foreach($categories as $cat)
                                 <option value="{{ $cat->id }}"
@@ -54,7 +54,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $item->exists ? $item->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                        <input type="number" name="sort_order" id="gallerySortOrder" class="form-control" value="{{ old('sort_order', $item->exists ? max(1, (int) $item->sort_order) : ($defaultSortOrder ?? 1)) }}" min="1">
                         <div class="form-text">Must be unique within the same gallery category (including “uncategorised”).</div>
                     </div>
                     <div class="form-check form-switch">
@@ -88,5 +88,27 @@
         </form>
     </div>
 </div>
+
+@if(!$item->exists && !empty($defaultSortOrderByCategory ?? []))
+@push('scripts')
+<script>
+(function () {
+    var categorySelect = document.getElementById('galleryCategoryId');
+    var sortInput = document.getElementById('gallerySortOrder');
+    var defaults = @json($defaultSortOrderByCategory);
+    if (!categorySelect || !sortInput || !defaults) {
+        return;
+    }
+    function applyDefaultSortOrder() {
+        var key = categorySelect.value || '';
+        if (Object.prototype.hasOwnProperty.call(defaults, key)) {
+            sortInput.value = defaults[key];
+        }
+    }
+    categorySelect.addEventListener('change', applyDefaultSortOrder);
+})();
+</script>
+@endpush
+@endif
 
 @endsection

@@ -7,6 +7,7 @@ use App\Models\ContactPageContent;
 use App\Models\Page;
 use App\Models\PhoneCountry;
 use App\Services\Frontend\AboutPageService;
+use App\Support\ContactPageUrl;
 
 class PageController extends Controller
 {
@@ -14,12 +15,19 @@ class PageController extends Controller
         private readonly AboutPageService $aboutPageService
     ) {}
 
-    public function show(string $slug)
+    public function show(string $slug): mixed
     {
         $page = Page::with('seoMeta', 'sections')
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
+
+        if ($page->template === Page::TEMPLATE_CONTACT) {
+            $canonical = ContactPageUrl::canonicalSlug();
+            if (strtolower(trim($slug, '/')) !== $canonical) {
+                return redirect()->route('contact', [], 301);
+            }
+        }
 
         $template = 'frontend.pages.'.$page->template;
         if (! view()->exists($template)) {

@@ -29,19 +29,30 @@
 
         <div class="row g-4">
             @forelse($services->take(3) as $i => $service)
+            @php
+                $hoverImageUrl = $service->hover_image_url;
+                $hoverTitle = $service->resolvedHoverTitle();
+            @endphp
             <div class="col-md-4 reveal delay-{{ $i + 1 }}">
-                <a href="{{ route('services.show', $service->slug) }}" class="disc-card">
-                    <div class="disc-card-img-wrap">
+                <a href="{{ route('services.show', $service->slug) }}" class="disc-card @if($hoverTitle) disc-card--has-hover-title @endif">
+                    <div class="disc-card-img-wrap @if($hoverImageUrl) disc-card-img-wrap--has-hover @endif">
                         @if($service->image)
-                            <img src="{{ $service->image_url }}" alt="{{ $service->title }}" class="disc-card-img">
-                               <img src="../images/img-1.png" alt="" class="disc-card-img hover-img">
+                            <img src="{{ $service->image_url }}" alt="{{ $service->title }}" class="disc-card-img default-img" loading="lazy">
+                            @if($hoverImageUrl)
+                                <img src="{{ $hoverImageUrl }}" alt="{{ $hoverTitle ?? $service->title }}" class="disc-card-img hover-img" loading="lazy">
+                            @endif
                         @else
                             <div class="disc-card-placeholder"><i class="fas fa-paint-brush"></i></div>
                         @endif
                         <div class="disc-card-overlay"></div>
                     </div>
                     <div class="disc-card-body">
-                        <h4 class="home-why-card__title-dark">{{ $service->title }}</h4>
+                        <h4 class="home-why-card__title-dark disc-card-title @if($hoverTitle) disc-card-title--has-hover @endif">
+                            <span class="disc-card-title__default">{{ $service->title }}</span>
+                            @if($hoverTitle)
+                                <span class="disc-card-title__hover">{{ $hoverTitle }}</span>
+                            @endif
+                        </h4>
                         @if($service->short_description)
                             <p class="disc-card-desc">{{ $service->short_description }}</p>
                         @endif

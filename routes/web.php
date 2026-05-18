@@ -46,8 +46,8 @@ Route::get('/finishes/{slug}', [FrontendFinishController::class,   'show'])->nam
 Route::get('/portfolio', [FrontendPortfolioController::class, 'index'])->name('portfolio');
 Route::get('/portfolio/{slug}', [FrontendPortfolioController::class, 'show'])->name('portfolio.show');
 Route::get('/gallery', [GalleryController::class,          'index'])->name('gallery');
-Route::get('/contact', [ContactController::class,          'index'])->name('contact');
 Route::post('/contact', [ContactController::class,          'store'])->name('contact.store');
+require __DIR__.'/contact.php';
 Route::get('/blog', [BlogController::class,             'index'])->name('blog.index');
 Route::get('/blog/category/{slug}', [BlogController::class,        'category'])->name('blog.category');
 Route::get('/blog/{slug}', [BlogController::class,             'show'])->name('blog.show');

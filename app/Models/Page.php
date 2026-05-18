@@ -15,6 +15,9 @@ class Page extends Model
     /** Slug reserved for the site About page (About Editorial template is only offered here). */
     public const ABOUT_SLUG = 'about';
 
+    /** Home page slugs stored in DB (empty, “home”, or “/” for the site root). */
+    public const HOME_SLUG = 'home';
+
     /** Slugs that may use the Contact layout template. */
     public const CONTACT_SLUGS = ['contact', 'contact-us'];
 
@@ -175,11 +178,27 @@ class Page extends Model
         ];
     }
 
+    public static function normalizeSlugKey(?string $slug): string
+    {
+        $slug = strtolower(trim(trim((string) $slug), '/'));
+
+        return $slug === '' ? self::HOME_SLUG : $slug;
+    }
+
+    public static function isHomeSlug(?string $slug): bool
+    {
+        return self::normalizeSlugKey($slug) === self::HOME_SLUG;
+    }
+
     public function isDeletionProtected(): bool
     {
-        $slug = strtolower(trim((string) ($this->slug ?? '')));
+        $slug = self::normalizeSlugKey($this->slug);
+        $protected = array_map(
+            static fn (string $protectedSlug) => self::normalizeSlugKey($protectedSlug),
+            static::protectedDeletionSlugs()
+        );
 
-        return in_array($slug, static::protectedDeletionSlugs(), true);
+        return in_array($slug, $protected, true);
     }
 
     public function resolvedSidebarCtaTitle(): string

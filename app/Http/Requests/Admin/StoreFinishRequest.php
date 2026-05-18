@@ -44,7 +44,7 @@ class StoreFinishRequest extends FormRequest {
             'gallery_images' => 'nullable|array',
             'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'tags_raw'       => 'nullable|string',
-            'sort_order'     => ['nullable', 'integer', 'min:0', SortOrderRules::uniqueAmong('finishes', [])],
+            'sort_order'     => ['nullable', 'integer', 'min:1', SortOrderRules::uniqueAmong('finishes', [])],
             'is_active'      => 'nullable|boolean',
         ];
     }

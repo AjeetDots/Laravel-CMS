@@ -112,12 +112,38 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Image</label>
+                        <label class="form-label">Card image</label>
                         <input type="file" name="image" class="form-control"
                                accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                        <div class="form-text">Default image on the home page service card.</div>
                         @if(isset($service->id) && $service->image)
                             <div class="mt-2">
                                 <img src="{{ asset('storage/'.$service->image) }}" class="img-preview" style="height:80px;">
+                            </div>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label d-flex flex-wrap align-items-baseline justify-content-between gap-2" for="hoverTitleInput">
+                            <span>Hover title</span>
+                            <span class="text-muted small fw-normal">Optional</span>
+                        </label>
+                        <input type="text" name="hover_title" id="hoverTitleInput" class="form-control"
+                               value="{{ old('hover_title', $service->hover_title) }}"
+                               placeholder="Shown when hovering the card on the home page"
+                               maxlength="{{ ServiceFormLimits::TITLE_MAX }}">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Hover image</label>
+                        <input type="file" name="hover_image" class="form-control"
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                        <div class="form-text">Replaces the card image when visitors hover on the home page.</div>
+                        @if(isset($service->id) && $service->hover_image)
+                            <div class="mt-2">
+                                <img src="{{ asset('storage/'.$service->hover_image) }}" class="img-preview" style="height:80px;" alt="">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" name="remove_hover_image" value="1" id="removeHoverImage">
+                                    <label class="form-check-label" for="removeHoverImage">Remove hover image</label>
+                                </div>
                             </div>
                         @endif
                     </div>
@@ -128,7 +154,7 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $service->exists ? $service->sort_order : ($defaultSortOrder ?? 0)) }}" min="0">
+                        <input type="number" name="sort_order" class="form-control" value="{{ old('sort_order', $service->exists ? $service->sort_order : ($defaultSortOrder ?? 1)) }}" min="1">
                         <div class="form-text">Must be unique among all services.</div>
                     </div>
                     <div class="form-check form-switch">

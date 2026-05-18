@@ -47,7 +47,7 @@ class UpdateMenuRequest extends FormRequest
             ],
             'target'     => 'in:_self,_blank',
             'parent_id'  => 'nullable|exists:menus,id',
-            'sort_order' => ['integer', 'min:0', SortOrderRules::uniqueAmong('menus', ['parent_id' => 'parent_id'], $this->route('menu'))],
+            'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('menus', ['parent_id' => 'parent_id'], $this->route('menu'))],
             'is_active'  => 'boolean',
         ];
     }

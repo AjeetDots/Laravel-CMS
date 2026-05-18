@@ -134,9 +134,9 @@
                                             <span class="visually-hidden">Open guide</span>
                                         </button>
                                     </div>
-                                    <input type="number" name="sort_order" id="catSortOrder" class="form-control" min="0"
+                                    <input type="number" name="sort_order" id="catSortOrder" class="form-control" min="1"
                                            style="max-width: 11rem;"
-                                           value="{{ old('sort_order', $category->exists ? $category->sort_order : ($defaultSortOrder ?? 0)) }}">
+                                           value="{{ old('sort_order', $category->exists ? $category->sort_order : ($defaultSortOrder ?? 1)) }}">
                                     <div class="form-text mt-2 mb-0">Lower numbers typically appear first in category lists. Must be unique among siblings (same parent).</div>
                                 </div>
                             </div>

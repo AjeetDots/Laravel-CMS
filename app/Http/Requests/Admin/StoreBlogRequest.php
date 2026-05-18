@@ -52,7 +52,7 @@ class StoreBlogRequest extends FormRequest
             'image'        => ImageUploadRules::nullable(3072),
             'is_active'    => 'boolean',
             'published_at' => 'nullable|date',
-            'sort_order'   => ['integer', 'min:0', SortOrderRules::uniqueAmong('blog_posts', ['category_id' => 'category_id'])],
+            'sort_order'   => ['integer', 'min:1', SortOrderRules::uniqueAmong('blog_posts', ['category_id' => 'category_id'])],
         ], $this->seoRules());
     }
 

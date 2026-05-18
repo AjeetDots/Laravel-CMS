@@ -21,7 +21,7 @@ final class MenuLinkDirectory
             ['path' => '/finishes', 'label' => 'Finishes'],
             ['path' => '/portfolio', 'label' => 'Portfolio'],
             ['path' => '/gallery', 'label' => 'Gallery'],
-            ['path' => '/contact', 'label' => 'Contact'],
+            ['path' => ContactPageUrl::path(), 'label' => 'Contact'],
             ['path' => '/blog', 'label' => 'Blog'],
         ];
     }

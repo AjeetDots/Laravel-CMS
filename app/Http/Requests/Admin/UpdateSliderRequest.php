@@ -46,7 +46,7 @@ class UpdateSliderRequest extends FormRequest
             'button_link' => 'nullable|string|max:200',
             'button2_text' => 'nullable|string|max:50',
             'button2_link' => 'nullable|string|max:200',
-            'sort_order'  => ['integer', 'min:0', SortOrderRules::uniqueAmong('sliders', ['panel' => 'panel'], $this->route('slider'))],
+            'sort_order'  => ['integer', 'min:1', SortOrderRules::uniqueAmong('sliders', ['panel' => 'panel'], $this->route('slider'))],
             'panel'       => 'in:main,right_top,right_bottom',
             'is_active'   => 'boolean',
         ];
