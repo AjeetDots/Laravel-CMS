@@ -18,7 +18,7 @@ class UpdateSettingRequest extends FormRequest
     /**
      * Which Site settings tab contains this request field (for redirect UX).
      *
-     * @return 'general'|'notifications'|'social'|'logos'|'smtp'|'theme'
+     * @return 'general'|'notifications'|'social'|'logos'|'smtp'
      */
     public static function settingsTabForField(string $field): string
     {
@@ -35,9 +35,6 @@ class UpdateSettingRequest extends FormRequest
         }
         if (str_starts_with($field, 'mail_smtp_') || str_starts_with($field, 'mail_from_')) {
             return 'smtp';
-        }
-        if ($field === 'theme_use_defaults' || str_starts_with($field, 'theme_')) {
-            return 'theme';
         }
         if (in_array($field, ['site_phone_country_id', 'site_phone_national', 'site_whatsapp_country_id', 'site_whatsapp_national'], true)) {
             return 'general';
@@ -127,19 +124,6 @@ class UpdateSettingRequest extends FormRequest
             'mail_smtp_encryption' => ['nullable', 'string', Rule::in(['', 'tls', 'ssl'])],
             'mail_from_address' => 'nullable|email|max:255',
             'mail_from_name' => 'nullable|string|max:150',
-            'theme_use_defaults' => 'nullable|boolean',
-            'theme_wine' => [
-                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
-                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
-            ],
-            'theme_wine_dark' => [
-                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
-                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
-            ],
-            'theme_gold' => [
-                Rule::excludeIf(fn () => $this->boolean('theme_use_defaults')),
-                'nullable', 'string', 'max:7', 'regex:/^#([0-9A-Fa-f]{6})$/',
-            ],
         ];
     }
 
@@ -185,9 +169,6 @@ class UpdateSettingRequest extends FormRequest
             'site_phone_national.regex' => 'Phone number must contain digits only (no letters or symbols).',
             'site_whatsapp_national.regex' => 'WhatsApp number must contain digits only (no letters or symbols).',
             'mail_from_address.email' => 'Enter a valid “From” email on the SMTP tab, or leave it empty.',
-            'theme_wine.regex' => 'Accent colour must be a full hex value like #C96B3F — check the Theme tab.',
-            'theme_wine_dark.regex' => 'Dark accent must be a full hex value — check the Theme tab.',
-            'theme_gold.regex' => 'Gold trim must be a full hex value — check the Theme tab.',
         ];
     }
 
@@ -216,9 +197,6 @@ class UpdateSettingRequest extends FormRequest
             'mail_smtp_encryption' => 'SMTP encryption',
             'mail_from_address' => 'from email address',
             'mail_from_name' => 'from name',
-            'theme_wine' => 'primary accent colour',
-            'theme_wine_dark' => 'dark accent colour',
-            'theme_gold' => 'gold trim colour',
             'page_default_template' => 'default page template',
         ];
     }

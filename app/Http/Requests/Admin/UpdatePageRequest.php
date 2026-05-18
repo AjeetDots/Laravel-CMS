@@ -53,6 +53,7 @@ class UpdatePageRequest extends FormRequest
             'sidebar_content' => 'nullable|string',
             'sidebar_cta_title' => 'nullable|string|max:200',
             'sidebar_cta_text' => 'nullable|string|max:600',
+            'sidebar_cta_button_text' => 'nullable|string|max:120',
             'meta_title' => 'nullable|string|max:200',
             'meta_description' => 'nullable|string|max:500',
             'template' => ['required', 'string', Rule::in($allowedTemplates)],

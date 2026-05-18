@@ -829,11 +829,12 @@ font-weight: normal;
     bottom: 0 !important;
 }
 .gallery-intro-slider__pagination .swiper-pagination-bullet {
-    background: #c8bfb3;
+    background: rgba(170, 132, 83, 0.35);
     opacity: 1;
 }
 .gallery-intro-slider__pagination .swiper-pagination-bullet-active {
     background: var(--primary);
+    box-shadow: 0 0 0 1px rgba(146, 120, 72, 0.35);
 }
 
 .gallery-showcase {

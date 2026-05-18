@@ -220,6 +220,13 @@
                                                       placeholder="e.g. Short line inviting visitors to reach out…">{{ old('sidebar_cta_text', $page->sidebar_cta_text) }}</textarea>
                                             <div class="form-text small">Plain text under the heading. Leave empty to hide on the site.</div>
                                         </div>
+                                        <div class="mb-3">
+                                            <label class="form-label" for="sidebarCtaButtonTextInput">Contact card button</label>
+                                            <input type="text" name="sidebar_cta_button_text" id="sidebarCtaButtonTextInput" class="form-control" maxlength="120"
+                                                   value="{{ old('sidebar_cta_button_text', $page->sidebar_cta_button_text) }}"
+                                                   placeholder="e.g. Contact us">
+                                            <div class="form-text small">Label on the button at the bottom of the card. Leave empty to use “Contact us”.</div>
+                                        </div>
                                         <hr class="my-3 text-secondary opacity-25">
                                         <p class="text-muted small mb-2"><strong>Optional</strong> rich block above the contact card (promos, links, etc.).</p>
                                         <textarea name="sidebar_content" id="sidebarContentInput" class="form-control wysiwyg" rows="8"
@@ -341,7 +348,7 @@
     <ul class="small mb-0 ps-3 text-start">
         <li class="mb-2"><strong>Default</strong> — Main story in a centred column; best for articles, policies, FAQs.</li>
         <li class="mb-2"><strong>Full width</strong> — Wider main column; use for long guides or when you want more horizontal room.</li>
-        <li class="mb-2"><strong>With sidebar</strong> — Main column + sidebar. Optional rich <strong>Sidebar content</strong>; contact card heading/intro are editable; phone, email, and “Contact us” use site settings.</li>
+        <li class="mb-2"><strong>With sidebar</strong> — Main column + sidebar. Optional rich <strong>Sidebar content</strong>; contact card heading, intro, and button label are editable; phone and email use site settings.</li>
         <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on the About page (<code>about</code> slug).</li>
         <li><strong>Contact</strong> — Only on Contact pages (<code>contact</code> or <code>contact-us</code> slug); uses theme contact content and the enquiry form.</li>
     </ul>

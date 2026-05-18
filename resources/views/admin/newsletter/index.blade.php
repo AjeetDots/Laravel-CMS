@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="page-header-bar d-flex flex-wrap justify-content-between align-items-center gap-3">
-    <h1 class="mb-0">Newsletter Subscribers <span class="badge bg-primary ms-2">{{ $subscribers->count() }}</span></h1>
+    <h1 class="mb-0">Newsletter Subscribers <span class="badge badge-active ms-2" style="font-size:.8rem;">{{ $subscribers->count() }}</span></h1>
     <a href="{{ route('admin.newsletter.export') }}" class="btn btn-outline-secondary btn-sm">
         <i class="fas fa-file-export me-1"></i> Export CSV
     </a>
@@ -17,10 +17,10 @@
             <div class="text-center py-5 text-muted">No subscribers match your filters.</div>
         @else
             <div class="table-responsive">
-                <table class="table table-hover mb-0" data-admin-dt>
+                <table class="table table-hover mb-0" data-admin-dt data-dt-renumber-col="0">
                     <thead>
                         <tr>
-                            <th>#</th>
+                            <th width="50" data-dt-orderable="false">Sr.</th>
                             <th>Email</th>
                             <th>Status</th>
                             <th>Subscribed</th>
@@ -30,7 +30,7 @@
                     <tbody>
                         @foreach($subscribers as $sub)
                         <tr>
-                            <td class="text-muted" style="font-size:.82rem;">{{ $sub->id }}</td>
+                            <td class="text-muted" style="font-size:.82rem;">{{ $loop->iteration }}</td>
                             <td style="font-weight:600;">{{ $sub->email }}</td>
                             <td>
                                 @if($sub->is_active)

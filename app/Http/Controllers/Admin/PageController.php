@@ -86,12 +86,14 @@ class PageController extends Controller
             $data['sidebar_content'] = null;
             $data['sidebar_cta_title'] = null;
             $data['sidebar_cta_text'] = null;
+            $data['sidebar_cta_button_text'] = null;
         }
         if (($data['template'] ?? '') === Page::TEMPLATE_CONTACT) {
             $data['body_order'] = Page::BODY_ORDER_CONTENT_FIRST;
             $data['sidebar_content'] = null;
             $data['sidebar_cta_title'] = null;
             $data['sidebar_cta_text'] = null;
+            $data['sidebar_cta_button_text'] = null;
         }
         $page->update($data);
         $page->sections()->delete();

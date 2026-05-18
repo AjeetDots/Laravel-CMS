@@ -49,13 +49,6 @@ class SettingController extends Controller
         // Handle file uploads separately
         unset($data['site_logo'], $data['backend_logo'], $data['site_logo_footer'], $data['site_favicon']);
 
-        if ($request->boolean('theme_use_defaults')) {
-            Setting::set('theme_wine', null);
-            Setting::set('theme_wine_dark', null);
-            Setting::set('theme_gold', null);
-        }
-        unset($data['theme_use_defaults']);
-
         $smtpPassword = null;
         if (array_key_exists('mail_smtp_password', $data)) {
             $smtpPassword = trim((string) $data['mail_smtp_password']);

@@ -47,6 +47,7 @@ class Page extends Model
         'sidebar_content',
         'sidebar_cta_title',
         'sidebar_cta_text',
+        'sidebar_cta_button_text',
         'meta_title',
         'meta_description',
         'template',
@@ -189,5 +190,12 @@ class Page extends Model
     public function resolvedSidebarCtaText(): string
     {
         return trim((string) ($this->sidebar_cta_text ?? ''));
+    }
+
+    public function resolvedSidebarCtaButtonText(): string
+    {
+        $text = trim((string) ($this->sidebar_cta_button_text ?? ''));
+
+        return $text !== '' ? $text : 'Contact us';
     }
 }

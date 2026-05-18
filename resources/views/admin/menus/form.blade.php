@@ -43,14 +43,7 @@
                         <label class="form-label" for="menuUrlPreset">Page or section</label>
                         <select id="menuUrlPreset" class="form-select">
                             <option value="">— Choose where this link goes —</option>
-                            @foreach($menuLinkGroups as $groupLabel => $links)
-                                <optgroup label="{{ $groupLabel }}">
-                                    @foreach($links as $link)
-                                        <option value="{{ $link['path'] }}">{{ $link['label'] }}</option>
-                                    @endforeach
-                                </optgroup>
-                            @endforeach
-                            <option value="__custom__">Custom URL…</option>
+                            @include('admin.partials.menu-link-preset-options')
                         </select>
                         <div class="form-text">Pick a destination here; the URL is filled for you and locked unless you choose Custom URL.</div>
                     </div>

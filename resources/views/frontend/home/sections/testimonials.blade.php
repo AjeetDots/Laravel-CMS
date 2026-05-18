@@ -67,11 +67,12 @@
     .swiper-pagination-bullet {
         width: 8px;
         height: 8px;
-        background: #fff;
-        opacity: .4;
+        background: rgba(255, 255, 255, 0.45);
+        opacity: 1;
     }
 
     .swiper-pagination-bullet-active {
+        background: #c4a06a;
         opacity: 1;
     }
 </style>
