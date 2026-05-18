@@ -177,9 +177,7 @@ class PageController extends Controller
 
     private function templatesForForm(Page $page): array
     {
-        $slug = $page->exists
-            ? (string) $page->slug
-            : '';
+        $slug = (string) old('slug', $page->exists ? (string) $page->slug : '');
 
         $allowed = Page::allowedTemplatesForSlug($slug);
 

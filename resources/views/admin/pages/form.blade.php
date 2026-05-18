@@ -268,7 +268,7 @@
                             if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug($page->slug ?? '')) {
                                 $selectedTemplate = \App\Models\Page::defaultTemplate();
                             }
-                            if ($selectedTemplate === 'about' && ($page->slug ?? '') !== \App\Models\Page::ABOUT_SLUG) {
+                            if ($selectedTemplate === 'about' && ! \App\Models\Page::isAboutSlug(old('slug', $page->slug ?? ''))) {
                                 $selectedTemplate = \App\Models\Page::defaultTemplate();
                             }
                         @endphp
@@ -349,7 +349,7 @@
         <li class="mb-2"><strong>Default</strong> — Main story in a centred column; best for articles, policies, FAQs.</li>
         <li class="mb-2"><strong>Full width</strong> — Wider main column; use for long guides or when you want more horizontal room.</li>
         <li class="mb-2"><strong>With sidebar</strong> — Main column + sidebar. Optional rich <strong>Sidebar content</strong>; contact card heading, intro, and button label are editable; phone and email use site settings.</li>
-        <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on the About page (<code>about</code> slug).</li>
+        <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on About pages (<code>about</code> or <code>about-us</code> slug).</li>
         <li><strong>Contact</strong> — Only on Contact pages (<code>contact</code> or <code>contact-us</code> slug); uses theme contact content and the enquiry form.</li>
     </ul>
 </div>

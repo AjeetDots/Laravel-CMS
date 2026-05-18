@@ -12,8 +12,11 @@ class Page extends Model
     use HasSeo;
     use SoftDeletes;
 
-    /** Slug reserved for the site About page (About Editorial template is only offered here). */
+    /** Primary About page slug (legacy). */
     public const ABOUT_SLUG = 'about';
+
+    /** Slugs that may use the About editorial layout template. */
+    public const ABOUT_SLUGS = ['about', 'about-us'];
 
     /** Home page slugs stored in DB (empty, “home”, or “/” for the site root). */
     public const HOME_SLUG = 'home';
@@ -132,7 +135,7 @@ class Page extends Model
         $slug = strtolower(trim((string) $slug));
         $templates = self::sectionedTemplates();
 
-        if ($slug === self::ABOUT_SLUG) {
+        if (self::isAboutSlug($slug)) {
             $templates[] = 'about';
         }
         if (self::isContactSlug($slug)) {
@@ -145,6 +148,11 @@ class Page extends Model
     public static function isContactSlug(?string $slug): bool
     {
         return in_array(strtolower(trim((string) $slug)), self::CONTACT_SLUGS, true);
+    }
+
+    public static function isAboutSlug(?string $slug): bool
+    {
+        return in_array(strtolower(trim((string) $slug, '/')), self::ABOUT_SLUGS, true);
     }
 
     /**
@@ -166,6 +174,7 @@ class Page extends Model
             '',
             'home',
             'about',
+            'about-us',
             'terms-and-conditions',
             'privacy-policy',
             'cookie-policy',
