@@ -31,6 +31,11 @@ class UpdatePageRequest extends FormRequest
         if ($resolved !== '') {
             $this->merge(['slug' => $resolved]);
         }
+
+        $page = $this->route('page');
+        if ($page instanceof Page && $page->hasFixedTemplate()) {
+            $this->merge(['template' => $page->template]);
+        }
     }
 
     public function rules(): array
@@ -59,6 +64,35 @@ class UpdatePageRequest extends FormRequest
             'template' => ['required', 'string', Rule::in($allowedTemplates)],
             'is_active' => 'boolean',
         ], $this->seoRules());
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator): void {
+            $page = $this->route('page');
+            if (! $page instanceof Page || ! $page->hasFixedTemplate()) {
+                return;
+            }
+
+            $slug = Page::resolveSlugFromInput(
+                $this->input('slug'),
+                (string) $this->input('title', '')
+            );
+
+            if ($page->template === Page::TEMPLATE_CONTACT && ! Page::isContactSlug($slug)) {
+                $validator->errors()->add(
+                    'slug',
+                    'Contact pages must use the contact or contact-us URL slug.'
+                );
+            }
+
+            if ($page->template === Page::TEMPLATE_ABOUT && ! Page::isAboutSlug($slug)) {
+                $validator->errors()->add(
+                    'slug',
+                    'About pages must use the about or about-us URL slug.'
+                );
+            }
+        });
     }
 
     private function seoRules(): array

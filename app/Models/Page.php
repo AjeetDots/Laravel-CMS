@@ -40,6 +40,9 @@ class Page extends Model
     /** Uses theme contact content + enquiry form (see `frontend.pages.contact`). */
     public const TEMPLATE_CONTACT = 'contact';
 
+    /** About editorial layout (theme About content). */
+    public const TEMPLATE_ABOUT = 'about';
+
     /** Setting key for the template pre-selected when creating a new page. */
     public const SETTING_DEFAULT_TEMPLATE = 'page_default_template';
 
@@ -136,7 +139,7 @@ class Page extends Model
         $templates = self::sectionedTemplates();
 
         if (self::isAboutSlug($slug)) {
-            $templates[] = 'about';
+            $templates[] = self::TEMPLATE_ABOUT;
         }
         if (self::isContactSlug($slug)) {
             $templates[] = self::TEMPLATE_CONTACT;
@@ -225,5 +228,29 @@ class Page extends Model
         $text = trim((string) ($this->sidebar_cta_button_text ?? ''));
 
         return $text !== '' ? $text : 'Contact us';
+    }
+
+    /**
+     * @return array<string, string> value => admin label
+     */
+    public static function adminTemplateOptions(): array
+    {
+        return [
+            self::TEMPLATE_ABOUT => 'About Page (Editorial)',
+            self::TEMPLATE_DEFAULT => 'Default',
+            self::TEMPLATE_FULL_WIDTH => 'Full Width',
+            self::TEMPLATE_SIDEBAR => 'With Sidebar',
+            self::TEMPLATE_CONTACT => 'Contact (theme content and form)',
+        ];
+    }
+
+    public function hasFixedTemplate(): bool
+    {
+        return in_array($this->template, [self::TEMPLATE_CONTACT, self::TEMPLATE_ABOUT], true);
+    }
+
+    public function fixedTemplateLabel(): string
+    {
+        return self::adminTemplateOptions()[$this->template] ?? (string) $this->template;
     }
 }

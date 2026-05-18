@@ -264,19 +264,30 @@
                             </button>
                         </label>
                         @php
-                            $selectedTemplate = old('template', $page->template ?? \App\Models\Page::defaultTemplate());
-                            if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug($page->slug ?? '')) {
-                                $selectedTemplate = \App\Models\Page::defaultTemplate();
-                            }
-                            if ($selectedTemplate === 'about' && ! \App\Models\Page::isAboutSlug(old('slug', $page->slug ?? ''))) {
-                                $selectedTemplate = \App\Models\Page::defaultTemplate();
+                            $templateIsFixed = $page->exists && $page->hasFixedTemplate();
+                            $selectedTemplate = $templateIsFixed
+                                ? $page->template
+                                : old('template', $page->template ?? \App\Models\Page::defaultTemplate());
+                            if (! $templateIsFixed) {
+                                if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug(old('slug', $page->slug ?? ''))) {
+                                    $selectedTemplate = \App\Models\Page::defaultTemplate();
+                                }
+                                if ($selectedTemplate === \App\Models\Page::TEMPLATE_ABOUT && ! \App\Models\Page::isAboutSlug(old('slug', $page->slug ?? ''))) {
+                                    $selectedTemplate = \App\Models\Page::defaultTemplate();
+                                }
                             }
                         @endphp
+                        @if($templateIsFixed)
+                            <input type="hidden" name="template" value="{{ $page->template }}">
+                            <div class="form-control bg-light text-secondary">{{ $page->fixedTemplateLabel() }}</div>
+                            <p class="form-text small mb-0">This layout is fixed for this page and cannot be changed. Edit content under <strong>Theme options</strong> for Contact and About sections.</p>
+                        @else
                         <select name="template" id="pageTemplateSelect" class="form-select">
                             @foreach($templates as $value => $label)
                                 <option value="{{ $value }}" {{ $selectedTemplate === $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
+                        @endif
                     </div>
                     <div class="mb-3">
                         <label class="form-label d-flex align-items-center gap-2 mb-1">
