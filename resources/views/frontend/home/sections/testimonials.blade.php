@@ -37,6 +37,22 @@
     }
     $featuredProject = trim((string) ($featured->client_company ?? ''));
     $featuredDesignation = trim((string) ($featured->client_position ?? ''));
+
+    $testimonialsCfg = $testimonialsSection ?? [];
+    $leftPanelEyebrow = trim((string) ($testimonialsCfg['left_eyebrow'] ?? ''));
+    $leftPanelHeadline = trim((string) ($testimonialsCfg['left_headline'] ?? ''));
+    $rightPanelEyebrow = trim((string) ($testimonialsCfg['right_eyebrow'] ?? ''));
+    $leftPanelImage = $testimonialsCfg['left_image_url'] ?? asset('images/testimonial.jpg');
+    if ($leftPanelEyebrow === '') {
+        $leftPanelEyebrow = 'Testimonial';
+    }
+    if ($leftPanelHeadline === '') {
+        $leftPanelHeadline = 'Luxury Experiences Shared';
+    }
+    if ($rightPanelEyebrow === '') {
+        $rightPanelEyebrow = 'Customer Reviews';
+    }
+    $hasLeftPanelImage = filled($testimonialsCfg['left_image_url'] ?? null);
 @endphp
 <script type="application/json" id="testimonialLeftPanelsData">@json($leftPanels)</script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
@@ -63,16 +79,14 @@
     <div class="row g-0 align-items-stretch">
         <div class="col-lg-6">
             <div class="testimonial-left">
-                <img src="../images/testimonial.jpg" class="img-fluid" />
+                <img src="{{ $leftPanelImage }}" class="img-fluid" alt="" />
                 <div class="testimonial-left__photo-fallback"
                      id="testimonialLeftFallback"
                      role="presentation"
-                     @if($featuredPhoto) style="display:none" @endif></div>
+                     @if($hasLeftPanelImage) style="display:none" @endif></div>
                 <div class="left-content">
-                    <div class="review-label mb-4">
-                    Testimonial
-                </div>
-                    <h2 class="home-atelier-headline-white">Luxury Experiences Shared</h2>
+                    <div class="review-label mb-4">{{ $leftPanelEyebrow }}</div>
+                    <h2 class="home-atelier-headline-white">{{ $leftPanelHeadline }}</h2>
                     <!-- <div class="project" id="testimonialLeftProject" @unless($featuredProject !== '') style="display:none" @endunless>{{ $featuredProject }}</div>
                     <div class="designation" id="testimonialLeftDesignation" @unless($featuredDesignation !== '') style="display:none" @endunless>{{ $featuredDesignation }}</div> -->
                 </div>
@@ -80,9 +94,7 @@
         </div>
         <div class="col-lg-6 right-circle">
             <div class="testimonial-right">
-                <div class="review-label">
-                    Customer Reviews
-                </div>
+                <div class="review-label">{{ $rightPanelEyebrow }}</div>
                 <div class="swiper testimonial-slider">
                     <div class="swiper-wrapper">
                         @foreach($testimonials as $t)
