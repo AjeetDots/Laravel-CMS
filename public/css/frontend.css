@@ -4227,3 +4227,7 @@ textarea.form-control {
     border-color: var(--primary) !important;
     box-shadow: 0 0 0 2px rgba(184, 146, 90, 0.14);
 }
+
+.cms-builder.innerGap .cms-builder__sections.cms-builder__sections--after-lead .cms-builder-band {
+    padding-bottom: 128px;
+}

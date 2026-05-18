@@ -2926,7 +2926,10 @@ rotate: -45deg;
 .commission-item:hover .commission-img{
     transform: scale(1.1) ;
 }
-.imgFinshes{
+.imgFinshes {
     overflow: hidden;
-
+    height: 256px;
+}
+.pb-128 {
+    padding-bottom: 128px;
 }

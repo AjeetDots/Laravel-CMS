@@ -1,6 +1,9 @@
 @extends('layouts.frontend')
 @section('title', 'Portfolio')
-@section('body_class', 'nav-solid')
+@section('body_class', 'nav-solid page-portfolio')
+@section('styles')
+<link href="{{ asset('css/portfolio.css') }}" rel="stylesheet">
+@endsection
 @section('content')
 
 <div class="page-hero">

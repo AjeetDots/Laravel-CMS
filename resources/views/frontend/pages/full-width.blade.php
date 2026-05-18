@@ -10,7 +10,7 @@
     <div class="cms-page-layout cms-page-layout--full">
         @include('frontend.pages.partials.cms-hero', ['page' => $page])
 
-        <div class="cms-builder">
+        <div class="cms-builder innerGap">
             <div class="container cms-page-container cms-builder__shell">
                 @include('frontend.pages.partials.cms-body-inner', ['page' => $page, 'layout' => 'full'])
             </div>

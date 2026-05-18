@@ -51,6 +51,8 @@
                         @if($item->title)
                             <h3>{{ $item->title }}</h3>
                         @endif
+                        <p class="commission-title commission-text mt-3 text-white">A sleek, contemporary media wall designed with refined 
+                            symmetry and premium finishes. Blends luxury Venetian plaster with functional elegance to create a striking focal point.</p>
                         <span class="gallery-work-card__link"><i class="fas fa-arrow-up-right"></i></span>
                     </div>
                 </div>
