@@ -30,9 +30,10 @@
             </div>
         @else
             <div class="table-responsive">
-                <table class="table mb-0" data-admin-dt>
+                <table class="table mb-0" data-admin-dt data-dt-renumber-col="0">
                     <thead>
                         <tr>
+                            <th width="50" data-dt-orderable="false">Sr.</th>
                             <th>Name</th>
                             <th>Email</th>
                             <th>Date</th>
@@ -45,6 +46,7 @@
                     <tbody>
                         @foreach($contacts as $contact)
                             <tr class="{{ !$contact->is_read ? 'fw-600' : '' }}">
+                                <td class="text-muted" style="font-size:.82rem;">{{ $loop->iteration }}</td>
                                 <td class="fw-500">
                                     @if(!$contact->is_read)
                                         <span class="badge bg-danger me-1" style="font-size:.65rem;">NEW</span>

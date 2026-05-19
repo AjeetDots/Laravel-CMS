@@ -46,7 +46,6 @@ class SendNewsletterSubscriptionEmailsJob implements ShouldQueue
         $variables = [
             'email' => $email,
             'user_name' => $displayName,
-            'name' => $displayName,
             'date' => now()->format('d M Y, H:i'),
         ];
 

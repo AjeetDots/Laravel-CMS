@@ -65,13 +65,10 @@ class SendContactSubmissionEmailsJob implements ShouldQueue
     {
         return [
             'user_name' => $contact->name,
-            'name' => $contact->name,
             'email' => $contact->email,
             'phone' => $contact->phone ?? '',
-            'contact_no' => $contact->phone ?? '',
             'subject' => $contact->subject ?? '',
             'message' => $contact->message,
-            'msg' => $contact->message,
             'date' => now()->format('d M Y, H:i'),
         ];
     }
