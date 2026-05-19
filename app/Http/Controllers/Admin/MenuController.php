@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ReorderMenusRequest;
 use App\Http\Requests\Admin\StoreMenuRequest;
 use App\Http\Requests\Admin\UpdateMenuRequest;
 use App\Models\Menu;
@@ -16,7 +17,7 @@ class MenuController extends Controller
     use AppliesAdminTableFilters;
 
     public function index() {
-        $query = Menu::whereNull('parent_id')->with('children');
+        $query = Menu::whereNull('parent_id')->with(['allChildren']);
         if (request()->has('status') && request('status') !== '' && request('status') !== null) {
             $query->where('is_active', (bool) (int) request('status'));
         }
@@ -92,6 +93,34 @@ class MenuController extends Controller
         FrontendViewCache::forgetNavMenus();
 
         return back()->with('success', 'The menu item has been removed.');
+    }
+
+    public function reorder(ReorderMenusRequest $request)
+    {
+        $topLevel = array_values(array_map('intval', $request->validated('top_level')));
+
+        foreach ($topLevel as $index => $id) {
+            Menu::query()
+                ->whereNull('parent_id')
+                ->whereKey($id)
+                ->update(['sort_order' => $index + 1]);
+        }
+
+        $children = $request->validated('children') ?? [];
+        foreach ($children as $parentId => $childIds) {
+            $parentId = (int) $parentId;
+            $childIds = array_values(array_map('intval', (array) $childIds));
+            foreach ($childIds as $index => $childId) {
+                Menu::query()
+                    ->where('parent_id', $parentId)
+                    ->whereKey($childId)
+                    ->update(['sort_order' => $index + 1]);
+            }
+        }
+
+        FrontendViewCache::forgetNavMenus();
+
+        return response()->json(['success' => true, 'message' => 'Menu order saved.']);
     }
     public function show(Menu $menu) {
         return redirect()->route('admin.menus.edit', $menu);

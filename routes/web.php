@@ -98,6 +98,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('email-templates', EmailTemplateController::class)->only(['index', 'edit', 'update']);
 
         // Navigation & pages
+        Route::post('menus/reorder', [MenuController::class, 'reorder'])->name('menus.reorder');
         Route::resource('menus', MenuController::class);
         Route::get('footer-navigation', [FooterNavigationController::class, 'edit'])->name('footer-navigation.edit');
         Route::put('footer-navigation', [FooterNavigationController::class, 'update'])->name('footer-navigation.update');
