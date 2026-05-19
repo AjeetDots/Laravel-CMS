@@ -38,24 +38,43 @@
                         <div class="form-text">Shown on the home page &quot;Selected work&quot; grid and the public gallery page overlay; leave blank if you only need the image and title.</div>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Category</label>
-                        <select name="gallery_category_id" id="galleryCategoryId" class="form-select">
-                            <option value="">— None —</option>
-                            @foreach($categories as $cat)
-                                <option value="{{ $cat->id }}"
-                                    {{ (string) old('gallery_category_id', $item->gallery_category_id ?? request('gallery_category_id')) === (string) $cat->id ? 'selected' : '' }}>
-                                    {{ $cat->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <div class="form-text">
-                            Manage labels in <a href="{{ route('admin.gallery-categories.index') }}">Gallery categories</a>.
-                        </div>
+                        @php
+                            $selectedCategoryId = old('gallery_category_id', $item->gallery_category_id ?? request('gallery_category_id'));
+                        @endphp
+                        <label class="form-label" for="galleryCategoryId">Category <span class="text-danger">*</span></label>
+                        @if($categories->isEmpty())
+                            <p class="text-muted mb-2">Add at least one category before uploading gallery images.</p>
+                            <a href="{{ route('admin.gallery-categories.create') }}" class="btn btn-sm btn-outline-primary">Add gallery category</a>
+                        @else
+                            <select name="gallery_category_id" id="galleryCategoryId" class="form-select @error('gallery_category_id') is-invalid @enderror" required>
+                                <option value="" disabled @selected($selectedCategoryId === null || $selectedCategoryId === '')>Select a category</option>
+                                @foreach($categories as $cat)
+                                    <option value="{{ $cat->id }}"
+                                        @selected((string) $selectedCategoryId === (string) $cat->id)>
+                                        {{ $cat->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('gallery_category_id')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                            <div class="form-text">
+                                Required. Manage labels in <a href="{{ route('admin.gallery-categories.index') }}">Gallery categories</a>.
+                            </div>
+                        @endif
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Sort Order</label>
-                        <input type="number" name="sort_order" id="gallerySortOrder" class="form-control" value="{{ old('sort_order', $item->exists ? max(1, (int) $item->sort_order) : ($defaultSortOrder ?? 1)) }}" min="1">
-                        <div class="form-text">Must be unique within the same gallery category (including “uncategorised”).</div>
+                        @php
+                            $sortOrderValue = old('sort_order');
+                            if ($sortOrderValue === null) {
+                                $sortOrderValue = $item->exists
+                                    ? max(1, (int) $item->sort_order)
+                                    : ($defaultSortOrder ?? '');
+                            }
+                        @endphp
+                        <input type="number" name="sort_order" id="gallerySortOrder" class="form-control" value="{{ $sortOrderValue }}" min="1">
+                        <div class="form-text">Must be unique within the same gallery category.</div>
                     </div>
                     <div class="form-check form-switch">
                         <input class="form-check-input" type="checkbox" name="is_active" value="1" id="isActive"
@@ -81,7 +100,7 @@
 
             <hr class="my-4">
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">
+                <button type="submit" class="btn btn-primary" @disabled($categories->isEmpty())>
                     <i class="fas fa-save me-2"></i>{{ isset($item->id) ? 'Update Image' : 'Upload Image' }}
                 </button>
                 <a href="{{ route('admin.gallery.index') }}" class="btn btn-outline-secondary">Cancel</a>
@@ -107,6 +126,7 @@
         }
     }
     categorySelect.addEventListener('change', applyDefaultSortOrder);
+    applyDefaultSortOrder();
 })();
 </script>
 @endpush

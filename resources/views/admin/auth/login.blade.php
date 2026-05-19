@@ -49,7 +49,7 @@
                         <a href="{{ route('admin.password.request') }}" class="auth-login-forgot">Forgot password?</a>
                     </div>
                     <div class="mb-3 auth-login-pw-wrap pw-reveal">
-                        <input type="password" name="password" id="login_password" class="form-control pw-reveal__input" placeholder="••••••••" required autocomplete="current-password">
+                        <input type="password" name="password" id="login_password" class="form-control pw-reveal__input" placeholder="Enter password here" required autocomplete="current-password">
                         <button type="button" class="auth-login-pw-toggle pw-reveal__btn" data-pw-toggle aria-label="Show password" title="Show password">
                             <i class="fas fa-eye" aria-hidden="true"></i>
                         </button>

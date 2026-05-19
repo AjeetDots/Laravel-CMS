@@ -28,20 +28,22 @@ class GalleryController extends Controller {
     }
     public function create() {
         $categories = GalleryCategory::orderBy('sort_order')->orderBy('name')->get();
-        $pre = request('gallery_category_id');
-        $categoryScope = null;
-        if ($pre !== null && $pre !== '' && $pre !== 'none') {
-            $categoryScope = (int) $pre;
-        }
-        $defaultSortOrder = AdminDefaultSortOrder::next(GalleryItem::class, ['gallery_category_id' => $categoryScope]);
-        $defaultSortOrderByCategory = [
-            '' => AdminDefaultSortOrder::next(GalleryItem::class, ['gallery_category_id' => null]),
-        ];
+
+        $defaultSortOrderByCategory = [];
         foreach ($categories as $cat) {
             $defaultSortOrderByCategory[(string) $cat->id] = AdminDefaultSortOrder::next(
                 GalleryItem::class,
                 ['gallery_category_id' => $cat->id]
             );
+        }
+
+        $pre = request('gallery_category_id');
+        $defaultSortOrder = AdminDefaultSortOrder::next(GalleryItem::class);
+        if ($pre !== null && $pre !== '' && $pre !== 'none') {
+            $categoryKey = (string) (int) $pre;
+            if (array_key_exists($categoryKey, $defaultSortOrderByCategory)) {
+                $defaultSortOrder = $defaultSortOrderByCategory[$categoryKey];
+            }
         }
 
         return view('admin.gallery.form', [

@@ -755,6 +755,9 @@
                 'buttonClass' => 'btn btn-sm btn-outline-primary',
                 'buttonLabel' => 'Refresh site caches',
             ])
+            <a href="{{ route('admin.user-manual.index') }}" class="btn btn-sm btn-outline-secondary @if(request()->routeIs('admin.user-manual*')) active @endif" title="Step-by-step guide for updating your website">
+                <i class="fas fa-book-open me-sm-1" aria-hidden="true"></i><span class="d-none d-sm-inline">User manual</span><span class="d-sm-none" aria-hidden="true">Guide</span>
+            </a>
             <a href="{{ route('home') }}" class="btn btn-sm btn-light" target="_blank" rel="noopener noreferrer" title="Open the public website in a new tab">
                 <i class="fas fa-external-link-alt me-sm-1" aria-hidden="true"></i><span class="d-none d-sm-inline">View site</span><span class="d-sm-none" aria-hidden="true">Site</span>
             </a>
