@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -54,11 +55,9 @@ class BlogPost extends Model {
         return trim((string) ($this->attributes['category'] ?? ''));
     }
 
-    public function getImageUrlAttribute(): ?string
+    public function getImageUrlAttribute(): string
     {
-        if (!$this->image) { return null; }
-        if (filter_var($this->image, FILTER_VALIDATE_URL)) { return $this->image; }
-        return asset('storage/' . $this->image);
+        return CmsImage::resolve($this->image);
     }
 
     public function getReadingTimeAttribute(): string

@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -18,9 +19,7 @@ class Testimonial extends Model {
         return trim(strip_tags(html_entity_decode((string) $this->message)));
     }
 
-    public function getClientImageUrlAttribute(): ?string {
-        if (!$this->client_image) { return null; }
-        if (filter_var($this->client_image, FILTER_VALIDATE_URL)) { return $this->client_image; }
-        return asset('storage/' . $this->client_image);
+    public function getClientImageUrlAttribute(): string {
+        return CmsImage::resolve($this->client_image);
     }
 }

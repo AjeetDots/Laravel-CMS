@@ -64,4 +64,16 @@ return [
         'https://bop.24livehost.com/storage/settings/EyjffpYW8aV32xerRr0ZoLKrfZhw9FmngiKC6zzy.png'
     ),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default placeholder image (public path)
+    |--------------------------------------------------------------------------
+    |
+    | Shown when no image was uploaded or the stored file is missing from disk.
+    | Override with CMS_DEFAULT_IMAGE in .env (path under public/, e.g. images/foo.jpg).
+    |
+    */
+
+    'default_image' => env('CMS_DEFAULT_IMAGE', 'images/header-bg.jpg'),
+
 ];

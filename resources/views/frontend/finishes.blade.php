@@ -26,12 +26,7 @@
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('finishes.show', $finish->slug) }}" class="finish-card">
                     <div class="finish-card__media">
-                        @if($finish->thumbnail_url)
-                            <img src="{{ $finish->thumbnail_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
-                        @else
-                            <div class="finish-card__placeholder" aria-hidden="true">
-                            </div>
-                        @endif
+                        <img src="{{ $finish->thumbnail_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
                     </div>
                     <div class="finish-card__body">
                         <div class="finish-card__meta">

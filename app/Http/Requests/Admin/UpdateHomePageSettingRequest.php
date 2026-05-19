@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\HomePageSection;
 use App\Support\HomePageAdminTabs;
 use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,6 +17,11 @@ class UpdateHomePageSettingRequest extends FormRequest
 
     public function rules(): array
     {
+        $atelier = $this->homeSectionData('atelier');
+        $testimonials = $this->homeSectionData('testimonials');
+        $beginCta = $this->homeSectionData('begin_cta');
+        $contactBand = $this->homeSectionData('contact_band');
+
         return [
             'home_active_section' => ['nullable', 'string', Rule::in(HomePageAdminTabs::SECTION_KEYS)],
 
@@ -29,8 +35,18 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_atelier_cta_url' => 'nullable|string|max:1000',
             'home_atelier_booking_label' => 'nullable|string|max:120',
             'home_atelier_booking_url' => 'nullable|string|max:1000',
-            'home_atelier_primary_image' => ImageUploadRules::nullable(4096),
-            'home_atelier_secondary_image' => ImageUploadRules::nullable(4096),
+            'home_atelier_primary_image' => ImageUploadRules::requiredUnlessStored(
+                4096,
+                $atelier['primary_image'] ?? null,
+                'remove_home_atelier_primary_image'
+            ),
+            'home_atelier_secondary_image' => ImageUploadRules::requiredUnlessStored(
+                4096,
+                $atelier['secondary_image'] ?? null,
+                'remove_home_atelier_secondary_image'
+            ),
+            'remove_home_atelier_primary_image' => 'boolean',
+            'remove_home_atelier_secondary_image' => 'boolean',
 
             'home_finishes_is_enabled' => 'boolean',
             'home_finishes_eyebrow' => 'nullable|string|max:120',
@@ -85,7 +101,12 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_testimonials_left_eyebrow' => 'nullable|string|max:120',
             'home_testimonials_left_headline' => 'nullable|string|max:255',
             'home_testimonials_right_eyebrow' => 'nullable|string|max:120',
-            'home_testimonials_left_image' => ImageUploadRules::nullable(4096),
+            'home_testimonials_left_image' => ImageUploadRules::requiredUnlessStored(
+                4096,
+                $testimonials['left_image'] ?? null,
+                'remove_home_testimonials_left_image'
+            ),
+            'remove_home_testimonials_left_image' => 'boolean',
 
             'home_commissions_is_enabled' => 'boolean',
             'home_commissions_eyebrow' => 'nullable|string|max:120',
@@ -101,7 +122,12 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_begin_cta_primary_btn_url' => 'nullable|string|max:1000',
             'home_begin_cta_secondary_btn_text' => 'nullable|string|max:120',
             'home_begin_cta_secondary_btn_url' => 'nullable|string|max:1000',
-            'home_begin_cta_bg_image' => ImageUploadRules::nullable(4096),
+            'home_begin_cta_bg_image' => ImageUploadRules::requiredUnlessStored(
+                4096,
+                $beginCta['bg_image'] ?? null,
+                'remove_home_begin_cta_bg_image'
+            ),
+            'remove_home_begin_cta_bg_image' => 'boolean',
 
             'home_contact_band_is_enabled' => 'boolean',
             'home_contact_band_eyebrow' => 'nullable|string|max:120',
@@ -112,7 +138,12 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_contact_band_phone_placeholder' => 'nullable|string|max:120',
             'home_contact_band_message_placeholder' => 'nullable|string|max:255',
             'home_contact_band_submit_text' => 'nullable|string|max:120',
-            'home_contact_band_visual_image' => ImageUploadRules::nullable(4096),
+            'home_contact_band_visual_image' => ImageUploadRules::requiredUnlessStored(
+                4096,
+                $contactBand['visual_image'] ?? null,
+                'remove_home_contact_band_visual_image'
+            ),
+            'remove_home_contact_band_visual_image' => 'boolean',
 
             'home_brands_strip_is_enabled' => 'boolean',
             'home_brands_strip_kicker' => 'nullable|string|max:120',
@@ -125,5 +156,15 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_blog_preview_heading' => 'nullable|string|max:255',
             'home_blog_preview_button_text' => 'nullable|string|max:120',
         ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function homeSectionData(string $sectionKey): array
+    {
+        $raw = HomePageSection::query()->where('section_key', $sectionKey)->value('data');
+
+        return is_array($raw) ? $raw : [];
     }
 }

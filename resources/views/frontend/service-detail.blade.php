@@ -24,11 +24,9 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-8">
-                @if($service->image)
                 <div class="media-frame media-frame--short service-detail-lead-img">
                     <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
                 </div>
-                @endif
                 <div class="service-detail-body">
                     @if(trim(strip_tags((string) ($service->description ?? ''))) !== '')
                         {!! $service->description !!}
@@ -46,11 +44,7 @@
                         <div class="col-6 col-md-4">
                             <a href="{{ route('finishes.show', $fin->slug) }}" class="text-decoration-none d-block">
                                 <div class="media-frame" style="aspect-ratio:1;border-radius:2px;">
-                                    @if($fin->thumbnail_url)
-                                        <img src="{{ $fin->thumbnail_url }}" alt="{{ $fin->title }}" class="w-100 h-100" style="object-fit:cover;" loading="lazy">
-                                    @else
-                                        <div class="d-flex align-items-center justify-content-center h-100 bg-light text-muted"><i class="fas fa-paint-brush"></i></div>
-                                    @endif
+                                    <img src="{{ $fin->thumbnail_url }}" alt="{{ $fin->title }}" class="w-100 h-100" style="object-fit:cover;" loading="lazy">
                                 </div>
                                 <p class="home-why-card__title-dark">{{ $fin->title }}</p>
                             </a>

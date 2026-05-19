@@ -48,7 +48,7 @@ class StorePortfolioRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', Rule::unique('portfolios', 'slug')->whereNull('deleted_at')],
             'description' => 'nullable|string',
             'project_type' => ['required', 'string', Rule::in(['reference', 'real'])],
-            'cover_image' => ImageUploadRules::nullable(5120),
+            'cover_image' => ImageUploadRules::required(5120),
             'gallery_images' => 'nullable|array',
             'gallery_images.*' => ImageUploadRules::nullable(5120),
             'tags_raw' => 'nullable|string',

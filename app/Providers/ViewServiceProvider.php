@@ -7,6 +7,7 @@ use App\Models\FooterNavLink;
 use App\Models\Menu;
 use App\Models\NewsletterFooterContent;
 use App\Models\Setting;
+use App\Support\CmsImage;
 use App\Support\FrontendViewCache;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Schema;
@@ -67,6 +68,11 @@ class ViewServiceProvider extends ServiceProvider
             });
 
             $view->with(compact('navMenus', 'settings', 'footerNavBySlot', 'newsletterFooter'));
+            $view->with('cmsDefaultImage', CmsImage::defaultUrl());
+        });
+
+        View::composer('layouts.admin', function ($view) {
+            $view->with('cmsDefaultImage', CmsImage::defaultUrl());
         });
     }
 }

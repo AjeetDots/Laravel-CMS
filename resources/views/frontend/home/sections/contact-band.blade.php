@@ -10,9 +10,7 @@
     $contactBandMessagePlaceholder = $contactBandCfg['message_placeholder'] ?? '';
     $contactBandSubmitText = $contactBandCfg['submit_text'] ?? '';
     $contactBandSubject = $contactBandCfg['subject'] ?? '';
-    $contactBandVisualImage = !empty($contactBandCfg['visual_image'])
-        ? asset('storage/' . $contactBandCfg['visual_image'])
-        : '';
+    $contactBandVisualImage = \App\Support\CmsImage::resolve($contactBandCfg['visual_image'] ?? null);
 @endphp
 
 @if($contactBandEnabled)
@@ -24,7 +22,6 @@
         </div>
         <div class="row g-4 g-xl-5 align-items-stretch mt-4">
             <div class="col-lg-6 reveal-left d-none d-lg-block">
-                @if($contactBandVisualImage !== '')
                 <div class="home-contact-band__visual" aria-hidden="true">
                     <span class="home-contact-band__corner home-contact-band__corner--tl"></span>
                     <span class="home-contact-band__corner home-contact-band__corner--br"></span>
@@ -34,7 +31,6 @@
                          loading="lazy" decoding="async"
                          >
                 </div>
-                @endif
             </div>
             <div class="col-lg-6 reveal-right">
                 <div class="home-contact-panel">

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-cms-default-image="{{ $cmsDefaultImage ?? \App\Support\CmsImage::defaultUrl() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1113,5 +1113,7 @@
 <script src="{{ asset('js/intl-phone-input.js') }}?v={{ $__itlJsV }}" defer></script>
 @yield('scripts')
 @stack('scripts')
+@php $__cmsImgJs = public_path('js/cms-image-fallback.js'); $__cmsImgJsV = is_file($__cmsImgJs) ? filemtime($__cmsImgJs) : time(); @endphp
+<script src="{{ asset('js/cms-image-fallback.js') }}?v={{ $__cmsImgJsV }}" defer></script>
 </body>
 </html>

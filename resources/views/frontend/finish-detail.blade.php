@@ -25,11 +25,9 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-8">
-                @if($finish->thumbnail_url)
                 <div class="media-frame media-frame--short service-detail-lead-img mb-4">
                     <img src="{{ $finish->thumbnail_url }}" alt="{{ $finish->title }}" loading="lazy" decoding="async">
                 </div>
-                @endif
 
                 <div class="service-detail-body">
                     @if($finish->description)
@@ -119,11 +117,7 @@
             <div class="col-md-6 col-lg-3">
                 <a href="{{ route('finishes.show', $r->slug) }}" class="service-grid-card finishesDetail">
                     <div class="service-grid-card__media">
-                        @if($r->thumbnail_url)
-                            <img src="{{ $r->thumbnail_url }}" alt="{{ $r->title }}" loading="lazy">
-                        @else
-                            <div class="service-grid-card__placeholder"><i class="fas fa-paint-brush"></i></div>
-                        @endif
+                        <img src="{{ $r->thumbnail_url }}" alt="{{ $r->title }}" loading="lazy">
                     </div>
                     <div class="service-grid-card__body">
                         <h3 class="h6">{{ $r->title }}</h3>

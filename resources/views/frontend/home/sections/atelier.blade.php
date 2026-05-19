@@ -17,8 +17,8 @@
 
     $atelierPrimaryImagePath = $atelier['primary_image'] ?? null;
     $atelierSecondaryImagePath = $atelier['secondary_image'] ?? null;
-    $atelierPrimaryImage = $atelierPrimaryImagePath ? asset('storage/' . ltrim($atelierPrimaryImagePath, '/')) : null;
-    $atelierSecondaryImage = $atelierSecondaryImagePath ? asset('storage/' . ltrim($atelierSecondaryImagePath, '/')) : null;
+    $atelierPrimaryImage = \App\Support\CmsImage::resolve($atelierPrimaryImagePath);
+    $atelierSecondaryImage = \App\Support\CmsImage::resolve($atelierSecondaryImagePath);
 
     $looksLikePhoneValue = function ($value) {
         return is_string($value) && preg_match('/^\+?[\d\-\s\(\)]+$/', trim($value));
@@ -92,7 +92,6 @@
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--halo"></div>
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--dot"></div>
                     <div class="home-atelier-collage__shape home-atelier-collage__shape--square"></div>
-                    @if($atelierPrimaryImage)
                     <div class="home-atelier-collage__main">
                         <img src="{{ $atelierPrimaryImage }}"
                              alt=""
@@ -100,17 +99,14 @@
                              class="home-atelier-collage__img home-atelier-collage__img--primary img-fluid">
                     </div>
                     <div class="blue_Section">
-                        <img src="../images/blue.png" class="img-fluid"/>
+                        <img src="{{ asset('images/blue.png') }}" class="img-fluid" alt=""/>
                     </div>
-                    @endif
-                    @if($atelierSecondaryImage)
                     <div class="home-atelier-collage__float">
                         <img src="{{ $atelierSecondaryImage }}"
                              alt=""
                              loading="lazy" decoding="async"
                              class="home-atelier-collage__img home-atelier-collage__img--inset img-fluid">
                     </div>
-                    @endif
                 </div>
             </div>
             <div class="col-lg-6 order-lg-2 reveal-right">

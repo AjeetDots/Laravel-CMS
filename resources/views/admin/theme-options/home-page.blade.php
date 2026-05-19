@@ -206,7 +206,8 @@
                                     <label class="form-check-label text-danger" for="remove_home_atelier_primary_image">Remove current image</label>
                                 </div>
                             @endif
-                            <input type="file" name="home_atelier_primary_image" class="form-control">
+                            <input type="file" name="home_atelier_primary_image" class="form-control"
+                                   @if(empty($atelierSection['primary_image'])) required @endif>
                         </div>
 
                         <div class="col-md-6">
@@ -220,7 +221,8 @@
                                     <label class="form-check-label text-danger" for="remove_home_atelier_secondary_image">Remove current image</label>
                                 </div>
                             @endif
-                            <input type="file" name="home_atelier_secondary_image" class="form-control">
+                            <input type="file" name="home_atelier_secondary_image" class="form-control"
+                                   @if(empty($atelierSection['secondary_image'])) required @endif>
                         </div>
                     </div>
                 </div>
@@ -584,7 +586,8 @@
                                     <label class="form-check-label text-danger" for="remove_home_begin_cta_bg_image">Remove current background image</label>
                                 </div>
                             @endif
-                            <input type="file" name="home_begin_cta_bg_image" class="form-control">
+                            <input type="file" name="home_begin_cta_bg_image" class="form-control"
+                                   @if(empty($beginCtaSection['bg_image'])) required @endif>
                         </div>
                     </div>
                 </div>
@@ -662,7 +665,8 @@
                                     <label class="form-check-label text-danger" for="remove_home_contact_band_visual_image">Remove current visual image</label>
                                 </div>
                             @endif
-                            <input type="file" name="home_contact_band_visual_image" class="form-control">
+                            <input type="file" name="home_contact_band_visual_image" class="form-control"
+                                   @if(empty($contactBandSection['visual_image'])) required @endif>
                         </div>
                     </div>
                 </div>

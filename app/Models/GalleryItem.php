@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,7 +16,6 @@ class GalleryItem extends Model {
     }
 
     public function getImageUrlAttribute(): string {
-        if (filter_var($this->image, FILTER_VALIDATE_URL)) { return $this->image; }
-        return asset('storage/' . $this->image);
+        return CmsImage::resolve($this->image);
     }
 }

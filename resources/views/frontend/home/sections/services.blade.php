@@ -30,19 +30,15 @@
         <div class="row g-4">
             @forelse($services->take(3) as $i => $service)
             @php
-                $hoverImageUrl = $service->hover_image_url;
+                $hoverImageUrl = filled($service->hover_image) ? $service->hover_image_url : null;
                 $hoverTitle = $service->resolvedHoverTitle();
             @endphp
             <div class="col-md-4 reveal delay-{{ $i + 1 }}">
                 <a href="{{ route('services.show', $service->slug) }}" class="disc-card @if($hoverTitle) disc-card--has-hover-title @endif">
                     <div class="disc-card-img-wrap @if($hoverImageUrl) disc-card-img-wrap--has-hover @endif">
-                        @if($service->image)
-                            <img src="{{ $service->image_url }}" alt="{{ $service->title }}" class="disc-card-img default-img" loading="lazy">
-                            @if($hoverImageUrl)
-                                <img src="{{ $hoverImageUrl }}" alt="{{ $hoverTitle ?? $service->title }}" class="disc-card-img hover-img" loading="lazy">
-                            @endif
-                        @else
-                            <div class="disc-card-placeholder"><i class="fas fa-paint-brush"></i></div>
+                        <img src="{{ $service->image_url }}" alt="{{ $service->title }}" class="disc-card-img default-img" loading="lazy">
+                        @if($hoverImageUrl)
+                            <img src="{{ $hoverImageUrl }}" alt="{{ $hoverTitle ?? $service->title }}" class="disc-card-img hover-img" loading="lazy">
                         @endif
                         <div class="disc-card-overlay"></div>
                     </div>

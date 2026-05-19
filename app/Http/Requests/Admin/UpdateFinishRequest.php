@@ -40,7 +40,7 @@ class UpdateFinishRequest extends FormRequest {
             'slug'           => ['nullable', 'string', 'max:255', Rule::unique('finishes', 'slug')->ignore($this->route('finish'))->whereNull('deleted_at')],
             'description'    => 'nullable|string',
             'use_cases'      => 'nullable|string',
-            'cover_image'    => ImageUploadRules::nullable(4096),
+            'cover_image'    => ImageUploadRules::requiredUnlessModelColumn(4096, $this->route('finish'), 'cover_image'),
             'gallery_images' => 'nullable|array',
             'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'clear_gallery'  => 'nullable|boolean',

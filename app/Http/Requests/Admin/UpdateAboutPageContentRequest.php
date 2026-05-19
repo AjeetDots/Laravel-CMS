@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\AboutPageContent;
 use App\Support\ImageUploadRules;
 use App\Support\ThemeContentPageTabs;
 use Illuminate\Foundation\Http\FormRequest;
@@ -16,6 +17,8 @@ class UpdateAboutPageContentRequest extends FormRequest
 
     public function rules(): array
     {
+        $about = AboutPageContent::listingDataWithDefaults();
+
         return [
             'about_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::ABOUT)],
 
@@ -40,9 +43,21 @@ class UpdateAboutPageContentRequest extends FormRequest
             'workshop_btn_text' => 'nullable|string|max:120',
             'workshop_btn_url' => 'nullable|string|max:1000',
 
-            'about_image_main' => ImageUploadRules::nullable(5120),
-            'about_image_accent' => ImageUploadRules::nullable(5120),
-            'about_image_studio' => ImageUploadRules::nullable(5120),
+            'about_image_main' => ImageUploadRules::requiredUnlessStored(
+                5120,
+                $about['image_main'] ?? null,
+                'remove_about_image_main'
+            ),
+            'about_image_accent' => ImageUploadRules::requiredUnlessStored(
+                5120,
+                $about['image_accent'] ?? null,
+                'remove_about_image_accent'
+            ),
+            'about_image_studio' => ImageUploadRules::requiredUnlessStored(
+                5120,
+                $about['image_studio'] ?? null,
+                'remove_about_image_studio'
+            ),
             'remove_about_image_main' => 'boolean',
             'remove_about_image_accent' => 'boolean',
             'remove_about_image_studio' => 'boolean',

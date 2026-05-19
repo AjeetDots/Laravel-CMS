@@ -20,7 +20,9 @@ class UpdateProfileRequest extends FormRequest
         $rules = [
             'name'          => 'required|string|max:100',
             'email'         => 'required|email|unique:users,email,' . $userId,
-            'avatar'        => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
+            'avatar'        => $this->user() && filled($this->user()->avatar) && ! $this->boolean('remove_avatar')
+                ? 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048'
+                : 'required|image|mimes:jpeg,jpg,png,webp|max:2048',
             'remove_avatar' => 'nullable|boolean',
         ];
 

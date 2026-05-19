@@ -17,16 +17,11 @@ class UpdateTestimonialRequest extends FormRequest
 
     public function rules(): array
     {
-        $testimonial = $this->route('testimonial');
-        $hasExistingImage = $testimonial && !empty($testimonial->client_image);
-
         return [
             'client_name'     => 'required|string|max:100',
             'client_position' => 'nullable|string|max:100',
             'client_company'  => 'nullable|string|max:100',
-            'client_image'    => $hasExistingImage
-                ? ImageUploadRules::nullable(1024)
-                : ImageUploadRules::required(1024),
+            'client_image'    => ImageUploadRules::requiredUnlessModelColumn(1024, $this->route('testimonial'), 'client_image'),
             'message'         => 'required|string',
             'sort_order'      => ['integer', 'min:1', SortOrderRules::uniqueAmong('testimonials', [], $this->route('testimonial'))],
             'is_active'       => 'boolean',

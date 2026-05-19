@@ -80,7 +80,11 @@ class PageController extends Controller
         $data = $request->validated();
         $data['is_active'] = $request->boolean('is_active');
         unset($data['sections']);
-        if (($data['template'] ?? '') === 'about') {
+        if ($page->hasFixedTemplate()) {
+            $data['template'] = $page->template;
+        }
+
+        if (($data['template'] ?? '') === Page::TEMPLATE_ABOUT) {
             $data['content'] = null;
             $data['body_order'] = Page::BODY_ORDER_CONTENT_FIRST;
             $data['sidebar_content'] = null;
@@ -97,7 +101,7 @@ class PageController extends Controller
         }
         $page->update($data);
         $page->sections()->delete();
-        if ($page->template === 'about') {
+        if ($page->template === Page::TEMPLATE_ABOUT) {
             $page->saveSeo($request->input('seo', []));
 
             return redirect()->route('admin.pages.index')->with('success', 'Page updated.');
@@ -166,20 +170,12 @@ class PageController extends Controller
 
     private function templates(): array
     {
-        return [
-            'about' => 'About Page (Editorial)',
-            Page::TEMPLATE_DEFAULT => 'Default',
-            Page::TEMPLATE_FULL_WIDTH => 'Full Width',
-            Page::TEMPLATE_SIDEBAR => 'With Sidebar',
-            Page::TEMPLATE_CONTACT => 'Contact (theme content and form)',
-        ];
+        return Page::adminTemplateOptions();
     }
 
     private function templatesForForm(Page $page): array
     {
-        $slug = $page->exists
-            ? (string) $page->slug
-            : '';
+        $slug = (string) old('slug', $page->exists ? (string) $page->slug : '');
 
         $allowed = Page::allowedTemplatesForSlug($slug);
 

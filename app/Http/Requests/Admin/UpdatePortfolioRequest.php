@@ -48,7 +48,7 @@ class UpdatePortfolioRequest extends FormRequest
             'slug' => ['nullable', 'string', 'max:255', Rule::unique('portfolios', 'slug')->ignore($this->route('portfolio'))->whereNull('deleted_at')],
             'description' => 'nullable|string',
             'project_type' => ['required', 'string', Rule::in(['reference', 'real'])],
-            'cover_image' => ImageUploadRules::nullable(5120),
+            'cover_image' => ImageUploadRules::requiredUnlessModelColumn(5120, $this->route('portfolio'), 'cover_image'),
             'gallery_images' => 'nullable|array',
             'gallery_images.*' => ImageUploadRules::nullable(5120),
             'clear_gallery' => 'nullable|boolean',

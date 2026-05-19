@@ -42,7 +42,8 @@
                     <label class="form-check-label text-danger" for="remove_home_testimonials_left_image">Remove current image</label>
                 </div>
             @endif
-            <input type="file" name="home_testimonials_left_image" class="form-control">
+            <input type="file" name="home_testimonials_left_image" class="form-control"
+                   @if(empty($testimonialsSection['left_image'])) required @endif>
             <div class="form-text">Large photo on the left side of the split layout. If empty, the site uses the default placeholder until you upload one.</div>
         </div>
     </div>

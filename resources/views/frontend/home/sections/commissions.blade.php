@@ -33,13 +33,11 @@
             <div class="commissions-grid reveal recent-commissions">
                 @foreach($commissionItems as $item)
                     <a href="{{ route('gallery') }}" class="commission-item">
-                        @if(filled($item->image))
-                            <img src="{{ $item->image_url }}"
-                                 alt="{{ $item->title ?? '' }}"
-                                 class="commission-img">
-                        @else
-                            <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
-                        @endif
+                        <img src="{{ $item->image_url }}"
+                             alt="{{ $item->title ?? '' }}"
+                             class="commission-img"
+                             loading="lazy"
+                             decoding="async">
                         <div class="commission-overlay"></div>
                         <div class="commission-body">
                             <div class="commission-meta">

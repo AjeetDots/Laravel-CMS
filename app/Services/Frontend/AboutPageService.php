@@ -3,6 +3,7 @@
 namespace App\Services\Frontend;
 
 use App\Models\AboutPageContent;
+use App\Support\CmsImage;
 use App\Support\CmsOutboundHref;
 
 class AboutPageService
@@ -24,9 +25,9 @@ class AboutPageService
             'image_main_display' => $this->storageUrl($mainPath),
             'image_accent_display' => $this->storageUrl($accentPath),
             'image_studio_display' => $this->storageUrl($studioPath),
-            'image_main_fallback' => '',
-            'image_accent_fallback' => '',
-            'image_studio_fallback' => '',
+            'image_main_fallback' => CmsImage::defaultUrl(),
+            'image_accent_fallback' => CmsImage::defaultUrl(),
+            'image_studio_fallback' => CmsImage::defaultUrl(),
             'workshop_btn_href' => CmsOutboundHref::resolve($data['workshop_btn_url'] ?? null, 'contact'),
         ]);
     }
@@ -35,6 +36,6 @@ class AboutPageService
     {
         $stored = $storedRelativePath !== null ? trim((string) $storedRelativePath) : '';
 
-        return $stored !== '' ? asset('storage/'.$stored) : '';
+        return CmsImage::resolve($stored !== '' ? $stored : null);
     }
 }

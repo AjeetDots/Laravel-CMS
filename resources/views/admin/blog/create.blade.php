@@ -82,7 +82,7 @@
         <div class="card mb-4">
             <div class="card-header">Featured Image</div>
             <div class="card-body">
-                <input type="file" name="image" class="form-control" id="imageInput"
+                <input type="file" name="image" class="form-control" id="imageInput" required
                        accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
                 <div class="form-text">Recommended: 800×500px. Max 3MB.</div>
                 <div id="imagePreview" class="mt-3" style="display:none;">

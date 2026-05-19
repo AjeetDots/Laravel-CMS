@@ -49,7 +49,8 @@
                     <div class="mb-3">
                         <label class="form-label">Client Photo *</label>
                         <input type="file" name="client_image" class="form-control"
-                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                               @if(!isset($testimonial->id) || !$testimonial->client_image) required @endif>
                         <div class="form-text">
                             Required for home page testimonial display.
                         </div>

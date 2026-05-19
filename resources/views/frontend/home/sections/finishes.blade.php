@@ -32,11 +32,9 @@
         <div class="commissions-grid home-finishes-grid reveal">
             @foreach($finishes->take(6) as $i => $f)
             <a href="{{ route('finishes.show', $f->slug) }}" class="commission-item @if($i === 0) is-lead @endif">
-                @if($f->cover_image)
-                    <div class="imgFinshes"> <img src="{{ $f->cover_image_url }}" alt="{{ $f->title }}" class="commission-img"></div>
-                @else
-                    <div class="commission-placeholder"><i class="fas fa-paint-brush"></i></div>
-                @endif
+                <div class="imgFinshes">
+                    <img src="{{ $f->thumbnail_url }}" alt="{{ $f->title }}" class="commission-img" loading="lazy" decoding="async">
+                </div>
                 <div class="commission-body">
                     <div class="commission-meta">
                         <span class="home-why-card__title">{{ $finishesCardLabel }}</span>

@@ -12,8 +12,11 @@ class Page extends Model
     use HasSeo;
     use SoftDeletes;
 
-    /** Slug reserved for the site About page (About Editorial template is only offered here). */
+    /** Primary About page slug (legacy). */
     public const ABOUT_SLUG = 'about';
+
+    /** Slugs that may use the About editorial layout template. */
+    public const ABOUT_SLUGS = ['about', 'about-us'];
 
     /** Home page slugs stored in DB (empty, “home”, or “/” for the site root). */
     public const HOME_SLUG = 'home';
@@ -36,6 +39,9 @@ class Page extends Model
 
     /** Uses theme contact content + enquiry form (see `frontend.pages.contact`). */
     public const TEMPLATE_CONTACT = 'contact';
+
+    /** About editorial layout (theme About content). */
+    public const TEMPLATE_ABOUT = 'about';
 
     /** Setting key for the template pre-selected when creating a new page. */
     public const SETTING_DEFAULT_TEMPLATE = 'page_default_template';
@@ -132,8 +138,8 @@ class Page extends Model
         $slug = strtolower(trim((string) $slug));
         $templates = self::sectionedTemplates();
 
-        if ($slug === self::ABOUT_SLUG) {
-            $templates[] = 'about';
+        if (self::isAboutSlug($slug)) {
+            $templates[] = self::TEMPLATE_ABOUT;
         }
         if (self::isContactSlug($slug)) {
             $templates[] = self::TEMPLATE_CONTACT;
@@ -145,6 +151,11 @@ class Page extends Model
     public static function isContactSlug(?string $slug): bool
     {
         return in_array(strtolower(trim((string) $slug)), self::CONTACT_SLUGS, true);
+    }
+
+    public static function isAboutSlug(?string $slug): bool
+    {
+        return in_array(strtolower(trim((string) $slug, '/')), self::ABOUT_SLUGS, true);
     }
 
     /**
@@ -166,6 +177,7 @@ class Page extends Model
             '',
             'home',
             'about',
+            'about-us',
             'terms-and-conditions',
             'privacy-policy',
             'cookie-policy',
@@ -216,5 +228,29 @@ class Page extends Model
         $text = trim((string) ($this->sidebar_cta_button_text ?? ''));
 
         return $text !== '' ? $text : 'Contact us';
+    }
+
+    /**
+     * @return array<string, string> value => admin label
+     */
+    public static function adminTemplateOptions(): array
+    {
+        return [
+            self::TEMPLATE_ABOUT => 'About Page (Editorial)',
+            self::TEMPLATE_DEFAULT => 'Default',
+            self::TEMPLATE_FULL_WIDTH => 'Full Width',
+            self::TEMPLATE_SIDEBAR => 'With Sidebar',
+            self::TEMPLATE_CONTACT => 'Contact (theme content and form)',
+        ];
+    }
+
+    public function hasFixedTemplate(): bool
+    {
+        return in_array($this->template, [self::TEMPLATE_CONTACT, self::TEMPLATE_ABOUT], true);
+    }
+
+    public function fixedTemplateLabel(): string
+    {
+        return self::adminTemplateOptions()[$this->template] ?? (string) $this->template;
     }
 }

@@ -31,11 +31,7 @@
             <div class="col-10 col-md-6 col-lg-4 flex-shrink-0 flex-lg-shrink-1 reveal delay-{{ $i + 1 }}">
                 <a href="{{ route('blog.show', $post->slug) }}" class="blog-card d-block h-100">
                     <div class="blog-card-img-wrap">
-                        @if($post->image)
-                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img">
-                        @else
-                            <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
-                        @endif
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img" loading="lazy" decoding="async">
                     </div>
                     <div class="blog-card-body">
                         @if($post->category_name !== '')

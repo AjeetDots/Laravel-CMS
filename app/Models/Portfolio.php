@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -29,22 +30,17 @@ class Portfolio extends Model {
         });
     }
 
-    public function getCoverImageUrlAttribute(): ?string {
-        if (!$this->cover_image) return null;
-        return filter_var($this->cover_image, FILTER_VALIDATE_URL)
-            ? $this->cover_image
-            : asset('storage/' . $this->cover_image);
+    public function getCoverImageUrlAttribute(): string {
+        return CmsImage::resolve($this->cover_image);
     }
 
     /** Alias for HasSeo::getSeoImage() fallback. */
-    public function getImageUrlAttribute(): ?string {
+    public function getImageUrlAttribute(): string {
         return $this->cover_image_url;
     }
 
     public function getGalleryUrlsAttribute(): array {
-        return collect($this->gallery ?? [])->map(function ($path) {
-            return filter_var($path, FILTER_VALIDATE_URL) ? $path : asset('storage/' . $path);
-        })->toArray();
+        return CmsImage::resolveMany($this->gallery ?? []);
     }
 
     public function getProjectTypeLabelAttribute(): string {

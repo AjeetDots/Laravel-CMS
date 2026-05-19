@@ -264,19 +264,30 @@
                             </button>
                         </label>
                         @php
-                            $selectedTemplate = old('template', $page->template ?? \App\Models\Page::defaultTemplate());
-                            if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug($page->slug ?? '')) {
-                                $selectedTemplate = \App\Models\Page::defaultTemplate();
-                            }
-                            if ($selectedTemplate === 'about' && ($page->slug ?? '') !== \App\Models\Page::ABOUT_SLUG) {
-                                $selectedTemplate = \App\Models\Page::defaultTemplate();
+                            $templateIsFixed = $page->exists && $page->hasFixedTemplate();
+                            $selectedTemplate = $templateIsFixed
+                                ? $page->template
+                                : old('template', $page->template ?? \App\Models\Page::defaultTemplate());
+                            if (! $templateIsFixed) {
+                                if ($selectedTemplate === \App\Models\Page::TEMPLATE_CONTACT && ! \App\Models\Page::isContactSlug(old('slug', $page->slug ?? ''))) {
+                                    $selectedTemplate = \App\Models\Page::defaultTemplate();
+                                }
+                                if ($selectedTemplate === \App\Models\Page::TEMPLATE_ABOUT && ! \App\Models\Page::isAboutSlug(old('slug', $page->slug ?? ''))) {
+                                    $selectedTemplate = \App\Models\Page::defaultTemplate();
+                                }
                             }
                         @endphp
+                        @if($templateIsFixed)
+                            <input type="hidden" name="template" value="{{ $page->template }}">
+                            <div class="form-control bg-light text-secondary">{{ $page->fixedTemplateLabel() }}</div>
+                            <p class="form-text small mb-0">This layout is fixed for this page and cannot be changed. Edit content under <strong>Theme options</strong> for Contact and About sections.</p>
+                        @else
                         <select name="template" id="pageTemplateSelect" class="form-select">
                             @foreach($templates as $value => $label)
                                 <option value="{{ $value }}" {{ $selectedTemplate === $value ? 'selected' : '' }}>{{ $label }}</option>
                             @endforeach
                         </select>
+                        @endif
                     </div>
                     <div class="mb-3">
                         <label class="form-label d-flex align-items-center gap-2 mb-1">
@@ -349,7 +360,7 @@
         <li class="mb-2"><strong>Default</strong> — Main story in a centred column; best for articles, policies, FAQs.</li>
         <li class="mb-2"><strong>Full width</strong> — Wider main column; use for long guides or when you want more horizontal room.</li>
         <li class="mb-2"><strong>With sidebar</strong> — Main column + sidebar. Optional rich <strong>Sidebar content</strong>; contact card heading, intro, and button label are editable; phone and email use site settings.</li>
-        <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on the About page (<code>about</code> slug).</li>
+        <li class="mb-2"><strong>About Page (Editorial)</strong> — Only on About pages (<code>about</code> or <code>about-us</code> slug).</li>
         <li><strong>Contact</strong> — Only on Contact pages (<code>contact</code> or <code>contact-us</code> slug); uses theme contact content and the enquiry form.</li>
     </ul>
 </div>
@@ -393,10 +404,11 @@
 
                 <div class="row g-2 mb-3">
                     <div class="col-md-8">
-                        <label class="form-label">Image</label>
+                        <label class="form-label">Image <span class="text-danger">*</span></label>
                         <input
                             type="file"
-                            class="form-control image-field">
+                            class="form-control image-field"
+                            required>
                     </div>
 
                     <div class="col-md-4">

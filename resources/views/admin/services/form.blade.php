@@ -112,9 +112,10 @@
                 </div>
                 <div class="col-md-4">
                     <div class="mb-3">
-                        <label class="form-label">Card image</label>
+                        <label class="form-label">Card image <span class="text-danger">*</span></label>
                         <input type="file" name="image" class="form-control"
-                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                               @if(!isset($service->id) || !$service->image) required @endif>
                         <div class="form-text">Default image on the home page service card.</div>
                         @if(isset($service->id) && $service->image)
                             <div class="mt-2">
@@ -133,9 +134,10 @@
                                maxlength="{{ ServiceFormLimits::TITLE_MAX }}">
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Hover image</label>
+                        <label class="form-label">Hover image <span class="text-danger">*</span></label>
                         <input type="file" name="hover_image" class="form-control"
-                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml">
+                               accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
+                               @if(!isset($service->id) || !$service->hover_image) required @endif>
                         <div class="form-text">Replaces the card image when visitors hover on the home page.</div>
                         @if(isset($service->id) && $service->hover_image)
                             <div class="mt-2">
