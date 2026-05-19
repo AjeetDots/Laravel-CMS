@@ -19,6 +19,7 @@ use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController as AdminServiceController;
 use App\Http\Controllers\Admin\SettingController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\UserManualController;
 use App\Http\Controllers\Admin\TestimonialController;
 use App\Http\Controllers\Frontend\BlogController;
 use App\Http\Controllers\Frontend\ContactController;
@@ -70,6 +71,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
     // ── Protected Admin Routes ────────────────────────────────────
     Route::middleware('auth')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('user-manual', [UserManualController::class, 'index'])->name('user-manual.index');
+        Route::get('user-manual/export', [UserManualController::class, 'export'])->name('user-manual.export');
 
         // Content modules
         Route::resource('sliders', SliderController::class);

@@ -4,12 +4,7 @@
     $whyEyebrow = $whyCfg['eyebrow'] ?? '';
     $whyHeading = $whyCfg['heading'] ?? '';
     $whyCards = is_array($whyCfg['cards'] ?? null) ? $whyCfg['cards'] : [];
-    $whyIconImageMap = [
-        'fa-award' => asset('images/master-craftmanship.png'),
-        'fa-palette' => asset('images/bespoke-design.png'),
-        'fa-clapperboard' => asset('images/trusted.png'),
-        'fa-leaf' => asset('images/considered.png'),
-    ];
+    $whyIconImageMap = \App\Support\HomeWhyCardIcons::imageMap();
 @endphp
 
 @if($whyEnabled)

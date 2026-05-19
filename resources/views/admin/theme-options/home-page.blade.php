@@ -367,7 +367,10 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 1 Icon</label>
-                            <input type="text" name="home_why_card_1_icon" class="form-control" value="{{ old('home_why_card_1_icon', $whyCards[0]['icon'] ?? 'fa-award') }}" placeholder="e.g. fa-award">
+                            @include('admin.partials.home-why-card-icon-select', [
+                                'name' => 'home_why_card_1_icon',
+                                'value' => $whyCards[0]['icon'] ?? 'fa-award',
+                            ])
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 1 Title</label>
@@ -380,7 +383,10 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 2 Icon</label>
-                            <input type="text" name="home_why_card_2_icon" class="form-control" value="{{ old('home_why_card_2_icon', $whyCards[1]['icon'] ?? 'fa-palette') }}" placeholder="e.g. fa-palette">
+                            @include('admin.partials.home-why-card-icon-select', [
+                                'name' => 'home_why_card_2_icon',
+                                'value' => $whyCards[1]['icon'] ?? 'fa-palette',
+                            ])
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 2 Title</label>
@@ -393,7 +399,10 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 3 Icon</label>
-                            <input type="text" name="home_why_card_3_icon" class="form-control" value="{{ old('home_why_card_3_icon', $whyCards[2]['icon'] ?? 'fa-clapperboard') }}" placeholder="e.g. fa-clapperboard">
+                            @include('admin.partials.home-why-card-icon-select', [
+                                'name' => 'home_why_card_3_icon',
+                                'value' => $whyCards[2]['icon'] ?? 'fa-clapperboard',
+                            ])
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 3 Title</label>
@@ -406,7 +415,10 @@
 
                         <div class="col-md-4">
                             <label class="form-label">Card 4 Icon</label>
-                            <input type="text" name="home_why_card_4_icon" class="form-control" value="{{ old('home_why_card_4_icon', $whyCards[3]['icon'] ?? 'fa-leaf') }}" placeholder="e.g. fa-leaf">
+                            @include('admin.partials.home-why-card-icon-select', [
+                                'name' => 'home_why_card_4_icon',
+                                'value' => $whyCards[3]['icon'] ?? 'fa-leaf',
+                            ])
                         </div>
                         <div class="col-md-4">
                             <label class="form-label">Card 4 Title</label>
