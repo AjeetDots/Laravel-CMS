@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Admin;
 
 use App\Models\HomePageSection;
+use App\Models\Testimonial;
 use App\Support\HomePageAdminTabs;
 use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
@@ -13,6 +14,44 @@ class UpdateHomePageSettingRequest extends FormRequest
     public function authorize(): bool
     {
         return true;
+    }
+
+    public function messages(): array
+    {
+        return [
+            'home_testimonials_left_image.required' => 'Upload a left panel image — it is required while active testimonials exist on the home page.',
+        ];
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator): void {
+            if (! $this->homePageHasActiveTestimonials()) {
+                return;
+            }
+
+            $testimonials = $this->homeSectionData('testimonials');
+            $stored = trim((string) ($testimonials['left_image'] ?? ''));
+            $removed = $this->boolean('remove_home_testimonials_left_image');
+            $hasUpload = $this->hasFile('home_testimonials_left_image');
+            $willKeepStored = $stored !== '' && ! $removed;
+
+            if (! $hasUpload && ! $willKeepStored) {
+                $validator->errors()->add(
+                    'home_testimonials_left_image',
+                    'Left panel image is required while active testimonials are published on the home page.'
+                );
+            }
+        });
+    }
+
+    private function homePageHasActiveTestimonials(): bool
+    {
+        return Testimonial::query()
+            ->where('is_active', true)
+            ->whereNotNull('message')
+            ->where('message', '!=', '')
+            ->exists();
     }
 
     public function rules(): array
@@ -97,15 +136,16 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_process_step_4_title' => 'nullable|string|max:120',
             'home_process_step_4_desc' => 'nullable|string|max:300',
 
-            'home_testimonials_is_enabled' => 'boolean',
             'home_testimonials_left_eyebrow' => 'nullable|string|max:120',
             'home_testimonials_left_headline' => 'nullable|string|max:255',
             'home_testimonials_right_eyebrow' => 'nullable|string|max:120',
-            'home_testimonials_left_image' => ImageUploadRules::requiredUnlessStored(
-                4096,
-                $testimonials['left_image'] ?? null,
-                'remove_home_testimonials_left_image'
-            ),
+            'home_testimonials_left_image' => $this->homePageHasActiveTestimonials()
+                ? ImageUploadRules::requiredUnlessStored(
+                    4096,
+                    $testimonials['left_image'] ?? null,
+                    'remove_home_testimonials_left_image'
+                )
+                : ImageUploadRules::nullable(4096),
             'remove_home_testimonials_left_image' => 'boolean',
 
             'home_commissions_is_enabled' => 'boolean',

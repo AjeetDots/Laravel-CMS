@@ -31,6 +31,12 @@ class Menu extends Model
         return $this->hasMany(Menu::class, 'parent_id')->where('is_active', true)->orderBy('sort_order');
     }
 
+    /** All child links (admin lists / reorder), including inactive. */
+    public function allChildren(): HasMany
+    {
+        return $this->hasMany(Menu::class, 'parent_id')->orderBy('sort_order');
+    }
+
     public function parent(): BelongsTo
     {
         return $this->belongsTo(Menu::class, 'parent_id');

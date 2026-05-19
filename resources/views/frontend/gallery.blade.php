@@ -1,11 +1,6 @@
 @extends('layouts.frontend')
 @section('title', 'Gallery')
 @section('body_class', 'nav-solid page-gallery')
-@section('styles')
-@if($gallery->count() > 1)
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
-@endif
-@endsection
 @section('content')
 
 <section class="gallery-intro">
@@ -14,42 +9,6 @@
         <h1 class="gallery-intro__title">{{ $galleryPage['intro_title'] }}</h1>
     </div>
 </section>
-
-@if($gallery->count() > 1)
-<section class="gallery-intro-slider" aria-label="Featured gallery work">
-    <div class="container">
-        <div class="swiper gallery-intro-slider__swiper">
-            <div class="swiper-wrapper">
-                @foreach($gallery->take(8) as $item)
-                <div class="swiper-slide">
-                    <div class="gallery-intro-slider__slide gallery-work-card" role="button" tabindex="0"
-                        data-bs-toggle="modal" data-bs-target="#galleryLightbox"
-                        data-img="{{ $item->image_url }}"
-                        data-title="{{ $item->title ?? '' }}">
-                        <img src="{{ $item->image_url }}" alt="{{ $item->title ?? '' }}" loading="lazy" decoding="async">
-                        <div class="gallery-intro-slider__caption">
-                            @if($item->galleryCategory)
-                                <span>{{ \Illuminate\Support\Str::upper($item->galleryCategory->name) }}</span>
-                            @endif
-                            @if($item->title)
-                                <h3>{{ $item->title }}</h3>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-            <button type="button" class="gallery-intro-slider__nav gallery-intro-slider__nav--prev" aria-label="Previous slide">
-                <i class="fas fa-arrow-left" aria-hidden="true"></i>
-            </button>
-            <button type="button" class="gallery-intro-slider__nav gallery-intro-slider__nav--next" aria-label="Next slide">
-                <i class="fas fa-arrow-right" aria-hidden="true"></i>
-            </button>
-            <div class="gallery-intro-slider__pagination swiper-pagination"></div>
-        </div>
-    </div>
-</section>
-@endif
 
 <section class="gallery-showcase">
     <div class="container">
@@ -152,30 +111,6 @@
 
 @endsection
 @section('scripts')
-@if($gallery->count() > 1)
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-<script>
-(function () {
-    var el = document.querySelector('.gallery-intro-slider__swiper');
-    if (!el || typeof Swiper === 'undefined') return;
-    new Swiper(el, {
-        slidesPerView: 1,
-        spaceBetween: 16,
-        loop: true,
-        autoplay: { delay: 5000, disableOnInteraction: false },
-        pagination: { el: '.gallery-intro-slider__pagination', clickable: true },
-        navigation: {
-            nextEl: '.gallery-intro-slider__nav--next',
-            prevEl: '.gallery-intro-slider__nav--prev',
-        },
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 20 },
-            1200: { slidesPerView: 3, spaceBetween: 24 },
-        },
-    });
-})();
-</script>
-@endif
 <script>
 document.getElementById('galleryLightbox')?.addEventListener('show.bs.modal', function (event) {
     var trigger = event.relatedTarget;

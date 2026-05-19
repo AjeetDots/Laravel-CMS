@@ -225,7 +225,6 @@ class HomePageService implements HomePageServiceInterface
             : null;
 
         return [
-            'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'left_eyebrow' => isset($data['left_eyebrow']) ? trim((string) $data['left_eyebrow']) : '',
             'left_headline' => isset($data['left_headline']) ? trim((string) $data['left_headline']) : '',
             'right_eyebrow' => isset($data['right_eyebrow']) ? trim((string) $data['right_eyebrow']) : '',
