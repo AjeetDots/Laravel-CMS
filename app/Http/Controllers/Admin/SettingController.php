@@ -735,7 +735,7 @@ class SettingController extends Controller
 
         $testimonials = HomePageSection::query()->firstOrCreate(['section_key' => 'testimonials'], ['data' => []]);
         $testimonialsData = is_array($testimonials->data) ? $testimonials->data : [];
-        $testimonialsData['is_enabled'] = $request->boolean('home_testimonials_is_enabled');
+        unset($testimonialsData['is_enabled']);
         $testimonialsData['left_eyebrow'] = $data['home_testimonials_left_eyebrow'] ?? null;
         $testimonialsData['left_headline'] = $data['home_testimonials_left_headline'] ?? null;
         $testimonialsData['right_eyebrow'] = $data['home_testimonials_right_eyebrow'] ?? null;
