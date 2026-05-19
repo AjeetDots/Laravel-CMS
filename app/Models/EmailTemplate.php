@@ -54,14 +54,11 @@ class EmailTemplate extends Model
     public static function shortcodeReference(): array
     {
         return [
-            '{{user_name}}' => 'Submitter’s name (alias: {{name}})',
-            '{{name}}' => 'Same as user_name',
+            '{{user_name}}' => 'Submitter’s name',
             '{{email}}' => 'Email address',
-            '{{phone}}' => 'Phone (alias: {{contact_no}})',
-            '{{contact_no}}' => 'Same as phone',
+            '{{phone}}' => 'Phone number',
             '{{subject}}' => 'Message subject line',
-            '{{message}}' => 'Message body (alias: {{msg}})',
-            '{{msg}}' => 'Same as message',
+            '{{message}}' => 'Message body',
             '{{date}}' => 'Date/time of submission',
         ];
     }
@@ -78,13 +75,13 @@ class EmailTemplate extends Model
                 'name' => 'Contact Form Auto Reply',
                 'slug' => 'contact-form-auto-reply',
                 'subject' => 'Thank you {{user_name}}, we received your enquiry',
-                'body' => "<p>Hi {{user_name}},</p>\n<p>Thank you for contacting us. We received your enquiry and our team will get back to you soon.</p>\n<p><strong>Your submitted details:</strong></p>\n<ul>\n<li>Email: {{email}}</li>\n<li>Contact No: {{contact_no}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{msg}}</li>\n<li>Date: {{date}}</li>\n</ul>\n<p>Regards,<br>{{site_name}}</p>",
+                'body' => "<p>Hi {{user_name}},</p>\n<p>Thank you for contacting us. We received your enquiry and our team will get back to you soon.</p>\n<p><strong>Your submitted details:</strong></p>\n<ul>\n<li>Email: {{email}}</li>\n<li>Phone: {{phone}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{message}}</li>\n<li>Date: {{date}}</li>\n</ul>\n<p>Regards,<br>{{site_name}}</p>",
             ],
             self::TYPE_CONTACT_ADMIN => [
                 'name' => 'Contact Form Admin Alert',
                 'slug' => 'contact-form-admin-alert',
                 'subject' => 'New contact enquiry from {{user_name}}',
-                'body' => "<p>A new contact enquiry has been submitted.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Contact No: {{contact_no}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{msg}}</li>\n<li>Date: {{date}}</li>\n</ul>",
+                'body' => "<p>A new contact enquiry has been submitted.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Phone: {{phone}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{message}}</li>\n<li>Date: {{date}}</li>\n</ul>",
             ],
             self::TYPE_NEWSLETTER_CLIENT => [
                 'name' => 'Newsletter Welcome',
@@ -121,38 +118,20 @@ class EmailTemplate extends Model
     }
 
     /**
-     * Replace {{token}} and aliases. HTML-escape values when $htmlContext (email body).
+     * Replace {{token}} placeholders. HTML-escape values when $htmlContext (email body).
      */
     protected function replaceVars(string $text, array $vars, bool $htmlContext): string
     {
-        $aliases = [
-            'name' => ['user_name', 'name'],
-            'user_name' => ['user_name', 'name'],
-            'msg' => ['msg', 'message'],
-            'message' => ['msg', 'message'],
-            'contact_no' => ['contact_no', 'phone'],
-            'phone' => ['contact_no', 'phone'],
+        /** @var array<string, string> Legacy tokens still supported in saved templates */
+        $legacyTokenMap = [
+            'name' => 'user_name',
+            'contact_no' => 'phone',
+            'msg' => 'message',
         ];
 
-        $flat = $vars;
-        foreach ($aliases as $canonical => $keys) {
-            $val = null;
-            foreach ($keys as $k) {
-                if (array_key_exists($k, $vars) && $vars[$k] !== null && $vars[$k] !== '') {
-                    $val = $vars[$k];
-                    break;
-                }
-            }
-            if ($val !== null) {
-                foreach ($keys as $k) {
-                    $flat[$k] = $val;
-                }
-            }
-        }
-
-        return preg_replace_callback('/\{\{\s*(\w+)\s*\}\}/', function ($m) use ($flat, $htmlContext) {
-            $key = $m[1];
-            $val = $flat[$key] ?? '';
+        return preg_replace_callback('/\{\{\s*(\w+)\s*\}\}/', function ($m) use ($vars, $legacyTokenMap, $htmlContext) {
+            $key = $legacyTokenMap[$m[1]] ?? $m[1];
+            $val = $vars[$key] ?? '';
 
             return $htmlContext ? e((string) $val) : $this->escapeSubject((string) $val);
         }, $text);
