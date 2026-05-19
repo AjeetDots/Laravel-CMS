@@ -181,7 +181,8 @@
 
                     <div class="mb-3">
                         <label class="form-label" for="profile_avatar">Profile photo</label>
-                        <input type="file" name="avatar" id="profile_avatar" class="form-control" accept="image/jpeg,image/png,image/webp">
+                        <input type="file" name="avatar" id="profile_avatar" class="form-control" accept="image/jpeg,image/png,image/webp"
+                               @if(!filled($user->avatar)) required @endif>
                         <div class="form-text">JPEG, PNG or WebP, up to 2&nbsp;MB.</div>
                         @if($user->avatar)
                             <div class="form-check mt-2">

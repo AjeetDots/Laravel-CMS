@@ -16,7 +16,7 @@
     <div class="{{ $colClass }} {{ $mediaOrderClass }} {{ $isBuilder ? 'cms-builder-split__media' : 'mb-4 mb-lg-0' }}">
         <div class="media-frame about-feature-frame {{ $isBuilder ? 'cms-builder-media'.($isSidebar ? ' cms-builder-media--sidebar' : '') : 'cms-section-media__frame' }}">
             <img
-                src="{{ asset('storage/'.$data['image']) }}"
+                src="{{ \App\Support\CmsImage::resolve($data['image'] ?? null) }}"
                 alt="{{ $data['title'] }}"
                 class="feature-img img-fluid w-100"
                 loading="lazy"
@@ -45,7 +45,7 @@
     <div class="{{ $colClass }} {{ $mediaOrderClass }} {{ $isBuilder ? 'cms-builder-split__media mt-4 mt-lg-0' : 'mt-4 mt-lg-0' }}">
         <div class="media-frame about-feature-frame {{ $isBuilder ? 'cms-builder-media'.($isSidebar ? ' cms-builder-media--sidebar' : '') : 'cms-section-media__frame' }}">
             <img
-                src="{{ asset('storage/'.$data['image']) }}"
+                src="{{ \App\Support\CmsImage::resolve($data['image'] ?? null) }}"
                 alt="{{ $data['title'] }}"
                 class="feature-img img-fluid w-100"
                 loading="lazy"

@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-cms-default-image="{{ $cmsDefaultImage ?? \App\Support\CmsImage::defaultUrl() }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -9,7 +9,7 @@
     <link rel="preconnect" href="https://cdnjs.cloudflare.com">
     @php
         $favicon = $settings->get('site_favicon');
-        $faviconUrl = $favicon ? asset('storage/'.$favicon) : asset('images/brand/favicon-bop.svg');
+        $faviconUrl = $favicon ? \App\Support\CmsImage::resolve($favicon) : asset('images/brand/favicon-bop.svg');
     @endphp
     <link rel="icon" href="{{ $faviconUrl }}" sizes="any">
     <link rel="shortcut icon" href="{{ $faviconUrl }}">
@@ -36,7 +36,7 @@
                class="nav-brand"
                aria-label="{{ trim((string) $settings->get('site_name')) !== '' ? trim((string) $settings->get('site_name')) . ' — Home' : 'Home' }}">
                 @if($settings->get('site_logo'))
-                    <img src="{{ asset('storage/' . $settings->get('site_logo')) }}"
+                    <img src="{{ \App\Support\CmsImage::resolve($settings->get('site_logo')) }}"
                          alt=""
                          class="nav-logo-img"
                          fetchpriority="high"
@@ -345,6 +345,8 @@
 <script src="{{ asset('js/intl-phone-input.js') }}?v={{ $__itlJsV }}" defer></script>
 @php $__cfaJs = public_path('js/contact-form-ajax.js'); $__cfaJsV = is_file($__cfaJs) ? filemtime($__cfaJs) : time(); @endphp
 <script src="{{ asset('js/contact-form-ajax.js') }}?v={{ $__cfaJsV }}" defer></script>
+@php $__cmsImgJs = public_path('js/cms-image-fallback.js'); $__cmsImgJsV = is_file($__cmsImgJs) ? filemtime($__cmsImgJs) : time(); @endphp
+<script src="{{ asset('js/cms-image-fallback.js') }}?v={{ $__cmsImgJsV }}" defer></script>
 @yield('scripts')
 </body>
 </html>

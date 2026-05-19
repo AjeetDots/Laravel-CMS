@@ -29,11 +29,7 @@
                     @foreach($brands as $brand)
                     <div class="brand-logo-item">
                         <div class="brand-logo-item__frame">
-                            @if($brand->logo)
-                                <img class="brand-logo-img" src="{{ $brand->logo_url }}" alt="{{ $brand->name }}" loading="lazy" decoding="async">
-                            @else
-                                <span class="brand-placeholder">{{ $brand->name }}</span>
-                            @endif
+                            <img class="brand-logo-img" src="{{ $brand->logo_url }}" alt="{{ $brand->name }}" loading="lazy" decoding="async">
                         </div>
                     </div>
                     @endforeach

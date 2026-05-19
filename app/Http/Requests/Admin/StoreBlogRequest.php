@@ -49,7 +49,7 @@ class StoreBlogRequest extends FormRequest
             'author'       => 'nullable|string|max:100',
             'excerpt'      => 'nullable|string|max:500',
             'content'      => 'nullable|string',
-            'image'        => ImageUploadRules::nullable(3072),
+            'image'        => ImageUploadRules::required(3072),
             'is_active'    => 'boolean',
             'published_at' => 'nullable|date',
             'sort_order'   => ['integer', 'min:1', SortOrderRules::uniqueAmong('blog_posts', ['category_id' => 'category_id'])],

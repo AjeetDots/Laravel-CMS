@@ -51,7 +51,7 @@ class UpdateBlogRequest extends FormRequest
             'author'       => 'nullable|string|max:100',
             'excerpt'      => 'nullable|string|max:500',
             'content'      => 'nullable|string',
-            'image'        => ImageUploadRules::nullable(3072),
+            'image'        => ImageUploadRules::requiredUnlessModelColumn(3072, $this->route('blog'), 'image'),
             'is_active'    => 'boolean',
             'published_at' => 'nullable|date',
             'sort_order'   => ['integer', 'min:1', SortOrderRules::uniqueAmong('blog_posts', ['category_id' => 'category_id'], $this->route('blog'))],

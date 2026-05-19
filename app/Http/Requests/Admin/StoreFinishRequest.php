@@ -40,7 +40,7 @@ class StoreFinishRequest extends FormRequest {
             'slug'           => ['nullable', 'string', 'max:255', Rule::unique('finishes', 'slug')->whereNull('deleted_at')],
             'description'    => 'nullable|string',
             'use_cases'      => 'nullable|string',
-            'cover_image'    => ImageUploadRules::nullable(4096),
+            'cover_image'    => ImageUploadRules::required(4096),
             'gallery_images' => 'nullable|array',
             'gallery_images.*'=> ImageUploadRules::nullable(4096),
             'tags_raw'       => 'nullable|string',

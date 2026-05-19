@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\ValidatesPageSectionImages;
 use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class StorePageRequest extends FormRequest
 {
+    use ValidatesPageSectionImages;
+
     public function authorize(): bool
     {
         return true;
@@ -60,6 +63,13 @@ class StorePageRequest extends FormRequest
             ],
             'is_active' => 'boolean',
         ], $this->seoRules());
+    }
+
+    public function withValidator($validator): void
+    {
+        $validator->after(function ($validator): void {
+            $this->validatePageSectionImages($validator);
+        });
     }
 
     private function seoRules(): array

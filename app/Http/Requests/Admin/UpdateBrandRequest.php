@@ -34,7 +34,7 @@ class UpdateBrandRequest extends FormRequest
     {
         return [
             'name'       => ['required', 'string', 'max:100', Rule::unique('brands', 'name')->ignore($this->route('brand'))->whereNull('deleted_at')],
-            'logo'       => ImageUploadRules::nullable(1024),
+            'logo'       => ImageUploadRules::requiredUnlessModelColumn(1024, $this->route('brand'), 'logo'),
             'website'    => 'nullable|url|max:200',
             'sort_order' => ['integer', 'min:1', SortOrderRules::uniqueAmong('brands', [], $this->route('brand'))],
             'is_active'  => 'boolean',

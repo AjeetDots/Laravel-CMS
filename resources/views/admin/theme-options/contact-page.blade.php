@@ -69,8 +69,7 @@
                         </div>
                     </div>
                     <div class="mt-3 mb-0">
-                        <label class="form-label">Hero background image</label>
-                        <p class="text-muted small">Optional. If removed and not replaced, the first active <a href="{{ route('admin.gallery.index') }}">Gallery</a> image is used.</p>
+                        <label class="form-label">Hero background image <span class="text-danger">*</span></label>
                         @if(!empty($data['hero_bg_image'] ?? null))
                             <div class="mb-2"><img src="{{ asset('storage/'.$data['hero_bg_image']) }}" alt="" class="img-preview" style="max-height:120px;border-radius:8px;"></div>
                             <div class="form-check mb-2">
@@ -78,7 +77,8 @@
                                 <label class="form-check-label" for="remove_contact_hero_bg_image">Remove current image</label>
                             </div>
                         @endif
-                        <input type="file" name="contact_hero_bg_image" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg">
+                        <input type="file" name="contact_hero_bg_image" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg"
+                               @if(empty($data['hero_bg_image'] ?? null)) required @endif>
                     </div>
                 </div>
 

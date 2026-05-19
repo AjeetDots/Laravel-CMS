@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Http\Requests\Admin\Concerns\ValidatesPageSectionImages;
 use App\Models\Page;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class UpdatePageRequest extends FormRequest
 {
+    use ValidatesPageSectionImages;
+
     public function authorize(): bool
     {
         return true;
@@ -69,6 +72,8 @@ class UpdatePageRequest extends FormRequest
     public function withValidator($validator): void
     {
         $validator->after(function ($validator): void {
+            $this->validatePageSectionImages($validator);
+
             $page = $this->route('page');
             if (! $page instanceof Page || ! $page->hasFixedTemplate()) {
                 return;

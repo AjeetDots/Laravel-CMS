@@ -42,11 +42,12 @@
             </div>
 
             <div class="mb-3">
-                <label>Image</label>
+                <label>Image <span class="text-danger">*</span></label>
                 <input
                     type="file"
                     name="sections[{{ $index }}][image]"
                     class="form-control"
+                    @if(empty($data['image'])) required @endif
                 >
                 <input
                     type="hidden"

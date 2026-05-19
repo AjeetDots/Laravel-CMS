@@ -404,10 +404,11 @@
 
                 <div class="row g-2 mb-3">
                     <div class="col-md-8">
-                        <label class="form-label">Image</label>
+                        <label class="form-label">Image <span class="text-danger">*</span></label>
                         <input
                             type="file"
-                            class="form-control image-field">
+                            class="form-control image-field"
+                            required>
                     </div>
 
                     <div class="col-md-4">

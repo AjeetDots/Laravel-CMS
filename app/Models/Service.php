@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -24,12 +25,12 @@ class Service extends Model {
             $service->finishes()->detach();
         });
     }
-    public function getImageUrlAttribute(): ?string {
-        return $this->storageImageUrl($this->image);
+    public function getImageUrlAttribute(): string {
+        return CmsImage::resolve($this->image);
     }
 
-    public function getHoverImageUrlAttribute(): ?string {
-        return $this->storageImageUrl($this->hover_image);
+    public function getHoverImageUrlAttribute(): string {
+        return CmsImage::resolve($this->hover_image);
     }
 
     public function resolvedHoverTitle(): ?string
@@ -37,15 +38,6 @@ class Service extends Model {
         $hover = trim((string) ($this->hover_title ?? ''));
 
         return $hover !== '' ? $hover : null;
-    }
-
-    private function storageImageUrl(?string $path): ?string
-    {
-        if (!$path) {
-            return null;
-        }
-
-        return filter_var($path, FILTER_VALIDATE_URL) ? $path : asset('storage/' . $path);
     }
 
     public function finishes() {

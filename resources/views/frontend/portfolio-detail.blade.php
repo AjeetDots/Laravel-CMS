@@ -24,11 +24,9 @@
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-8">
-                @if($portfolio->cover_image)
                 <div class="media-frame media-frame--short service-detail-lead-img mb-4">
                     <img src="{{ $portfolio->cover_image_url }}" alt="{{ $portfolio->title }}" loading="lazy" decoding="async">
                 </div>
-                @endif
 
                 <div class="service-detail-body">
                     @if($portfolio->description)
@@ -94,11 +92,7 @@
             <div class="col-md-6 col-lg-4">
                 <a href="{{ route('portfolio.show', $r->slug) }}" class="service-grid-card">
                     <div class="service-grid-card__media">
-                        @if($r->cover_image)
-                            <img src="{{ $r->cover_image_url }}" alt="{{ $r->title }}" loading="lazy">
-                        @else
-                            <div class="service-grid-card__placeholder"><i class="fas fa-briefcase"></i></div>
-                        @endif
+                        <img src="{{ $r->cover_image_url }}" alt="{{ $r->title }}" loading="lazy" decoding="async">
                     </div>
                     <div class="service-grid-card__body">
                         <h3 class="h6">{{ $r->title }}</h3>

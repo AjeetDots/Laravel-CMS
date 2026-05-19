@@ -42,11 +42,7 @@
                  data-tags="{{ $tagStr }}">
                 <a href="{{ route('portfolio.show', $project->slug) }}" class="service-grid-card h-100">
                     <div class="service-grid-card__media">
-                        @if($project->cover_image)
-                            <img src="{{ $project->cover_image_url }}" alt="{{ $project->title }}" loading="lazy" decoding="async">
-                        @else
-                            <div class="service-grid-card__placeholder"><i class="fas fa-briefcase"></i></div>
-                        @endif
+                        <img src="{{ $project->cover_image_url }}" alt="{{ $project->title }}" loading="lazy" decoding="async">
                     </div>
                     <div class="service-grid-card__body">
                         <span class="service-grid-eyebrow">

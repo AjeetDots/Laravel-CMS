@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\CmsImage;
 use Illuminate\Database\Eloquent\Model;
 
 class ContactPageContent extends Model
@@ -72,13 +73,11 @@ class ContactPageContent extends Model
     /**
      * Public hero image URL for the contact layout (stored path, absolute URL, or gallery fallback).
      */
-    public static function resolveHeroBackgroundUrl(?string $storedPath): ?string
+    public static function resolveHeroBackgroundUrl(?string $storedPath): string
     {
         $storedPath = $storedPath !== null ? trim($storedPath) : '';
         if ($storedPath !== '') {
-            return filter_var($storedPath, FILTER_VALIDATE_URL)
-                ? $storedPath
-                : asset('storage/'.ltrim($storedPath, '/'));
+            return CmsImage::resolve($storedPath);
         }
 
         $contactHeroImage = GalleryItem::query()
@@ -86,12 +85,6 @@ class ContactPageContent extends Model
             ->orderBy('sort_order')
             ->value('image');
 
-        if (! $contactHeroImage) {
-            return null;
-        }
-
-        return filter_var($contactHeroImage, FILTER_VALIDATE_URL)
-            ? $contactHeroImage
-            : asset('storage/'.$contactHeroImage);
+        return CmsImage::resolve($contactHeroImage);
     }
 }

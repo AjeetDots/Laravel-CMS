@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Support\CmsImage;
 use App\Traits\HasSeo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -35,33 +36,30 @@ class Finish extends Model {
         });
     }
 
-    public function getCoverImageUrlAttribute(): ?string {
-        if (!$this->cover_image) return null;
-        return filter_var($this->cover_image, FILTER_VALIDATE_URL)
-            ? $this->cover_image
-            : asset('storage/' . $this->cover_image);
+    public function getCoverImageUrlAttribute(): string {
+        return CmsImage::resolve($this->cover_image);
     }
 
     /**
      * Card / grid image: cover first, else first gallery file (so home & listings show a real photo when only gallery was uploaded).
      */
-    public function getThumbnailUrlAttribute(): ?string {
-        if ($this->cover_image_url) {
+    public function getThumbnailUrlAttribute(): string {
+        if (filled($this->cover_image)) {
             return $this->cover_image_url;
         }
-        $g = $this->gallery_urls;
-        return $g[0] ?? null;
+
+        $firstGallery = ($this->gallery ?? [])[0] ?? null;
+
+        return CmsImage::resolve(is_string($firstGallery) ? $firstGallery : null);
     }
 
     /** Alias for HasSeo::getSeoImage() fallback (cover-based models). */
-    public function getImageUrlAttribute(): ?string {
-        return $this->cover_image_url ?? ($this->gallery_urls[0] ?? null);
+    public function getImageUrlAttribute(): string {
+        return $this->thumbnail_url;
     }
 
     public function getGalleryUrlsAttribute(): array {
-        return collect($this->gallery ?? [])->map(function ($path) {
-            return filter_var($path, FILTER_VALIDATE_URL) ? $path : asset('storage/' . $path);
-        })->toArray();
+        return CmsImage::resolveMany($this->gallery ?? []);
     }
 
     public function services() {

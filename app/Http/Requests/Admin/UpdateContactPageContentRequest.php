@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Models\ContactPageContent;
 use App\Support\ImageUploadRules;
 use App\Support\ThemeContentPageTabs;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,6 +26,8 @@ class UpdateContactPageContentRequest extends FormRequest
 
     public function rules(): array
     {
+        $contact = ContactPageContent::viewDataWithDefaults();
+
         return [
             'contact_page_active_section' => ['nullable', 'string', Rule::in(ThemeContentPageTabs::CONTACT)],
 
@@ -51,7 +54,11 @@ class UpdateContactPageContentRequest extends FormRequest
             'show_map' => 'nullable|boolean',
             'map_embed_url' => ['required_if:show_map,1', 'string', 'max:5000'],
 
-            'contact_hero_bg_image' => ImageUploadRules::nullable(5120),
+            'contact_hero_bg_image' => ImageUploadRules::requiredUnlessStored(
+                5120,
+                $contact['hero_bg_image'] ?? null,
+                'remove_contact_hero_bg_image'
+            ),
             'remove_contact_hero_bg_image' => 'boolean',
         ];
     }

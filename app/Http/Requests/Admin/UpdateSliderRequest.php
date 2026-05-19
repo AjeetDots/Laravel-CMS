@@ -41,7 +41,7 @@ class UpdateSliderRequest extends FormRequest
             ],
             'subtitle'    => 'nullable|string|max:300',
             'lead_text'   => 'nullable|string|max:2000',
-            'image'       => ImageUploadRules::nullable(2048),
+            'image'       => ImageUploadRules::requiredUnlessModelColumn(2048, $this->route('slider'), 'image'),
             'button_text' => 'nullable|string|max:50',
             'button_link' => 'nullable|string|max:200',
             'button2_text' => 'nullable|string|max:50',

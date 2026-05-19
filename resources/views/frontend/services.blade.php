@@ -30,15 +30,7 @@
         <div class="row g-4 g-lg-5 align-items-center">
             <div class="col-lg-6 {{ $loop->even ? 'order-lg-2' : '' }}">
                 <div class="svc-split__img-wrap">
-                    @if($service->image)
-                        <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
-                    @else
-                        <div class="svc-split__placeholder">
-                            @if(trim((string) ($service->icon ?? '')) !== '')
-                            <i class="{{ $service->icon }}"></i>
-                            @endif
-                        </div>
-                    @endif
+                    <img src="{{ $service->image_url }}" alt="{{ $service->title }}" loading="lazy" decoding="async">
                 </div>
             </div>
             <div class="col-lg-6 {{ $loop->even ? 'order-lg-1' : '' }}">

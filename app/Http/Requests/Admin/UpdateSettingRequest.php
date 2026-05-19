@@ -6,7 +6,6 @@ use App\Support\PhoneDigits;
 use App\Support\ImageUploadRules;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\File;
 
 class UpdateSettingRequest extends FormRequest
 {
@@ -113,10 +112,14 @@ class UpdateSettingRequest extends FormRequest
             'social_twitter' => 'nullable|url',
             'social_linkedin' => 'nullable|url',
             'social_instagram' => 'nullable|url',
-            'site_logo' => ImageUploadRules::nullable(2048),
-            'backend_logo' => ImageUploadRules::nullable(2048),
-            'site_logo_footer' => ImageUploadRules::nullable(2048),
-            'site_favicon' => ['nullable', File::types(['ico', 'png', 'svg', 'jpg', 'jpeg', 'gif', 'webp'])->max(512)],
+            'site_logo' => ImageUploadRules::requiredUnlessSetting(2048, 'site_logo', 'remove_site_logo'),
+            'backend_logo' => ImageUploadRules::requiredUnlessSetting(2048, 'backend_logo', 'remove_backend_logo'),
+            'site_logo_footer' => ImageUploadRules::requiredUnlessSetting(2048, 'site_logo_footer', 'remove_site_logo_footer'),
+            'site_favicon' => ImageUploadRules::requiredFaviconUnlessSetting('remove_site_favicon'),
+            'remove_site_logo' => 'boolean',
+            'remove_backend_logo' => 'boolean',
+            'remove_site_logo_footer' => 'boolean',
+            'remove_site_favicon' => 'boolean',
             'mail_smtp_host' => 'nullable|string|max:255',
             'mail_smtp_port' => 'nullable|integer|min:1|max:65535',
             'mail_smtp_username' => 'nullable|string|max:255',

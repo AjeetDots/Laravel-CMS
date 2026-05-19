@@ -49,11 +49,7 @@
             <div class="col-md-6 col-lg-4 reveal delay-{{ ($loop->index % 3) + 1 }}">
                 <a href="{{ route('blog.show', $post->slug) }}" class="blog-card d-block">
                     <div class="blog-card-img-wrap">
-                        @if($post->image)
-                            <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img">
-                        @else
-                            <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
-                        @endif
+                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img" loading="lazy" decoding="async">
                         @if($post->postCategory)
                             <a href="{{ route('blog.category', $post->postCategory->slug) }}"
                                class="blog-badge"

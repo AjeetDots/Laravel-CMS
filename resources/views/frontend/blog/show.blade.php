@@ -38,11 +38,9 @@
         <div class="row g-5">
 
             <div class="col-lg-8 editorInner">
-                @if($post->image)
-                    <div class="media-frame media-frame--short service-detail-lead-img mb-4">
-                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
-                    </div>
-                @endif
+                <div class="media-frame media-frame--short service-detail-lead-img mb-4">
+                    <img src="{{ $post->image_url }}" alt="{{ $post->title }}" loading="lazy" decoding="async">
+                </div>
 
                 <div class="service-detail-body blog-post-content">
                     {!! $post->content !!}
@@ -85,11 +83,7 @@
                             @foreach($latestPosts as $lp)
                             <li class="sidebar-post-item">
                                 <a href="{{ route('blog.show', $lp->slug) }}" class="sidebar-post-link">
-                                    @if($lp->image)
-                                        <img src="{{ $lp->image_url }}" alt="{{ $lp->title }}" class="sidebar-post-thumb">
-                                    @else
-                                        <div class="sidebar-post-thumb-placeholder"><i class="fas fa-feather-alt" aria-hidden="true"></i></div>
-                                    @endif
+                                    <img src="{{ $lp->image_url }}" alt="{{ $lp->title }}" class="sidebar-post-thumb" loading="lazy" decoding="async">
                                     <div class="sidebar-post-info">
                                         <span class="sidebar-post-title">{{ Str::limit($lp->title, 55) }}</span>
                                         @if($lp->published_at)
@@ -122,11 +116,7 @@
             <div class="col-md-4">
                 <a href="{{ route('blog.show', $r->slug) }}" class="blog-card d-block">
                     <div class="blog-card-img-wrap">
-                        @if($r->image)
-                            <img src="{{ $r->image_url }}" alt="{{ $r->title }}" class="blog-card-img">
-                        @else
-                            <div class="blog-card-img-placeholder"><i class="fas fa-feather-alt"></i></div>
-                        @endif
+                        <img src="{{ $r->image_url }}" alt="{{ $r->title }}" class="blog-card-img" loading="lazy" decoding="async">
                         @if($r->postCategory)
                             <a href="{{ route('blog.category', $r->postCategory->slug) }}" class="blog-badge">{{ $r->postCategory->name }}</a>
                         @endif

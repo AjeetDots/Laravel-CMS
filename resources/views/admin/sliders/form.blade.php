@@ -90,7 +90,7 @@
                         <label class="form-label" for="slider_image">Image {{ isset($slider->id) ? '' : '*' }}</label>
                         <input type="file" name="image" id="slider_image" class="form-control"
                                accept=".jpg,.jpeg,.png,.gif,.webp,.svg,image/jpeg,image/png,image/gif,image/webp,image/svg+xml"
-                               {{ isset($slider->id) ? '' : 'required' }}
+                               @if(!isset($slider->id) || !$slider->image) required @endif
                                onchange="previewImg(this)">
                         <div class="mt-2" id="imgPreviewWrap">
                             @if(isset($slider->id) && $slider->image)

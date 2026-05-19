@@ -12,6 +12,7 @@ use App\Models\PhoneCountry;
 use App\Models\Service;
 use App\Models\Slider;
 use App\Models\Testimonial;
+use App\Support\CmsImage;
 
 class HomePageService implements HomePageServiceInterface
 {
@@ -229,7 +230,7 @@ class HomePageService implements HomePageServiceInterface
             'left_headline' => isset($data['left_headline']) ? trim((string) $data['left_headline']) : '',
             'right_eyebrow' => isset($data['right_eyebrow']) ? trim((string) $data['right_eyebrow']) : '',
             'left_image' => $leftImage,
-            'left_image_url' => $leftImage ? asset('storage/' . $leftImage) : null,
+            'left_image_url' => $leftImage ? CmsImage::resolve($leftImage) : null,
         ];
     }
 

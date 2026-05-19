@@ -77,7 +77,7 @@
                     @endforeach
 
                     <hr class="my-4">
-                    <p class="text-muted small fw-semibold mb-3">Collage images (optional — main and accent only; leave empty to use the first two active gallery items)</p>
+                    <p class="text-muted small fw-semibold mb-3">Collage images <span class="text-danger">*</span> (required for the public About page)</p>
 
                     <div class="mb-4 pb-3 border-bottom">
                         <label class="form-label">Main (large collage)</label>
@@ -88,7 +88,8 @@
                                 <label class="form-check-label" for="remove_about_image_main">Remove current image</label>
                             </div>
                         @endif
-                        <input type="file" name="about_image_main" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg">
+                        <input type="file" name="about_image_main" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg"
+                               @if(empty($data['image_main'] ?? null)) required @endif>
                         <label class="form-label small text-muted mt-2" for="image_main_alt">Alt text</label>
                         <input type="text" name="image_main_alt" id="image_main_alt" class="form-control form-control-sm" value="{{ old('image_main_alt', $data['image_main_alt'] ?? '') }}" maxlength="255">
                     </div>
@@ -101,7 +102,8 @@
                                 <label class="form-check-label" for="remove_about_image_accent">Remove current image</label>
                             </div>
                         @endif
-                        <input type="file" name="about_image_accent" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg">
+                        <input type="file" name="about_image_accent" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg"
+                               @if(empty($data['image_accent'] ?? null)) required @endif>
                         <label class="form-label small text-muted mt-2" for="image_accent_alt">Alt text</label>
                         <input type="text" name="image_accent_alt" id="image_accent_alt" class="form-control form-control-sm" value="{{ old('image_accent_alt', $data['image_accent_alt'] ?? '') }}" maxlength="255">
                     </div>
@@ -146,7 +148,8 @@
                                 <label class="form-check-label" for="remove_about_image_studio">Remove current image</label>
                             </div>
                         @endif
-                        <input type="file" name="about_image_studio" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg">
+                        <input type="file" name="about_image_studio" class="form-control" accept=".jpg,.jpeg,.png,.gif,.webp,.svg"
+                               @if(empty($data['image_studio'] ?? null)) required @endif>
                         <label class="form-label small text-muted mt-2" for="image_studio_alt">Alt text</label>
                         <input type="text" name="image_studio_alt" id="image_studio_alt" class="form-control form-control-sm" value="{{ old('image_studio_alt', $data['image_studio_alt'] ?? '') }}" maxlength="255">
                     </div>
