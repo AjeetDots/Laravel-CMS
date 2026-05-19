@@ -30,14 +30,15 @@ class ContactController extends Controller {
         return response()->streamDownload(function () {
             $handle = fopen('php://output', 'w');
             fprintf($handle, chr(0xEF) . chr(0xBB) . chr(0xBF));
-            fputcsv($handle, ['ID', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Client Mail Status', 'Admin Mail Status', 'Read', 'Created at']);
-
+            fputcsv($handle, ['S.No', 'Name', 'Email', 'Phone', 'Subject', 'Message', 'Client Mail Status', 'Admin Mail Status', 'Read', 'Created at']);
+            $count = 1;
             foreach (Contact::query()->orderByDesc('created_at')->cursor() as $contact) {
                 $message = (string) ($contact->message ?? '');
                 $message = preg_replace('/\s+/u', ' ', trim(strip_tags($message)));
 
                 fputcsv($handle, [
-                    $contact->id,
+                    // $contact->id,
+                    $count++,
                     $contact->name,
                     $contact->email,
                     $contact->phone ?? '',
