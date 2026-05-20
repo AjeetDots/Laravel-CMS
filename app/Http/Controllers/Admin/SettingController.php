@@ -821,6 +821,9 @@ class SettingController extends Controller
         $brandsStripData['marquee_segments'] = isset($data['home_brands_strip_marquee_segments'])
             ? (int) $data['home_brands_strip_marquee_segments']
             : null;
+        $brandsStripData['marquee_duration_seconds'] = isset($data['home_brands_strip_marquee_duration'])
+            ? (int) $data['home_brands_strip_marquee_duration']
+            : null;
         $brandsStrip->update(['data' => $brandsStripData]);
 
         $blogPreview = HomePageSection::query()->firstOrCreate(['section_key' => 'blog_preview'], ['data' => []]);

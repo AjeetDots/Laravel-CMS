@@ -81,6 +81,9 @@
 *::after {
     box-sizing: border-box;
 }
+*{
+    transition: all ease-in-out 0.3s;
+}
 
 html {
     scroll-behavior: smooth;
@@ -314,7 +317,7 @@ img {
     border-radius: 0;
     text-transform: uppercase;
     letter-spacing: 0.14em;
-    font-size: 0.75rem;
+    font-size: 12px;
     padding: 11px 18px;
     display: inline-flex;
     align-items: center;
@@ -2071,7 +2074,7 @@ img {
     align-items: stretch;
     flex-wrap: nowrap;
     width: max-content;
-    animation: brandScroll 48s linear infinite;
+    animation: brandScroll var(--brand-scroll-duration, 48s) linear infinite;
     will-change: transform;
 }
 
@@ -2653,7 +2656,7 @@ textarea.form-control {
 .page-hero,
 .page-header {
     background: #f8f6f1;
-    padding: 96px 0 96px;
+    padding: 64px 0 0;
     color: var(--ink);
     position: relative;
     overflow: hidden;
@@ -2726,7 +2729,7 @@ textarea.form-control {
     line-height: 1.12;
     margin-bottom: 16px;
     position: relative;
-    max-width: min(100%, 22rem);
+    max-width: min(100%, 38rem);
     color: var(--secondary);
 }
 
@@ -3986,12 +3989,7 @@ textarea.form-control {
         padding-bottom: 10px;
     } */
 
-    .btn-quote {
-        font-size: 0.6rem;
-        letter-spacing: 1.5px;
-        padding: 10px 12px;
-    }
-
+   
     .site-footer {
         padding: 44px 0 24px;
     }

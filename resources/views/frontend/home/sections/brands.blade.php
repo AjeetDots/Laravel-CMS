@@ -8,6 +8,10 @@
     if ($brandMarqueeSegments < 1 || $brandMarqueeSegments > 20) {
         $brandMarqueeSegments = 8;
     }
+    $brandScrollDurationSeconds = isset($brandsStripCfg['marquee_duration_seconds']) ? (int) $brandsStripCfg['marquee_duration_seconds'] : 62;
+    if ($brandScrollDurationSeconds < 10 || $brandScrollDurationSeconds > 120) {
+        $brandScrollDurationSeconds = 62;
+    }
 @endphp
 
 @if($brands->count() && $brandsStripEnabled)
@@ -23,7 +27,7 @@
         </header>
         <div class="brands-strip__marquee" role="presentation">
         <div class="brands-slider-wrap">
-            <div class="brand-track" style="--brand-segments: {{ $brandMarqueeSegments }}">
+            <div class="brand-track" style="--brand-segments: {{ $brandMarqueeSegments }}; --brand-scroll-duration: {{ $brandScrollDurationSeconds }}s">
                 @foreach(range(1, $brandMarqueeSegments) as $seg)
                 <div class="brand-track__segment" @if($seg > 1) aria-hidden="true" @endif>
                     @foreach($brands as $brand)

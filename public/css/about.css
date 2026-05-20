@@ -1,14 +1,14 @@
  
 .about-intro {
-    padding: 74px 0 52px;
+    padding: 64px 0 52px;
 }
 .about-intro__eyebrow {
     display: inline-block;
-    font-size: 0.57rem;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(154, 122, 74, 0.9);
+    color: var(--primary);
     margin-bottom: 16px;
 }
 .about-intro__title {
@@ -149,11 +149,11 @@
 }
 .about-workshop__eyebrow {
     display: inline-block;
-    font-size: 0.57rem;
+    font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.32em;
     text-transform: uppercase;
-    color: rgba(154, 122, 74, 0.9);
+    color: var(--primary);
     margin-bottom: 16px;
 }
 .about-workshop h2 {
@@ -199,12 +199,12 @@
 }
 
 @media (max-width: 991px) {
-    body.page-about {
-        padding-top: 98px;
-    }
+  .about-workshop p{
+    max-width: 100%;
+  }
     .about-intro {
         padding: 48px 0 26px;
-    }
+    } 
     .about-story {
         padding: 6px 0 64px;
     }

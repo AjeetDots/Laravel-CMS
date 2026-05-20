@@ -20,15 +20,15 @@
                 </h2>
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right secondary-button">
-                <a href="{{ route('blog.index') }}" class="hover-gold">
+                <a href="{{ route('blog.index') }}" class="btn-outline-quote-dark hover-gold">
                     {{ $blogPreviewButtonText }} <i class="fas fa-arrow-right ms-1"></i>
                 </a>
             </div>
         </div>
         <div class="home-blog-scroller" id="homeBlogScroller">
-            <div class="row g-4 flex-nowrap flex-lg-wrap pb-1 home-blog-row">
+            <div class="row g-4  pb-1 home-blog-row">
             @foreach($blogPosts as $i => $post)
-            <div class="col-10 col-md-6 col-lg-4 flex-shrink-0 flex-lg-shrink-1 reveal delay-{{ $i + 1 }}">
+            <div class="col-12 col-md-6 col-lg-4 flex-shrink-0 flex-lg-shrink-1 reveal delay-{{ $i + 1 }}">
                 <a href="{{ route('blog.show', $post->slug) }}" class="blog-card d-block h-100">
                     <div class="blog-card-img-wrap">
                         <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img" loading="lazy" decoding="async">

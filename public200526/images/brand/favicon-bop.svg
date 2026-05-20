@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Bespoke Ornate Plaster">
+  <defs>
+    <linearGradient id="bopFav" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1c1714"/>
+      <stop offset="100%" stop-color="#2a1810"/>
+    </linearGradient>
+    <linearGradient id="bopFavGold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A25A"/>
+      <stop offset="100%" stop-color="#C96B3F"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="url(#bopFav)"/>
+  <rect x="3" y="3" width="58" height="58" rx="9" fill="none" stroke="url(#bopFavGold)" stroke-width="1.5" opacity="0.9"/>
+  <text x="32" y="40" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" fill="#F5E6D3" letter-spacing="0.02em">B</text>
+  <text x="32" y="52" text-anchor="middle" font-family="Georgia, serif" font-size="7" font-weight="600" fill="#C8A25A" letter-spacing="0.2em">BOP</text>
+</svg>

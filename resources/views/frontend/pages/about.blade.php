@@ -152,7 +152,7 @@
 <section class="about-workshop">
     <div class="container">
         <div class="row g-5 align-items-center">
-            <div class="col-lg-5">
+            <div class="col-lg-5 col-sm-12 order-lg-1 order-xl-1 order-md-2 order-2">
                 <div class="about-workshop__content reveal-left">
                     @if(trim((string) ($ap['workshop_eyebrow'] ?? '')) !== '')
                     <span class="about-workshop__eyebrow">{{ $ap['workshop_eyebrow'] }}</span>
@@ -168,7 +168,7 @@
                     @endif
                 </div>
             </div>
-            <div class="col-lg-7">
+            <div class="col-lg-7 col-sm-12 order-lg-2 order-xl-2 order-md-1 order-1">
                 @if(trim((string) ($ap['image_studio_display'] ?? '')) !== '')
                 <div class="about-workshop__image media-frame reveal-right">
                     <img src="{{ $ap['image_studio_display'] }}" alt="{{ $ap['image_studio_alt'] ?? '' }}" class="img-fallback" loading="lazy" decoding="async" data-fallback="{{ $ap['image_studio_fallback'] ?? '' }}">

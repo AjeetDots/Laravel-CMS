@@ -13,7 +13,6 @@
 
     .cms-page-skin .cms-page-body {
         padding: clamp(2.5rem, 5vw, 4rem) 0 clamp(3.5rem, 7vw, 5rem);
-        background: var(--cps-cream);
     }
 
     .cms-page-skin .cms-page-body .page-content {
@@ -90,13 +89,13 @@
         max-width: 100%;
     }
 
-    .cms-page-skin--full .cms-page-body {
+    /* .cms-page-skin--full .cms-page-body {
         background: var(--cps-cream);
-    }
+    } */
 
-    .cms-page-skin--full .cms-builder__shell {
+    /* .cms-page-skin--full .cms-builder__shell {
         max-width: 1140px;
-    }
+    } */
 
     .cms-page-skin--full .cms-builder-band {
         background: #fff;

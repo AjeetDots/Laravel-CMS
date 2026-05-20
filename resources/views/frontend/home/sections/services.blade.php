@@ -20,7 +20,7 @@
             </div>
             <div class="col-lg-4 offset-lg-1 text-lg-end mt-3 mt-lg-0 reveal-right secondary-button">
                 @if(trim($servicesBtnUrl) !== '' && trim($servicesBtnText) !== '')
-                <a href="{{ $servicesBtnUrl }}" class="hover-gold">
+                <a href="{{ $servicesBtnUrl }}" class="btn-outline-quote-dark hover-gold ">
                     {{ $servicesBtnText }} <i class="fas fa-arrow-right ms-1" ></i>
                 </a>
                 @endif

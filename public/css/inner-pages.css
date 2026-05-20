@@ -121,7 +121,7 @@ body.nav-solid .blog-lead-img img {
 
 /* ── Services page — Figma alternating split layout ── */
 .svc-split {
-    padding: 88px 0;
+    padding: 112px 0;
     background: #F8F6F1;
 }
 .svc-split + .svc-split {
@@ -427,10 +427,6 @@ body.page-cms .finishes-intro {
     background: transparent;
 }
 
-body.page-cms .cms-page-body,
-body.page-cms .finishes-grid-section {
-    background-color: #f8f6f1;
-}
 
 
 
@@ -448,7 +444,7 @@ body.page-home.has-hero {
 }
 
 body.page-home.has-hero .site-nav:not(.scrolled):not(.always-solid) .nav-links>li>a {
-    color: var(--text);
+    color: var(--secondary);
     text-shadow: none;
 }
 
@@ -507,7 +503,7 @@ a.finishes-intro__eyebrow--link:hover {
 } */
 
 .finishes-intro {
-    padding: 64px 0;
+    padding: 64px 0 0;
     background: #f8f6f1;
     /* background: linear-gradient(165deg, #fdfcfa 0%, #f4efe8 42%, #ebe4db 100%); */
 }
@@ -895,9 +891,7 @@ font-weight: normal;
     background: #d7cec0;
     height: 100%;
 }
-.gallery-showcase__item--hero .gallery-work-card {
-    aspect-ratio: 16 / 8;
-}
+
 .gallery-showcase__item--feature .gallery-work-card {
     /* aspect-ratio: 16 / 8; */
 }
@@ -918,7 +912,8 @@ font-weight: normal;
     position: absolute;
     bottom: 0;
     padding: 30px;
-    background: linear-gradient(to top, rgba(18, 15, 13, 0.72) 0%, rgba(20, 17, 15, 0.16) 44%, rgba(20, 17, 15, 0) 75%);
+    background: linear-gradient(to top, rgba(20, 10, 6, .55) 0%, transparent 100%);
+    /* background: linear-gradient(to top, rgba(18, 15, 13, 0.72) 0%, rgba(20, 17, 15, 0.16) 44%, rgba(20, 17, 15, 0) 75%); */
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
@@ -1299,7 +1294,7 @@ body.page-contact .contact-main__message {
         margin-left: 0;
     }
     .contact-map-wrap {
-        height: 220px;
+        height: 400px;
     }
 }
 
@@ -1320,7 +1315,7 @@ body.page-contact .contact-main__message {
 
 /* ── Service detail body typography ── */
 .svc-intro {
-    padding: 64px 0;
+    padding: 64px 0 0;
     /* background: linear-gradient(165deg, #fdfcfa 0%, #f4efe8 42%, #ebe4db 100%); */
 }
 
@@ -1483,4 +1478,7 @@ p.commission-text {
 .gallery-work-card:hover .commission-text {
     display: block;
     transition: background .25s, border-color .25s, color .25s, transform .25s;
+}
+.contact-main__lines , .contact-main__hours{
+    font-size: 18px;
 }

@@ -190,6 +190,7 @@ class UpdateHomePageSettingRequest extends FormRequest
             'home_brands_strip_title_line_1' => 'nullable|string|max:255',
             'home_brands_strip_title_line_2' => 'nullable|string|max:255',
             'home_brands_strip_marquee_segments' => 'nullable|integer|min:1|max:20',
+            'home_brands_strip_marquee_duration' => 'nullable|integer|min:10|max:120',
 
             'home_blog_preview_is_enabled' => 'boolean',
             'home_blog_preview_eyebrow' => 'nullable|string|max:120',

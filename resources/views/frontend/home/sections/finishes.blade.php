@@ -21,7 +21,7 @@
             </div>
             <div class="reveal-right">
                 @if(trim($finishesBtnUrl) !== '' && trim($finishesBtnText) !== '')
-                <a href="{{ $finishesBtnUrl }}" class="btn-outline-site" style="font-size:.65rem;padding:10px 20px;">
+                <a href="{{ $finishesBtnUrl }}"  style="font-size:.65rem;padding:10px 20px;" class="btn-outline-quote-light">
                     {{ $finishesBtnText }} <i class="fas fa-arrow-right ms-1" style="font-size:.65rem;"></i>
                 </a>
                 @endif

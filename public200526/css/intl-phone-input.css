@@ -1,0 +1,223 @@
+/**
+ * International-style phone field (UI inspired by intl-tel-input).
+ * Scoped under .itl-phone — no external library or API.
+ */
+.itl-phone {
+    position: relative;
+    width: 100%;
+}
+
+/* Country JSON carrier: not submitted, kept out of the layout */
+textarea.itl-phone__json {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.itl-phone__row {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    border: 1px solid #cbd5e1;
+    border-radius: 0.375rem;
+    background: #fff;
+    overflow: hidden;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.itl-phone:focus-within .itl-phone__row {
+    border-color: #94a3b8;
+    box-shadow: 0 0 0 0.2rem rgba(148, 163, 184, 0.25);
+}
+
+.itl-phone.is-invalid .itl-phone__row {
+    border-color: #dc3545;
+}
+
+.itl-phone__toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-shrink: 0;
+    padding: 0 0.55rem 0 0.65rem;
+    border: none;
+    border-right: 1px solid #e2e8f0;
+    background: #f8fafc;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    color: #334155;
+    min-width: 5.5rem;
+}
+
+.itl-phone__toggle:hover {
+    background: #f1f5f9;
+}
+
+.itl-phone__toggle:focus-visible {
+    outline: 2px solid #b79860;
+    outline-offset: -2px;
+    z-index: 2;
+}
+
+.itl-phone__flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    line-height: 0;
+}
+
+.itl-phone__flag-img {
+    display: block;
+    width: 24px;
+    height: 16px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.itl-phone__opt-flag {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+}
+
+.itl-phone__opt-flag-img {
+    display: block;
+    width: 22px;
+    height: 15px;
+    object-fit: contain;
+    pointer-events: none;
+}
+
+.itl-phone__dial {
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.itl-phone__caret {
+    width: 0;
+    height: 0;
+    margin-left: 0.1rem;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 5px solid #64748b;
+}
+
+.itl-phone__national-input {
+    flex: 1;
+    min-width: 0;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 0.5rem 0.65rem;
+    font-size: 0.95rem;
+}
+
+.itl-phone__national-input:focus {
+    outline: none;
+}
+
+.itl-phone__dropdown {
+    position: absolute;
+    left: 0;
+    top: calc(100% + 4px);
+    z-index: 1060;
+    width: min(100%, 20rem);
+    max-height: 16.5rem;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 0.5rem;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.12);
+    overflow: hidden;
+}
+
+.itl-phone__dropdown[hidden] {
+    display: none !important;
+}
+
+.itl-phone__search {
+    flex-shrink: 0;
+    border: none;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 0.55rem 0.65rem 0.55rem 2rem;
+    font-size: 0.875rem;
+    background: #f8fafc url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") 0.65rem center no-repeat;
+}
+
+.itl-phone__search:focus {
+    outline: none;
+    background-color: #fff;
+}
+
+.itl-phone__list {
+    list-style: none;
+    margin: 0;
+    padding: 0.25rem 0;
+    overflow-y: auto;
+    max-height: 13rem;
+}
+
+.itl-phone__option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 0.65rem;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #1e293b;
+}
+
+.itl-phone__option:hover,
+.itl-phone__option:focus {
+    background: #f1f5f9;
+}
+
+.itl-phone__option[aria-selected="true"] {
+    background: rgba(183, 152, 96, 0.12);
+}
+
+.itl-phone__opt-flag {
+    font-size: 1.1rem;
+    width: 1.5rem;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.itl-phone__opt-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.itl-phone__opt-dial {
+    color: #64748b;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.itl-phone__check {
+    margin-left: auto;
+    color: #b79860;
+    font-weight: 700;
+}
+
+/* Frontend (Bootstrap) form panels */
+.contact-main__form-grid .itl-phone,
+.home-contact-form .itl-phone {
+    grid-column: 1 / -1;
+}

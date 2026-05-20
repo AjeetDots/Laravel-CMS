@@ -301,12 +301,18 @@ class HomePageService implements HomePageServiceInterface
             $marqueeSegments = 8;
         }
 
+        $marqueeDurationSeconds = isset($data['marquee_duration_seconds']) ? (int) $data['marquee_duration_seconds'] : 62;
+        if ($marqueeDurationSeconds < 10 || $marqueeDurationSeconds > 120) {
+            $marqueeDurationSeconds = 62;
+        }
+
         return [
             'is_enabled' => array_key_exists('is_enabled', $data) ? ! empty($data['is_enabled']) : true,
             'kicker' => isset($data['kicker']) ? trim((string) $data['kicker']) : '',
             'title_line_1' => isset($data['title_line_1']) ? trim((string) $data['title_line_1']) : '',
             'title_line_2' => isset($data['title_line_2']) ? trim((string) $data['title_line_2']) : '',
             'marquee_segments' => $marqueeSegments,
+            'marquee_duration_seconds' => $marqueeDurationSeconds,
         ];
     }
 

@@ -720,6 +720,13 @@
                             <label class="form-label">Marquee Segments</label>
                             <input type="number" min="1" max="20" name="home_brands_strip_marquee_segments" class="form-control"
                                    value="{{ old('home_brands_strip_marquee_segments', $brandsStripSection['marquee_segments'] ?? 8) }}">
+                            <div class="form-text">How many logo copies are tiled for a seamless loop.</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Scroll Duration (seconds)</label>
+                            <input type="number" min="10" max="120" name="home_brands_strip_marquee_duration" class="form-control"
+                                   value="{{ old('home_brands_strip_marquee_duration', $brandsStripSection['marquee_duration_seconds'] ?? 62) }}">
+                            <div class="form-text">Lower = faster scroll. Default 62.</div>
                         </div>
                     </div>
                 </div>
