@@ -52,6 +52,11 @@ final class CountryFlag
 
     public static function svgDataUrlFor(?string $storedEmoji, ?string $iso): string
     {
+        $lc = strtolower(preg_replace('/[^a-zA-Z]/', '', (string) $iso));
+        if (strlen($lc) === 2) {
+            return 'https://flagcdn.com/w20/' . $lc . '.png';
+        }
+
         return self::svgDataUrl(self::display($storedEmoji, $iso));
     }
 }

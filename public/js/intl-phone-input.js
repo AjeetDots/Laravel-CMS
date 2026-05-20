@@ -86,35 +86,12 @@
         return countries[0] || null;
     }
 
-    /** Regional-indicator flag when stored emoji is missing (same logic as PHP CountryFlag). */
-    function isoToFlagEmoji(iso) {
-        var s = String(iso || '')
-            .replace(/[^a-zA-Z]/g, '')
-            .toUpperCase();
-        if (s.length !== 2) return '';
-        var a = s.charCodeAt(0);
-        var b = s.charCodeAt(1);
-        if (a < 65 || a > 90 || b < 65 || b > 90) return '';
-        return String.fromCodePoint(0x1f1e6 + (a - 65), 0x1f1e6 + (b - 65));
-    }
-
-    function flagForCountry(c) {
-        var fe = String(c.flag_emoji || '').trim();
-        if (fe) return fe;
-        return isoToFlagEmoji(c.iso_code) || '🌐';
-    }
-
-    /** SVG data URL with emoji in &lt;text&gt; — renders flags reliably (seeder emoji, no HTTP API). */
-    function flagSvgDataUrl(emoji) {
-        var ch = (emoji && String(emoji).trim()) ? String(emoji).trim() : '🌐';
-        var safe = escapeHtml(ch);
-        var svg =
-            '<?xml version="1.0" encoding="UTF-8"?>' +
-            '<svg xmlns="http://www.w3.org/2000/svg" width="28" height="20" viewBox="0 0 28 20">' +
-            '<text x="3" y="15" font-size="12" font-family="Segoe UI Emoji,Apple Color Emoji,Noto Color Emoji,Noto Emoji,sans-serif">' +
-            safe +
-            '</text></svg>';
-        return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    function flagImgUrl(iso) {
+        var lc = String(iso || '').replace(/[^a-zA-Z]/g, '').toLowerCase();
+        if (lc.length === 2) {
+            return 'https://flagcdn.com/w20/' + lc + '.png';
+        }
+        return '';
     }
 
     function initOne(root) {
@@ -145,7 +122,7 @@
         if (!current) current = findByIso(countries, defaultIso) || countries[0];
 
         function renderTrigger() {
-            var url = flagSvgDataUrl(flagForCountry(current));
+            var url = flagImgUrl(current.iso_code);
             var img = flagEl.querySelector('img.itl-phone__flag-img');
             if (img) {
                 img.setAttribute('src', url);
@@ -204,7 +181,7 @@
                 if (selected) li.setAttribute('aria-selected', 'true');
                 li.innerHTML =
                     '<span class="itl-phone__opt-flag"><img class="itl-phone__opt-flag-img" src="' +
-                    flagSvgDataUrl(flagForCountry(c)) +
+                    flagImgUrl(c.iso_code) +
                     '" width="22" height="15" alt="" draggable="false"></span><span class="itl-phone__opt-name">' +
                     escapeHtml(c.name) +
                     '</span><span class="itl-phone__opt-dial">(' +
