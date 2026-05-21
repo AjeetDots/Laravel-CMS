@@ -212,6 +212,10 @@ class Page extends Model
 
     public function isDeletionProtected(): bool
     {
+        if ($this->hasFixedTemplate()) {
+            return true;
+        }
+
         $slug = self::normalizeSlugKey($this->slug);
         $protected = array_map(
             static fn (string $protectedSlug) => self::normalizeSlugKey($protectedSlug),
