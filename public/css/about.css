@@ -1,6 +1,6 @@
  
 .about-intro {
-    padding: 64px 0 52px;
+    padding: 64px 0 30px 0;
 }
 .about-intro__eyebrow {
     display: inline-block;
@@ -23,7 +23,7 @@
 }
 
 .about-story {
-    padding: 10px 0 150px;
+    padding: 0 0 150px;
 }
 .about-story__collage {
     position: relative;
@@ -142,7 +142,7 @@
 }
 
 .about-workshop {
-    padding: 96px 0 98px;
+    padding: 64px 0;
 }
 .about-workshop__content {
     max-width: 29rem;
@@ -266,4 +266,7 @@
     .about-workshop h2 {
         font-size: clamp(1.9rem, 10vw, 2.3rem);
     }
+}
+.row.g-5.g-xl-5.align-items-center {
+    margin: 0
 }

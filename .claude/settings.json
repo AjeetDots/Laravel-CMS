@@ -9,7 +9,9 @@
       "Bash(Select-Object Name, FullName)",
       "WebFetch(domain:www.figma.com)",
       "WebFetch(domain:192.168.9.129)",
-      "WebFetch(domain:img.lightshot.app)"
+      "WebFetch(domain:img.lightshot.app)",
+      "Bash(php -l \"c:\\\\xampp\\\\htdocs\\\\laravel_cms\\\\app\\\\Models\\\\EmailTemplate.php\")",
+      "Bash(python -c ' *)"
     ],
     "additionalDirectories": [
       "d:\\xampp\\htdocs\\laravel_cms\\public"

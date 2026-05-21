@@ -54,12 +54,13 @@ class EmailTemplate extends Model
     public static function shortcodeReference(): array
     {
         return [
-            '{{user_name}}' => 'Submitter’s name',
+            '{{user_name}}' => 'Submitter\'s name',
             '{{email}}' => 'Email address',
             '{{phone}}' => 'Phone number',
             '{{subject}}' => 'Message subject line',
             '{{message}}' => 'Message body',
             '{{date}}' => 'Date/time of submission',
+            '{{site_name}}' => 'Website / company name',
         ];
     }
 
@@ -81,7 +82,7 @@ class EmailTemplate extends Model
                 'name' => 'Contact Form Admin Alert',
                 'slug' => 'contact-form-admin-alert',
                 'subject' => 'New contact enquiry from {{user_name}}',
-                'body' => "<p>A new contact enquiry has been submitted.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Phone: {{phone}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{message}}</li>\n<li>Date: {{date}}</li>\n</ul>",
+                'body' => "<p>A new contact enquiry has been submitted.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Phone: {{phone}}</li>\n<li>Subject: {{subject}}</li>\n<li>Message: {{message}}</li>\n<li>Date: {{date}}</li>\n</ul>\n<p>Regards,<br>{{site_name}}</p>",
             ],
             self::TYPE_NEWSLETTER_CLIENT => [
                 'name' => 'Newsletter Welcome',
@@ -93,7 +94,7 @@ class EmailTemplate extends Model
                 'name' => 'Newsletter Admin Alert',
                 'slug' => 'newsletter-admin-alert',
                 'subject' => 'New newsletter subscription: {{email}}',
-                'body' => "<p>A new newsletter subscription was received.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Date: {{date}}</li>\n</ul>",
+                'body' => "<p>A new newsletter subscription was received.</p>\n<ul>\n<li>Name: {{user_name}}</li>\n<li>Email: {{email}}</li>\n<li>Date: {{date}}</li>\n</ul>\n<p>Regards,<br>{{site_name}}</p>",
             ],
         ];
     }

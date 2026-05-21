@@ -91,9 +91,9 @@
     </div>
     @endif
 
-    <div class="hero-scroll-cue" aria-hidden="true">
+    <!-- <div class="hero-scroll-cue" aria-hidden="true">
         <span class="hero-scroll-label">Explore</span>
         <span class="hero-scroll-line"></span>
-    </div>
+    </div> -->
 
 </section>

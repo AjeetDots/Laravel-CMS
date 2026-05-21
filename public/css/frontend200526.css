@@ -80,8 +80,6 @@
 *::before,
 *::after {
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 *{
     transition: all ease-in-out 0.3s;
@@ -2076,7 +2074,7 @@ img {
     align-items: stretch;
     flex-wrap: nowrap;
     width: max-content;
-    animation: brandScroll var(--brand-scroll-duration, 48s) linear infinite;
+    animation: brandScroll 48s linear infinite;
     will-change: transform;
 }
 
@@ -2960,7 +2958,7 @@ textarea.form-control {
 ═══════════════════════════════════════ */
 .cta-strip {
     background: var(--cream-bg);
-    padding: 80px 0;
+    padding: 128px 0;
     color: var(--ink);
     position: relative;
     overflow: hidden;
@@ -3083,7 +3081,7 @@ textarea.form-control {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    padding: 80px 0 0;
+    padding: 96px 0 0;
     background: url(../images/Footer.jpg) no-repeat center center/cover;
 }
 
@@ -3095,7 +3093,7 @@ textarea.form-control {
 }
 
 .site-footer .footer-main {
-    padding-bottom: 12px ;
+    padding-bottom: 12px;
 }
 
 .site-footer .row.g-5 {

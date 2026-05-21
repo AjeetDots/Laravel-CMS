@@ -38,7 +38,7 @@
 )
 <section class="about-story">
     <div class="container">
-        <div class="row g-5 align-items-center">
+        <div class="row g-3 g-md-5 align-items-center">
             <div class="col-lg-6">
                 <!-- <div class="about-story__collage">
                     <span class="about-story__shape about-story__shape--arc" aria-hidden="true"></span>
@@ -151,8 +151,8 @@
 )
 <section class="about-workshop">
     <div class="container">
-        <div class="row g-5 align-items-center">
-            <div class="col-lg-5 col-sm-12 order-lg-1 order-xl-1 order-md-2 order-2">
+        <div class="row g-3 g-md-5 align-items-center">
+            <div class="col-lg-5 g-3 g-md-5 col-sm-12 order-lg-1 order-xl-1 order-md-2 order-2">
                 <div class="about-workshop__content reveal-left">
                     @if(trim((string) ($ap['workshop_eyebrow'] ?? '')) !== '')
                     <span class="about-workshop__eyebrow">{{ $ap['workshop_eyebrow'] }}</span>
