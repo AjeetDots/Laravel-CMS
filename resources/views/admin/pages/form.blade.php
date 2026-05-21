@@ -90,6 +90,22 @@
     <div class="row g-4 align-items-start cms-page-edit-layout">
         <div class="col-lg-8 cms-page-edit-main order-lg-1">
             @if($themeOptionsRoute)
+            <div class="card mb-4">
+                <div class="card-header fw-semibold">Page Details</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="titleInput">Title *</label>
+                        <input type="text" name="title" id="titleInput" class="form-control"
+                               value="{{ old('title', $page->title) }}" required>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label" for="slugInput">Slug</label>
+                        <input type="text" name="slug" id="slugInput" class="form-control"
+                               value="{{ old('slug', $page->slug) }}" placeholder="auto-generated if empty">
+                        <div class="form-text small">Used in the page URL. For About pages use <code>about</code> or <code>about-us</code>; for Contact pages use <code>contact</code> or <code>contact-us</code>.</div>
+                    </div>
+                </div>
+            </div>
             <div class="card mb-4 border-primary-subtle">
                 <div class="card-header bg-primary-subtle text-primary-emphasis fw-semibold">
                     <i class="fas fa-circle-info me-2"></i>{{ $themeOptionsLabel }} Content
