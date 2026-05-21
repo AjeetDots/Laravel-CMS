@@ -47,17 +47,19 @@
         <div class="row g-4">
             @forelse($posts as $post)
             <div class="col-md-6 col-lg-4 reveal delay-{{ ($loop->index % 3) + 1 }}">
-                <a href="{{ route('blog.show', $post->slug) }}" class="blog-card d-block">
+                <article class="blog-card h-100">
                     <div class="blog-card-img-wrap">
-                        <img src="{{ $post->image_url }}" alt="{{ $post->title }}" class="blog-card-img" loading="lazy" decoding="async">
+                        <a href="{{ route('blog.show', $post->slug) }}" class="d-block" tabindex="-1" aria-hidden="true">
+                            <img src="{{ $post->image_url }}" alt="" class="blog-card-img" loading="lazy" decoding="async">
+                        </a>
                         @if($post->postCategory)
-                            <a href="{{ route('blog.category', $post->postCategory->slug) }}"
-                               class="blog-badge"
-                               onclick="event.stopPropagation()">{{ $post->postCategory->name }}</a>
+                            <a href="{{ route('blog.category', $post->postCategory->slug) }}" class="blog-badge">{{ $post->postCategory->name }}</a>
                         @endif
                     </div>
                     <div class="blog-card-body">
-                        <h3 class="blog-card-title">{{ $post->title }}</h3>
+                        <h3 class="blog-card-title">
+                            <a href="{{ route('blog.show', $post->slug) }}">{{ $post->title }}</a>
+                        </h3>
                         @if($post->excerpt)
                             <p class="blog-card-excerpt">{{ Str::limit($post->excerpt, 100) }}</p>
                         @endif
@@ -65,9 +67,9 @@
                             @if($post->author)<span><i class="fas fa-user me-1"></i>{{ $post->author }}</span>@endif
                             <span><i class="far fa-clock me-1"></i>{{ $post->reading_time }}</span>
                         </div>
-                        <span class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <a href="{{ route('blog.show', $post->slug) }}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
                     </div>
-                </a>
+                </article>
             </div>
             @empty
             <div class="col-12 text-center py-5">
@@ -93,5 +95,6 @@
 @endsection
 
 @section('styles')
-<link href="{{ asset('css/blog.css') }}" rel="stylesheet">
+@php $__blogCss = public_path('css/blog.css'); $__blogCssV = is_file($__blogCss) ? filemtime($__blogCss) : time(); @endphp
+<link href="{{ asset('css/blog.css') }}?v={{ $__blogCssV }}" rel="stylesheet">
 @endsection

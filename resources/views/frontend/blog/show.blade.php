@@ -114,18 +114,22 @@
         <div class="row g-4">
             @foreach($related as $r)
             <div class="col-md-4">
-                <a href="{{ route('blog.show', $r->slug) }}" class="blog-card d-block">
+                <article class="blog-card h-100">
                     <div class="blog-card-img-wrap">
-                        <img src="{{ $r->image_url }}" alt="{{ $r->title }}" class="blog-card-img" loading="lazy" decoding="async">
+                        <a href="{{ route('blog.show', $r->slug) }}" class="d-block" tabindex="-1" aria-hidden="true">
+                            <img src="{{ $r->image_url }}" alt="" class="blog-card-img" loading="lazy" decoding="async">
+                        </a>
                         @if($r->postCategory)
                             <a href="{{ route('blog.category', $r->postCategory->slug) }}" class="blog-badge">{{ $r->postCategory->name }}</a>
                         @endif
                     </div>
                     <div class="blog-card-body">
-                        <h3 class="blog-card-title">{{ $r->title }}</h3>
-                        <span class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></span>
+                        <h3 class="blog-card-title">
+                            <a href="{{ route('blog.show', $r->slug) }}">{{ $r->title }}</a>
+                        </h3>
+                        <a href="{{ route('blog.show', $r->slug) }}" class="blog-read-more">Read More <i class="fas fa-arrow-right"></i></a>
                     </div>
-                </a>
+                </article>
             </div>
             @endforeach
         </div>
@@ -136,5 +140,6 @@
 @endsection
 
 @section('styles')
-<link href="{{ asset('css/blog.css') }}" rel="stylesheet">
+@php $__blogCss = public_path('css/blog.css'); $__blogCssV = is_file($__blogCss) ? filemtime($__blogCss) : time(); @endphp
+<link href="{{ asset('css/blog.css') }}?v={{ $__blogCssV }}" rel="stylesheet">
 @endsection
