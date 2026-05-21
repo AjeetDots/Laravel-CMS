@@ -61,13 +61,15 @@
     <h2>Contents</h2>
     <ol class="toc">
         <li><a href="#intro">Welcome</a></li>
+        <li><a href="#account-security">Login, password &amp; account</a></li>
         <li><a href="#admin-basics">Using the admin panel</a></li>
         <li><a href="#site-map">How the site is built</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#testimonials">Testimonials</a></li>
         <li><a href="#brands">Brands</a></li>
-        <li><a href="#other-content">Other content</a></li>
-        <li><a href="#content-hub">Content Hub (home page)</a></li>
+        <li><a href="#sliders">Sliders &amp; hero</a></li>
+        <li><a href="#other-content">Gallery, blog &amp; pages</a></li>
+        <li><a href="#content-hub">Content Hub</a></li>
         <li><a href="#menus-logos">Menus &amp; logos</a></li>
         <li><a href="#seo">SEO</a></li>
         <li><a href="#communication">Messages &amp; email</a></li>

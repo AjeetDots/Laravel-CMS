@@ -156,13 +156,15 @@
         <div class="fw-semibold small text-uppercase text-muted mb-2">On this page</div>
         <nav class="nav flex-column">
             <a class="nav-link" href="#intro">Welcome</a>
+            <a class="nav-link" href="#account-security">Login, password &amp; account</a>
             <a class="nav-link" href="#admin-basics">Using the admin panel</a>
             <a class="nav-link" href="#site-map">How the site is built</a>
             <a class="nav-link" href="#services">Services</a>
             <a class="nav-link" href="#testimonials">Testimonials</a>
             <a class="nav-link" href="#brands">Brands</a>
-            <a class="nav-link" href="#other-content">Other content</a>
-            <a class="nav-link" href="#content-hub">Content Hub (home page)</a>
+            <a class="nav-link" href="#sliders">Sliders &amp; hero</a>
+            <a class="nav-link" href="#other-content">Gallery, blog &amp; pages</a>
+            <a class="nav-link" href="#content-hub">Content Hub</a>
             <a class="nav-link" href="#menus-logos">Menus &amp; logos</a>
             <a class="nav-link" href="#seo">SEO</a>
             <a class="nav-link" href="#communication">Messages &amp; email</a>
