@@ -6,7 +6,10 @@ use App\Http\Controllers\Admin\Concerns\AppliesAdminTableFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StorePageRequest;
 use App\Http\Requests\Admin\UpdatePageRequest;
+use App\Models\FooterNavLink;
+use App\Models\Menu;
 use App\Models\Page;
+use App\Support\FrontendViewCache;
 
 class PageController extends Controller
 {
@@ -99,7 +102,20 @@ class PageController extends Controller
             $data['sidebar_cta_text'] = null;
             $data['sidebar_cta_button_text'] = null;
         }
+        $oldSlug = $page->slug;
+        $newSlug = $data['slug'] ?? $oldSlug;
+
         $page->update($data);
+
+        if ($oldSlug !== $newSlug) {
+            $oldUrl = '/' . ltrim($oldSlug, '/');
+            $newUrl = '/' . ltrim($newSlug, '/');
+            Menu::where('url', $oldUrl)->update(['url' => $newUrl]);
+            FooterNavLink::where('url', $oldUrl)->update(['url' => $newUrl]);
+            FrontendViewCache::forgetNavMenus();
+            \Illuminate\Support\Facades\Artisan::call('route:clear');
+        }
+
         $page->sections()->delete();
         if ($page->template === Page::TEMPLATE_ABOUT) {
             $page->saveSeo($request->input('seo', []));

@@ -51,6 +51,11 @@ class UpdatePageRequest extends FormRequest
         );
         $allowedTemplates = Page::allowedTemplatesForSlug($resolvedSlug);
 
+        $page = $this->route('page');
+        if ($page instanceof Page && $page->hasFixedTemplate()) {
+            $allowedTemplates = array_unique(array_merge($allowedTemplates, [$page->template]));
+        }
+
         return array_merge([
             'title' => 'required|string|max:200',
             'slug' => ['nullable', 'string', 'max:200', Rule::unique('pages', 'slug')->ignore($id)->whereNull('deleted_at')],

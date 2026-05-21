@@ -43,6 +43,14 @@ class Page extends Model
     /** About editorial layout (theme About content). */
     public const TEMPLATE_ABOUT = 'about';
 
+    /** Dedicated listing pages — content managed via Theme Options. */
+    public const TEMPLATE_HOME = 'home';
+    public const TEMPLATE_SERVICES = 'services';
+    public const TEMPLATE_FINISHES = 'finishes';
+    public const TEMPLATE_PORTFOLIO = 'portfolio';
+    public const TEMPLATE_GALLERY = 'gallery';
+    public const TEMPLATE_BLOG = 'blog';
+
     /** Setting key for the template pre-selected when creating a new page. */
     public const SETTING_DEFAULT_TEMPLATE = 'page_default_template';
 
@@ -236,17 +244,32 @@ class Page extends Model
     public static function adminTemplateOptions(): array
     {
         return [
-            self::TEMPLATE_ABOUT => 'About Page (Editorial)',
-            self::TEMPLATE_DEFAULT => 'Default',
+            self::TEMPLATE_HOME      => 'Home Page',
+            self::TEMPLATE_SERVICES  => 'Services Listing',
+            self::TEMPLATE_FINISHES  => 'Finishes Listing',
+            self::TEMPLATE_PORTFOLIO => 'Projects Listing',
+            self::TEMPLATE_GALLERY   => 'Gallery',
+            self::TEMPLATE_BLOG      => 'Blog Listing',
+            self::TEMPLATE_ABOUT     => 'About Page (Editorial)',
+            self::TEMPLATE_CONTACT   => 'Contact (theme content and form)',
+            self::TEMPLATE_DEFAULT   => 'Default',
             self::TEMPLATE_FULL_WIDTH => 'Full Width',
-            self::TEMPLATE_SIDEBAR => 'With Sidebar',
-            self::TEMPLATE_CONTACT => 'Contact (theme content and form)',
+            self::TEMPLATE_SIDEBAR   => 'With Sidebar',
         ];
     }
 
     public function hasFixedTemplate(): bool
     {
-        return in_array($this->template, [self::TEMPLATE_CONTACT, self::TEMPLATE_ABOUT], true);
+        return in_array($this->template, [
+            self::TEMPLATE_CONTACT,
+            self::TEMPLATE_ABOUT,
+            self::TEMPLATE_HOME,
+            self::TEMPLATE_SERVICES,
+            self::TEMPLATE_FINISHES,
+            self::TEMPLATE_PORTFOLIO,
+            self::TEMPLATE_GALLERY,
+            self::TEMPLATE_BLOG,
+        ], true);
     }
 
     public function fixedTemplateLabel(): string

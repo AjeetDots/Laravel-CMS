@@ -38,20 +38,34 @@ use Illuminate\Support\Facades\Route;
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap');
 Route::get('/robots.txt', [RobotsController::class,  'index'])->name('robots');
 
+// ── Dynamic slugs for template pages (reads DB; falls back to defaults if DB unavailable) ──
+$_servicesSlug  = 'services';
+$_finishesSlug  = 'finishes';
+$_portfolioSlug = 'portfolio';
+$_gallerySlug   = 'gallery';
+$_blogSlug      = 'blog';
+try {
+    $_servicesSlug  = \App\Models\Page::where('template', 'services')->value('slug')  ?: 'services';
+    $_finishesSlug  = \App\Models\Page::where('template', 'finishes')->value('slug')  ?: 'finishes';
+    $_portfolioSlug = \App\Models\Page::where('template', 'portfolio')->value('slug') ?: 'portfolio';
+    $_gallerySlug   = \App\Models\Page::where('template', 'gallery')->value('slug')   ?: 'gallery';
+    $_blogSlug      = \App\Models\Page::where('template', 'blog')->value('slug')      ?: 'blog';
+} catch (\Throwable $e) { /* first deploy / migration pending */ }
+
 // ── Frontend Routes ──────────────────────────────────────────────
 Route::get('/', [HomeController::class,             'index'])->name('home');
-Route::get('/services', [ServiceController::class,          'index'])->name('services');
-Route::get('/services/{slug}', [ServiceController::class,          'show'])->name('services.show');
-Route::get('/finishes', [FrontendFinishController::class,   'index'])->name('finishes');
-Route::get('/finishes/{slug}', [FrontendFinishController::class,   'show'])->name('finishes.show');
-Route::get('/portfolio', [FrontendPortfolioController::class, 'index'])->name('portfolio');
-Route::get('/portfolio/{slug}', [FrontendPortfolioController::class, 'show'])->name('portfolio.show');
-Route::get('/gallery', [GalleryController::class,          'index'])->name('gallery');
+Route::get('/' . $_servicesSlug,            [ServiceController::class,        'index'])->name('services');
+Route::get('/' . $_servicesSlug . '/{slug}',[ServiceController::class,        'show'])->name('services.show');
+Route::get('/' . $_finishesSlug,            [FrontendFinishController::class, 'index'])->name('finishes');
+Route::get('/' . $_finishesSlug . '/{slug}',[FrontendFinishController::class, 'show'])->name('finishes.show');
+Route::get('/' . $_portfolioSlug,           [FrontendPortfolioController::class, 'index'])->name('portfolio');
+Route::get('/' . $_portfolioSlug . '/{slug}',[FrontendPortfolioController::class,'show'])->name('portfolio.show');
+Route::get('/' . $_gallerySlug,                          [GalleryController::class, 'index'])->name('gallery');
 Route::post('/contact', [ContactController::class,          'store'])->name('contact.store');
 require __DIR__.'/contact.php';
-Route::get('/blog', [BlogController::class,             'index'])->name('blog.index');
-Route::get('/blog/category/{slug}', [BlogController::class,        'category'])->name('blog.category');
-Route::get('/blog/{slug}', [BlogController::class,             'show'])->name('blog.show');
+Route::get('/' . $_blogSlug,                             [BlogController::class, 'index'])->name('blog.index');
+Route::get('/' . $_blogSlug . '/category/{slug}',        [BlogController::class, 'category'])->name('blog.category');
+Route::get('/' . $_blogSlug . '/{slug}',                 [BlogController::class, 'show'])->name('blog.show');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 // ── Admin Auth ────────────────────────────────────────────────────

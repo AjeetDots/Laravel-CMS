@@ -66,24 +66,22 @@
         $themeOptionsRoute = null;
         $themeOptionsLabel = null;
         if (isset($page->id)) {
-            if ($page->template === \App\Models\Page::TEMPLATE_ABOUT) {
-                $themeOptionsRoute = route('admin.theme-options.about.index');
-                $themeOptionsLabel = 'About Page';
-            } elseif ($page->template === \App\Models\Page::TEMPLATE_CONTACT) {
-                $themeOptionsRoute = route('admin.theme-options.contact.index');
-                $themeOptionsLabel = 'Contact Page';
-            } elseif (\App\Models\Page::isHomeSlug($page->slug)) {
+            $templateRouteMap = [
+                \App\Models\Page::TEMPLATE_ABOUT     => ['admin.theme-options.about.index',     'About Page'],
+                \App\Models\Page::TEMPLATE_CONTACT   => ['admin.theme-options.contact.index',   'Contact Page'],
+                \App\Models\Page::TEMPLATE_HOME      => ['admin.theme-options.home.index',      'Home Page'],
+                \App\Models\Page::TEMPLATE_SERVICES  => ['admin.theme-options.services.index',  'Services Page'],
+                \App\Models\Page::TEMPLATE_FINISHES  => ['admin.theme-options.finishes.index',  'Finishes Page'],
+                \App\Models\Page::TEMPLATE_PORTFOLIO => ['admin.theme-options.portfolio.index', 'Projects Page'],
+                \App\Models\Page::TEMPLATE_GALLERY   => ['admin.theme-options.gallery.index',   'Gallery Page'],
+                \App\Models\Page::TEMPLATE_BLOG      => [null, 'Blog Page'],
+            ];
+            if (\App\Models\Page::isHomeSlug($page->slug) && !isset($page->template)) {
                 $themeOptionsRoute = route('admin.theme-options.home.index');
                 $themeOptionsLabel = 'Home Page';
-            } elseif ($page->slug === 'finishes') {
-                $themeOptionsRoute = route('admin.theme-options.finishes.index');
-                $themeOptionsLabel = 'Finishes Page';
-            } elseif ($page->slug === 'services') {
-                $themeOptionsRoute = route('admin.theme-options.services.index');
-                $themeOptionsLabel = 'Services Page';
-            } elseif ($page->slug === 'portfolio') {
-                $themeOptionsRoute = route('admin.theme-options.portfolio.index');
-                $themeOptionsLabel = 'Projects Page';
+            } elseif (isset($templateRouteMap[$page->template])) {
+                [$routeName, $themeOptionsLabel] = $templateRouteMap[$page->template];
+                $themeOptionsRoute = $routeName ? route($routeName) : null;
             }
         }
     @endphp

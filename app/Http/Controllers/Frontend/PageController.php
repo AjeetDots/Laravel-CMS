@@ -29,6 +29,19 @@ class PageController extends Controller
             }
         }
 
+        $dispatchMap = [
+            Page::TEMPLATE_SERVICES  => [ServiceController::class,  'index'],
+            Page::TEMPLATE_FINISHES  => [FinishController::class,    'index'],
+            Page::TEMPLATE_PORTFOLIO => [PortfolioController::class, 'index'],
+            Page::TEMPLATE_GALLERY   => [GalleryController::class,   'index'],
+            Page::TEMPLATE_BLOG      => [BlogController::class,      'index'],
+        ];
+
+        if (isset($dispatchMap[$page->template])) {
+            [$class, $method] = $dispatchMap[$page->template];
+            return app($class)->$method();
+        }
+
         $template = 'frontend.pages.'.$page->template;
         if (! view()->exists($template)) {
             $template = 'frontend.pages.'.Page::TEMPLATE_FULL_WIDTH;
