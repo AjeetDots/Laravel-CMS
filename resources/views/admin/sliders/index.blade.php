@@ -11,6 +11,8 @@
     </a>
 </div>
 
+@include('admin.partials.module-visibility-toggle', ['module' => 'sliders'])
+
 @include('admin.partials.listing-toolbar', ['showStatus' => true])
 
 <div class="card">

@@ -1,4 +1,4 @@
-@if($testimonials->isNotEmpty())
+@if(\App\Support\CmsModuleVisibility::isEnabled('testimonials') && $testimonials->isNotEmpty())
 @php
     $testimonialsCfg = $testimonialsSection ?? [];
     $leftPanelEyebrow = trim((string) ($testimonialsCfg['left_eyebrow'] ?? ''));

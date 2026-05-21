@@ -1,6 +1,7 @@
 @php
     $servicesCfg = $servicesSection ?? [];
-    $servicesEnabled = array_key_exists('is_enabled', $servicesCfg) ? !empty($servicesCfg['is_enabled']) : true;
+    $servicesEnabled = \App\Support\CmsModuleVisibility::isEnabled('services')
+        && (array_key_exists('is_enabled', $servicesCfg) ? !empty($servicesCfg['is_enabled']) : true);
     $servicesEyebrow = $servicesCfg['eyebrow'] ?? '';
     $servicesHeadingLine1 = $servicesCfg['heading_line_1'] ?? '';
     $servicesHeadingLine2 = $servicesCfg['heading_line_2'] ?? '';

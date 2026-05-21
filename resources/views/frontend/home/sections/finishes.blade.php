@@ -1,6 +1,7 @@
 @php
     $finishesCfg = $finishesSection ?? [];
-    $finishesEnabled = array_key_exists('is_enabled', $finishesCfg) ? !empty($finishesCfg['is_enabled']) : true;
+    $finishesEnabled = \App\Support\CmsModuleVisibility::isEnabled('finishes')
+        && (array_key_exists('is_enabled', $finishesCfg) ? !empty($finishesCfg['is_enabled']) : true);
     $finishesEyebrow = $finishesCfg['eyebrow'] ?? '';
     $finishesHeadingLine1 = $finishesCfg['heading_line_1'] ?? '';
     $finishesHeadingLine2 = $finishesCfg['heading_line_2'] ?? '';

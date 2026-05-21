@@ -158,6 +158,7 @@
             <a class="nav-link" href="#intro">Welcome</a>
             <a class="nav-link" href="#account-security">Login, password &amp; account</a>
             <a class="nav-link" href="#admin-basics">Using the admin panel</a>
+            <a class="nav-link" href="#module-visibility">Show or hide modules</a>
             <a class="nav-link" href="#site-map">How the site is built</a>
             <a class="nav-link" href="#services">Services</a>
             <a class="nav-link" href="#testimonials">Testimonials</a>

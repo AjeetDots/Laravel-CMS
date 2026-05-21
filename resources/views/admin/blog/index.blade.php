@@ -9,6 +9,8 @@
     </a>
 </div>
 
+@include('admin.partials.module-visibility-toggle', ['module' => 'blog'])
+
 @include('admin.partials.listing-toolbar', [
     'showStatus' => true,
     'categoryOptions' => $categoryOptions ?? [],

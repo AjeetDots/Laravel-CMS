@@ -13,6 +13,7 @@ use App\Models\Service;
 use App\Models\Slider;
 use App\Models\Testimonial;
 use App\Support\CmsImage;
+use App\Support\CmsModuleVisibility;
 
 class HomePageService implements HomePageServiceInterface
 {
@@ -44,53 +45,71 @@ class HomePageService implements HomePageServiceInterface
         $blogPreviewSection = $this->getBlogPreviewSectionData($pick('blog_preview'));
 
         return [
-            'sliders' => Slider::query()
-                ->where('is_active', true)
-                ->where('panel', 'main')
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->get(),
-            'sliderRight1' => Slider::query()
-                ->where('is_active', true)
-                ->where('panel', 'right_top')
-                ->first(),
-            'sliderRight2' => Slider::query()
-                ->where('is_active', true)
-                ->where('panel', 'right_bottom')
-                ->first(),
-            'services' => Service::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->limit(6)
-                ->get(),
-            'finishes' => Finish::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->orderBy('title')
-                ->limit(6)
-                ->get(),
-            'testimonials' => Testimonial::query()
-                ->where('is_active', true)
-                ->whereNotNull('message')
-                ->where('message', '!=', '')
-                ->orderBy('sort_order')
-                ->get(),
-            'brands' => Brand::query()
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->get(),
-            'blogPosts' => BlogPost::query()
-                ->with('postCategory')
-                ->where('is_active', true)
-                ->orderByDesc('published_at')
-                ->limit(3)
-                ->get(),
-            'gallery' => GalleryItem::query()
-                ->with('galleryCategory')
-                ->where('is_active', true)
-                ->orderBy('sort_order')
-                ->orderBy('id')
-                ->get(),
+            'sliders' => CmsModuleVisibility::isEnabled('sliders')
+                ? Slider::query()
+                    ->where('is_active', true)
+                    ->where('panel', 'main')
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->get()
+                : collect(),
+            'sliderRight1' => CmsModuleVisibility::isEnabled('sliders')
+                ? Slider::query()
+                    ->where('is_active', true)
+                    ->where('panel', 'right_top')
+                    ->first()
+                : null,
+            'sliderRight2' => CmsModuleVisibility::isEnabled('sliders')
+                ? Slider::query()
+                    ->where('is_active', true)
+                    ->where('panel', 'right_bottom')
+                    ->first()
+                : null,
+            'services' => CmsModuleVisibility::isEnabled('services')
+                ? Service::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->limit(6)
+                    ->get()
+                : collect(),
+            'finishes' => CmsModuleVisibility::isEnabled('finishes')
+                ? Finish::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->orderBy('title')
+                    ->limit(6)
+                    ->get()
+                : collect(),
+            'testimonials' => CmsModuleVisibility::isEnabled('testimonials')
+                ? Testimonial::query()
+                    ->where('is_active', true)
+                    ->whereNotNull('message')
+                    ->where('message', '!=', '')
+                    ->orderBy('sort_order')
+                    ->get()
+                : collect(),
+            'brands' => CmsModuleVisibility::isEnabled('brands')
+                ? Brand::query()
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->get()
+                : collect(),
+            'blogPosts' => CmsModuleVisibility::isEnabled('blog')
+                ? BlogPost::query()
+                    ->with('postCategory')
+                    ->where('is_active', true)
+                    ->orderByDesc('published_at')
+                    ->limit(3)
+                    ->get()
+                : collect(),
+            'gallery' => CmsModuleVisibility::isEnabled('gallery')
+                ? GalleryItem::query()
+                    ->with('galleryCategory')
+                    ->where('is_active', true)
+                    ->orderBy('sort_order')
+                    ->orderBy('id')
+                    ->get()
+                : collect(),
             'atelierSection' => $atelierSection,
             'finishesSection' => $finishesSection,
             'servicesSection' => $servicesSection,

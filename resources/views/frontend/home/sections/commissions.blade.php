@@ -1,6 +1,7 @@
 @php
     $commissionsCfg = $commissionsSection ?? [];
-    $commissionsEnabled = array_key_exists('is_enabled', $commissionsCfg) ? ! empty($commissionsCfg['is_enabled']) : true;
+    $commissionsEnabled = \App\Support\CmsModuleVisibility::isEnabled('gallery')
+        && (array_key_exists('is_enabled', $commissionsCfg) ? ! empty($commissionsCfg['is_enabled']) : true);
     $commissionsEyebrow = $commissionsCfg['eyebrow'] ?? '';
     $commissionsHeadingLine1 = $commissionsCfg['heading_line_1'] ?? '';
     $commissionsBtnText = $commissionsCfg['button_text'] ?? '';

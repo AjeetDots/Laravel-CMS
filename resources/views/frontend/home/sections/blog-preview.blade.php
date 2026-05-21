@@ -1,6 +1,7 @@
 @php
     $blogPreviewCfg = $blogPreviewSection ?? [];
-    $blogPreviewEnabled = array_key_exists('is_enabled', $blogPreviewCfg) ? !empty($blogPreviewCfg['is_enabled']) : true;
+    $blogPreviewEnabled = \App\Support\CmsModuleVisibility::isEnabled('blog')
+        && (array_key_exists('is_enabled', $blogPreviewCfg) ? !empty($blogPreviewCfg['is_enabled']) : true);
     $blogPreviewEyebrow = $blogPreviewCfg['eyebrow'] ?? '';
     $blogPreviewHeading = $blogPreviewCfg['heading'] ?? '';
     $blogPreviewButtonText = trim((string) ($blogPreviewCfg['button_text'] ?? ''));

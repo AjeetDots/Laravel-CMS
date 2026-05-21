@@ -1,6 +1,6 @@
 @extends('layouts.frontend')
 @section('title', 'Home')
-@section('body_class', 'has-hero page-home')
+@section('body_class', (\App\Support\CmsModuleVisibility::isEnabled('sliders') ? 'has-hero ' : '') . 'page-home')
 @section('styles')
     @php
         $__homeCss = public_path('css/home.css');
@@ -10,19 +10,32 @@
 @endsection
 
 @section('content')
-    @include('frontend.home.sections.hero')
+    @if(\App\Support\CmsModuleVisibility::isEnabled('sliders'))
+        @include('frontend.home.sections.hero')
+    @endif
     @include('frontend.home.sections.atelier')
-    @include('frontend.home.sections.finishes')
-    @include('frontend.home.sections.services')
-      @include('frontend.home.sections.commissions')
+    @if(\App\Support\CmsModuleVisibility::isEnabled('finishes'))
+        @include('frontend.home.sections.finishes')
+    @endif
+    @if(\App\Support\CmsModuleVisibility::isEnabled('services'))
+        @include('frontend.home.sections.services')
+    @endif
+    @if(\App\Support\CmsModuleVisibility::isEnabled('gallery'))
+        @include('frontend.home.sections.commissions')
+    @endif
     @include('frontend.home.sections.why')
     @include('frontend.home.sections.process')
-  
-    @include('frontend.home.sections.testimonials')
+    @if(\App\Support\CmsModuleVisibility::isEnabled('testimonials'))
+        @include('frontend.home.sections.testimonials')
+    @endif
     @include('frontend.home.sections.begin-cta')
     @include('frontend.home.sections.contact-band')
-    @include('frontend.home.sections.brands')
-    @include('frontend.home.sections.blog-preview')
+    @if(\App\Support\CmsModuleVisibility::isEnabled('brands'))
+        @include('frontend.home.sections.brands')
+    @endif
+    @if(\App\Support\CmsModuleVisibility::isEnabled('blog'))
+        @include('frontend.home.sections.blog-preview')
+    @endif
 
 @endsection
 

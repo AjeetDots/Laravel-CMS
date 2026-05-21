@@ -9,6 +9,8 @@
     </a>
 </div>
 
+@include('admin.partials.module-visibility-toggle', ['module' => 'portfolio'])
+
 @include('admin.partials.listing-toolbar', ['showStatus' => true, 'showProjectType' => true])
 
 <div class="card">

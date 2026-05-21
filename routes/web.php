@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\GalleryCategoryController;
 use App\Http\Controllers\Admin\GalleryController as AdminGalleryController;
 use App\Http\Controllers\Admin\FooterNavigationController;
 use App\Http\Controllers\Admin\MenuController;
+use App\Http\Controllers\Admin\ModuleVisibilityController;
 use App\Http\Controllers\Admin\NewsletterController as AdminNewsletterController;
 use App\Http\Controllers\Admin\PageController as AdminPageController;
 use App\Http\Controllers\Admin\PortfolioController as AdminPortfolioController;
@@ -54,18 +55,18 @@ try {
 
 // ── Frontend Routes ──────────────────────────────────────────────
 Route::get('/', [HomeController::class,             'index'])->name('home');
-Route::get('/' . $_servicesSlug,            [ServiceController::class,        'index'])->name('services');
-Route::get('/' . $_servicesSlug . '/{slug}',[ServiceController::class,        'show'])->name('services.show');
-Route::get('/' . $_finishesSlug,            [FrontendFinishController::class, 'index'])->name('finishes');
-Route::get('/' . $_finishesSlug . '/{slug}',[FrontendFinishController::class, 'show'])->name('finishes.show');
-Route::get('/' . $_portfolioSlug,           [FrontendPortfolioController::class, 'index'])->name('portfolio');
-Route::get('/' . $_portfolioSlug . '/{slug}',[FrontendPortfolioController::class,'show'])->name('portfolio.show');
-Route::get('/' . $_gallerySlug,                          [GalleryController::class, 'index'])->name('gallery');
+Route::get('/' . $_servicesSlug,            [ServiceController::class,        'index'])->middleware('cms.module:services')->name('services');
+Route::get('/' . $_servicesSlug . '/{slug}',[ServiceController::class,        'show'])->middleware('cms.module:services')->name('services.show');
+Route::get('/' . $_finishesSlug,            [FrontendFinishController::class, 'index'])->middleware('cms.module:finishes')->name('finishes');
+Route::get('/' . $_finishesSlug . '/{slug}',[FrontendFinishController::class, 'show'])->middleware('cms.module:finishes')->name('finishes.show');
+Route::get('/' . $_portfolioSlug,           [FrontendPortfolioController::class, 'index'])->middleware('cms.module:portfolio')->name('portfolio');
+Route::get('/' . $_portfolioSlug . '/{slug}',[FrontendPortfolioController::class,'show'])->middleware('cms.module:portfolio')->name('portfolio.show');
+Route::get('/' . $_gallerySlug,                          [GalleryController::class, 'index'])->middleware('cms.module:gallery')->name('gallery');
 Route::post('/contact', [ContactController::class,          'store'])->name('contact.store');
 require __DIR__.'/contact.php';
-Route::get('/' . $_blogSlug,                             [BlogController::class, 'index'])->name('blog.index');
-Route::get('/' . $_blogSlug . '/category/{slug}',        [BlogController::class, 'category'])->name('blog.category');
-Route::get('/' . $_blogSlug . '/{slug}',                 [BlogController::class, 'show'])->name('blog.show');
+Route::get('/' . $_blogSlug,                             [BlogController::class, 'index'])->middleware('cms.module:blog')->name('blog.index');
+Route::get('/' . $_blogSlug . '/category/{slug}',        [BlogController::class, 'category'])->middleware('cms.module:blog')->name('blog.category');
+Route::get('/' . $_blogSlug . '/{slug}',                 [BlogController::class, 'show'])->middleware('cms.module:blog')->name('blog.show');
 Route::post('/newsletter/subscribe', [NewsletterController::class, 'subscribe'])->name('newsletter.subscribe');
 
 // ── Admin Auth ────────────────────────────────────────────────────
@@ -87,6 +88,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
         Route::get('user-manual', [UserManualController::class, 'index'])->name('user-manual.index');
         Route::get('user-manual/export', [UserManualController::class, 'export'])->name('user-manual.export');
+        Route::post('modules/{module}/visibility', [ModuleVisibilityController::class, 'update'])
+            ->name('modules.visibility');
 
         // Content modules
         Route::resource('sliders', SliderController::class);

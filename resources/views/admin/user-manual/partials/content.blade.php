@@ -1,6 +1,27 @@
 ﻿@php
+    use App\Support\CmsModuleRegistry;
     use App\Support\UserManualUrls;
     $abs = !empty($wordExport);
+    $moduleManualRoutes = [
+        'sliders' => 'admin.sliders.index',
+        'services' => 'admin.services.index',
+        'finishes' => 'admin.finishes.index',
+        'portfolio' => 'admin.portfolio.index',
+        'gallery' => 'admin.gallery.index',
+        'testimonials' => 'admin.testimonials.index',
+        'brands' => 'admin.brands.index',
+        'blog' => 'admin.blog.index',
+    ];
+    $moduleManualLabels = [
+        'sliders' => 'Sliders',
+        'services' => 'Services',
+        'finishes' => 'Finishes',
+        'portfolio' => 'Portfolio',
+        'gallery' => 'Gallery',
+        'testimonials' => 'Testimonials',
+        'brands' => 'Brands',
+        'blog' => 'Blog',
+    ];
 @endphp
     <div class="card">
         <div class="card-body p-3 p-lg-4">
@@ -11,7 +32,7 @@
                 <div class="manual-callout manual-callout--info">
                     <strong>Login:</strong> Go to <code>/admin/login</code> on your domain (for example <code>https://yourdomain.com/admin/login</code>). Use the email and password for your admin account. If you forget your password, see <a href="#account-security">Login, password &amp; account</a> below for the full reset steps.
                 </div>
-                <p>After you save changes, click <strong>View site</strong> in the top bar to check the live website in a new tab. If images or menus look old, click <strong>Refresh site caches</strong> first, then view the site again.</p>
+                <p>After you save changes, click <strong>View site</strong> in the top bar to check the live website in a new tab. If images or menus look old, click <strong>Refresh site caches</strong> first, then view the site again. To hide whole features (blog, services, hero, etc.) without deleting content, see <a href="#module-visibility">Show or hide modules on the website</a>.</p>
             </section>
 
             <section id="account-security" class="manual-section">
@@ -96,6 +117,8 @@
                     </table>
                 </div>
 
+                <p class="small text-muted">To show or hide whole areas of the site (Services, Blog, hero sliders, etc.), see <a href="#module-visibility">Show or hide modules on the website</a>.</p>
+
                 <h3 class="h6 mt-4">Common actions on list pages</h3>
                 <ul class="small text-muted">
                     <li><strong>Add</strong> — Creates a new item (service, testimonial, blog post, etc.).</li>
@@ -105,6 +128,77 @@
                     <li><strong>Sort order</strong> — Lower numbers appear first where ordering applies.</li>
                     <li><strong>Search / filters</strong> — Many lists include a toolbar to filter by status or search by title.</li>
                 </ul>
+            </section>
+
+            <section id="module-visibility" class="manual-section">
+                <h2 class="h4 mb-3">Show or hide modules on the website</h2>
+                <p>Some parts of your site can be turned off for visitors without deleting any content. Each major content type has a <strong>visibility switch</strong> at the top of its list page in the admin. This is separate from marking an individual item <strong>Inactive</strong> in the table below.</p>
+
+                <h3 class="h6">Where to find the switch</h3>
+                <p>Open any of these screens — the switch appears in a pale card directly under the page title:</p>
+                <ul class="small">
+                    @foreach($moduleManualLabels as $key => $label)
+                        <li><a href="{{ UserManualUrls::route($moduleManualRoutes[$key], [], $abs) }}">Content → {{ $label }}</a>@if($key === 'gallery') (same switch on <a href="{{ UserManualUrls::route('admin.gallery-categories.index', [], $abs) }}">Gallery Categories</a>)@endif @if($key === 'blog') (same switch on <a href="{{ UserManualUrls::route('admin.categories.index', [], $abs) }}">Blog → Categories</a>)@endif</li>
+                    @endforeach
+                </ul>
+
+                <h3 class="h6 mt-4">How to use it (step by step)</h3>
+                <ol class="manual-steps">
+                    <li>Go to the module you want to control (for example <a href="{{ UserManualUrls::route('admin.services.index', [], $abs) }}">Content → Services</a>).</li>
+                    <li>Find the card labelled <strong>Show … on website</strong> with a toggle switch on the left.</li>
+                    <li>Hover the blue <i class="fas fa-circle-info text-info"></i> <strong>info icon</strong> beside the switch to read what that module affects on the live site.</li>
+                    <li><strong>Turn on</strong> (switch checked) — visitors can see that module on the website (home blocks and listing pages, as listed in the table below).</li>
+                    <li><strong>Turn off</strong> (switch unchecked) — the module is hidden on the public site. Your items remain in the admin; nothing is deleted.</li>
+                    <li>The setting saves automatically when you flip the switch. The status line changes to <em>Visible on live site</em> or <em>Hidden on live site</em>.</li>
+                    <li>Click <strong>Refresh site caches</strong> in the top bar, then <strong>View site</strong> to confirm.</li>
+                </ol>
+
+                <div class="manual-callout manual-callout--info">
+                    <strong>Three layers of “show / hide”:</strong>
+                    <ol class="mb-0 small ps-3">
+                        <li><strong>Module switch</strong> (this section) — master on/off for that whole feature on the website.</li>
+                        <li><strong>Content Hub → Home Page</strong> — hide only a home page block (e.g. Services section titles) while the module can still have its own page.</li>
+                        <li><strong>Active / Inactive</strong> on each row — hide one item inside a module that is otherwise visible.</li>
+                    </ol>
+                    <p class="small mb-0 mt-2">For a home page block to appear, the <strong>module switch must be on</strong> and the matching <strong>Home Page tab</strong> must have “Show section on home page” checked (where that option exists).</p>
+                </div>
+
+                <h3 class="h6 mt-4">What each module controls</h3>
+                <div class="table-responsive">
+                    <table class="table table-sm manual-table align-middle small">
+                        <thead>
+                            <tr>
+                                <th>Module</th>
+                                <th>Switch label (on list page)</th>
+                                <th>What visitors see when ON</th>
+                                <th>When OFF</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach(CmsModuleRegistry::definitions() as $key => $def)
+                            <tr>
+                                <td><a href="{{ UserManualUrls::route($moduleManualRoutes[$key], [], $abs) }}">{{ $moduleManualLabels[$key] }}</a></td>
+                                <td>{{ $def['label'] }}</td>
+                                <td>{{ $def['affects'] }}</td>
+                                <td class="text-muted">Hidden from site; data kept in admin. Public URLs for that module may show a “not found” page.</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 class="h6 mt-4">Examples</h3>
+                <ul class="small">
+                    <li><strong>Pause the blog temporarily</strong> — Open <a href="{{ UserManualUrls::route('admin.blog.index', [], $abs) }}">Blog</a>, turn off <em>Show blog on website</em>, refresh caches. Posts stay in the admin for when you turn it back on.</li>
+                    <li><strong>Hide partner logos only</strong> — Turn off <a href="{{ UserManualUrls::route('admin.brands.index', [], $abs) }}">Brands</a> or disable <strong>Brands Strip</strong> in Content Hub → Home (module off hides everything; Content Hub hides only the home strip).</li>
+                    <li><strong>No hero banner</strong> — Turn off <a href="{{ UserManualUrls::route('admin.sliders.index', [], $abs) }}">Sliders</a>; the home page starts with the next section (e.g. Atelier).</li>
+                    <li><strong>One service hidden</strong> — Leave the Services module on; set that service row to <strong>Inactive</strong> in the list.</li>
+                </ul>
+
+                <div class="manual-callout manual-callout--warn">
+                    <strong>Menus:</strong> If a menu link still points to a hidden module (e.g. Blog), visitors may get an error page. Edit <a href="{{ UserManualUrls::route('admin.menus.index', [], $abs) }}">Appearance → Menus</a> or turn the module back on.
+                </div>
+                <p class="mb-0 small text-muted">Gallery categories and blog categories only matter when Gallery or Blog is visible on the website.</p>
             </section>
 
             <section id="site-map" class="manual-section">
@@ -244,7 +338,7 @@
                 <p>Besides Services, Testimonials, and Brands (covered above), these modules manage the rest of your site content.</p>
 
                 <h3 class="h6" id="sliders">Hero sliders</h3>
-                <p><a href="{{ UserManualUrls::route('admin.sliders.index', [], $abs) }}">Content → Sliders</a> controls the rotating banner at the top of the home page. Each slide has a background image, headline, optional lead paragraph, subtitle (eyebrow), and up to two buttons (primary gold and secondary outline). Lower <strong>sort order</strong> appears first. Only <strong>active</strong> slides rotate.</p>
+                <p><a href="{{ UserManualUrls::route('admin.sliders.index', [], $abs) }}">Content → Sliders</a> controls the rotating banner at the top of the home page. Use <strong>Show hero sliders on website</strong> on that page to remove the whole hero area — see <a href="#module-visibility">module visibility</a>. Each slide has a background image, headline, optional lead paragraph, subtitle (eyebrow), and up to two buttons (primary gold and secondary outline). Lower <strong>sort order</strong> appears first. Only <strong>active</strong> slides rotate.</p>
                 <ol class="manual-steps">
                     <li>Add or edit a slide → upload a wide hero image (landscape works best).</li>
                     <li>Fill <strong>Title</strong> (main headline). Leave button text blank to hide a button on the live site.</li>
@@ -297,6 +391,7 @@
                     <li><strong>Blog preview</strong> — headings for latest posts (posts from Content → Blog)</li>
                 </ul>
                 <p>On each tab, use <strong>Show section on home page</strong> to hide a block without deleting underlying content. One <strong>Save</strong> at the bottom saves all tabs together.</p>
+                <p class="small text-muted">To hide an entire feature site-wide (not just its home block), use the module switch on that module’s list page — see <a href="#module-visibility">Show or hide modules on the website</a>.</p>
 
                 <h3 class="h6 mt-4">Other Content Hub screens</h3>
                 <ul class="small mb-0">
@@ -405,6 +500,7 @@
                 <ul>
                     <li>Update text, images, sliders, services, finishes, portfolio, gallery, testimonials, brands, blog posts</li>
                     <li>Reorder menus, change logos, edit Content Hub section headings</li>
+                    <li>Turn modules on or off for the live site (Services, Blog, Sliders, Gallery, etc.)</li>
                     <li>Improve SEO fields on existing pages</li>
                     <li>Read and log contact enquiries, export newsletter subscribers</li>
                     <li>Change your account password or email (with verification)</li>

@@ -16,6 +16,8 @@
     </div>
 </div>
 
+@include('admin.partials.module-visibility-toggle', ['module' => 'gallery'])
+
 @include('admin.partials.listing-toolbar', [
     'showStatus' => true,
     'galleryCategoryOptions' => $galleryCategoryOptions ?? [],

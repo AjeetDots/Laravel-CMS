@@ -1,6 +1,7 @@
 @php
     $brandsStripCfg = $brandsStripSection ?? [];
-    $brandsStripEnabled = array_key_exists('is_enabled', $brandsStripCfg) ? !empty($brandsStripCfg['is_enabled']) : true;
+    $brandsStripEnabled = \App\Support\CmsModuleVisibility::isEnabled('brands')
+        && (array_key_exists('is_enabled', $brandsStripCfg) ? !empty($brandsStripCfg['is_enabled']) : true);
     $brandsStripKicker = $brandsStripCfg['kicker'] ?? '';
     $brandsStripTitleLine1 = $brandsStripCfg['title_line_1'] ?? '';
     $brandsStripTitleLine2 = $brandsStripCfg['title_line_2'] ?? '';

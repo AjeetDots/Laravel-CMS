@@ -63,6 +63,7 @@
         <li><a href="#intro">Welcome</a></li>
         <li><a href="#account-security">Login, password &amp; account</a></li>
         <li><a href="#admin-basics">Using the admin panel</a></li>
+        <li><a href="#module-visibility">Show or hide modules</a></li>
         <li><a href="#site-map">How the site is built</a></li>
         <li><a href="#services">Services</a></li>
         <li><a href="#testimonials">Testimonials</a></li>
