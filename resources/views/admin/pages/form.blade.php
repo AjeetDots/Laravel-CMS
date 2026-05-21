@@ -62,8 +62,46 @@
         </div>
     @endif
 
+    @php
+        $themeOptionsRoute = null;
+        $themeOptionsLabel = null;
+        if (isset($page->id)) {
+            if ($page->template === \App\Models\Page::TEMPLATE_ABOUT) {
+                $themeOptionsRoute = route('admin.theme-options.about.index');
+                $themeOptionsLabel = 'About Page';
+            } elseif ($page->template === \App\Models\Page::TEMPLATE_CONTACT) {
+                $themeOptionsRoute = route('admin.theme-options.contact.index');
+                $themeOptionsLabel = 'Contact Page';
+            } elseif (\App\Models\Page::isHomeSlug($page->slug)) {
+                $themeOptionsRoute = route('admin.theme-options.home.index');
+                $themeOptionsLabel = 'Home Page';
+            } elseif ($page->slug === 'finishes') {
+                $themeOptionsRoute = route('admin.theme-options.finishes.index');
+                $themeOptionsLabel = 'Finishes Page';
+            } elseif ($page->slug === 'services') {
+                $themeOptionsRoute = route('admin.theme-options.services.index');
+                $themeOptionsLabel = 'Services Page';
+            } elseif ($page->slug === 'portfolio') {
+                $themeOptionsRoute = route('admin.theme-options.portfolio.index');
+                $themeOptionsLabel = 'Projects Page';
+            }
+        }
+    @endphp
     <div class="row g-4 align-items-start cms-page-edit-layout">
         <div class="col-lg-8 cms-page-edit-main order-lg-1">
+            @if($themeOptionsRoute)
+            <div class="card mb-4 border-primary-subtle">
+                <div class="card-header bg-primary-subtle text-primary-emphasis fw-semibold">
+                    <i class="fas fa-circle-info me-2"></i>{{ $themeOptionsLabel }} Content
+                </div>
+                <div class="card-body">
+                    <p class="mb-3">This page's content is managed through the dedicated <strong>{{ $themeOptionsLabel }}</strong> settings — not here.</p>
+                    <a href="{{ $themeOptionsRoute }}" class="btn btn-primary">
+                        <i class="fas fa-pen-to-square me-2"></i>Edit {{ $themeOptionsLabel }} Content
+                    </a>
+                </div>
+            </div>
+            @else
             <div class="card mb-4">
                 <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2">
                     <span>Page Content</span>
@@ -238,6 +276,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             @include('admin.partials.seo-panel', [
                 'seo'            => $page->seoMeta ?? null,
